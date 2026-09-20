@@ -1,0 +1,57 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  APP_NAME: "cicd-session5-components"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+
+default:
+  tags:
+    - dev-shell
+
+  cache:
+    key: "${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - .cache/
+
+build_package:
+  stage: build
+
+  script:
+    - mkdir -p dist .cache
+    - echo "Cache created for ${CI_COMMIT_REF_NAME}" > .cache/dependency.txt
+    - printf 'app=%s\nbranch=%s\ncommit=%s\npipeline=%s\n' "$APP_NAME" "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHORT_SHA" "$CI_PIPELINE_ID" > dist/build-info.txt
+    - cat dist/build-info.txt
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - dist/
+    expire_in: 1 day
+
+test_package:
+  stage: test
+
+  script:
+    - test -f dist/build-info.txt
+    - grep -q "^app=${APP_NAME}$" dist/build-info.txt
+    - test -f .cache/dependency.txt
+    - cat dist/build-info.txt
+    - echo "Tests passed."
+
+deploy_development:
+  stage: deploy
+
+  script:
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - scp -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes dist/build-info.txt "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}/session5-build-info.txt"
+    - ssh -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes "${DEPLOY_USER}@${DEPLOY_HOST}" 'cat /home/deploy/session5-build-info.txt'
+
+  environment:
+    name: development
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
