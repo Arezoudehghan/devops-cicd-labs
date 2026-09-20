@@ -1,0 +1,496 @@
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages all changes in the current directory for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add GitLab pipeline"
+
+Explanation:
+Creates a Git commit with the staged changes and uses the provided commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote upstream.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application"
+
+Explanation:
+Prints the text "Building application" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Unit Test"
+
+Explanation:
+Prints the text "Unit Test" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security Test"
+
+Explanation:
+Prints the text "Security Test" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs GitLab Runner with elevated privileges and lists the runners registered in the local GitLab Runner configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening the output in a pager.
+
+Options:
+- --no-pager = no pager: Displays the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -nE 'name|executor|url' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration file for lines containing name, executor, or url and prints matching line numbers.
+
+Options:
+- -n = --line-number (line number): Prefixes each matching line with its line number.
+- -E = --extended-regexp (extended regular expression): Interprets the pattern as an extended regular expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Displays the installed Python 3 version.
+
+Options:
+- --version = version: Prints the program version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "My Application" > dist/app.txt
+
+Explanation:
+Writes the text "My Application" to dist/app.txt, replacing the file contents if the file already exists.
+
+Options:
+- > = output redirection: Redirects standard output to dist/app.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_NAME"
+
+Explanation:
+Prints the current value of the APP_NAME environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PROJECT_NAME"
+
+Explanation:
+Prints the value of GitLab's CI_PROJECT_NAME predefined CI/CD variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints GitLab's shortened commit SHA for the current pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PIPELINE_ID"
+
+Explanation:
+Prints the unique GitLab pipeline ID for the current pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying"
+
+Explanation:
+Prints the text "Deploying" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs/cicd-session5-components
+
+Explanation:
+Creates the cicd-session5-components directory under ~/gitlab-labs and creates missing parent directories if needed.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session5-components
+
+Explanation:
+Changes the current shell directory to ~/gitlab-labs/cicd-session5-components.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and names its initial branch main.
+
+Options:
+- -b = --initial-branch (initial branch): Sets the name of the initial branch to main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > README.md <<'EOF'
+# GitLab CI/CD Components - Session 5
+
+Lab for:
+- Pipeline
+- Job
+- Stage
+- Runner
+- Executor
+- Artifact
+- Cache
+- Variable
+- Environment
+EOF
+
+Explanation:
+Creates README.md from the literal here-document content shown in the command.
+
+Options:
+- > = output redirection: Sends cat output to README.md and overwrites the file if it already exists.
+- <<'EOF' = quoted here-document: Supplies all following lines to cat until the closing EOF line, without shell variable or command expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitignore <<'EOF'
+dist/
+.cache/
+EOF
+
+Explanation:
+Creates .gitignore with entries for dist/ and .cache/.
+
+Options:
+- > = output redirection: Sends cat output to .gitignore and overwrites the file if it already exists.
+- <<'EOF' = quoted here-document: Supplies literal input until the closing EOF line, without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  APP_NAME: "cicd-session5-components"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+
+default:
+  tags:
+    - dev-shell
+
+  cache:
+    key: "${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - .cache/
+
+build_package:
+  stage: build
+
+  script:
+    - mkdir -p dist .cache
+    - echo "Cache created for ${CI_COMMIT_REF_NAME}" > .cache/dependency.txt
+    - printf 'app=%s\nbranch=%s\ncommit=%s\npipeline=%s\n' "$APP_NAME" "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHORT_SHA" "$CI_PIPELINE_ID" > dist/build-info.txt
+    - cat dist/build-info.txt
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - dist/
+    expire_in: 1 day
+
+test_package:
+  stage: test
+
+  script:
+    - test -f dist/build-info.txt
+    - grep -q "^app=${APP_NAME}$" dist/build-info.txt
+    - test -f .cache/dependency.txt
+    - cat dist/build-info.txt
+    - echo "Tests passed."
+
+deploy_development:
+  stage: deploy
+
+  script:
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - scp -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes dist/build-info.txt "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}/session5-build-info.txt"
+    - ssh -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes "${DEPLOY_USER}@${DEPLOY_HOST}" 'cat /home/deploy/session5-build-info.txt'
+
+  environment:
+    name: development
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+GITLAB_CI
+
+Explanation:
+Creates the complete .gitlab-ci.yml file used in this session by writing the literal here-document content into the file.
+
+Options:
+- > = output redirection: Sends cat output to .gitlab-ci.yml and overwrites the file if it already exists.
+- <<'GITLAB_CI' = quoted here-document: Supplies literal YAML content until the closing GITLAB_CI line, without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p dist .cache
+
+Explanation:
+Creates both dist and .cache directories and does not fail if either directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error for existing directories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Cache created for ${CI_COMMIT_REF_NAME}" > .cache/dependency.txt
+
+Explanation:
+Writes a cache marker containing the current GitLab ref name to .cache/dependency.txt.
+
+Options:
+- > = output redirection: Redirects standard output to .cache/dependency.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'app=%s\nbranch=%s\ncommit=%s\npipeline=%s\n' "$APP_NAME" "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHORT_SHA" "$CI_PIPELINE_ID" > dist/build-info.txt
+
+Explanation:
+Formats the application name, ref name, short commit SHA, and pipeline ID and writes them to dist/build-info.txt.
+
+Options:
+- > = output redirection: Redirects printf output to dist/build-info.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat dist/build-info.txt
+
+Explanation:
+Prints the contents of dist/build-info.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f dist/build-info.txt
+
+Explanation:
+Checks whether dist/build-info.txt exists and is a regular file; it returns a nonzero exit status if the check fails.
+
+Options:
+- -f = regular file test: Succeeds only when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep -q "^app=${APP_NAME}$" dist/build-info.txt
+
+Explanation:
+Checks quietly whether dist/build-info.txt contains a line whose complete value is app=<APP_NAME>.
+
+Options:
+- -q = --quiet (quiet): Suppresses normal grep output and uses the exit status to indicate whether a match was found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f .cache/dependency.txt
+
+Explanation:
+Checks whether .cache/dependency.txt exists and is a regular file.
+
+Options:
+- -f = regular file test: Succeeds only when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Tests passed."
+
+Explanation:
+Prints the text "Tests passed." to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 400 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the file referenced by SSH_PRIVATE_KEY to owner-read-only permissions so SSH can use the private key securely.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes dist/build-info.txt "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}/session5-build-info.txt"
+
+Explanation:
+Securely copies dist/build-info.txt to the deploy user's home directory on DEPLOY_HOST using the specified private key and known-hosts file.
+
+Options:
+- -i = identity file: Uses the file referenced by SSH_PRIVATE_KEY as the SSH private key.
+- -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" = SSH configuration option: Uses the file referenced by SSH_KNOWN_HOSTS as the known-hosts database.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Requires the remote host key to match a trusted known-hosts entry and refuses unknown hosts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" -o StrictHostKeyChecking=yes "${DEPLOY_USER}@${DEPLOY_HOST}" 'cat /home/deploy/session5-build-info.txt'
+
+Explanation:
+Connects to DEPLOY_HOST over SSH using the specified key and known-hosts file, then remotely prints /home/deploy/session5-build-info.txt.
+
+Options:
+- -i = identity file: Uses the file referenced by SSH_PRIVATE_KEY as the SSH private key.
+- -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" = SSH configuration option: Uses the file referenced by SSH_KNOWN_HOSTS as the known-hosts database.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Requires the remote host key to match a trusted known-hosts entry and refuses unknown hosts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'app=%s\nbranch=%s\ncommit=%s\npipeline=%s\n' \
+"$APP_NAME" \
+"$CI_COMMIT_REF_NAME" \
+"$CI_COMMIT_SHORT_SHA" \
+"$CI_PIPELINE_ID"
+
+Explanation:
+Formats and prints the application name, ref name, short commit SHA, and pipeline ID to standard output.
+
+Options:
+- \ = shell line continuation: Escapes each newline so the shell treats the following line as part of the same command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add session 5 GitLab CI/CD components lab"
+
+Explanation:
+Creates a Git commit from staged changes with the provided session 5 commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin \
+  http://192.168.94.90/root/cicd-session5-components.git
+
+Explanation:
+Adds a Git remote named origin that points to the GitLab repository at the specified URL.
+
+Options:
+- \ = shell line continuation: Escapes the newline so the URL on the next line remains part of the same command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists configured Git remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Shows the remote URLs in addition to the remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to origin and configures it as the upstream branch for future Git push and pull operations.
+
+Options:
+- -u = --set-upstream (set upstream): Sets origin/main as the upstream tracking branch for the local main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /home/deploy/session5-build-info.txt
+
+Explanation:
+Shows detailed file information for /home/deploy/session5-build-info.txt.
+
+Options:
+- -l = long listing format: Displays detailed information such as permissions, owner, size, and modification time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /home/deploy/session5-build-info.txt
+
+Explanation:
+Prints the deployed session5-build-info.txt file to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Second pipeline run" >> README.md
+
+Explanation:
+Appends the text "Second pipeline run" to README.md without overwriting its existing contents.
+
+Options:
+- >> = append redirection: Redirects standard output to README.md and appends it to the end of the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Stages the current changes to README.md for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Test pipeline cache"
+
+Explanation:
+Creates a Git commit from staged changes with the message "Test pipeline cache".
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Starts an SSH connection to 192.168.94.91 using the remote username deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}"
+
+Explanation:
+Starts an SSH connection using the username stored in DEPLOY_USER and the host stored in DEPLOY_HOST.
+------------------------------------------------------------
