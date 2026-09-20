@@ -1,0 +1,869 @@
+------------------------------------------------------------
+# hostnamectl
+
+Explanation:
+Shows the system hostname and host-related information such as the operating system, kernel, and architecture.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ip -br address
+
+Explanation:
+Shows network interfaces and their IP addresses in a compact format.
+
+Options:
+- -br = -brief (brief output): Displays a shorter, more readable summary.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# timedatectl
+
+Explanation:
+Shows the current system time, timezone, NTP status, and clock synchronization information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# free -h
+
+Explanation:
+Shows system memory and swap usage in a human-readable format.
+
+Options:
+- -h = --human (human-readable): Automatically uses readable units such as MiB and GiB.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# df -hT
+
+Explanation:
+Shows filesystem disk usage together with each filesystem type.
+
+Options:
+- -h = --human-readable (human-readable): Displays sizes using readable units such as MiB and GiB.
+- -T = --print-type (print filesystem type): Adds the filesystem type to the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Shows the installed Git version.
+
+Options:
+- --version = version information: Prints the Git version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# bash --version
+
+Explanation:
+Shows the installed Bash version.
+
+Options:
+- --version = version information: Prints the Bash version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sha256sum --version
+
+Explanation:
+Shows the installed sha256sum version.
+
+Options:
+- --version = version information: Prints the program version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-ctl status
+
+Explanation:
+Shows the status of services managed by a GitLab Omnibus installation.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-rake gitlab:env:info
+
+Explanation:
+Runs the GitLab Rake task that prints environment information such as GitLab, Ruby, Git, and system details.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp
+
+Explanation:
+Shows listening TCP sockets numerically and includes the processes that own them.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Does not resolve service names; shows numeric addresses and ports.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Shows the installed GitLab Runner version.
+
+Options:
+- --version = version information: Prints the GitLab Runner version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service without opening a pager.
+
+Options:
+- --no-pager = disable pager: Prints the output directly instead of opening it in a pager such as less.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists GitLab Runner configurations registered on the current machine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the configured runners can communicate with GitLab and are still valid.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 50 --no-pager
+
+Explanation:
+Shows the latest 50 log entries for the GitLab Runner systemd unit.
+
+Options:
+- -u = --unit (unit): Filters logs to the gitlab-runner service.
+- -n 50 = --lines=50 (number of lines): Shows the most recent 50 log entries.
+- --no-pager = disable pager: Prints the output directly instead of opening a pager.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ls -l /etc/gitlab-runner/config.toml
+
+Explanation:
+Shows detailed file information for the GitLab Runner configuration file.
+
+Options:
+- -l = long listing format: Shows permissions, owner, group, size, and modification time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E 'name|executor|url' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration file for lines containing name, executor, or url.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Enables extended regular-expression syntax.
+- | inside the quoted regular expression = alternation: Matches name OR executor OR url.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs
+
+Explanation:
+Creates the gitlab-labs directory under the current user's home directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to ~/gitlab-labs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone PASTE_YOUR_EXACT_CLONE_URL_HERE
+
+Explanation:
+Clones a Git repository into a new local directory. Replace PASTE_YOUR_EXACT_CLONE_URL_HERE with the exact clone URL copied from the GitLab project before running it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd cicd-pipeline-lab
+
+Explanation:
+Changes the current shell directory to the cloned cicd-pipeline-lab repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working-tree state, including staged, modified, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Shows the configured Git remotes and their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Displays the remote URLs in addition to the remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Prints only the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global user.name "Arezou"
+
+Explanation:
+Sets the Git author name globally for the current user.
+
+Options:
+- --global = global configuration scope: Writes the value to the current user's global Git configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global user.email "YOUR_GITLAB_EMAIL"
+
+Explanation:
+Sets the Git author email globally for the current user. Replace YOUR_GITLAB_EMAIL with the email address you want Git commits to use.
+
+Options:
+- --global = global configuration scope: Writes the value to the current user's global Git configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.sh <<'EOF'
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "Hello from GitLab CI/CD"
+EOF
+
+Explanation:
+Creates or overwrites app.sh with the shown Bash script using a quoted here-document.
+
+Options:
+- > = output redirection: Overwrites app.sh with the output produced by cat.
+- <<'EOF' = quoted here-document: Feeds all following lines to cat until the final EOF; quoting the delimiter prevents shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -euo pipefail
+
+Explanation:
+Enables stricter Bash error handling so scripts fail earlier when commands or variables are invalid.
+
+Options:
+- -e = errexit: Exits when a simple command fails, subject to Bash's documented exceptions.
+- -u = nounset: Treats the use of an unset variable as an error.
+- -o pipefail = enable pipefail: Makes a pipeline return failure when a command in the pipeline fails instead of relying only on the last command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello from GitLab CI/CD"
+
+Explanation:
+Prints the text Hello from GitLab CI/CD to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod +x app.sh
+
+Explanation:
+Adds execute permission to app.sh.
+
+Options:
+- +x = add execute permission: Adds the executable bit to the file mode.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./app.sh
+
+Explanation:
+Runs the app.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# bash -n app.sh
+
+Explanation:
+Checks the Bash syntax of app.sh without executing the script.
+
+Options:
+- -n = no execution / syntax-check mode: Reads commands and checks syntax without running them.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# false | grep test
+
+Explanation:
+Runs false and pipes its standard output to grep test. This example demonstrates a shell pipeline and is useful when discussing pipefail behavior.
+
+Options:
+- | = pipeline operator: Sends the standard output of the command on the left to the standard input of the command on the right.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'EOF'
+stages:
+  - validate
+  - test
+  - package
+
+default:
+  tags:
+    - dev-shell
+  interruptible: true
+
+variables:
+  APP_NAME: "cicd-pipeline-lab"
+
+validate_script:
+  stage: validate
+  script:
+    - echo "Checking Bash syntax..."
+    - bash -n app.sh
+
+test_script:
+  stage: test
+  needs:
+    - validate_script
+  script:
+    - echo "Running application test..."
+    - OUTPUT="$(bash app.sh)"
+    - printf 'Program output: %s\n' "$OUTPUT"
+    - test "$OUTPUT" = "Hello from GitLab CI/CD"
+
+package_script:
+  stage: package
+  needs:
+    - test_script
+  script:
+    - echo "Creating application package..."
+    - install -d dist
+    - install -m 0755 app.sh dist/app.sh
+    - sha256sum dist/app.sh > dist/app.sh.sha256
+  artifacts:
+    name: "${APP_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - dist/
+    expire_in: 7 days
+    when: on_success
+EOF
+
+Explanation:
+Creates or overwrites .gitlab-ci.yml with the shown GitLab CI/CD configuration using a quoted here-document.
+
+Options:
+- > = output redirection: Overwrites .gitlab-ci.yml with the output produced by cat.
+- <<'EOF' = quoted here-document: Feeds the following YAML text to cat until the final EOF and prevents shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking Bash syntax..."
+
+Explanation:
+Prints a message indicating that the CI job is about to check Bash syntax.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running application test..."
+
+Explanation:
+Prints a message indicating that the CI job is starting the application test.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# OUTPUT="$(bash app.sh)"
+
+Explanation:
+Runs bash app.sh, captures its standard output, and assigns that text to the shell variable OUTPUT.
+
+Options:
+- $(...) = command substitution: Runs the command inside the parentheses and substitutes its standard output.
+- "..." around the substitution = quoted assignment value: Preserves the captured output as one shell word during assignment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'Program output: %s\n' "$OUTPUT"
+
+Explanation:
+Prints the value of OUTPUT using a controlled format string.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test "$OUTPUT" = "Hello from GitLab CI/CD"
+
+Explanation:
+Checks whether the value of OUTPUT exactly equals Hello from GitLab CI/CD; it returns a nonzero status when they are different.
+
+Options:
+- = = string equality operator for test: Compares the two string operands for exact equality.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating application package..."
+
+Explanation:
+Prints a message indicating that the CI job is creating the application package.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# install -d dist
+
+Explanation:
+Creates the dist directory.
+
+Options:
+- -d = --directory (directory): Creates directories instead of copying files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# install -m 0755 app.sh dist/app.sh
+
+Explanation:
+Copies app.sh to dist/app.sh and sets its mode to 0755.
+
+Options:
+- -m 0755 = --mode=0755 (mode): Sets the destination file permissions to owner read/write/execute and group/others read/execute.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sha256sum dist/app.sh > dist/app.sh.sha256
+
+Explanation:
+Calculates the SHA-256 checksum of dist/app.sh and writes it to dist/app.sh.sha256.
+
+Options:
+- > = output redirection: Overwrites the destination file with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# find . -maxdepth 2 -type f -not -path './.git/*' -print
+
+Explanation:
+Finds regular files up to two directory levels below the current directory while excluding files inside .git.
+
+Options:
+- -maxdepth 2 = maximum search depth: Limits traversal to two levels below the starting path.
+- -type f = file type test: Matches regular files only.
+- -not = logical NOT: Negates the expression that follows.
+- -path './.git/*' = path match: Matches paths under the .git directory.
+- -print = print action: Writes each matched path to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -n '1,240p' .gitlab-ci.yml
+
+Explanation:
+Prints lines 1 through 240 from .gitlab-ci.yml.
+
+Options:
+- -n = --quiet / --silent (suppress automatic printing): Prints only text explicitly selected by a sed command.
+- 1,240p = sed address and print command: Selects lines 1 through 240 and prints them.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.sh .gitlab-ci.yml
+
+Explanation:
+Stages app.sh and .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --cached
+
+Explanation:
+Shows the changes that are currently staged for the next commit.
+
+Options:
+- --cached = compare staged content: Shows differences between the index and the current commit; --staged is a documented synonym.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add first GitLab CI pipeline"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CURRENT_BRANCH="$(git branch --show-current)"
+
+Explanation:
+Runs git branch --show-current and stores the returned branch name in the shell variable CURRENT_BRANCH.
+
+Options:
+- $(...) = command substitution: Runs the command inside the parentheses and substitutes its standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'Current branch: %s\n' "$CURRENT_BRANCH"
+
+Explanation:
+Prints the current branch name using a controlled format string.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin "$CURRENT_BRANCH"
+
+Explanation:
+Pushes the current local branch to origin and configures it as the branch's upstream remote branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the remote branch as the upstream for the local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i 's/Hello from GitLab CI\/CD/Hello from Broken Pipeline/' app.sh
+
+Explanation:
+Edits app.sh in place and replaces the expected application message with a deliberately broken message.
+
+Options:
+- -i = --in-place (in-place editing): Modifies the file directly instead of writing the result to standard output.
+- s/old/new/ = sed substitution command: Replaces the first matching text on each processed line.
+- \/ = escaped slash: Represents a literal / inside the slash-delimited sed expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in the working tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.sh
+
+Explanation:
+Stages app.sh for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Test pipeline failure"
+
+Explanation:
+Creates a Git commit with the staged change that intentionally causes the pipeline test to fail.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits from the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i 's/Hello from Broken Pipeline/Hello from GitLab CI\/CD/' app.sh
+
+Explanation:
+Edits app.sh in place and restores the expected application message.
+
+Options:
+- -i = --in-place (in-place editing): Modifies the file directly instead of writing the result to standard output.
+- s/old/new/ = sed substitution command: Replaces the first matching text on each processed line.
+- \/ = escaped slash: Represents a literal / inside the slash-delimited sed expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Fix application output"
+
+Explanation:
+Creates a Git commit for the staged fix that restores the expected application output.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl enable --now gitlab-runner
+
+Explanation:
+Enables the GitLab Runner service to start automatically at boot and starts it immediately.
+
+Options:
+- --now = act immediately: Starts the service now in addition to enabling it for future boots.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v bash
+
+Explanation:
+Shows the command path or shell definition that would be used when running bash.
+
+Options:
+- -v = command lookup result: Prints the command or pathname that the shell would use.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v git
+
+Explanation:
+Shows the command path or shell definition that would be used when running git.
+
+Options:
+- -v = command lookup result: Prints the command or pathname that the shell would use.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v sha256sum
+
+Explanation:
+Shows the command path or shell definition that would be used when running sha256sum.
+
+Options:
+- -v = command lookup result: Prints the command or pathname that the shell would use.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v install
+
+Explanation:
+Shows the command path or shell definition that would be used when running install.
+
+Options:
+- -v = command lookup result: Prints the command or pathname that the shell would use.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PROJECT_NAME"
+
+Explanation:
+Prints the GitLab predefined variable that contains the current project name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t cicd-pipeline-lab:latest .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it as cicd-pipeline-lab:latest.
+
+Options:
+- -t = --tag (tag): Assigns a name and optional tag to the built image.
+- . = build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "$CI_PROJECT_NAME:latest" .
+
+Explanation:
+Builds a Docker image from the current directory and uses the GitLab project name as the image name with the latest tag.
+
+Options:
+- -t = --tag (tag): Assigns a name and optional tag to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Current branch is $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the branch name supplied by the GitLab predefined CI_COMMIT_BRANCH variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add login feature"
+
+Explanation:
+Creates a Git commit with the message Add login feature.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short Git commit SHA supplied by GitLab for the current pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "myapp:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the GitLab short commit SHA.
+
+Options:
+- -t = --tag (tag): Assigns a name and tag to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID = $CI_PIPELINE_ID"
+
+Explanation:
+Prints the GitLab pipeline ID available to the running job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project Name = $CI_PROJECT_NAME"
+
+Explanation:
+Prints the GitLab project name in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch Name = $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the GitLab branch name in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit Version = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the GitLab short commit SHA as the application version in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add pipeline information job"
+
+Explanation:
+Creates a Git commit for the pipeline information job.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project = $CI_PROJECT_NAME"
+
+Explanation:
+Prints the current GitLab project name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch = $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current GitLab branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Version = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the current short Git commit SHA as a version value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline = $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Release = ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints a release identifier built from the GitLab project name and short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints a string formed by joining the GitLab project name and short commit SHA with a hyphen.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints the text Hello to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as myapp.
+
+Options:
+- -t = --tag (tag): Assigns a name and optional tag to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building"
+
+Explanation:
+Prints the text Building to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Validation completed"
+
+Explanation:
+Prints a message that indicates the validation job has completed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application"
+
+Explanation:
+Prints a message that indicates the application test job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add CI pipeline"
+
+Explanation:
+Creates a Git commit for the CI pipeline configuration.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test"
+
+Explanation:
+Prints the text test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# glab ci lint
+
+Explanation:
+Validates the GitLab CI/CD configuration using the GitLab CLI.
+------------------------------------------------------------
