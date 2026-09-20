@@ -14,3 +14,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 ## Current Labs
 
 - `gitlab/session-01-gitlab-cicd-basics/` — CI/CD basics, Runner, stages, jobs, predefined variables, artifacts, and CI Lint.
+- `gitlab/session-04-shift-left-fail-fast/` — Shift Left, Fail Fast, syntax validation, unit testing, secret scanning, packaging, SSH deployment, and health checking.
