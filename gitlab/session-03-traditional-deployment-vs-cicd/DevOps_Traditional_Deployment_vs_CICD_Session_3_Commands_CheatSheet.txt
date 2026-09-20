@@ -1,0 +1,1243 @@
+------------------------------------------------------------
+# scp application.tar.gz deploy@server:/tmp/
+
+Explanation:
+Copies application.tar.gz to /tmp/ on the remote server using SCP over SSH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@server
+
+Explanation:
+Opens an interactive SSH session to the remote server as the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  -t cicd-session3-app:manual-v1 \
+  .
+
+Explanation:
+Technical correction: the earlier "docker build ..." example was incomplete. This complete command builds the Session 3 image from the current directory and tags it as manual-v1.
+
+Options:
+- -t = --tag (tag): Apply the name and tag cicd-session3-app:manual-v1 to the built image.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose up -d
+
+Explanation:
+Creates or starts the Compose services and runs them in the background.
+
+Options:
+- -d = --detach (detach): Run the containers in the background.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl \
+  -fsS \
+  http://192.168.94.91:8083/
+
+Explanation:
+Technical correction: the earlier "curl ..." example was incomplete. This complete command requests the deployed application and fails clearly when the HTTP request is unsuccessful.
+
+Options:
+- -f = --fail (fail): Return an error for HTTP response codes 400 or greater and do not print the response body.
+- -s = --silent (silent): Suppress the progress meter and normal error output.
+- -S = --show-error (show error): Show an error message when used with --silent and the request fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the current system hostname.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Prints the installed Docker version and exits.
+
+Options:
+- --version = version: Show Docker version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose version
+
+Explanation:
+Prints the installed Docker Compose version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Prints the installed Git version and exits.
+
+Options:
+- --version = version: Show Git version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh -V
+
+Explanation:
+Prints the installed OpenSSH client version.
+
+Options:
+- -V = version: Display the SSH client version and exit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v scp
+
+Explanation:
+Shows how the current shell resolves the scp command, usually by printing its executable path.
+
+Options:
+- -v = command description/path lookup: Print the pathname or description used for the command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner --version
+
+Explanation:
+Runs GitLab Runner with elevated privileges and prints its version.
+
+Options:
+- --version = version: Show GitLab Runner version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations registered on this machine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to verify that the Runner can access Docker.
+
+Options:
+- -u = --user (user): Run the command as gitlab-runner.
+- -H = --set-home (set home): Set HOME to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds gitlab-runner to the docker supplementary group without removing its existing group memberships.
+
+Options:
+- -a = --append (append): Add the user to supplementary groups without removing existing memberships.
+- -G = --groups (groups): Set supplementary groups; here the added group is docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8083' || true
+
+Explanation:
+Checks whether TCP port 8083 is listening and keeps the overall shell command successful if grep finds no match.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Do not resolve service names or addresses.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket.
+- | = pipe operator: Send the output of ss to grep.
+- || = OR operator: Run true only if grep returns a non-zero status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Shows the UID, primary group, and supplementary groups of the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo useradd -m -s /bin/bash deploy
+
+Explanation:
+Creates the deploy user with a home directory and Bash as the login shell.
+
+Options:
+- -m = --create-home (create home): Create the user's home directory.
+- -s = --shell (shell): Set the login shell to /bin/bash.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker deploy
+
+Explanation:
+Adds deploy to the docker supplementary group without removing its existing group memberships.
+
+Options:
+- -a = --append (append): Add the user to supplementary groups without removing existing memberships.
+- -G = --groups (groups): Set supplementary groups; here the added group is docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo install -d \
+  -m 700 \
+  -o deploy \
+  -g deploy \
+  /home/deploy/.ssh
+
+Explanation:
+Creates /home/deploy/.ssh with the required permissions, owner, and group.
+
+Options:
+- -d = --directory (directory): Create directories instead of copying files.
+- -m = --mode (mode): Set permissions to 700.
+- -o = --owner (owner): Set the owner to deploy.
+- -g = --group (group): Set the group to deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo mkdir -p /root/.ssh
+
+Explanation:
+Creates /root/.ssh if it does not already exist.
+
+Options:
+- -p = --parents (parents): Create missing parent directories and do not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen \
+  -t ed25519 \
+  -C "gitlab-cicd-session3" \
+  -f /root/.ssh/cicd-session3-deploy-key \
+  -N ''
+
+Explanation:
+Creates a new Ed25519 SSH key pair for the Session 3 deployment identity without a passphrase.
+
+Options:
+- -t = key type: Generate an ed25519 key.
+- -C = comment: Add gitlab-cicd-session3 as the public-key comment.
+- -f = output key file: Save the private key at /root/.ssh/cicd-session3-deploy-key and the public key with .pub.
+- -N = new passphrase: Set the new passphrase; '' means an empty passphrase.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /root/.ssh/cicd-session3-deploy-key.pub
+
+Explanation:
+Prints the Session 3 deployment public key.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo nano /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Opens the deploy user's authorized_keys file in Nano for editing.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown deploy:deploy /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Changes the owner and group of authorized_keys to deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 600 /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Sets authorized_keys so only its owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen \
+  -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Explanation:
+Displays the fingerprint of DEV-2's Ed25519 SSH host public key.
+
+Options:
+- -l = fingerprint: Show the fingerprint of the specified public key.
+- -f = input key file: Read the key from /etc/ssh/ssh_host_ed25519_key.pub.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keyscan \
+  -t ed25519 \
+  192.168.94.91 \
+  > /root/.ssh/cicd-session3-known-hosts
+
+Explanation:
+Retrieves the Ed25519 SSH host key from 192.168.94.91 and writes it to the Session 3 known-hosts file.
+
+Options:
+- -t = key type: Request only the ed25519 host-key type.
+- > = output redirection: Replace the destination file with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen \
+  -lf /root/.ssh/cicd-session3-known-hosts
+
+Explanation:
+Displays fingerprints for keys stored in the Session 3 known-hosts file.
+
+Options:
+- -l = fingerprint: Show key fingerprints.
+- -f = input key file: Read keys from /root/.ssh/cicd-session3-known-hosts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i /root/.ssh/cicd-session3-deploy-key \
+  -o IdentitiesOnly=yes \
+  -o BatchMode=yes \
+  -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
+  -o StrictHostKeyChecking=yes \
+  deploy@192.168.94.91 \
+  'id && hostname && docker version'
+
+Explanation:
+Connects to DEV-2 using the Session 3 private key, verifies its host key, and remotely checks the user, hostname, and Docker access.
+
+Options:
+- -i = identity file: Use /root/.ssh/cicd-session3-deploy-key as the private key.
+- -o IdentitiesOnly=yes = SSH configuration option: Use only explicitly configured identities.
+- -o BatchMode=yes = SSH configuration option: Disable interactive password and passphrase prompts.
+- -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts = SSH configuration option: Use the Session 3 known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Refuse unknown or changed host keys.
+- && = AND operator: Run the next remote command only if the previous command succeeds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs/cicd-session3
+
+Explanation:
+Creates the local Session 3 project directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Create missing parent directories and do not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session3
+
+Explanation:
+Changes the current directory to the Session 3 project directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > index.html <<'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CI/CD Session 3</title>
+</head>
+<body>
+    <h1>Traditional Deployment - v1</h1>
+    <p>This version was deployed manually.</p>
+</body>
+</html>
+EOF
+
+Explanation:
+Creates the version 1 index.html file from a quoted here-document.
+
+Options:
+- > = output redirection: Replace index.html with the generated content.
+- <<'EOF' = quoted here-document: Read literal input until EOF without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > health.html <<'EOF'
+OK
+EOF
+
+Explanation:
+Creates health.html containing OK.
+
+Options:
+- > = output redirection: Replace health.html with the generated content.
+- <<'EOF' = quoted here-document: Read literal input until EOF without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > Dockerfile <<'EOF'
+FROM nginx:alpine
+
+COPY index.html /usr/share/nginx/html/index.html
+COPY health.html /usr/share/nginx/html/health.html
+
+EXPOSE 80
+
+HEALTHCHECK \
+  --interval=5s \
+  --timeout=2s \
+  --start-period=3s \
+  --retries=5 \
+  CMD wget -qO- http://127.0.0.1/health.html >/dev/null || exit 1
+EOF
+
+Explanation:
+Creates the Dockerfile for the Nginx application, including its Docker health check.
+
+Options:
+- > = output redirection: Replace Dockerfile with the generated content.
+- <<'EOF' = quoted here-document: Read literal input until EOF without shell expansion.
+- --interval=5s = health-check interval: Run the health check every 5 seconds.
+- --timeout=2s = health-check timeout: Allow each health check up to 2 seconds.
+- --start-period=3s = health-check start period: Give the container 3 seconds before failures count normally.
+- --retries=5 = health-check retries: Mark the container unhealthy after 5 consecutive failures.
+- -q = quiet mode in wget: Suppress normal wget output.
+- -O- = output document to standard output in wget: Write the downloaded content to stdout.
+- >/dev/null = output redirection: Discard the health-check response body.
+- || = OR operator: Run exit 1 if wget fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# wget -qO- http://127.0.0.1/health.html >/dev/null || exit 1
+
+Explanation:
+Checks the local health endpoint and exits with failure if the request fails.
+
+Options:
+- -q = quiet mode: Suppress normal wget output.
+- -O- = output document to standard output: Write the downloaded content to stdout.
+- >/dev/null = output redirection: Discard standard output.
+- || = OR operator: Run exit 1 only when wget fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > compose.yaml <<'EOF'
+services:
+
+  web:
+
+    image: "cicd-session3-app:${IMAGE_TAG:-manual-v1}"
+
+    container_name: cicd-session3-app
+
+    ports:
+      - "8083:80"
+
+    restart: unless-stopped
+EOF
+
+Explanation:
+Creates compose.yaml for the Session 3 web service, including image-tag interpolation and the 8083:80 port mapping.
+
+Options:
+- > = output redirection: Replace compose.yaml with the generated content.
+- <<'EOF' = quoted here-document: Read literal input until EOF without shell expansion.
+- ${IMAGE_TAG:-manual-v1} = default-value expansion: Use IMAGE_TAG when it is set and non-empty; otherwise use manual-v1.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose config
+
+Explanation:
+Parses and renders the Compose configuration to validate it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tar \
+  -czf /tmp/cicd-session3-v1.tar.gz \
+  Dockerfile \
+  compose.yaml \
+  index.html \
+  health.html
+
+Explanation:
+Creates a gzip-compressed archive containing the Session 3 application files.
+
+Options:
+- -c = --create (create): Create a new archive.
+- -z = --gzip (gzip): Compress the archive with gzip.
+- -f = --file (file): Use /tmp/cicd-session3-v1.tar.gz as the archive file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp \
+  -i /root/.ssh/cicd-session3-deploy-key \
+  -o IdentitiesOnly=yes \
+  -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
+  -o StrictHostKeyChecking=yes \
+  /tmp/cicd-session3-v1.tar.gz \
+  deploy@192.168.94.91:/tmp/
+
+Explanation:
+Copies the manual deployment archive to DEV-2 using the dedicated SSH identity and verified host key.
+
+Options:
+- -i = identity file: Use /root/.ssh/cicd-session3-deploy-key.
+- -o IdentitiesOnly=yes = SSH configuration option: Use only explicitly configured identities.
+- -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts = SSH configuration option: Use the Session 3 known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Refuse unknown or changed host keys.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i /root/.ssh/cicd-session3-deploy-key \
+  -o IdentitiesOnly=yes \
+  -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
+  -o StrictHostKeyChecking=yes \
+  deploy@192.168.94.91
+
+Explanation:
+Opens an interactive SSH session to DEV-2 using the dedicated Session 3 deployment key.
+
+Options:
+- -i = identity file: Use /root/.ssh/cicd-session3-deploy-key.
+- -o IdentitiesOnly=yes = SSH configuration option: Use only explicitly configured identities.
+- -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts = SSH configuration option: Use the Session 3 known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Refuse unknown or changed host keys.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/apps/cicd-session3
+
+Explanation:
+Creates the Session 3 application deployment directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Create missing parent directories and do not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tar \
+  -xzf /tmp/cicd-session3-v1.tar.gz \
+  -C ~/apps/cicd-session3
+
+Explanation:
+Extracts the compressed Session 3 archive into the application directory.
+
+Options:
+- -x = --extract (extract): Extract files from the archive.
+- -z = --gzip (gzip): Decompress the gzip-compressed archive.
+- -f = --file (file): Read from /tmp/cicd-session3-v1.tar.gz.
+- -C = --directory (directory): Change to ~/apps/cicd-session3 before extracting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/apps/cicd-session3
+
+Explanation:
+Changes the current directory to the deployed Session 3 application directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# IMAGE_TAG=manual-v1 \
+docker compose up -d
+
+Explanation:
+Sets IMAGE_TAG for this command and starts the Compose service in detached mode using the manual-v1 image tag.
+
+Options:
+- IMAGE_TAG=manual-v1 = temporary environment assignment: Provide this value only to the following command.
+- -d = --detach (detach): Run the service in the background.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  --format '{{.State.Health.Status}}' \
+  cicd-session3-app
+
+Explanation:
+Prints only the Docker health status of cicd-session3-app.
+
+Options:
+- --format = format output: Render only the requested Go-template field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates main as the initial branch.
+
+Options:
+- -b = --initial-branch (initial branch): Set main as the initial branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.name "Arezou"
+
+Explanation:
+Sets user.name to Arezou in the current repository configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.email "arezou@example.local"
+
+Explanation:
+Sets user.email in the current repository configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add \
+  Dockerfile \
+  compose.yaml \
+  index.html \
+  health.html
+
+Explanation:
+Stages the application files for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit \
+  -m "Add session 3 application v1"
+
+Explanation:
+Creates a Git commit containing the staged version 1 application files.
+
+Options:
+- -m = --message (message): Use the provided text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin \
+  git@192.168.94.90:root/cicd-session3.git
+
+Explanation:
+Adds the GitLab repository as a remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push \
+  -u origin main
+
+Explanation:
+Pushes main to origin and configures origin/main as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Set the remote branch as the tracking branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /root/.ssh/cicd-session3-deploy-key
+
+Explanation:
+Prints the Session 3 private SSH key for storing in the GitLab file variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /root/.ssh/cicd-session3-known-hosts
+
+Explanation:
+Prints the verified Session 3 known-hosts file for storing in the GitLab file variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - validate
+  - build
+  - deploy
+
+
+variables:
+
+  IMAGE_NAME: "cicd-session3-app"
+
+  DEPLOY_HOST: "192.168.94.91"
+
+  DEPLOY_USER: "deploy"
+
+  DEPLOY_PORT: "8083"
+
+
+default:
+
+  tags:
+    - dev-shell
+
+  interruptible: true
+
+
+validate_files:
+
+  stage: validate
+
+  script:
+
+    - test -f Dockerfile
+
+    - test -f compose.yaml
+
+    - test -f index.html
+
+    - test -f health.html
+
+    - docker compose -f compose.yaml config >/dev/null
+
+
+build_image:
+
+  stage: build
+
+  script:
+
+    - docker build --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+    - TEST_CONTAINER="${IMAGE_NAME}-test-${CI_PIPELINE_ID}"
+
+    - docker rm -f "${TEST_CONTAINER}" 2>/dev/null || true
+
+    - docker run -d --name "${TEST_CONTAINER}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+    - |
+      for i in $(seq 1 15); do
+
+        STATUS="$(docker inspect \
+          --format='{{.State.Health.Status}}' \
+          "${TEST_CONTAINER}")"
+
+        echo "Health status: ${STATUS}"
+
+        if [ "${STATUS}" = "healthy" ]; then
+          break
+        fi
+
+        if [ "${STATUS}" = "unhealthy" ]; then
+          docker logs "${TEST_CONTAINER}"
+          exit 1
+        fi
+
+        sleep 2
+
+      done
+
+      test "$(docker inspect \
+        --format='{{.State.Health.Status}}' \
+        "${TEST_CONTAINER}")" = "healthy"
+
+    - docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+  artifacts:
+
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+
+    paths:
+      - image.tar.gz
+
+    expire_in: 1 day
+
+  after_script:
+
+    - docker rm -f "${IMAGE_NAME}-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+
+deploy_production:
+
+  stage: deploy
+
+  needs:
+
+    - job: build_image
+      artifacts: true
+
+  rules:
+
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+  before_script:
+
+    - test -f "${SSH_PRIVATE_KEY_SESSION3}"
+
+    - test -f "${SSH_KNOWN_HOSTS_SESSION3}"
+
+    - chmod 400 "${SSH_PRIVATE_KEY_SESSION3}"
+
+    - chmod 644 "${SSH_KNOWN_HOSTS_SESSION3}"
+
+    - export SSH_OPTS="-i ${SSH_PRIVATE_KEY_SESSION3} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=${SSH_KNOWN_HOSTS_SESSION3}"
+
+  script:
+
+    - ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" 'mkdir -p /tmp/cicd-session3'
+
+    - scp ${SSH_OPTS} image.tar.gz compose.yaml "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session3/"
+
+    - |
+      ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" "
+
+        set -eu
+
+        gzip -dc /tmp/cicd-session3/image.tar.gz | docker load
+
+        mkdir -p /home/${DEPLOY_USER}/apps/cicd-session3
+
+        cp \
+          /tmp/cicd-session3/compose.yaml \
+          /home/${DEPLOY_USER}/apps/cicd-session3/compose.yaml
+
+        cd /home/${DEPLOY_USER}/apps/cicd-session3
+
+        IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' \
+          docker compose up -d --remove-orphans
+
+        for i in \$(seq 1 15); do
+
+          STATUS=\$(docker inspect \
+            --format='{{.State.Health.Status}}' \
+            cicd-session3-app)
+
+          echo \"Deploy health: \${STATUS}\"
+
+          if [ \"\${STATUS}\" = 'healthy' ]; then
+            exit 0
+          fi
+
+          if [ \"\${STATUS}\" = 'unhealthy' ]; then
+            docker logs cicd-session3-app
+            exit 1
+          fi
+
+          sleep 2
+
+        done
+
+        docker logs cicd-session3-app
+
+        exit 1
+      "
+
+  environment:
+
+    name: production
+    url: http://192.168.94.91:8083
+GITLAB_CI
+
+Explanation:
+Creates the complete .gitlab-ci.yml file used in this lesson, including validation, image build, artifact handling, SSH deployment, and health verification.
+
+Options:
+- > = output redirection: Replace .gitlab-ci.yml with the generated content.
+- <<'GITLAB_CI' = quoted here-document: Read the YAML literally until the GITLAB_CI delimiter without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f Dockerfile
+
+Explanation:
+Checks that Dockerfile exists and is a regular file; the command fails if it is missing.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f compose.yaml
+
+Explanation:
+Checks that compose.yaml exists and is a regular file; the command fails if it is missing.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f index.html
+
+Explanation:
+Checks that index.html exists and is a regular file; the command fails if it is missing.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f health.html
+
+Explanation:
+Checks that health.html exists and is a regular file; the command fails if it is missing.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose -f compose.yaml config >/dev/null
+
+Explanation:
+Validates compose.yaml while discarding the rendered configuration.
+
+Options:
+- -f = --file (file): Use compose.yaml as the Compose file.
+- >/dev/null = output redirection: Discard standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds the Docker image and tags it with the current Git commit short SHA.
+
+Options:
+- --tag = tag: Apply the specified image name and tag.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# TEST_CONTAINER="${IMAGE_NAME}-test-${CI_PIPELINE_ID}"
+
+Explanation:
+Sets TEST_CONTAINER to a pipeline-specific test-container name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f "${TEST_CONTAINER}" 2>/dev/null || true
+
+Explanation:
+Force-removes any previous test container and ignores the error if the container does not exist.
+
+Options:
+- -f = --force (force): Force removal of a running container.
+- 2>/dev/null = standard-error redirection: Discard stderr.
+- || = OR operator: Run true only if docker rm fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d --name "${TEST_CONTAINER}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Starts the newly built image as a detached test container with a pipeline-specific name.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = name: Assign the specified container name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# for i in $(seq 1 15); do
+
+  STATUS="$(docker inspect \
+    --format='{{.State.Health.Status}}' \
+    "${TEST_CONTAINER}")"
+
+  echo "Health status: ${STATUS}"
+
+  if [ "${STATUS}" = "healthy" ]; then
+    break
+  fi
+
+  if [ "${STATUS}" = "unhealthy" ]; then
+    docker logs "${TEST_CONTAINER}"
+    exit 1
+  fi
+
+  sleep 2
+
+done
+
+test "$(docker inspect \
+  --format='{{.State.Health.Status}}' \
+  "${TEST_CONTAINER}")" = "healthy"
+
+Explanation:
+Polls the test container health status up to 15 times, fails immediately if it becomes unhealthy, and finally requires a healthy status.
+
+Options:
+- $(...) = command substitution: Run the enclosed command and substitute its output.
+- --format = format output: Return only the requested Docker inspect field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+Explanation:
+Exports the built image, compresses it quickly, and writes image.tar.gz for use as a CI artifact.
+
+Options:
+- | = pipe operator: Send docker save output to gzip.
+- -1 = --fast (fast): Use gzip compression level 1.
+- > = output redirection: Write the compressed output to image.tar.gz.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f "${IMAGE_NAME}-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+Explanation:
+Force-removes the test container during cleanup and ignores an error if it is already absent.
+
+Options:
+- -f = --force (force): Force removal of a running container.
+- 2>/dev/null = standard-error redirection: Discard stderr.
+- || = OR operator: Run true only if docker rm fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+Explanation:
+Removes the locally built image during cleanup and ignores an error if it is already absent.
+
+Options:
+- 2>/dev/null = standard-error redirection: Discard stderr.
+- || = OR operator: Run true only if docker image rm fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f "${SSH_PRIVATE_KEY_SESSION3}"
+
+Explanation:
+Checks that the GitLab SSH private-key file variable exists as a regular file.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f "${SSH_KNOWN_HOSTS_SESSION3}"
+
+Explanation:
+Checks that the GitLab known-hosts file variable exists as a regular file.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 400 "${SSH_PRIVATE_KEY_SESSION3}"
+
+Explanation:
+Sets the SSH private-key file so only its owner can read it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 644 "${SSH_KNOWN_HOSTS_SESSION3}"
+
+Explanation:
+Sets the known-hosts file so the owner can write it and everyone can read it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export SSH_OPTS="-i ${SSH_PRIVATE_KEY_SESSION3} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=${SSH_KNOWN_HOSTS_SESSION3}"
+
+Explanation:
+Exports reusable SSH client options for later ssh and scp commands.
+
+Options:
+- -i = identity file: Use the GitLab SSH private-key file.
+- -o IdentitiesOnly=yes = SSH configuration option: Use only explicitly configured identities.
+- -o BatchMode=yes = SSH configuration option: Disable interactive prompts.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Require a trusted host key.
+- -o UserKnownHostsFile=${SSH_KNOWN_HOSTS_SESSION3} = SSH configuration option: Use the GitLab known-hosts file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" 'mkdir -p /tmp/cicd-session3'
+
+Explanation:
+Connects to the deployment host with the stored SSH options and creates the temporary deployment directory remotely.
+
+Options:
+- ${SSH_OPTS} = shell variable expansion: Insert the previously exported SSH options.
+- -p = --parents (parents), inside the remote mkdir command: Create missing parent directories and do not fail if the directory exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp ${SSH_OPTS} image.tar.gz compose.yaml "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session3/"
+
+Explanation:
+Copies image.tar.gz and compose.yaml to the deployment host using the stored SSH options.
+
+Options:
+- ${SSH_OPTS} = shell variable expansion: Insert the previously exported SSH/SCP options.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" "
+
+  set -eu
+
+  gzip -dc /tmp/cicd-session3/image.tar.gz | docker load
+
+  mkdir -p /home/${DEPLOY_USER}/apps/cicd-session3
+
+  cp \
+    /tmp/cicd-session3/compose.yaml \
+    /home/${DEPLOY_USER}/apps/cicd-session3/compose.yaml
+
+  cd /home/${DEPLOY_USER}/apps/cicd-session3
+
+  IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' \
+    docker compose up -d --remove-orphans
+
+  for i in \$(seq 1 15); do
+
+    STATUS=\$(docker inspect \
+      --format='{{.State.Health.Status}}' \
+      cicd-session3-app)
+
+    echo \"Deploy health: \${STATUS}\"
+
+    if [ \"\${STATUS}\" = 'healthy' ]; then
+      exit 0
+    fi
+
+    if [ \"\${STATUS}\" = 'unhealthy' ]; then
+      docker logs cicd-session3-app
+      exit 1
+    fi
+
+    sleep 2
+
+  done
+
+  docker logs cicd-session3-app
+
+  exit 1
+"
+
+Explanation:
+Runs the remote deployment script on DEV-2: load the image, update Compose, start the service, and verify that the container becomes healthy.
+
+Options:
+- ${SSH_OPTS} = shell variable expansion: Insert the stored SSH client options.
+- -e = shell set option: Exit when an unhandled command fails.
+- -u = shell set option: Treat unset variables as errors.
+- -d = decompress mode in gzip: Decompress the gzip input.
+- -c = write to standard output in gzip: Send decompressed data to stdout.
+- | = pipe operator: Send decompressed image data to docker load.
+- -p = --parents (parents), for mkdir: Create missing parent directories and do not fail if the directory exists.
+- -d = --detach (detach), for docker compose up: Run containers in the background.
+- --remove-orphans = remove orphans: Remove containers for services no longer defined in the Compose file.
+- \$(...) = escaped command substitution for the remote shell: Run the enclosed command on the deployment host.
+- --format = format output: Return only the requested Docker inspect field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the GitLab CI/CD configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > index.html <<'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CI/CD Session 3</title>
+</head>
+<body>
+    <h1>CI/CD Deployment - v2</h1>
+    <p>This version was automatically deployed by GitLab CI/CD.</p>
+</body>
+</html>
+EOF
+
+Explanation:
+Replaces index.html with the version 2 content used for the automated CI/CD deployment.
+
+Options:
+- > = output redirection: Replace index.html with the generated content.
+- <<'EOF' = quoted here-document: Read literal input until EOF without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working-tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add \
+  index.html \
+  .gitlab-ci.yml
+
+Explanation:
+Stages the updated application page and GitLab pipeline file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit \
+  -m "Add GitLab CI/CD deployment pipeline"
+
+Explanation:
+Creates a commit containing the version 2 page and CI/CD pipeline.
+
+Options:
+- -m = --message (message): Use the provided text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to origin and triggers the GitLab pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  --format '{{.Config.Image}}' \
+  cicd-session3-app
+
+Explanation:
+Prints the exact image name and tag used by the running application container.
+
+Options:
+- --format = format output: Render only the requested Docker inspect field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss \
+  -lntp \
+  | grep ':8083'
+
+Explanation:
+Shows the listening TCP process associated with port 8083.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Do not resolve service names or addresses.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket.
+- | = pipe operator: Send the output of ss to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs \
+  cicd-session3-app
+
+Explanation:
+Prints the logs of the cicd-session3-app container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  cicd-session3-app
+
+Explanation:
+Prints detailed Docker metadata and runtime state for the cicd-session3-app container.
+------------------------------------------------------------
