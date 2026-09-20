@@ -1,0 +1,104 @@
+stages:
+  - validate
+  - test
+  - security
+  - package
+  - deploy
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  APP_PORT: "18044"
+  REMOTE_APP_DIR: "/home/deploy/apps/cicd-session4"
+
+default:
+  tags:
+    - dev-shell
+  interruptible: true
+
+validate_python:
+  stage: validate
+  script:
+    - echo "Checking Python syntax..."
+    - python3 -m py_compile app.py tests/test_app.py
+
+unit_test:
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    - python3 -m unittest discover -s tests -v
+
+secret_scan:
+  stage: security
+  script:
+    - echo "Scanning source code for secrets..."
+    - gitleaks dir --redact .
+
+package_app:
+  stage: package
+  script:
+    - echo "Creating application package..."
+    - tar -czf "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" app.py
+  artifacts:
+    name: "cicd-session4-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz"
+    expire_in: 1 day
+
+deploy_dev2:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  before_script:
+    - test -f "$SSH_PRIVATE_KEY"
+    - test -f "$SSH_KNOWN_HOSTS"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+  script:
+    - |
+      scp \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" \
+        "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session4-${CI_PIPELINE_ID}.tar.gz"
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        "${DEPLOY_USER}@${DEPLOY_HOST}" \
+        "bash -s -- '${CI_PIPELINE_ID}' '${APP_PORT}' '${REMOTE_APP_DIR}'" <<'REMOTE'
+
+      set -euo pipefail
+
+      PIPELINE_ID="$1"
+      APP_PORT="$2"
+      APP_DIR="$3"
+
+      ARCHIVE="/tmp/cicd-session4-${PIPELINE_ID}.tar.gz"
+      PID_FILE="${APP_DIR}/app.pid"
+      LOG_FILE="${APP_DIR}/app.log"
+
+      mkdir -p "$APP_DIR"
+      tar -xzf "$ARCHIVE" -C "$APP_DIR"
+      rm -f "$ARCHIVE"
+
+      if [ -f "$PID_FILE" ]; then
+        OLD_PID="$(cat "$PID_FILE")"
+
+        if kill -0 "$OLD_PID" 2>/dev/null; then
+          kill "$OLD_PID"
+          sleep 1
+          kill -9 "$OLD_PID" 2>/dev/null || true
+        fi
+      fi
+
+      nohup env APP_PORT="$APP_PORT" \
+        python3 "$APP_DIR/app.py" \
+        >"$LOG_FILE" 2>&1 &
+
+      echo $! > "$PID_FILE"
+      sleep 2
+      curl -fsS "http://127.0.0.1:${APP_PORT}/health"
+
+      REMOTE
