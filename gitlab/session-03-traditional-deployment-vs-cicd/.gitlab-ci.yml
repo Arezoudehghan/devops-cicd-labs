@@ -1,0 +1,179 @@
+stages:
+  - validate
+  - build
+  - deploy
+
+
+variables:
+
+  IMAGE_NAME: "cicd-session3-app"
+
+  DEPLOY_HOST: "192.168.94.91"
+
+  DEPLOY_USER: "deploy"
+
+  DEPLOY_PORT: "8083"
+
+
+default:
+
+  tags:
+    - dev-shell
+
+  interruptible: true
+
+
+validate_files:
+
+  stage: validate
+
+  script:
+
+    - test -f Dockerfile
+
+    - test -f compose.yaml
+
+    - test -f index.html
+
+    - test -f health.html
+
+    - docker compose -f compose.yaml config >/dev/null
+
+
+build_image:
+
+  stage: build
+
+  script:
+
+    - docker build --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+    - TEST_CONTAINER="${IMAGE_NAME}-test-${CI_PIPELINE_ID}"
+
+    - docker rm -f "${TEST_CONTAINER}" 2>/dev/null || true
+
+    - docker run -d --name "${TEST_CONTAINER}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+    - |
+      for i in $(seq 1 15); do
+
+        STATUS="$(docker inspect \
+          --format='{{.State.Health.Status}}' \
+          "${TEST_CONTAINER}")"
+
+        echo "Health status: ${STATUS}"
+
+        if [ "${STATUS}" = "healthy" ]; then
+          break
+        fi
+
+        if [ "${STATUS}" = "unhealthy" ]; then
+          docker logs "${TEST_CONTAINER}"
+          exit 1
+        fi
+
+        sleep 2
+
+      done
+
+      test "$(docker inspect \
+        --format='{{.State.Health.Status}}' \
+        "${TEST_CONTAINER}")" = "healthy"
+
+    - docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+  artifacts:
+
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+
+    paths:
+      - image.tar.gz
+
+    expire_in: 1 day
+
+  after_script:
+
+    - docker rm -f "${IMAGE_NAME}-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+
+deploy_production:
+
+  stage: deploy
+
+  needs:
+
+    - job: build_image
+      artifacts: true
+
+  rules:
+
+    - if: '${CI_COMMIT_BRANCH} == "main"'
+
+  before_script:
+
+    - test -f "${SSH_PRIVATE_KEY_SESSION3}"
+
+    - test -f "${SSH_KNOWN_HOSTS_SESSION3}"
+
+    - chmod 400 "${SSH_PRIVATE_KEY_SESSION3}"
+
+    - chmod 644 "${SSH_KNOWN_HOSTS_SESSION3}"
+
+    - export SSH_OPTS="-i ${SSH_PRIVATE_KEY_SESSION3} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=${SSH_KNOWN_HOSTS_SESSION3}"
+
+  script:
+
+    - ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" 'mkdir -p /tmp/cicd-session3'
+
+    - scp ${SSH_OPTS} image.tar.gz compose.yaml "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session3/"
+
+    - |
+      ssh ${SSH_OPTS} "${DEPLOY_USER}@${DEPLOY_HOST}" "
+
+        set -eu
+
+        gzip -dc /tmp/cicd-session3/image.tar.gz | docker load
+
+        mkdir -p /home/${DEPLOY_USER}/apps/cicd-session3
+
+        cp \
+          /tmp/cicd-session3/compose.yaml \
+          /home/${DEPLOY_USER}/apps/cicd-session3/compose.yaml
+
+        cd /home/${DEPLOY_USER}/apps/cicd-session3
+
+        IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' \
+          docker compose up -d --remove-orphans
+
+        for i in \$(seq 1 15); do
+
+          STATUS=\$(docker inspect \
+            --format='{{.State.Health.Status}}' \
+            cicd-session3-app)
+
+          echo \"Deploy health: \${STATUS}\"
+
+          if [ \"\${STATUS}\" = 'healthy' ]; then
+            exit 0
+          fi
+
+          if [ \"\${STATUS}\" = 'unhealthy' ]; then
+            docker logs cicd-session3-app
+            exit 1
+          fi
+
+          sleep 2
+
+        done
+
+        docker logs cicd-session3-app
+
+        exit 1
+      "
+
+  environment:
+
+    name: production
+    url: http://192.168.94.91:8083
