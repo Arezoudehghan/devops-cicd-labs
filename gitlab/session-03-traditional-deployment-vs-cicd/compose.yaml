@@ -1,0 +1,12 @@
+services:
+
+  web:
+
+    image: "cicd-session3-app:${IMAGE_TAG:-manual-v1}"
+
+    container_name: cicd-session3-app
+
+    ports:
+      - "8083:80"
+
+    restart: unless-stopped
