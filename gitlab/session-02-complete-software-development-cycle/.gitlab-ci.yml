@@ -1,0 +1,117 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  IMAGE_NAME: "cicd-session2-app"
+  CONTAINER_NAME: "cicd-session2-app"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  DEPLOY_PORT: "8088"
+  DOCKER_BUILDKIT: "1"
+
+default:
+  tags:
+    - dev-shell
+  interruptible: true
+
+build_image:
+  stage: build
+  script:
+    - docker version
+    - test -n "${HTTP_PROXY:-}"
+    - test -n "${HTTPS_PROXY:-}"
+    - test -n "${NO_PROXY:-}"
+    - |
+      docker build \
+        --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+        --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+        --build-arg NO_PROXY="${NO_PROXY}" \
+        --build-arg http_proxy="${HTTP_PROXY}" \
+        --build-arg https_proxy="${HTTPS_PROXY}" \
+        --build-arg no_proxy="${NO_PROXY}" \
+        --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" \
+        .
+    - docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+  artifacts:
+    paths:
+      - image.tar.gz
+    expire_in: 1 day
+  after_script:
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+unit_and_health_test:
+  stage: test
+  dependencies:
+    - build_image
+  script:
+    - gunzip -c image.tar.gz | docker load
+    - docker run --rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" python -m unittest discover -s tests -v
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+    - docker run -d --name "cicd-session2-test-${CI_PIPELINE_ID}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - |
+      for attempt in $(seq 1 20); do
+        health_status="$(
+          docker inspect \
+            --format='{{.State.Health.Status}}' \
+            "cicd-session2-test-${CI_PIPELINE_ID}"
+        )"
+
+        if [ "$health_status" = "healthy" ]; then
+          echo "Container healthcheck passed."
+          exit 0
+        fi
+
+        if [ "$health_status" = "unhealthy" ]; then
+          echo "Container became unhealthy."
+          docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+          exit 1
+        fi
+
+        echo "Waiting for healthcheck: ${health_status}"
+        sleep 2
+      done
+
+      echo "Healthcheck timeout."
+      docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+      exit 1
+  after_script:
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+deploy_production:
+  stage: deploy
+  dependencies:
+    - build_image
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - test -n "${SSH_PRIVATE_KEY:-}"
+    - test -n "${SSH_KNOWN_HOSTS:-}"
+    - test -s "$SSH_PRIVATE_KEY"
+    - test -s "$SSH_KNOWN_HOSTS"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - install -d -m 700 "$CI_PROJECT_DIR/.ssh"
+    - cp "$SSH_KNOWN_HOSTS" "$CI_PROJECT_DIR/.ssh/known_hosts"
+    - chmod 644 "$CI_PROJECT_DIR/.ssh/known_hosts"
+    - ssh-keygen -y -f "$SSH_PRIVATE_KEY" >/dev/null
+    - |
+      scp \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+        -o StrictHostKeyChecking=yes \
+        image.tar.gz \
+        scripts/deploy.sh \
+        "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/"
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+        -o StrictHostKeyChecking=yes \
+        "${DEPLOY_USER}@${DEPLOY_HOST}" \
+        "IMAGE_NAME='${IMAGE_NAME}' IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' CONTAINER_NAME='${CONTAINER_NAME}' DEPLOY_PORT='${DEPLOY_PORT}' ARCHIVE='/tmp/image.tar.gz' bash /tmp/deploy.sh"
+    - curl --fail --silent --show-error --noproxy "*" "http://${DEPLOY_HOST}:${DEPLOY_PORT}/health"
+  environment:
+    name: production
+    url: "http://${DEPLOY_HOST}:${DEPLOY_PORT}"

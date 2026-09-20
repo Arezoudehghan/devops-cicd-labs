@@ -1,0 +1,2457 @@
+------------------------------------------------------------
+# hostname -I
+
+Explanation:
+Shows all IP addresses assigned to the host.
+
+Options:
+- -I = --all-ip-addresses (all IP addresses): Prints the host IP addresses without resolving host names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active docker
+
+Explanation:
+Checks whether the Docker service is currently active.
+
+Options:
+- sudo = run with elevated privileges: Executes systemctl with root privileges.
+- is-active = systemctl command: Returns the current active state of the service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active gitlab-runner
+
+Explanation:
+Checks whether the GitLab Runner service is currently active.
+
+Options:
+- sudo = run with elevated privileges: Executes systemctl with root privileges.
+- is-active = systemctl command: Returns the current active state of the service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists GitLab Runner registrations available on the host.
+
+Options:
+- sudo = run with elevated privileges: Runs gitlab-runner with root privileges.
+- list = gitlab-runner subcommand: Lists configured runners.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E 'name =|url =|executor =|shell =' /etc/gitlab-runner/config.toml
+
+Explanation:
+Reads selected Runner settings from the GitLab Runner configuration file.
+
+Options:
+- sudo = run with elevated privileges: Allows reading the Runner configuration.
+- -E = --extended-regexp (extended regular expression): Enables the extended regular-expression syntax.
+- | inside the quoted pattern = regular-expression alternation: Matches any of the listed settings.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker version
+
+Explanation:
+Tests whether the gitlab-runner user can access the Docker daemon.
+
+Options:
+- sudo = run as another user: Executes Docker under the selected account.
+- -u = --user (user): Runs the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user home directory.
+- version = docker subcommand: Shows Docker client and server version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner account to the docker group without removing its existing supplementary groups.
+
+Options:
+- sudo = run with elevated privileges: Required to modify user group membership.
+- -a = --append (append): Adds the user to supplementary groups without replacing existing memberships.
+- -G = --groups (groups): Specifies supplementary groups; here the group is docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts GitLab Runner so service processes use the updated configuration or group membership.
+
+Options:
+- sudo = run with elevated privileges: Restarts the system service as root.
+- restart = systemctl command: Stops and starts the service again.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and Docker daemon version information.
+
+Options:
+- version = docker subcommand: Displays client and server version details.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8088 ' || true
+
+Explanation:
+Checks whether TCP port 8088 is listening and keeps the shell command successful when no match is found.
+
+Options:
+- sudo = run with elevated privileges: Allows process information to be displayed.
+- -l = --listening (listening): Shows listening sockets only.
+- -n = --numeric (numeric): Shows numeric addresses and ports.
+- -t = --tcp (TCP): Shows TCP sockets only.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+- | = pipe operator: Sends ss output to grep.
+- grep ':8088 ' = pattern filter: Keeps lines containing port 8088 followed by a space.
+- || = OR operator: Runs the next command only if grep fails.
+- true = shell command: Returns exit status 0.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id deploy >/dev/null 2>&1 || sudo useradd --create-home --shell /bin/bash deploy
+
+Explanation:
+Checks whether the deploy user exists and creates it only when the check fails.
+
+Options:
+- >/dev/null = stdout redirection: Discards normal output from id.
+- 2>&1 = stderr redirection: Sends standard error to the same destination as standard output.
+- || = OR operator: Runs useradd only when id returns a non-zero status.
+- sudo = run with elevated privileges: Required to create the user.
+- --create-home = create home directory: Creates /home/deploy.
+- --shell /bin/bash = login shell: Sets Bash as the login shell.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker deploy
+
+Explanation:
+Adds the deploy user to the docker supplementary group.
+
+Options:
+- sudo = run with elevated privileges: Required to change group membership.
+- -a = --append (append): Keeps existing supplementary groups.
+- -G = --groups (groups): Adds the listed supplementary group, docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo install -d -m 700 -o deploy -g deploy /home/deploy/.ssh
+
+Explanation:
+Creates the deploy user SSH directory with secure ownership and permissions.
+
+Options:
+- sudo = run with elevated privileges: Required to create or set ownership when needed.
+- -d = --directory (directory): Creates directories instead of copying files.
+- -m 700 = --mode=700 (mode): Gives the owner full access and denies group/other access.
+- -o deploy = --owner=deploy (owner): Sets deploy as the owner.
+- -g deploy = --group=deploy (group): Sets deploy as the group.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Shows the deploy user ID and group memberships.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen \
+  -t ed25519 \
+  -C "gitlab-cicd-session2" \
+  -f /tmp/cicd-session2-deploy-key \
+  -N ""
+
+Explanation:
+Creates an Ed25519 SSH key pair for the CI/CD deployment connection with no passphrase.
+
+Options:
+- -t = key type: Selects the Ed25519 key algorithm.
+- -C = comment: Stores gitlab-cicd-session2 as the public-key comment.
+- -f = file: Writes the private key to /tmp/cicd-session2-deploy-key and the public key to the same path with .pub.
+- -N = new passphrase: Sets an empty passphrase.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /tmp/cicd-session2-deploy-key.pub
+
+Explanation:
+Prints the generated public SSH key so it can be installed for the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo tee /home/deploy/.ssh/authorized_keys >/dev/null <<'EOF'
+PASTE_PUBLIC_KEY_HERE
+EOF
+
+Explanation:
+Technical correction: Replace PASTE_PUBLIC_KEY_HERE with the exact public-key line before running this command. The command writes the selected public key to the deploy user authorized_keys file.
+
+Options:
+- sudo = run with elevated privileges: Allows writing the protected file.
+- tee /home/deploy/.ssh/authorized_keys = output file: Writes standard input to authorized_keys.
+- >/dev/null = stdout redirection: Hides the copy of the input that tee normally prints.
+- <<'EOF' = quoted here-document: Feeds the literal lines up to EOF into tee without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown deploy:deploy /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Sets deploy as both the owner and group of the SSH authorized_keys file.
+
+Options:
+- sudo = run with elevated privileges: Required to change ownership.
+- deploy:deploy = owner:group: Sets user deploy and group deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 600 /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Restricts authorized_keys so only its owner can read or write it.
+
+Options:
+- sudo = run with elevated privileges: Required when changing permissions as another owner.
+- 600 = file mode: Owner can read and write; group and others have no permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Explanation:
+Prints the fingerprint of the DEV-2 Ed25519 SSH host public key.
+
+Options:
+- sudo = run with elevated privileges: Allows access to the host-key file.
+- -l = fingerprint: Shows the fingerprint of the key file.
+- -f = filename: Reads the key from the specified file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keyscan -t ed25519 192.168.94.91 > /tmp/cicd-session2-known-hosts
+
+Explanation:
+Retrieves the Ed25519 SSH host key from 192.168.94.91 and writes it to the known-hosts file.
+
+Options:
+- -t = key type: Requests only the ed25519 host key type.
+- > = output redirection: Replaces /tmp/cicd-session2-known-hosts with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -lf /tmp/cicd-session2-known-hosts
+
+Explanation:
+Prints the fingerprint of the collected known-hosts key for comparison.
+
+Options:
+- -l = fingerprint: Displays the fingerprint.
+- -f = filename: Reads the specified file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i /tmp/cicd-session2-deploy-key \
+  -o UserKnownHostsFile=/tmp/cicd-session2-known-hosts \
+  -o StrictHostKeyChecking=yes \
+  deploy@192.168.94.91 \
+  'id && docker version' 
+
+Explanation:
+Connects to DEV-2 with the deployment key, verifies the server against the prepared known-hosts file, and tests the deploy identity plus Docker access.
+
+Options:
+- -i = identity file: Uses /tmp/cicd-session2-deploy-key as the private key.
+- -o UserKnownHostsFile=... = SSH option: Uses the specified known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Refuses unknown or changed host keys.
+- && = AND operator inside the remote command: Runs docker version only if id succeeds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /tmp/cicd-session2-deploy-key
+
+Explanation:
+Prints the private SSH key so its complete content can be copied to a GitLab File variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /tmp/cicd-session2-known-hosts
+
+Explanation:
+Prints the prepared SSH known-hosts entry so it can be copied to a GitLab File variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# head -n 1 /tmp/cicd-session2-deploy-key
+
+Explanation:
+Prints the first line of the private key to verify its OpenSSH header.
+
+Options:
+- -n 1 = --lines=1 (lines): Prints exactly one line from the beginning of the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tail -n 1 /tmp/cicd-session2-deploy-key
+
+Explanation:
+Prints the last line of the private key to verify its OpenSSH footer.
+
+Options:
+- -n 1 = --lines=1 (lines): Prints exactly one line from the end of the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -y \
+  -f /tmp/cicd-session2-deploy-key \
+  > /tmp/cicd-session2-derived.pub
+
+Explanation:
+Derives a public key from the private key; successful completion confirms that ssh-keygen can parse the private key.
+
+Options:
+- -y = read private key and print public key: Outputs the corresponding public key.
+- -f = filename: Reads the specified private key.
+- > = output redirection: Writes the derived public key to /tmp/cicd-session2-derived.pub.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i /tmp/cicd-session2-deploy-key \
+  -o UserKnownHostsFile=/tmp/cicd-session2-known-hosts \
+  -o StrictHostKeyChecking=yes \
+  deploy@192.168.94.91 \
+  'id' 
+
+Explanation:
+Tests SSH authentication to DEV-2 with strict host-key verification and runs id remotely.
+
+Options:
+- -i = identity file: Uses the deployment private key.
+- -o UserKnownHostsFile=... = SSH option: Uses the prepared known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Requires the host key to match.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# env | grep -i proxy
+
+Explanation:
+Shows proxy-related environment variables in the current shell.
+
+Options:
+- | = pipe operator: Sends env output to grep.
+- -i = --ignore-case (ignore case): Matches proxy regardless of letter case.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner bash -lc 'env | grep -i proxy'
+
+Explanation:
+Checks which proxy variables are visible in a login-style Bash shell executed as gitlab-runner.
+
+Options:
+- sudo = run as another user: Executes Bash as gitlab-runner.
+- -u = --user (user): Selects gitlab-runner.
+- bash -l = --login (login): Starts Bash as a login shell.
+- bash -c = command string: Executes the following quoted command.
+- | inside the quoted command = pipe operator: Sends env output to grep.
+- -i = --ignore-case (ignore case): Makes grep case-insensitive.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+  -e HTTP_PROXY="$HTTP_PROXY" \
+  -e HTTPS_PROXY="$HTTPS_PROXY" \
+  -e NO_PROXY="$NO_PROXY" \
+  python:3.12-slim-bookworm \
+  env | grep -i proxy
+
+Explanation:
+Starts a temporary Python container with proxy variables passed explicitly and verifies that they are visible inside the container.
+
+Options:
+- --rm = remove automatically: Deletes the container after the command exits.
+- -e = --env (environment): Sets each environment variable inside the container.
+- | = pipe operator: Sends container output to grep.
+- -i = --ignore-case (ignore case): Matches proxy variables case-insensitively.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+  -e HTTP_PROXY="$HTTP_PROXY" \
+  -e HTTPS_PROXY="$HTTPS_PROXY" \
+  -e NO_PROXY="$NO_PROXY" \
+  python:3.12-slim-bookworm \
+  python -m pip install \
+    --no-cache-dir \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    Flask==3.1.1
+
+Explanation:
+Runs a temporary container and directly tests pip access to PyPI through the corporate proxy. The trusted-host flags bypass certificate verification for the specified package hosts in this lab workaround.
+
+Options:
+- --rm = remove automatically: Deletes the container after the test.
+- -e = --env (environment): Passes each proxy variable to the container.
+- -m = module: Runs the pip module with Python.
+- --no-cache-dir = disable pip cache: Prevents pip from reading or writing its local download cache.
+- --trusted-host pypi.org = trusted host: Marks pypi.org as trusted even when valid TLS verification is unavailable.
+- --trusted-host files.pythonhosted.org = trusted host: Marks the package-file host as trusted.
+- Flask==3.1.1 = exact version requirement: Requests Flask version 3.1.1.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/systemd/system/docker.service.d/http-proxy.conf
+
+Explanation:
+Displays the Docker systemd proxy drop-in configuration.
+
+Options:
+- sudo = run with elevated privileges: Allows reading the configuration when permissions require it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl daemon-reload
+
+Explanation:
+Reloads systemd manager configuration after changing a unit or drop-in file.
+
+Options:
+- sudo = run with elevated privileges: Required to reload systemd manager configuration.
+- daemon-reload = systemctl command: Reloads unit files and dependency information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart docker
+
+Explanation:
+Restarts Docker so updated daemon proxy settings are applied.
+
+Options:
+- sudo = run with elevated privileges: Required to restart the Docker system service.
+- restart = systemctl command: Stops and starts Docker again.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl show docker \
+  --property=Environment
+
+Explanation:
+Displays the Environment property currently loaded for the Docker systemd service.
+
+Options:
+- sudo = run with elevated privileges: Reads service configuration with full permissions.
+- --property=Environment = property filter: Limits output to the Environment property.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter publish=8088 --format 'table {{.ID}}	{{.Names}}	{{.Image}}	{{.Ports}}'
+
+Explanation:
+Lists running containers that publish port 8088 and shows selected columns.
+
+Options:
+- --filter publish=8088 = filter: Keeps containers publishing port 8088.
+- --format = Go-template output format: Controls the displayed columns.
+- table = format prefix: Adds a table header.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --format '{{.ID}} {{.Names}} {{.Ports}}' | grep 8088
+
+Explanation:
+Lists running containers in a compact format and keeps entries containing 8088.
+
+Options:
+- --format = Go-template output format: Prints only container ID, name, and ports.
+- | = pipe operator: Sends docker ps output to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -ltnp | grep ':8088'
+
+Explanation:
+Checks which TCP process is listening on port 8088.
+
+Options:
+- sudo = run with elevated privileges: Allows process details to be shown.
+- -l = --listening (listening): Shows listening sockets.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -n = --numeric (numeric): Keeps addresses and ports numeric.
+- -p = --processes (processes): Shows owning process information.
+- | = pipe operator: Sends ss output to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker stop old-container
+
+Explanation:
+Stops the example container named old-container.
+
+Options:
+- stop = docker subcommand: Sends the normal stop signal and waits for the container to stop.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm old-container
+
+Explanation:
+Removes the stopped example container named old-container.
+
+Options:
+- rm = docker subcommand: Removes one or more containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f old-container
+
+Explanation:
+Force-removes the example container named old-container, stopping it first if needed.
+
+Options:
+- rm = docker subcommand: Removes a container.
+- -f = --force (force): Force-removes a running container by stopping it first.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -ltnp | grep ':8088' || true
+
+Explanation:
+Checks port 8088 and returns success even when no process is listening on that port.
+
+Options:
+- sudo = run with elevated privileges: Allows process information.
+- -l = --listening (listening): Shows listening sockets.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -n = --numeric (numeric): Keeps addresses and ports numeric.
+- -p = --processes (processes): Shows owning process information.
+- | = pipe operator: Sends ss output to grep.
+- || = OR operator: Runs true if grep finds no match.
+- true = shell command: Returns success.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter publish=8088
+
+Explanation:
+Lists running containers that publish port 8088.
+
+Options:
+- --filter publish=8088 = filter: Restricts results to containers publishing port 8088.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all containers, including stopped containers.
+
+Options:
+- -a = --all (all): Shows all containers instead of only running containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -ltnp
+
+Explanation:
+Lists listening TCP sockets with numeric addresses and owning processes.
+
+Options:
+- sudo = run with elevated privileges: Allows process information.
+- -l = --listening (listening): Shows listening sockets.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports.
+- -p = --processes (processes): Shows the owning process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect old-container
+
+Explanation:
+Technical correction: Uses the concrete example container name from this lesson instead of an unresolved placeholder. It prints detailed Docker metadata for old-container.
+
+Options:
+- inspect = docker subcommand: Returns low-level object information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/labs/cicd-session2/tests
+
+Explanation:
+Creates the original session project directory and its tests subdirectory.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/labs/cicd-session2
+
+Explanation:
+Changes the current directory to the original session project directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs/cicd-session2/tests ~/gitlab-labs/cicd-session2/scripts
+
+Explanation:
+Creates the revised project directory with tests and scripts subdirectories.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and ignores already existing directories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session2
+
+Explanation:
+Changes the current directory to the revised session project directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m py_compile app.py tests/test_app.py
+
+Explanation:
+Compiles the Python source files to bytecode only as a syntax check.
+
+Options:
+- -m = module: Runs the py_compile standard-library module.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# find . -maxdepth 3 -type f | sort
+
+Explanation:
+Lists regular files up to three directory levels below the current directory and sorts the result.
+
+Options:
+- -maxdepth 3 = maximum search depth: Limits recursion to three levels.
+- -type f = file type filter: Returns regular files only.
+- | = pipe operator: Sends find output to sort.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t cicd-session2-app:manual .
+
+Explanation:
+Builds the application image from the current directory with the manual test tag.
+
+Options:
+- -t = --tag (tag): Names and tags the image as cicd-session2-app:manual.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+  --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+  --build-arg NO_PROXY="${NO_PROXY}" \
+  --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" \
+  .
+
+Explanation:
+Builds the CI image while forwarding the uppercase proxy variables into the Docker build.
+
+Options:
+- --build-arg HTTP_PROXY=... = build argument: Passes HTTP proxy data to the build.
+- --build-arg HTTPS_PROXY=... = build argument: Passes HTTPS proxy data to the build.
+- --build-arg NO_PROXY=... = build argument: Passes the proxy-bypass list to the build.
+- --tag = tag: Sets the image name and commit-based tag.
+- . = build context: Uses the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="$HTTP_PROXY" \
+  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+  --build-arg NO_PROXY="$NO_PROXY" \
+  --build-arg http_proxy="$HTTP_PROXY" \
+  --build-arg https_proxy="$HTTPS_PROXY" \
+  --build-arg no_proxy="$NO_PROXY" \
+  --tag cicd-session2-app:manual \
+  .
+
+Explanation:
+Builds the manual test image while forwarding both uppercase and lowercase proxy argument names.
+
+Options:
+- --build-arg = build argument: Passes each named proxy value into the Docker build.
+- --tag = tag: Names the image cicd-session2-app:manual.
+- . = build context: Uses the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+  cicd-session2-app:manual \
+  python -m unittest discover -s tests -v
+
+Explanation:
+Runs the unit tests inside the manual Docker image and removes the temporary container afterward.
+
+Options:
+- --rm = remove automatically: Deletes the container when the test command exits.
+- -m = module: Runs Python unittest as a module.
+- discover = unittest command: Discovers tests automatically.
+- -s = --start-directory (start directory): Uses tests as the discovery start directory.
+- -v = --verbose (verbose): Shows detailed test results.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+  --name cicd-session2-manual \
+  -p 18088:8080 \
+  cicd-session2-app:manual
+
+Explanation:
+Starts the manual application container in the background and maps host port 18088 to container port 8080.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name = container name: Names the container cicd-session2-manual.
+- -p = --publish (publish): Maps host port 18088 to container port 8080.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect --format='{{.State.Health.Status}}' cicd-session2-manual
+
+Explanation:
+Prints only the Docker health status of the manual test container.
+
+Options:
+- --format = Go-template output format: Extracts only .State.Health.Status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:18088/health
+
+Explanation:
+Requests the local application health endpoint on the manual test port.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl \
+  --noproxy "*" \
+  http://127.0.0.1:18088/health
+
+Explanation:
+Requests the manual health endpoint while explicitly bypassing any configured proxy.
+
+Options:
+- --noproxy "*" = proxy bypass list: The asterisk tells curl not to use a proxy for any host.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f cicd-session2-manual
+
+Explanation:
+Force-removes the manual test container.
+
+Options:
+- rm = docker subcommand: Removes the container.
+- -f = --force (force): Stops it first if it is still running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image rm cicd-session2-app:manual
+
+Explanation:
+Removes the manual test Docker image.
+
+Options:
+- image rm = docker subcommand: Deletes one or more local images.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# bash -n scripts/deploy.sh
+
+Explanation:
+Checks the deployment script for Bash syntax errors without executing it.
+
+Options:
+- -n = noexec syntax-check mode: Reads commands and checks syntax without running them.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod +x scripts/deploy.sh
+
+Explanation:
+Adds executable permission to the deployment script.
+
+Options:
+- +x = add execute permission: Makes the script executable for permission classes allowed by the current umask and file mode.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates main as the initial branch.
+
+Options:
+- -b = --initial-branch (initial branch): Names the initial branch main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.name "Arezou"
+
+Explanation:
+Sets the Git author name for this repository to Arezou.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.email "YOUR_EMAIL"
+
+Explanation:
+Sets the Git author email value for this repository; replace YOUR_EMAIL with the intended address.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory for the next commit.
+
+Options:
+- . = path argument: Selects the current directory and its tracked or new content.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current working-tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: create complete build test deploy pipeline"
+
+Explanation:
+Creates the original lesson commit with the staged project files.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "test: intentionally break health test"
+
+Explanation:
+Creates the deliberate failing-test commit used to demonstrate pipeline gating.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: restore correct health test"
+
+Explanation:
+Creates the commit that restores the correct health test.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add validated CI/CD build test deploy pipeline"
+
+Explanation:
+Creates the revised lesson commit containing the validated build, test, and deploy pipeline.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin "PASTE_GITLAB_CLONE_URL_HERE"
+
+Explanation:
+Adds the GitLab repository as the origin remote; replace the placeholder string with the copied GitLab clone URL.
+
+Options:
+- remote add = Git subcommand: Creates a new remote definition.
+- origin = remote name: Uses the conventional name origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin <YOUR_GITLAB_REPOSITORY_URL>
+
+Explanation:
+Technical correction: Replace <YOUR_GITLAB_REPOSITORY_URL> with the real GitLab repository URL before execution. The command adds that repository as origin.
+
+Options:
+- remote add = Git subcommand: Creates a new remote definition.
+- origin = remote name: Uses the conventional name origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Shows configured Git remotes and their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Displays the remote URLs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to origin and records it as the upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local branch with origin/main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter name=cicd-session2-app
+
+Explanation:
+Lists running containers whose name matches cicd-session2-app.
+
+Options:
+- --filter name=cicd-session2-app = filter: Restricts results by container name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect --format='{{.State.Health.Status}}' cicd-session2-app
+
+Explanation:
+Prints only the health status of the deployed application container.
+
+Options:
+- --format = Go-template output format: Extracts .State.Health.Status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect --format='{{.Config.Image}}' cicd-session2-app
+
+Explanation:
+Prints the image reference used by the deployed application container.
+
+Options:
+- --format = Go-template output format: Extracts .Config.Image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:8088/
+
+Explanation:
+Requests the application root endpoint from DEV-2 through host port 8088.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:8088/health
+
+Explanation:
+Requests the deployed application health endpoint locally on DEV-2.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://192.168.94.91:8088/
+
+Explanation:
+Requests the deployed application root endpoint through the DEV-2 IP address.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs cicd-session2-app
+
+Explanation:
+Shows standard output and standard error logs from the deployed application container.
+
+Options:
+- logs = docker subcommand: Fetches container logs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect --format='{{json .State.Health}}' cicd-session2-app
+
+Explanation:
+Prints the full Docker health object as JSON for troubleshooting.
+
+Options:
+- --format = Go-template output format: Selects the health object.
+- json = Docker template helper: Serializes the selected object as JSON.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-slim-bookworm
+
+Explanation:
+Selects python:3.12-slim-bookworm as the base image for the Docker build.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+Explanation:
+Sets Python runtime environment variables in the image. PYTHONDONTWRITEBYTECODE disables .pyc creation and PYTHONUNBUFFERED enables unbuffered standard streams.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for following Dockerfile instructions and the runtime default directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN groupadd --gid 10001 appgroup \
+    && useradd --uid 10001 --gid appgroup --no-create-home --shell /usr/sbin/nologin appuser
+
+Explanation:
+Creates a dedicated group and non-login application user during the image build.
+
+Options:
+- --gid 10001 = group ID: Creates appgroup with numeric GID 10001.
+- && = AND operator: Runs useradd only if groupadd succeeds.
+- --uid 10001 = user ID: Creates appuser with numeric UID 10001.
+- --gid appgroup = primary group: Assigns appgroup as the user primary group.
+- --no-create-home = no home directory: Prevents useradd from creating a home directory.
+- --shell /usr/sbin/nologin = login shell: Prevents interactive login.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY requirements.txt ./
+
+Explanation:
+Copies requirements.txt from the build context into the current Docker working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    -r requirements.txt
+
+Explanation:
+Installs the Python dependencies listed in requirements.txt during the Docker build.
+
+Options:
+- --no-cache-dir = disable pip cache: Prevents use of the pip download cache.
+- --disable-pip-version-check = disable version check: Prevents pip from checking for a newer pip version.
+- -r = --requirement (requirement file): Installs dependencies listed in requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN python -m pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    -r requirements.txt
+
+Explanation:
+Runs pip through the current Python interpreter and installs requirements while trusting the two PyPI hosts needed in this SSL-inspected lab environment.
+
+Options:
+- -m = module: Runs pip as a Python module.
+- --no-cache-dir = disable pip cache: Prevents pip cache use.
+- --disable-pip-version-check = disable version check: Prevents the pip update check.
+- --trusted-host pypi.org = trusted host: Trusts the PyPI package index host.
+- --trusted-host files.pythonhosted.org = trusted host: Trusts the PyPI package file host.
+- -r = --requirement (requirement file): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY --chown=appuser:appgroup app.py ./
+
+Explanation:
+Copies app.py into the image and assigns appuser:appgroup ownership.
+
+Options:
+- --chown=appuser:appgroup = ownership: Sets user and group ownership on the copied file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY --chown=appuser:appgroup tests ./tests
+
+Explanation:
+Copies the tests directory into the image with appuser:appgroup ownership.
+
+Options:
+- --chown=appuser:appgroup = ownership: Sets user and group ownership on copied files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# USER appuser
+
+Explanation:
+Sets appuser as the default user for following Dockerfile instructions and container runtime.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# EXPOSE 8080
+
+Explanation:
+Documents TCP port 8080 as the application listening port in the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2)"]
+
+Explanation:
+Defines a Docker healthcheck that calls the application health endpoint from inside the container.
+
+Options:
+- --interval=10s = check interval: Runs the healthcheck every 10 seconds.
+- --timeout=3s = check timeout: Marks an individual check failed if it exceeds 3 seconds.
+- --start-period=5s = startup grace period: Gives the container 5 seconds before failures count normally.
+- --retries=3 = failure threshold: Marks the container unhealthy after three consecutive failed checks.
+- -c = Python command string: Runs the supplied Python code.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "2", "--timeout", "30", "app:app"]
+
+Explanation:
+Technical correction: This is the valid single-line JSON-array CMD used after correcting the earlier multiline Dockerfile form. It starts Gunicorn for the Flask application on port 8080.
+
+Options:
+- --bind 0.0.0.0:8080 = bind address: Listens on all container interfaces at port 8080.
+- --workers 2 = worker count: Starts two Gunicorn worker processes.
+- --threads 2 = thread count: Uses two threads per worker.
+- --timeout 30 = worker timeout: Restarts workers that are silent for 30 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${HTTP_PROXY:-}"
+
+Explanation:
+Fails the job when HTTP_PROXY is empty or unset.
+
+Options:
+- -n = non-empty string test: Returns success when the expanded string length is greater than zero.
+- ${HTTP_PROXY:-} = shell parameter expansion: Expands to an empty string when HTTP_PROXY is unset or null.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${HTTPS_PROXY:-}"
+
+Explanation:
+Fails the job when HTTPS_PROXY is empty or unset.
+
+Options:
+- -n = non-empty string test: Returns success for a non-empty string.
+- ${HTTPS_PROXY:-} = shell parameter expansion: Uses an empty fallback when unset or null.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${NO_PROXY:-}"
+
+Explanation:
+Fails the job when NO_PROXY is empty or unset.
+
+Options:
+- -n = non-empty string test: Returns success for a non-empty string.
+- ${NO_PROXY:-} = shell parameter expansion: Uses an empty fallback when unset or null.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+  --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+  --build-arg NO_PROXY="${NO_PROXY}" \
+  --build-arg http_proxy="${HTTP_PROXY}" \
+  --build-arg https_proxy="${HTTPS_PROXY}" \
+  --build-arg no_proxy="${NO_PROXY}" \
+  --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" \
+  .
+
+Explanation:
+Builds the commit-tagged CI image while forwarding uppercase and lowercase proxy build arguments.
+
+Options:
+- --build-arg = build argument: Passes each named proxy value into the build environment.
+- --tag = tag: Names the image with IMAGE_NAME and CI_COMMIT_SHORT_SHA.
+- . = build context: Uses the current project directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+Explanation:
+Exports the built Docker image, compresses it, and writes the result as image.tar.gz for use as an artifact.
+
+Options:
+- | = pipe operator: Sends docker save output to gzip.
+- -1 = --fast (fastest compression): Uses gzip compression level 1.
+- > = output redirection: Writes compressed output to image.tar.gz.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+Explanation:
+Removes the local commit-tagged image and does not fail cleanup if the image is already absent.
+
+Options:
+- image rm = docker subcommand: Removes a local image.
+- 2>/dev/null = stderr redirection: Discards error output.
+- || = OR operator: Runs true if image removal fails.
+- true = shell command: Returns success.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gunzip -c image.tar.gz | docker load
+
+Explanation:
+Decompresses image.tar.gz to standard output and loads the Docker image from that stream.
+
+Options:
+- -c = --stdout (standard output): Writes decompressed data to stdout without deleting the archive.
+- | = pipe operator: Sends decompressed image data to docker load.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" python -m unittest discover -s tests -v
+
+Explanation:
+Runs the unit tests inside the built CI image and removes the temporary container after completion.
+
+Options:
+- --rm = remove automatically: Deletes the test container when it exits.
+- -m = module: Runs Python unittest as a module.
+- -s = --start-directory (start directory): Starts discovery in tests.
+- -v = --verbose (verbose): Shows detailed test results.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+Explanation:
+Removes any previous temporary test container for the same pipeline ID without failing if it does not exist.
+
+Options:
+- rm = docker subcommand: Removes a container.
+- -f = --force (force): Stops a running container before removal.
+- 2>/dev/null = stderr redirection: Hides errors.
+- || = OR operator: Runs true on failure.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d --name "cicd-session2-test-${CI_PIPELINE_ID}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Starts the temporary healthcheck test container in the background.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name = container name: Assigns a pipeline-specific container name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect --format='{{.State.Health.Status}}' "cicd-session2-test-${CI_PIPELINE_ID}"
+
+Explanation:
+Reads only the health status of the pipeline test container.
+
+Options:
+- --format = Go-template output format: Extracts .State.Health.Status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+
+Explanation:
+Shows logs from the pipeline test container.
+
+Options:
+- logs = docker subcommand: Fetches container logs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${SSH_PRIVATE_KEY:-}"
+
+Explanation:
+Fails the deploy job when SSH_PRIVATE_KEY is empty or unset.
+
+Options:
+- -n = non-empty string test: Requires a non-empty value.
+- ${SSH_PRIVATE_KEY:-} = shell parameter expansion: Uses an empty fallback when missing.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${SSH_KNOWN_HOSTS:-}"
+
+Explanation:
+Fails the deploy job when SSH_KNOWN_HOSTS is empty or unset.
+
+Options:
+- -n = non-empty string test: Requires a non-empty value.
+- ${SSH_KNOWN_HOSTS:-} = shell parameter expansion: Uses an empty fallback when missing.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -s "$SSH_PRIVATE_KEY"
+
+Explanation:
+Checks that the File-variable path exists and refers to a file with a size greater than zero.
+
+Options:
+- -s = file size test: Returns success when the file exists and is not empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -s "$SSH_KNOWN_HOSTS"
+
+Explanation:
+Checks that the known-hosts File-variable path exists and is not empty.
+
+Options:
+- -s = file size test: Returns success when the file exists and is not empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 400 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Restricts the temporary private-key file to owner read-only permission.
+
+Options:
+- 400 = file mode: Owner can read; group and others have no access.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# install -d -m 700 "$CI_PROJECT_DIR/.ssh"
+
+Explanation:
+Creates a private SSH working directory inside the GitLab project directory.
+
+Options:
+- -d = --directory (directory): Creates a directory.
+- -m 700 = --mode=700 (mode): Allows only the owner to access the directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" "$CI_PROJECT_DIR/.ssh/known_hosts"
+
+Explanation:
+Copies the GitLab known-hosts File variable into the job SSH directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 644 "$CI_PROJECT_DIR/.ssh/known_hosts"
+
+Explanation:
+Sets the copied known-hosts file to owner read/write and read-only for group and others.
+
+Options:
+- 644 = file mode: Owner can read/write; group and others can read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -y -f "$SSH_PRIVATE_KEY" >/dev/null
+
+Explanation:
+Validates that ssh-keygen can parse the CI private-key file before SCP or SSH is attempted.
+
+Options:
+- -y = derive public key: Reads a private key and prints its public key.
+- -f = filename: Reads the specified private-key file.
+- >/dev/null = stdout redirection: Discards the derived public key.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp \
+  -i "$SSH_PRIVATE_KEY" \
+  -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+  -o StrictHostKeyChecking=yes \
+  image.tar.gz \
+  scripts/deploy.sh \
+  "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/"
+
+Explanation:
+Copies the image artifact and deploy script to /tmp on the deployment server using strict SSH host verification.
+
+Options:
+- -i = identity file: Uses the CI private-key file.
+- -o UserKnownHostsFile=... = SSH option: Uses the prepared known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Refuses unknown or changed host keys.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i "$SSH_PRIVATE_KEY" \
+  -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+  -o StrictHostKeyChecking=yes \
+  "${DEPLOY_USER}@${DEPLOY_HOST}" \
+  "IMAGE_NAME='${IMAGE_NAME}' IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' CONTAINER_NAME='${CONTAINER_NAME}' DEPLOY_PORT='${DEPLOY_PORT}' ARCHIVE='/tmp/image.tar.gz' bash /tmp/deploy.sh"
+
+Explanation:
+Connects to the deployment server, sets the deployment variables for the remote command, and runs /tmp/deploy.sh.
+
+Options:
+- -i = identity file: Uses the CI private key.
+- -o UserKnownHostsFile=... = SSH option: Uses the prepared host-key file.
+- -o StrictHostKeyChecking=yes = SSH option: Requires a known matching host key.
+- NAME=value prefixes in the remote command = environment assignments: Supply deployment values only to the remote Bash command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --fail --silent --show-error --noproxy "*" "http://${DEPLOY_HOST}:${DEPLOY_PORT}/health"
+
+Explanation:
+Performs the final health request from the Runner and fails the job when the HTTP request is unsuccessful.
+
+Options:
+- --fail = fail on HTTP errors: Returns a non-zero exit status for HTTP 400 or greater.
+- --silent = silent: Hides progress and normal transfer meter output.
+- --show-error = show error: Displays errors even when silent mode is enabled.
+- --noproxy "*" = proxy bypass: Disables proxy use for this request.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -Eeuo pipefail
+
+Explanation:
+Enables strict Bash error handling for the deployment script.
+
+Options:
+- -E = errtrace: Makes ERR traps inherited by functions, command substitutions, and subshells.
+- -e = errexit: Exits when an unhandled command fails.
+- -u = nounset: Treats unset variables as errors.
+- -o pipefail = pipefail option: Makes a pipeline fail when any command in it fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# : "${IMAGE_NAME:?IMAGE_NAME is required}"
+
+Explanation:
+Validates that IMAGE_NAME is set and non-empty; otherwise Bash stops with the supplied message.
+
+Options:
+- : = no-op shell builtin: Performs parameter expansion without another action.
+- ${IMAGE_NAME:?...} = required parameter expansion: Raises an error when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# : "${IMAGE_TAG:?IMAGE_TAG is required}"
+
+Explanation:
+Validates that IMAGE_TAG is set and non-empty.
+
+Options:
+- : = no-op shell builtin: Performs the parameter check.
+- ${IMAGE_TAG:?...} = required parameter expansion: Raises an error when missing or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# : "${CONTAINER_NAME:?CONTAINER_NAME is required}"
+
+Explanation:
+Validates that CONTAINER_NAME is set and non-empty.
+
+Options:
+- : = no-op shell builtin: Performs the parameter check.
+- ${CONTAINER_NAME:?...} = required parameter expansion: Raises an error when missing or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# : "${DEPLOY_PORT:?DEPLOY_PORT is required}"
+
+Explanation:
+Validates that DEPLOY_PORT is set and non-empty.
+
+Options:
+- : = no-op shell builtin: Performs the parameter check.
+- ${DEPLOY_PORT:?...} = required parameter expansion: Raises an error when missing or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# : "${ARCHIVE:?ARCHIVE is required}"
+
+Explanation:
+Validates that ARCHIVE is set and non-empty.
+
+Options:
+- : = no-op shell builtin: Performs the parameter check.
+- ${ARCHIVE:?...} = required parameter expansion: Raises an error when missing or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trap 'rm -f "$ARCHIVE" /tmp/deploy.sh' EXIT
+
+Explanation:
+Registers cleanup that removes the transferred archive and temporary deploy script whenever the script exits.
+
+Options:
+- trap = shell builtin: Registers a command for a signal or shell event.
+- -f = --force (force) for rm: Ignores missing files and removes without prompting.
+- EXIT = shell event: Runs the cleanup when the script terminates.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gunzip -c "$ARCHIVE" | docker load
+
+Explanation:
+Decompresses the transferred Docker image archive and loads it into Docker.
+
+Options:
+- -c = --stdout (standard output): Writes decompressed data to stdout.
+- | = pipe operator: Sends the image stream to docker load.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps -a --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"
+
+Explanation:
+Checks whether a container with exactly the deployment container name already exists.
+
+Options:
+- -a = --all (all): Includes stopped containers.
+- --format = Go-template output format: Prints only container names.
+- | = pipe operator: Sends names to grep.
+- -F = --fixed-strings (fixed strings): Treats the container name as literal text.
+- -x = --line-regexp (whole line): Requires the full line to match.
+- -q = --quiet (quiet): Suppresses matching output and uses only the exit status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f "$CONTAINER_NAME"
+
+Explanation:
+Force-removes the previous application container with the same name.
+
+Options:
+- rm = docker subcommand: Removes a container.
+- -f = --force (force): Stops a running container before removal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps \
+    --filter "publish=${DEPLOY_PORT}" \
+    --format '{{.Names}}' \
+    | head -n 1
+
+Explanation:
+Finds the first running container publishing the requested deployment port.
+
+Options:
+- --filter "publish=..." = filter: Restricts results to containers publishing DEPLOY_PORT.
+- --format = Go-template output format: Prints container names only.
+- | = pipe operator: Sends matching names to head.
+- -n 1 = --lines=1 (lines): Keeps only the first line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+  --name "$CONTAINER_NAME" \
+  --restart unless-stopped \
+  --env "APP_VERSION=$IMAGE_TAG" \
+  --publish "${DEPLOY_PORT}:8080" \
+  "${IMAGE_NAME}:${IMAGE_TAG}"
+
+Explanation:
+Starts the deployed application container with restart policy, version metadata, and the required host-to-container port mapping.
+
+Options:
+- -d = --detach (detach): Runs in the background.
+- --name = container name: Uses CONTAINER_NAME.
+- --restart unless-stopped = restart policy: Restarts automatically except when manually stopped.
+- --env = environment variable: Sets APP_VERSION inside the container.
+- --publish = port mapping: Maps DEPLOY_PORT on the host to port 8080 in the container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  --format='{{.State.Health.Status}}' \
+  "$CONTAINER_NAME"
+
+Explanation:
+Reads only the current Docker health status of the deployed container.
+
+Options:
+- --format = Go-template output format: Extracts .State.Health.Status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs "$CONTAINER_NAME"
+
+Explanation:
+Shows logs from the deployed container for troubleshooting.
+
+Options:
+- logs = docker subcommand: Fetches container standard output and error.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs "$CONTAINER_NAME" || true
+
+Explanation:
+Shows deployed-container logs but prevents a logging failure from replacing the main error status.
+
+Options:
+- logs = docker subcommand: Fetches container logs.
+- || = OR operator: Runs true if docker logs fails.
+- true = shell command: Returns success.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python -m pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org Flask==3.1.1
+
+Explanation:
+Runs pip through Python to install exactly Flask 3.1.1 while using the two trusted PyPI hosts from the lab workaround.
+
+Options:
+- -m = module: Runs pip as a Python module.
+- --no-cache-dir = disable pip cache: Prevents cache use.
+- --trusted-host pypi.org = trusted host: Trusts the package index host.
+- --trusted-host files.pythonhosted.org = trusted host: Trusts the package file host.
+- Flask==3.1.1 = exact version requirement: Installs Flask version 3.1.1.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh -i /path/to/private-key deploy@DEPLOY_SERVER
+
+Explanation:
+Technical correction: Replace /path/to/private-key and DEPLOY_SERVER with the real private-key path and deployment host before execution. This is the generic manual SSH test shown in the troubleshooting sequence.
+
+Options:
+- -i = identity file: Selects the private key used for authentication.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull python:3.12-slim-bookworm
+
+Explanation:
+Downloads the python:3.12-slim-bookworm image through the Docker daemon.
+
+Options:
+- pull = docker subcommand: Downloads an image from a registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Installs Python packages listed in requirements.txt using pip.
+
+Options:
+- -r = --requirement (requirement file): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds the image from the current directory with the commit-based CI tag.
+
+Options:
+- --tag = tag: Names and tags the image with IMAGE_NAME and CI_COMMIT_SHORT_SHA.
+- . = build context: Uses the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trap 'rm -f "$ARCHIVE"' EXIT
+
+Explanation:
+Registers cleanup that removes the temporary archive whenever the remote deployment shell exits.
+
+Options:
+- trap = shell builtin: Registers a command for a shell event.
+- -f = --force (force) for rm: Ignores a missing archive and removes without prompting.
+- EXIT = shell event: Runs the registered cleanup at shell exit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --fail --silent --show-error "http://${DEPLOY_HOST}:${DEPLOY_PORT}/health"
+
+Explanation:
+Checks the deployed health endpoint and fails the CI job when curl encounters an HTTP or transfer error.
+
+Options:
+- --fail = fail on HTTP errors: Returns failure for HTTP response codes 400 or higher.
+- --silent = silent: Hides progress output.
+- --show-error = show error: Still prints errors while silent mode is active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" -o StrictHostKeyChecking=yes image.tar.gz "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session2-${CI_PIPELINE_ID}.tar.gz"
+
+Explanation:
+Copies the image artifact to a pipeline-specific temporary archive path on DEV-2.
+
+Options:
+- -i = identity file: Uses the CI private key.
+- -o UserKnownHostsFile=... = SSH option: Uses the prepared known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Requires the server host key to match.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i "$SSH_PRIVATE_KEY" \
+  -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+  -o StrictHostKeyChecking=yes \
+  "${DEPLOY_USER}@${DEPLOY_HOST}" \
+  "IMAGE_NAME='${IMAGE_NAME}' IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' CONTAINER_NAME='${CONTAINER_NAME}' DEPLOY_PORT='${DEPLOY_PORT}' ARCHIVE='/tmp/cicd-session2-${CI_PIPELINE_ID}.tar.gz' bash -s"
+
+Explanation:
+Opens the original remote deployment shell on DEV-2, passes deployment variables, and runs Bash reading the remote script from standard input.
+
+Options:
+- -i = identity file: Uses the CI private key.
+- -o UserKnownHostsFile=... = SSH option: Uses the known-hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Requires a matching host key.
+- -s = Bash standard-input mode: Reads commands from standard input after option processing.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 2
+
+Explanation:
+Pauses the shell for two seconds before the next health-status check.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# seq 1 20
+
+Explanation:
+Prints the integer sequence from 1 through 20 for the healthcheck retry loop.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 0
+
+Explanation:
+Terminates the current shell or script successfully with exit status 0.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Terminates the current shell or script with general failure status 1.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 20
+
+Explanation:
+Terminates deploy.sh with the custom status used for an occupied deployment port.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 21
+
+Explanation:
+Terminates deploy.sh with the custom status used for an unhealthy deployed container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 22
+
+Explanation:
+Terminates deploy.sh with the custom status used for an unexpected Docker health status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 23
+
+Explanation:
+Terminates deploy.sh with the custom status used for a deployment healthcheck timeout.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# true
+
+Explanation:
+Returns exit status 0 and performs no other action.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.py <<'PYTHON'
+import os
+
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+
+@app.get("/")
+def home():
+    return jsonify(
+        message="CI/CD Session 2 application is running",
+        version=os.getenv("APP_VERSION", "development"),
+    )
+
+
+@app.get("/health")
+def health():
+    return jsonify(status="healthy"), 200
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+PYTHON
+
+Explanation:
+Creates app.py by writing the complete Flask application from a quoted here-document.
+
+Options:
+- > = output redirection: Creates or replaces app.py with cat output.
+- <<'PYTHON' = quoted here-document: Supplies literal file content until the PYTHON terminator without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > tests/test_app.py <<'PYTHON'
+import unittest
+
+from app import app
+
+
+class AppTestCase(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
+
+    def test_home(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("message", response.get_json())
+
+    def test_health(self):
+        response = self.client.get("/health")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()["status"], "healthy")
+
+
+if __name__ == "__main__":
+    unittest.main()
+PYTHON
+
+Explanation:
+Creates tests/test_app.py with the complete unit-test code from a quoted here-document.
+
+Options:
+- > = output redirection: Creates or replaces tests/test_app.py.
+- <<'PYTHON' = quoted here-document: Writes the content literally until PYTHON.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > requirements.txt <<'EOF'
+Flask==3.1.1
+gunicorn==23.0.0
+EOF
+
+Explanation:
+Creates requirements.txt with the exact Flask and Gunicorn versions used in the lesson.
+
+Options:
+- > = output redirection: Creates or replaces requirements.txt.
+- <<'EOF' = quoted here-document: Writes literal lines until EOF.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .dockerignore <<'EOF'
+.git
+.gitignore
+.gitlab-ci.yml
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.log
+image.tar.gz
+EOF
+
+Explanation:
+Creates .dockerignore with the paths excluded from the Docker build context.
+
+Options:
+- > = output redirection: Creates or replaces .dockerignore.
+- <<'EOF' = quoted here-document: Writes literal lines until EOF.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitignore <<'EOF'
+__pycache__/
+*.py[cod]
+.venv/
+.env
+image.tar.gz
+EOF
+
+Explanation:
+Creates .gitignore with generated Python files, virtual environments, local environment data, and the image archive excluded from Git tracking.
+
+Options:
+- > = output redirection: Creates or replaces .gitignore.
+- <<'EOF' = quoted here-document: Writes literal lines until EOF.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 - <<'PY'
+p = "Dockerfile"
+s = open(p).read()
+start = s.index('CMD [')
+s = s[:start] + 'CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "2", "--timeout", "30", "app:app"]\n'
+open(p, "w").write(s)
+PY
+
+Explanation:
+Technical correction: Replaces the earlier invalid multiline JSON CMD section in Dockerfile with the valid one-line exec-form CMD used by the final lesson.
+
+Options:
+- - = Python standard-input script marker: Tells python3 to read the script from standard input.
+- <<'PY' = quoted here-document: Supplies the Python correction script literally until PY.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > Dockerfile <<'DOCKERFILE'
+FROM python:3.12-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN groupadd --gid 10001 appgroup \
+    && useradd --uid 10001 --gid appgroup --no-create-home --shell /usr/sbin/nologin appuser
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.txt
+
+COPY --chown=appuser:appgroup app.py ./
+COPY --chown=appuser:appgroup tests ./tests
+
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2)"]
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "2", "--timeout", "30", "app:app"]
+DOCKERFILE
+
+Explanation:
+Creates the original Dockerfile used in the first version of the session with a non-root user, healthcheck, and Gunicorn runtime.
+
+Options:
+- > = output redirection: Creates or replaces Dockerfile.
+- <<'DOCKERFILE' = quoted here-document: Writes the Dockerfile content literally until DOCKERFILE.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > Dockerfile <<'DOCKERFILE'
+FROM python:3.12-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN groupadd --gid 10001 appgroup \
+    && useradd \
+       --uid 10001 \
+       --gid appgroup \
+       --no-create-home \
+       --shell /usr/sbin/nologin \
+       appuser
+
+COPY requirements.txt ./
+
+RUN python -m pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    -r requirements.txt
+
+COPY --chown=appuser:appgroup app.py ./
+COPY --chown=appuser:appgroup tests ./tests
+
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK \
+    --interval=10s \
+    --timeout=3s \
+    --start-period=5s \
+    --retries=3 \
+    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=2)"]
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "2", "--timeout", "30", "app:app"]
+DOCKERFILE
+
+Explanation:
+Technical correction: Creates the revised Dockerfile with the valid single-line exec-form CMD and the pip proxy/SSL workaround used in the final lesson.
+
+Options:
+- > = output redirection: Creates or replaces Dockerfile.
+- <<'DOCKERFILE' = quoted here-document: Writes the Dockerfile content literally until DOCKERFILE.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > scripts/deploy.sh <<'BASH'
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+: "${IMAGE_NAME:?IMAGE_NAME is required}"
+: "${IMAGE_TAG:?IMAGE_TAG is required}"
+: "${CONTAINER_NAME:?CONTAINER_NAME is required}"
+: "${DEPLOY_PORT:?DEPLOY_PORT is required}"
+: "${ARCHIVE:?ARCHIVE is required}"
+
+trap 'rm -f "$ARCHIVE" /tmp/deploy.sh' EXIT
+
+echo "Loading Docker image..."
+
+gunzip -c "$ARCHIVE" | docker load
+
+if docker ps -a \
+  --format '{{.Names}}' \
+  | grep -Fxq "$CONTAINER_NAME"
+then
+  echo "Removing previous container: $CONTAINER_NAME"
+
+  docker rm -f "$CONTAINER_NAME"
+fi
+
+PORT_OWNER="$(
+  docker ps \
+    --filter "publish=${DEPLOY_PORT}" \
+    --format '{{.Names}}' \
+    | head -n 1
+)"
+
+if [ -n "$PORT_OWNER" ]; then
+  echo \
+    "ERROR: Port ${DEPLOY_PORT} is already published by container: ${PORT_OWNER}" \
+    >&2
+
+  exit 20
+fi
+
+docker run -d \
+  --name "$CONTAINER_NAME" \
+  --restart unless-stopped \
+  --env "APP_VERSION=$IMAGE_TAG" \
+  --publish "${DEPLOY_PORT}:8080" \
+  "${IMAGE_NAME}:${IMAGE_TAG}"
+
+for attempt in $(seq 1 20)
+do
+  HEALTH_STATUS="$(
+    docker inspect \
+      --format='{{.State.Health.Status}}' \
+      "$CONTAINER_NAME"
+  )"
+
+  case "$HEALTH_STATUS" in
+
+    healthy)
+      echo "Deployment healthcheck passed."
+      exit 0
+      ;;
+
+    unhealthy)
+      echo "ERROR: Container is unhealthy." >&2
+      docker logs "$CONTAINER_NAME"
+      exit 21
+      ;;
+
+    starting)
+      echo "Waiting for healthcheck (${attempt}/20)..."
+      sleep 2
+      ;;
+
+    *)
+      echo \
+        "ERROR: Unexpected health status: $HEALTH_STATUS" \
+        >&2
+
+      docker logs "$CONTAINER_NAME" || true
+      exit 22
+      ;;
+
+  esac
+done
+
+echo "ERROR: Healthcheck timed out." >&2
+
+docker logs "$CONTAINER_NAME" || true
+
+exit 23
+BASH
+
+Explanation:
+Creates the complete revised deployment script used by the final pipeline.
+
+Options:
+- > = output redirection: Creates or replaces scripts/deploy.sh.
+- <<'BASH' = quoted here-document: Writes the script literally until BASH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  IMAGE_NAME: "cicd-session2-app"
+  CONTAINER_NAME: "cicd-session2-app"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  DEPLOY_PORT: "8088"
+  DOCKER_BUILDKIT: "1"
+
+default:
+  tags:
+    - dev-shell
+  interruptible: true
+
+build_image:
+  stage: build
+
+  script:
+    - docker version
+    - docker build --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+    - docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - image.tar.gz
+    expire_in: 1 day
+
+  after_script:
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+unit_and_health_test:
+  stage: test
+
+  dependencies:
+    - build_image
+
+  script:
+    - gunzip -c image.tar.gz | docker load
+    - docker run --rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" python -m unittest discover -s tests -v
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+    - docker run -d --name "cicd-session2-test-${CI_PIPELINE_ID}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - |
+      for attempt in $(seq 1 20); do
+        health_status="$(docker inspect --format='{{.State.Health.Status}}' "cicd-session2-test-${CI_PIPELINE_ID}")"
+
+        if [ "$health_status" = "healthy" ]; then
+          echo "Container healthcheck passed."
+          exit 0
+        fi
+
+        if [ "$health_status" = "unhealthy" ]; then
+          echo "Container became unhealthy."
+          docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+          exit 1
+        fi
+
+        echo "Waiting for container healthcheck: ${health_status}"
+        sleep 2
+      done
+
+      echo "Healthcheck timeout."
+      docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+      exit 1
+
+  after_script:
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+deploy_production:
+  stage: deploy
+
+  dependencies:
+    - build_image
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+  script:
+    - test -n "${SSH_PRIVATE_KEY:-}"
+    - test -n "${SSH_KNOWN_HOSTS:-}"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - install -d -m 700 "$CI_PROJECT_DIR/.ssh"
+    - cp "$SSH_KNOWN_HOSTS" "$CI_PROJECT_DIR/.ssh/known_hosts"
+    - chmod 644 "$CI_PROJECT_DIR/.ssh/known_hosts"
+    - scp -i "$SSH_PRIVATE_KEY" -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" -o StrictHostKeyChecking=yes image.tar.gz "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session2-${CI_PIPELINE_ID}.tar.gz"
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+        -o StrictHostKeyChecking=yes \
+        "${DEPLOY_USER}@${DEPLOY_HOST}" \
+        "IMAGE_NAME='${IMAGE_NAME}' IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' CONTAINER_NAME='${CONTAINER_NAME}' DEPLOY_PORT='${DEPLOY_PORT}' ARCHIVE='/tmp/cicd-session2-${CI_PIPELINE_ID}.tar.gz' bash -s" <<'REMOTE_SCRIPT'
+      set -euo pipefail
+
+      trap 'rm -f "$ARCHIVE"' EXIT
+
+      gunzip -c "$ARCHIVE" | docker load
+      docker rm -f "$CONTAINER_NAME" 2>/dev/null || true
+
+      docker run -d \
+        --name "$CONTAINER_NAME" \
+        --restart unless-stopped \
+        --env "APP_VERSION=$IMAGE_TAG" \
+        --publish "${DEPLOY_PORT}:8080" \
+        "${IMAGE_NAME}:${IMAGE_TAG}"
+
+      for attempt in $(seq 1 20); do
+        health_status="$(docker inspect --format='{{.State.Health.Status}}' "$CONTAINER_NAME")"
+
+        if [ "$health_status" = "healthy" ]; then
+          echo "Deployment healthcheck passed."
+          exit 0
+        fi
+
+        if [ "$health_status" = "unhealthy" ]; then
+          echo "Deployed container became unhealthy."
+          docker logs "$CONTAINER_NAME"
+          exit 1
+        fi
+
+        echo "Waiting for deployment healthcheck: ${health_status}"
+        sleep 2
+      done
+
+      echo "Deployment healthcheck timeout."
+      docker logs "$CONTAINER_NAME"
+      exit 1
+      REMOTE_SCRIPT
+    - curl --fail --silent --show-error "http://${DEPLOY_HOST}:${DEPLOY_PORT}/health"
+
+  environment:
+    name: production
+    url: "http://${DEPLOY_HOST}:${DEPLOY_PORT}"
+GITLAB_CI
+
+Explanation:
+Creates the original .gitlab-ci.yml used in the first version of this session.
+
+Options:
+- > = output redirection: Creates or replaces .gitlab-ci.yml.
+- <<'GITLAB_CI' = quoted here-document: Writes the YAML literally until GITLAB_CI.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+
+  IMAGE_NAME: "cicd-session2-app"
+
+  CONTAINER_NAME: "cicd-session2-app"
+
+  DEPLOY_HOST: "192.168.94.91"
+
+  DEPLOY_USER: "deploy"
+
+  DEPLOY_PORT: "8088"
+
+  DOCKER_BUILDKIT: "1"
+
+
+default:
+
+  tags:
+    - dev-shell
+
+  interruptible: true
+
+
+build_image:
+
+  stage: build
+
+  script:
+
+    - docker version
+
+    - test -n "${HTTP_PROXY:-}"
+
+    - test -n "${HTTPS_PROXY:-}"
+
+    - test -n "${NO_PROXY:-}"
+
+    - |
+      docker build \
+        --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+        --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+        --build-arg NO_PROXY="${NO_PROXY}" \
+        --build-arg http_proxy="${HTTP_PROXY}" \
+        --build-arg https_proxy="${HTTPS_PROXY}" \
+        --build-arg no_proxy="${NO_PROXY}" \
+        --tag "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" \
+        .
+
+    - docker save "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" | gzip -1 > image.tar.gz
+
+  artifacts:
+
+    paths:
+      - image.tar.gz
+
+    expire_in: 1 day
+
+  after_script:
+
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+
+unit_and_health_test:
+
+  stage: test
+
+  dependencies:
+    - build_image
+
+  script:
+
+    - gunzip -c image.tar.gz | docker load
+
+    - docker run --rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" python -m unittest discover -s tests -v
+
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+    - docker run -d --name "cicd-session2-test-${CI_PIPELINE_ID}" "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+    - |
+      for attempt in $(seq 1 20); do
+
+        health_status="$(
+          docker inspect \
+            --format='{{.State.Health.Status}}' \
+            "cicd-session2-test-${CI_PIPELINE_ID}"
+        )"
+
+        if [ "$health_status" = "healthy" ]; then
+
+          echo "Container healthcheck passed."
+
+          exit 0
+
+        fi
+
+        if [ "$health_status" = "unhealthy" ]; then
+
+          echo "Container became unhealthy."
+
+          docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+
+          exit 1
+
+        fi
+
+        echo "Waiting for healthcheck: ${health_status}"
+
+        sleep 2
+
+      done
+
+      echo "Healthcheck timeout."
+
+      docker logs "cicd-session2-test-${CI_PIPELINE_ID}"
+
+      exit 1
+
+  after_script:
+
+    - docker rm -f "cicd-session2-test-${CI_PIPELINE_ID}" 2>/dev/null || true
+
+    - docker image rm "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" 2>/dev/null || true
+
+
+deploy_production:
+
+  stage: deploy
+
+  dependencies:
+    - build_image
+
+  rules:
+
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+  script:
+
+    - test -n "${SSH_PRIVATE_KEY:-}"
+
+    - test -n "${SSH_KNOWN_HOSTS:-}"
+
+    - test -s "$SSH_PRIVATE_KEY"
+
+    - test -s "$SSH_KNOWN_HOSTS"
+
+    - chmod 400 "$SSH_PRIVATE_KEY"
+
+    - install -d -m 700 "$CI_PROJECT_DIR/.ssh"
+
+    - cp "$SSH_KNOWN_HOSTS" "$CI_PROJECT_DIR/.ssh/known_hosts"
+
+    - chmod 644 "$CI_PROJECT_DIR/.ssh/known_hosts"
+
+    - ssh-keygen -y -f "$SSH_PRIVATE_KEY" >/dev/null
+
+    - |
+      scp \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+        -o StrictHostKeyChecking=yes \
+        image.tar.gz \
+        scripts/deploy.sh \
+        "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/"
+
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$CI_PROJECT_DIR/.ssh/known_hosts" \
+        -o StrictHostKeyChecking=yes \
+        "${DEPLOY_USER}@${DEPLOY_HOST}" \
+        "IMAGE_NAME='${IMAGE_NAME}' IMAGE_TAG='${CI_COMMIT_SHORT_SHA}' CONTAINER_NAME='${CONTAINER_NAME}' DEPLOY_PORT='${DEPLOY_PORT}' ARCHIVE='/tmp/image.tar.gz' bash /tmp/deploy.sh"
+
+    - curl --fail --silent --show-error --noproxy "*" "http://${DEPLOY_HOST}:${DEPLOY_PORT}/health"
+
+  environment:
+
+    name: production
+
+    url: "http://${DEPLOY_HOST}:${DEPLOY_PORT}"
+GITLAB_CI
+
+Explanation:
+Creates the revised .gitlab-ci.yml with proxy validation, proxy build arguments, SSH File-variable validation, deploy-script transfer, and the final no-proxy health request.
+
+Options:
+- > = output redirection: Creates or replaces .gitlab-ci.yml.
+- <<'GITLAB_CI' = quoted here-document: Writes the YAML literally until GITLAB_CI.
+------------------------------------------------------------

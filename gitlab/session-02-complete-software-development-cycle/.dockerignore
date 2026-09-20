@@ -1,0 +1,10 @@
+.git
+.gitignore
+.gitlab-ci.yml
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.log
+image.tar.gz
