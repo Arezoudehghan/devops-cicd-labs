@@ -1,0 +1,500 @@
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Prints the installed Git version and exits.
+
+Options:
+- --version = version information: Displays the Git version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global --get user.name
+
+Explanation:
+Reads the configured Git user name from the global configuration.
+
+Options:
+- --global = global configuration: Uses the current user's global Git configuration file.
+- --get = get one value: Reads the value of the specified configuration key.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global --get user.email
+
+Explanation:
+Reads the configured Git email address from the global configuration.
+
+Options:
+- --global = global configuration: Uses the current user's global Git configuration file.
+- --get = get one value: Reads the value of the specified configuration key.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global user.name "Arezou"
+
+Explanation:
+Sets the global Git user name to Arezou.
+
+Options:
+- --global = global configuration: Writes the setting to the current user's global Git configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --global user.email "YOUR_GITLAB_EMAIL"
+
+Explanation:
+Sets the global Git email address. Replace YOUR_GITLAB_EMAIL with the email address used for your Git identity.
+
+Options:
+- --global = global configuration: Writes the setting to the current user's global Git configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/labs/git-session7-lab
+
+Explanation:
+Creates the lab directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Also avoids an error if an existing directory in the path already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/labs/git-session7-lab
+
+Explanation:
+Changes the current shell directory to the Git Session 7 lab directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes the current directory as a Git repository and names the initial branch main.
+
+Options:
+- -b = --initial-branch (initial branch): Uses main as the first branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > README.md <<'EOF'
+# Git Session 7 Lab
+
+This repository is used to practice:
+
+- Branch
+- Commit
+- Merge Request
+- Tag
+EOF
+
+Explanation:
+Writes the provided text into README.md using a quoted here-document.
+
+Options:
+- > = output redirection: Creates or truncates README.md and sends the output of cat into it.
+- <<'EOF' = quoted here-document: Feeds all lines up to the closing EOF to cat without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Stages README.md so its current changes can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "chore: initialize repository"
+
+Explanation:
+Creates a commit from the staged changes with the supplied commit message.
+
+Options:
+- -m = --message (message): Uses chore: initialize repository as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline
+
+Explanation:
+Shows the commit history in a compact one-line-per-commit format.
+
+Options:
+- --oneline = compact one-line format: Shows an abbreviated commit hash and commit subject on one line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log
+
+Explanation:
+Shows the commit history with the default detailed Git log format.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin YOUR_GITLAB_SSH_URL
+
+Explanation:
+Adds a remote named origin using the GitLab SSH repository URL. Replace YOUR_GITLAB_SSH_URL with the SSH clone URL shown by GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin git@192.168.94.90:USERNAME/git-session7-lab.git
+
+Explanation:
+Adds a remote named origin that points to the shown GitLab SSH repository path. Replace USERNAME with the actual GitLab namespace when needed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists configured Git remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Displays the URLs associated with each remote.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to origin and records the remote branch as its upstream.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local main branch with its remote branch for later pull, push, and status operations.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch -vv
+
+Explanation:
+Lists local branches with commit details and upstream tracking information.
+
+Options:
+- first -v = --verbose (verbose): Shows the abbreviated commit hash and subject for each branch.
+- second -v = --verbose (verbose): Repeating -v also shows the upstream branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch
+
+Explanation:
+Lists local branches and marks the current branch with an asterisk.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/add-healthcheck
+
+Explanation:
+Creates the branch feature/add-healthcheck and switches the working tree to it.
+
+Options:
+- -c = --create (create): Creates the named branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > healthcheck.md <<'EOF'
+# Application Health Check
+
+Endpoint:
+
+GET /health
+
+Expected response:
+
+HTTP 200 OK
+EOF
+
+Explanation:
+Writes the health-check documentation into healthcheck.md using a quoted here-document.
+
+Options:
+- > = output redirection: Creates or truncates healthcheck.md and sends the output of cat into it.
+- <<'EOF' = quoted here-document: Feeds all lines up to the closing EOF to cat without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in tracked files compared with the index.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add healthcheck.md
+
+Explanation:
+Stages healthcheck.md so its current changes can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --cached
+
+Explanation:
+Shows staged changes that are currently in the index and ready for the next commit.
+
+Options:
+- --cached = compare staged content: Compares the index with the current commit instead of showing unstaged working-tree changes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "docs: add health check documentation"
+
+Explanation:
+Creates a commit from the staged changes with the health-check documentation message.
+
+Options:
+- -m = --message (message): Uses docs: add health check documentation as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline --graph --decorate --all
+
+Explanation:
+Shows a compact visual history of commits, branches, tags, and other references.
+
+Options:
+- --oneline = compact one-line format: Shows each commit as an abbreviated hash plus its subject.
+- --graph = text graph: Draws the branch and merge structure using ASCII graph characters.
+- --decorate = show reference names: Displays names such as branches, tags, and HEAD beside commits.
+- --all = all references: Includes commits reachable from all refs instead of only the current history.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/add-healthcheck
+
+Explanation:
+Pushes feature/add-healthcheck to origin and sets the remote branch as its upstream.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local feature branch with its remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the local main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull --ff-only origin main
+
+Explanation:
+Fetches main from origin and updates the current branch only when a fast-forward is possible.
+
+Options:
+- --ff-only = fast-forward only: Aborts instead of creating a merge commit when the update cannot be fast-forwarded.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l
+
+Explanation:
+Lists files and directories using the long listing format.
+
+Options:
+- -l = long listing format: Shows detailed information such as permissions, owner, size, and modification time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch -d feature/add-healthcheck
+
+Explanation:
+Deletes the local feature/add-healthcheck branch only when Git considers it safely merged.
+
+Options:
+- -d = --delete (delete): Refuses the normal deletion when the branch is not safely merged.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out branch.
+
+Options:
+- --show-current = show current branch: Displays only the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Release version 1.0.0"
+
+Explanation:
+Creates an annotated tag named v1.0.0 with a release message.
+
+Options:
+- -a = --annotate (annotate): Creates a tag object with tag metadata.
+- -m = --message (message): Uses Release version 1.0.0 as the annotation message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists tag names in the repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git show v1.0.0
+
+Explanation:
+Shows the object and commit information referenced by the tag v1.0.0.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the tag v1.0.0 to the remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/my-feature
+
+Explanation:
+Creates the branch feature/my-feature and switches to it.
+
+Options:
+- -c = --create (create): Creates the named feature branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes under the current directory for the next commit. The special path . means the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add my feature"
+
+Explanation:
+Creates a commit from staged changes with the supplied feature message.
+
+Options:
+- -m = --message (message): Uses feat: add my feature as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/my-feature
+
+Explanation:
+Pushes feature/my-feature to origin and sets its upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local feature branch with its remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits from the current branch to its configured upstream according to the repository's push settings.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull
+
+Explanation:
+Fetches from the configured upstream and integrates the fetched changes into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git merge feature/login
+
+Explanation:
+Merges the history of feature/login into the currently checked-out branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/login
+
+Explanation:
+Creates the branch feature/login and switches to it.
+
+Options:
+- -c = --create (create): Creates the named branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/login
+
+Explanation:
+Pushes feature/login to origin and sets its upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local feature branch with its remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add login"
+
+Explanation:
+Creates a commit from staged changes with the supplied login feature message.
+
+Options:
+- -m = --message (message): Uses feat: add login as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin feature/login
+
+Explanation:
+Pushes the local feature/login branch to the remote named origin without changing upstream configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/example
+
+Explanation:
+Creates the branch feature/example and switches to it.
+
+Options:
+- -c = --create (create): Creates the named example branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add feature"
+
+Explanation:
+Creates a commit from staged changes with the supplied feature message.
+
+Options:
+- -m = --message (message): Uses feat: add feature as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/example
+
+Explanation:
+Pushes feature/example to origin and sets its upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Associates the local example branch with its remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch -d feature/example
+
+Explanation:
+Deletes the local feature/example branch only when Git considers it safely merged.
+
+Options:
+- -d = --delete (delete): Refuses the normal deletion when the branch is not safely merged.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git show 3bfce4b
+
+Explanation:
+Shows the commit object identified by the abbreviated commit hash 3bfce4b, including its metadata and patch.
+------------------------------------------------------------
