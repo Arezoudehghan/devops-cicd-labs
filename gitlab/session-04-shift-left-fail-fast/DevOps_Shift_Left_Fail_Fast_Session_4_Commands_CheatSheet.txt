@@ -1,0 +1,880 @@
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the hostname of the current machine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Prints the installed Git version.
+
+Options:
+- --version = version information: Shows the Git version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Prints the installed Python 3 version.
+
+Options:
+- --version = version information: Shows the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitleaks version
+
+Explanation:
+Prints the installed Gitleaks version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Prints the installed GitLab Runner version and build information.
+
+Options:
+- --version = version information: Shows GitLab Runner version details and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc '
+python3 --version
+command -v gitleaks
+gitleaks version
+'
+
+Explanation:
+Runs a login Bash shell as the gitlab-runner user and checks whether Python and Gitleaks are available in that user's environment.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string: Tells Bash to execute the following quoted command string.
+- -v = command description lookup: Used by the Bash command builtin to print how gitleaks would be resolved.
+- --version = version information: Used by python3 to print its version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# command -v gitleaks
+
+Explanation:
+Checks how the shell resolves the gitleaks command and prints its executable path if found.
+
+Options:
+- -v = command description lookup: Prints a description or path for the command name that the shell would execute.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --version
+
+Explanation:
+Prints the installed curl version and supported features.
+
+Options:
+- --version = version information: Shows curl version details and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Displays the user ID, primary group, and group memberships for the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':18044' || true
+
+Explanation:
+Checks whether a TCP process is listening on port 18044. If grep finds nothing, true prevents the whole shell command from returning a failure status.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permissions allow.
+- | = pipe operator: Sends the output of ss to grep.
+- || = OR operator: Runs the command on the right only if the command on the left fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/labs/cicd-session4-shift-left/tests
+
+Explanation:
+Creates the lesson directory and its tests subdirectory, including any missing parent directories.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/labs/cicd-session4-shift-left
+
+Explanation:
+Changes the current shell directory to the lesson project directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates main as the initial branch.
+
+Options:
+- -b = --initial-branch (initial branch): Sets the name of the first branch to main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.py <<'PY'
+import os
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+
+def add(a, b):
+    return a + b
+
+
+class Handler(BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        if self.path == "/health":
+            status = 200
+            body = b"OK\n"
+
+        elif self.path == "/":
+            status = 200
+            body = b"CI/CD Session 4 - Shift Left\n"
+
+        else:
+            status = 404
+            body = b"Not Found\n"
+
+        self.send_response(status)
+        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, format, *args):
+        pass
+
+
+if __name__ == "__main__":
+    port = int(os.getenv("APP_PORT", "18044"))
+    server = HTTPServer(("0.0.0.0", port), Handler)
+    server.serve_forever()
+PY
+
+Explanation:
+Creates app.py and writes the complete Python application into it.
+
+Options:
+- > = output redirection: Creates or overwrites app.py with the output from cat.
+- <<'PY' = quoted here-document: Passes all lines up to PY to cat without shell variable or command expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > tests/test_app.py <<'PY'
+import unittest
+
+from app import add
+
+
+class TestAdd(unittest.TestCase):
+
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+
+
+if __name__ == "__main__":
+    unittest.main()
+PY
+
+Explanation:
+Creates tests/test_app.py and writes the complete unit test into it.
+
+Options:
+- > = output redirection: Creates or overwrites tests/test_app.py with the output from cat.
+- <<'PY' = quoted here-document: Passes all lines up to PY to cat without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m py_compile app.py tests/test_app.py
+
+Explanation:
+Runs Python's py_compile module to check both files for syntax errors.
+
+Options:
+- -m = module execution: Runs the named Python module, here py_compile, as a script.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m unittest discover -s tests -v
+
+Explanation:
+Discovers and runs unit tests from the tests directory with verbose output.
+
+Options:
+- -m = module execution: Runs the named Python module, here unittest, as a script.
+- -s = --start-directory (start directory): Sets tests as the directory where discovery begins.
+- -v = --verbose (verbose): Shows detailed test names and results.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitleaks dir --redact .
+
+Explanation:
+Scans the current directory for potential secrets and redacts detected secret values in output.
+
+Options:
+- --redact = redact secret values: Hides secret values in the scan output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitignore <<'EOF'
+__pycache__/
+*.pyc
+*.tar.gz
+EOF
+
+Explanation:
+Creates .gitignore with rules that ignore Python cache files, compiled Python files, and tar.gz archives.
+
+Options:
+- > = output redirection: Creates or overwrites .gitignore.
+- <<'EOF' = quoted here-document: Passes the listed patterns to cat without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - validate
+  - test
+  - security
+  - package
+  - deploy
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  APP_PORT: "18044"
+  REMOTE_APP_DIR: "/home/deploy/apps/cicd-session4"
+
+default:
+  tags:
+    - dev-shell
+  interruptible: true
+
+
+validate_python:
+  stage: validate
+
+  script:
+    - echo "Checking Python syntax..."
+    - python3 -m py_compile app.py tests/test_app.py
+
+
+unit_test:
+  stage: test
+
+  script:
+    - echo "Running unit tests..."
+    - python3 -m unittest discover -s tests -v
+
+
+secret_scan:
+  stage: security
+
+  script:
+    - echo "Scanning source code for secrets..."
+    - gitleaks dir --redact .
+
+
+package_app:
+  stage: package
+
+  script:
+    - echo "Creating application package..."
+    - tar -czf "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" app.py
+
+  artifacts:
+    name: "cicd-session4-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz"
+    expire_in: 1 day
+
+
+deploy_dev2:
+  stage: deploy
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+  before_script:
+    - test -f "$SSH_PRIVATE_KEY"
+    - test -f "$SSH_KNOWN_HOSTS"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+
+  script:
+    - |
+      scp \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" \
+        "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session4-${CI_PIPELINE_ID}.tar.gz"
+
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        "${DEPLOY_USER}@${DEPLOY_HOST}" \
+        "bash -s -- '${CI_PIPELINE_ID}' '${APP_PORT}' '${REMOTE_APP_DIR}'" <<'REMOTE'
+
+      set -euo pipefail
+
+      PIPELINE_ID="$1"
+      APP_PORT="$2"
+      APP_DIR="$3"
+
+      ARCHIVE="/tmp/cicd-session4-${PIPELINE_ID}.tar.gz"
+      PID_FILE="${APP_DIR}/app.pid"
+      LOG_FILE="${APP_DIR}/app.log"
+
+      mkdir -p "$APP_DIR"
+
+      tar -xzf "$ARCHIVE" -C "$APP_DIR"
+
+      rm -f "$ARCHIVE"
+
+      if [ -f "$PID_FILE" ]; then
+        OLD_PID="$(cat "$PID_FILE")"
+
+        if kill -0 "$OLD_PID" 2>/dev/null; then
+          kill "$OLD_PID"
+
+          sleep 1
+
+          kill -9 "$OLD_PID" 2>/dev/null || true
+        fi
+      fi
+
+      nohup env APP_PORT="$APP_PORT" \
+        python3 "$APP_DIR/app.py" \
+        >"$LOG_FILE" 2>&1 &
+
+      echo $! > "$PID_FILE"
+
+      sleep 2
+
+      curl -fsS "http://127.0.0.1:${APP_PORT}/health"
+
+      REMOTE
+GITLAB_CI
+
+Explanation:
+Creates .gitlab-ci.yml with the complete Shift Left and Fail Fast pipeline used in this lesson.
+
+Options:
+- > = output redirection: Creates or overwrites .gitlab-ci.yml.
+- <<'GITLAB_CI' = quoted here-document: Passes the complete YAML content to cat without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking Python syntax..."
+
+Explanation:
+Prints a status message before the Python syntax check.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running unit tests..."
+
+Explanation:
+Prints a status message before running unit tests.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Scanning source code for secrets..."
+
+Explanation:
+Prints a status message before running the secret scan.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating application package..."
+
+Explanation:
+Prints a status message before creating the application archive.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tar -czf "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" app.py
+
+Explanation:
+Creates a gzip-compressed tar archive containing app.py and uses the short Git commit SHA in the archive name.
+
+Options:
+- -c = --create (create): Creates a new archive.
+- -z = --gzip (gzip): Compresses the archive with gzip.
+- -f = --file (file): Uses the next argument as the archive filename.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f "$SSH_PRIVATE_KEY"
+
+Explanation:
+Checks that the path stored in SSH_PRIVATE_KEY exists and is a regular file.
+
+Options:
+- -f = regular file test: Returns success only if the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f "$SSH_KNOWN_HOSTS"
+
+Explanation:
+Checks that the path stored in SSH_KNOWN_HOSTS exists and is a regular file.
+
+Options:
+- -f = regular file test: Returns success only if the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 400 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the private key file so only its owner has read permission.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# scp \
+  -i "$SSH_PRIVATE_KEY" \
+  -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+  -o StrictHostKeyChecking=yes \
+  "cicd-session4-${CI_COMMIT_SHORT_SHA}.tar.gz" \
+  "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/cicd-session4-${CI_PIPELINE_ID}.tar.gz"
+
+Explanation:
+Copies the generated application archive to DEV-2 over SSH using the configured private key and known_hosts file.
+
+Options:
+- -i = identity_file: Selects the private key file used for authentication.
+- -o UserKnownHostsFile=... = SSH option: Uses the specified known_hosts file for host key verification.
+- -o StrictHostKeyChecking=yes = SSH option: Refuses connections when the server host key is unknown or has changed.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh \
+  -i "$SSH_PRIVATE_KEY" \
+  -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+  -o StrictHostKeyChecking=yes \
+  "${DEPLOY_USER}@${DEPLOY_HOST}" \
+  "bash -s -- '${CI_PIPELINE_ID}' '${APP_PORT}' '${REMOTE_APP_DIR}'" <<'REMOTE'
+
+set -euo pipefail
+
+PIPELINE_ID="$1"
+APP_PORT="$2"
+APP_DIR="$3"
+
+ARCHIVE="/tmp/cicd-session4-${PIPELINE_ID}.tar.gz"
+PID_FILE="${APP_DIR}/app.pid"
+LOG_FILE="${APP_DIR}/app.log"
+
+mkdir -p "$APP_DIR"
+
+tar -xzf "$ARCHIVE" -C "$APP_DIR"
+
+rm -f "$ARCHIVE"
+
+if [ -f "$PID_FILE" ]; then
+  OLD_PID="$(cat "$PID_FILE")"
+
+  if kill -0 "$OLD_PID" 2>/dev/null; then
+    kill "$OLD_PID"
+
+    sleep 1
+
+    kill -9 "$OLD_PID" 2>/dev/null || true
+  fi
+fi
+
+nohup env APP_PORT="$APP_PORT" \
+  python3 "$APP_DIR/app.py" \
+  >"$LOG_FILE" 2>&1 &
+
+echo $! > "$PID_FILE"
+
+sleep 2
+
+curl -fsS "http://127.0.0.1:${APP_PORT}/health"
+
+REMOTE
+
+Explanation:
+Connects to DEV-2 and runs the complete deployment script remotely. The quoted here-document sends the deployment script through standard input to remote Bash.
+
+Options:
+- -i = identity_file: Selects the private key file used for SSH authentication.
+- -o UserKnownHostsFile=... = SSH option: Uses the specified known_hosts file.
+- -o StrictHostKeyChecking=yes = SSH option: Requires a verified host key.
+- -s = standard input mode for remote bash: Makes Bash read commands from standard input.
+- -- = end of options for remote bash: Treats following values as positional arguments.
+- <<'REMOTE' = quoted here-document: Sends the enclosed script to ssh without local shell expansion.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -euo pipefail
+
+Explanation:
+Configures Bash to stop on command errors, reject unset variables, and make pipelines fail when any command in the pipeline fails.
+
+Options:
+- -e = errexit: Exits when a command returns a non-zero status in applicable contexts.
+- -u = nounset: Treats references to unset variables as errors.
+- -o = shell option selector: Enables the named shell option.
+- pipefail = pipefail shell option: Makes a pipeline return failure if any command in it fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p "$APP_DIR"
+
+Explanation:
+Creates the remote application directory, including missing parent directories.
+
+Options:
+- -p = --parents (parents): Creates missing parents and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tar -xzf "$ARCHIVE" -C "$APP_DIR"
+
+Explanation:
+Extracts the gzip-compressed application archive into the remote application directory.
+
+Options:
+- -x = --extract (extract): Extracts files from an archive.
+- -z = --gzip (gzip): Decompresses the archive with gzip.
+- -f = --file (file): Uses the next argument as the archive file.
+- -C = --directory (directory): Changes to the specified directory before extracting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -f "$ARCHIVE"
+
+Explanation:
+Removes the temporary archive file after extraction.
+
+Options:
+- -f = --force (force): Ignores nonexistent files and suppresses confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat "$PID_FILE"
+
+Explanation:
+Reads the saved process ID from the PID file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# kill -0 "$OLD_PID" 2>/dev/null
+
+Explanation:
+Checks whether the process identified by OLD_PID exists and can be signaled without actually sending a terminating signal.
+
+Options:
+- -0 = signal 0: Performs process existence and permission checking without sending a real signal.
+- 2>/dev/null = stderr redirection: Sends file descriptor 2, standard error, to /dev/null.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# kill "$OLD_PID"
+
+Explanation:
+Sends the default termination signal to the old application process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 1
+
+Explanation:
+Pauses execution for one second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# kill -9 "$OLD_PID" 2>/dev/null || true
+
+Explanation:
+Force-kills the old process if it is still running and ignores an error if the process is already gone.
+
+Options:
+- -9 = SIGKILL signal number: Sends signal 9 to force the process to stop.
+- 2>/dev/null = stderr redirection: Discards standard error output.
+- || = OR operator: Runs true only if kill returns a failure status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nohup env APP_PORT="$APP_PORT" \
+  python3 "$APP_DIR/app.py" \
+  >"$LOG_FILE" 2>&1 &
+
+Explanation:
+Starts the Python application with APP_PORT set, keeps it running after the SSH session ends, writes output to the log file, and runs it in the background.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next physical line.
+- > = output redirection: Sends standard output to the log file.
+- 2>&1 = file descriptor redirection: Sends standard error to the same destination as standard output.
+- & = background operator: Runs the command asynchronously in the background.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo $! > "$PID_FILE"
+
+Explanation:
+Writes the PID of the most recently started background process to the PID file.
+
+Options:
+- > = output redirection: Writes the echo output to the PID file, replacing existing content.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 2
+
+Explanation:
+Pauses execution for two seconds before the health check.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS "http://127.0.0.1:${APP_PORT}/health"
+
+Explanation:
+Requests the local health endpoint and makes the command fail on HTTP errors while keeping successful output quiet except for response data.
+
+Options:
+- -f = --fail (fail): Returns a failure status for HTTP response codes 400 and higher.
+- -s = --silent (silent): Suppresses the progress meter and normal diagnostic output.
+- -S = --show-error (show error): Shows an error message when used together with --silent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '\nthis is invalid python\n' >> app.py
+
+Explanation:
+Appends an intentionally invalid Python line to app.py to demonstrate Fail Fast behavior.
+
+Options:
+- >> = append redirection: Adds the output to the end of app.py without overwriting existing content.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.py
+
+Explanation:
+Stages app.py in the Git index for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "test: verify fail fast on syntax error"
+
+Explanation:
+Creates a Git commit for the intentional syntax-error test.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch and its new commits to its configured remote.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i '$d' app.py
+
+Explanation:
+Edits app.py in place and deletes its last line to remove the intentional syntax error.
+
+Options:
+- -i = --in-place (in place): Edits the file directly instead of writing the result to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m py_compile app.py
+
+Explanation:
+Runs Python's py_compile module to check app.py for syntax errors.
+
+Options:
+- -m = module execution: Runs the named Python module, here py_compile, as a script.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: restore valid python syntax"
+
+Explanation:
+Creates a Git commit recording the restored valid Python syntax.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i \
+  's/self.assertEqual(add(2, 3), 5)/self.assertEqual(add(2, 3), 6)/' \
+  tests/test_app.py
+
+Explanation:
+Edits the unit test in place so the expected result is intentionally wrong, causing the test to fail.
+
+Options:
+- -i = --in-place (in place): Edits the file directly.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add tests/test_app.py
+
+Explanation:
+Stages tests/test_app.py in the Git index for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "test: verify fail fast on unit test failure"
+
+Explanation:
+Creates a Git commit for the intentional unit-test failure.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i \
+  's/self.assertEqual(add(2, 3), 6)/self.assertEqual(add(2, 3), 5)/' \
+  tests/test_app.py
+
+Explanation:
+Edits the unit test in place and restores the correct expected result.
+
+Options:
+- -i = --in-place (in place): Edits the file directly.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: restore unit test"
+
+Explanation:
+Creates a Git commit recording the restored unit test.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'AWS_ACCESS_KEY_ID=AKIAABCDEFGHIJKLMNOP\n' > secrets-demo.txt
+
+Explanation:
+Creates secrets-demo.txt with a fake AWS-style access key value for the secret-scanning lab.
+
+Options:
+- > = output redirection: Creates or overwrites secrets-demo.txt with the printf output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add secrets-demo.txt
+
+Explanation:
+Stages secrets-demo.txt in the Git index for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "test: verify secret scanning"
+
+Explanation:
+Creates a Git commit containing the fake secret so the pipeline secret scan can detect it.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm secrets-demo.txt
+
+Explanation:
+Removes the temporary fake-secret file from the working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add -A
+
+Explanation:
+Stages all tracked and untracked changes, including deletions, in the Git index.
+
+Options:
+- -A = --all (all): Stages additions, modifications, and removals across the repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: remove test secret"
+
+Explanation:
+Creates a Git commit recording removal of the fake secret file.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:18044/
+
+Explanation:
+Requests the application's root endpoint on local port 18044.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:18044/health
+
+Explanation:
+Requests the application's health endpoint on local port 18044.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ps aux | grep '[a]pp.py'
+
+Explanation:
+Lists processes and filters the output for the running app.py process while avoiding a normal grep self-match.
+
+Options:
+- a = BSD ps option: Shows processes for all users that are associated with terminals.
+- u = BSD ps option: Uses a user-oriented output format.
+- x = BSD ps option: Includes processes that do not have a controlling terminal.
+- | = pipe operator: Sends the output of ps to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':18044'
+
+Explanation:
+Checks which TCP process is listening on port 18044.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permissions allow.
+- | = pipe operator: Sends the output of ss to grep.
+------------------------------------------------------------
