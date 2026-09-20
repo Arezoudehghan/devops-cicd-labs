@@ -1,0 +1,1112 @@
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Shows the installed Git version.
+
+Options:
+- --version = version information: Prints the Git version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Refreshes the local APT package index using the configured repositories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt install -y git
+
+Explanation:
+Installs the Git package with APT and automatically accepts the confirmation prompt.
+
+Options:
+- -y = --yes (yes): Automatically answers yes to package-manager confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo mkdir -p /opt/git-labs/session6
+
+Explanation:
+Creates the /opt/git-labs/session6 directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown -R "$(id -u)":"$(id -g)" /opt/git-labs/session6
+
+Explanation:
+Changes ownership of the lab directory to the current user and current primary group, including its contents.
+
+Options:
+- -R = --recursive (recursive): Applies the ownership change recursively.
+- $(id -u) = command substitution: Runs id -u and inserts the current user ID.
+- -u in id = --user (user): Prints the effective user ID.
+- $(id -g) = command substitution: Runs id -g and inserts the current primary group ID.
+- -g in id = --group (group): Prints the effective group ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd /opt/git-labs/session6
+
+Explanation:
+Changes the current shell directory to /opt/git-labs/session6.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Creates a new Git repository and names the initial branch main.
+
+Options:
+- -b = --initial-branch (initial branch): Sets the name of the initial branch.
+- main = option value: Uses main as the initial branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists directory contents in long format, including hidden files such as .git.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes entries whose names begin with a dot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -la .git
+
+Explanation:
+Lists the contents of the .git directory in long format, including hidden entries.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes entries whose names begin with a dot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.name "DevOps Lab"
+
+Explanation:
+Sets the commit author name to DevOps Lab in the current repository configuration context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.email "devops-lab@example.local"
+
+Explanation:
+Sets the commit author email to devops-lab@example.local in the current repository configuration context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config --local --list
+
+Explanation:
+Lists configuration values stored in the current repository configuration.
+
+Options:
+- --local = local repository configuration: Reads or writes the repository-specific .git/config file.
+- --list = list: Displays all matching configuration entries.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.py <<'EOF'
+print("Hello from Git Session 6")
+EOF
+
+Explanation:
+Creates app.py and writes the shown Python line into it.
+
+Options:
+- > = output redirection: Creates or overwrites app.py with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > README.md <<'EOF'
+# Git Session 6
+
+Git review for DevOps.
+EOF
+
+Explanation:
+Creates README.md and writes the shown lesson text into it.
+
+Options:
+- > = output redirection: Creates or overwrites README.md with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitignore <<'EOF'
+*.log
+.env
+secrets.env
+__pycache__/
+EOF
+
+Explanation:
+Creates .gitignore with rules that ignore log files, environment files, the lab secret file, and Python cache directories.
+
+Options:
+- > = output redirection: Creates or overwrites .gitignore with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.py README.md .gitignore
+
+Explanation:
+Stages app.py, README.md, and .gitignore for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --staged
+
+Explanation:
+Shows changes that are already staged and will be included in the next commit.
+
+Options:
+- --staged = staged changes: Compares the staging area with the current HEAD commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add initial application"
+
+Explanation:
+Creates a commit from the staged changes with the given commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+- "feat: add initial application" = option value: The commit message stored in the new commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit
+
+Explanation:
+Creates a commit from staged changes and opens the configured editor to enter the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log
+
+Explanation:
+Displays the commit history of the current repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline
+
+Explanation:
+Displays commit history in a compact one-line format.
+
+Options:
+- --oneline = one-line format: Shows an abbreviated commit ID and subject on one line per commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline --graph --decorate --all
+
+Explanation:
+Displays a compact graph of commits across all refs and shows branch or tag names beside commits.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact single-line form.
+- --graph = graph: Draws an ASCII graph of branch and merge history.
+- --decorate = decorate refs: Shows reference names such as branches and tags next to commits.
+- --all = all refs: Shows history reachable from all refs instead of only the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .git/HEAD
+
+Explanation:
+Prints the contents of .git/HEAD so you can see what reference HEAD points to.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git rev-parse HEAD
+
+Explanation:
+Resolves HEAD and prints the full object ID of the current commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git cat-file -t HEAD
+
+Explanation:
+Shows the Git object type referenced by HEAD.
+
+Options:
+- -t = object type: Prints the type of the specified Git object.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git cat-file -p HEAD
+
+Explanation:
+Pretty-prints the contents of the Git object referenced by HEAD.
+
+Options:
+- -p = pretty-print: Displays the object content in a human-readable form when possible.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.py <<'EOF'
+print("Hello from Git Session 6")
+print("Version 2")
+EOF
+
+Explanation:
+Overwrites app.py with two Python print statements for the modification example.
+
+Options:
+- > = output redirection: Overwrites app.py with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in the working tree compared with the staging area.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff HEAD
+
+Explanation:
+Shows all current working-tree and staged changes compared with the HEAD commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git restore app.py
+
+Explanation:
+Restores app.py in the working tree from the staging area, discarding its unstaged changes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat app.py
+
+Explanation:
+Prints the current contents of app.py.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat >> app.py <<'EOF'
+print("Git is ready for CI/CD")
+EOF
+
+Explanation:
+Appends the shown Python print statement to app.py.
+
+Options:
+- >> = append redirection: Appends output to app.py without replacing existing content.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.py
+
+Explanation:
+Stages the current changes in app.py for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: update application output"
+
+Explanation:
+Creates a commit from staged changes with the given feature message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+- "feat: update application output" = option value: The commit message stored in the new commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline --graph --decorate
+
+Explanation:
+Shows the current branch history as a compact graph with reference names.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact single-line form.
+- --graph = graph: Draws an ASCII graph of branch and merge history.
+- --decorate = decorate refs: Shows reference names such as branches and tags next to commits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git show HEAD
+
+Explanation:
+Displays metadata and the patch for the commit currently referenced by HEAD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Temporary documentation change" >> README.md
+
+Explanation:
+Appends the text Temporary documentation change to README.md.
+
+Options:
+- >> = append redirection: Adds the command output to the end of README.md without overwriting the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Stages the current changes in README.md for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git restore --staged README.md
+
+Explanation:
+Removes README.md from the staging area while keeping its working-tree changes.
+
+Options:
+- --staged = staging area: Restores the index entry instead of the working-tree file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git restore README.md
+
+Explanation:
+Restores README.md in the working tree and discards its unstaged changes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > secrets.env <<'EOF'
+APP_PASSWORD=demo-password
+EOF
+
+Explanation:
+Creates secrets.env with the shown lab password value.
+
+Options:
+- > = output redirection: Creates or overwrites secrets.env with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the following lines to cat until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git check-ignore -v secrets.env
+
+Explanation:
+Checks whether secrets.env is ignored and shows the matching ignore rule.
+
+Options:
+- -v = --verbose (verbose): Prints the matching pattern and source file for the ignore decision.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reset --soft
+
+Explanation:
+Moves the current branch to the selected commit, using HEAD by default, while keeping changes staged.
+
+Options:
+- --soft = soft reset mode: Moves HEAD without changing the index or working tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reset --mixed
+
+Explanation:
+Moves the current branch to the selected commit, using HEAD by default, and resets the index while keeping working-tree files.
+
+Options:
+- --mixed = mixed reset mode: Resets the index but does not reset the working tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reset --hard
+
+Explanation:
+Resets the current branch, staging area, and working tree to the selected commit, using HEAD by default.
+
+Options:
+- --hard = hard reset mode: Resets both the index and working tree to match the target commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Reset and reflog lab" >> README.md
+
+Explanation:
+Appends the text Reset and reflog lab to README.md.
+
+Options:
+- >> = append redirection: Adds output to the end of README.md without overwriting it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: add reset test"
+
+Explanation:
+Creates a commit from staged changes with the reset-lab message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+- "lab: add reset test" = option value: The commit message stored in the new commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RECOVERY_COMMIT=$(git rev-parse HEAD)
+
+Explanation:
+Stores the full commit ID resolved from HEAD in the shell variable RECOVERY_COMMIT.
+
+Options:
+- $(...) = command substitution: Runs git rev-parse HEAD and inserts its output into the variable assignment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$RECOVERY_COMMIT"
+
+Explanation:
+Prints the current value stored in the RECOVERY_COMMIT shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reset --hard HEAD~1
+
+Explanation:
+Moves the current branch back one commit and resets the index and working tree to that commit.
+
+Options:
+- --hard = hard reset mode: Resets both the index and working tree to the target commit.
+- HEAD~1 = target revision: Refers to the first parent one commit before HEAD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reflog --oneline -5
+
+Explanation:
+Shows the five most recent reflog entries in a compact one-line format.
+
+Options:
+- --oneline = one-line format: Shows each reflog entry compactly.
+- -5 = --max-count=5 (maximum count): Limits the output to five entries.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reset --hard "$RECOVERY_COMMIT"
+
+Explanation:
+Resets the current branch, index, and working tree to the commit ID stored in RECOVERY_COMMIT.
+
+Options:
+- --hard = hard reset mode: Resets both the index and working tree to the target commit.
+- "$RECOVERY_COMMIT" = target revision value: Expands to the saved commit ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git revert HEAD
+
+Explanation:
+Technical correction: The lesson showed git revert without a target, which is incomplete for performing a revert. This command creates a new commit that reverses the changes introduced by HEAD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Displays identity information for the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo mkdir -p /srv/git
+
+Explanation:
+Creates /srv/git and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo git init --bare /srv/git/session6.git
+
+Explanation:
+Creates a bare Git repository at /srv/git/session6.git for use as a remote repository.
+
+Options:
+- --bare = bare repository: Creates a repository without a working tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown -R deploy:deploy /srv/git/session6.git
+
+Explanation:
+Changes ownership of the bare repository and its contents to the deploy user and deploy group.
+
+Options:
+- -R = --recursive (recursive): Applies the ownership change recursively.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git --git-dir=/srv/git/session6.git symbolic-ref HEAD refs/heads/main
+
+Explanation:
+Runs Git as deploy and sets the bare repository HEAD symbolic reference to refs/heads/main.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- --git-dir=/srv/git/session6.git = Git directory: Uses /srv/git/session6.git as the repository metadata directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the current user SSH directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 700 ~/.ssh
+
+Explanation:
+Sets ~/.ssh permissions so only the owner has read, write, and execute access.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen \
+  -t ed25519 \
+  -f ~/.ssh/id_ed25519_git_session6 \
+  -N '' \
+  -C "git-session6-dev1"
+
+Explanation:
+Generates an Ed25519 SSH key pair for the Git lab with the specified filename, no passphrase, and a comment.
+
+Options:
+- -t = key type: Selects ed25519 as the key algorithm.
+- -f = filename: Writes the key pair using ~/.ssh/id_ed25519_git_session6 as the base filename.
+- -N = new passphrase: Sets the new private-key passphrase; '' means an empty passphrase.
+- -C = comment: Stores git-session6-dev1 as the key comment.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat ~/.ssh/id_ed25519_git_session6.pub
+
+Explanation:
+Prints the public key generated for the Git lab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo install \
+  -d \
+  -m 700 \
+  -o deploy \
+  -g deploy \
+  /home/deploy/.ssh
+
+Explanation:
+Creates /home/deploy/.ssh with mode 700 and sets deploy as both owner and group.
+
+Options:
+- -d = --directory (directory): Creates directories instead of copying files.
+- -m = --mode (mode): Sets the permissions to 700.
+- -o = --owner (owner): Sets deploy as the owner.
+- -g = --group (group): Sets deploy as the group.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo tee -a /home/deploy/.ssh/authorized_keys > /dev/null <<'EOF'
+PASTE_PUBLIC_KEY_FROM_DEV1_HERE
+EOF
+
+Explanation:
+Appends the supplied public key line to deploy's authorized_keys file while suppressing tee output.
+
+Options:
+- -a = --append (append): Appends instead of overwriting authorized_keys.
+- > /dev/null = output redirection: Sends tee standard output to /dev/null.
+- <<'EOF' = quoted here-document: Supplies the public-key text to tee until EOF without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown deploy:deploy /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Sets deploy as the owner and group of the authorized_keys file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 600 /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Sets authorized_keys permissions so only the owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen \
+  -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Explanation:
+Prints the fingerprint of the server Ed25519 host public key.
+
+Options:
+- -l = fingerprint: Shows the fingerprint of the specified public key file.
+- -f = filename: Reads /etc/ssh/ssh_host_ed25519_key.pub.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keyscan \
+  -t ed25519 \
+  192.168.94.91 2>/dev/null \
+  | ssh-keygen -lf -
+
+Explanation:
+Retrieves the Ed25519 SSH host key from 192.168.94.91 and pipes it to ssh-keygen to display its fingerprint.
+
+Options:
+- -t in ssh-keyscan = key type: Requests only the ed25519 host key.
+- 2>/dev/null = standard-error redirection: Discards ssh-keyscan error messages.
+- | = pipe: Sends ssh-keyscan standard output to ssh-keygen standard input.
+- -l in ssh-keygen = fingerprint: Shows the fingerprint of the supplied public key.
+- -f in ssh-keygen = filename: Specifies where the public key is read from.
+- - as the -f value = standard input: Reads the key from the pipe.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keyscan \
+  -H \
+  -t ed25519 \
+  192.168.94.91 \
+  >> ~/.ssh/known_hosts
+
+Explanation:
+Retrieves the Ed25519 host key for 192.168.94.91, hashes the hostname entry, and appends it to known_hosts.
+
+Options:
+- -H = hash hostnames: Hashes hostnames and addresses in the generated output.
+- -t = key type: Requests only the ed25519 host key.
+- >> = append redirection: Appends the result to ~/.ssh/known_hosts.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/known_hosts
+
+Explanation:
+Sets known_hosts permissions so only the owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > ~/.ssh/config <<'EOF'
+Host dev2-git
+    HostName 192.168.94.91
+    User deploy
+    IdentityFile ~/.ssh/id_ed25519_git_session6
+    IdentitiesOnly yes
+    StrictHostKeyChecking yes
+EOF
+
+Explanation:
+Creates an SSH client configuration entry named dev2-git for connecting to DEV-2 with the lab key.
+
+Options:
+- > = output redirection: Creates or overwrites ~/.ssh/config with standard output from cat.
+- <<'EOF' = quoted here-document: Sends the SSH configuration lines to cat until EOF without shell expansion.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/config
+
+Explanation:
+Sets the SSH client configuration file so only the owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh dev2-git 'id && hostname'
+
+Explanation:
+Connects to the dev2-git SSH host and runs id first, then hostname only if id succeeds.
+
+Options:
+- && = AND operator: Runs hostname only when id exits successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin dev2-git:/srv/git/session6.git
+
+Explanation:
+Adds a remote named origin that points to the bare repository on DEV-2 over SSH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists configured remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Shows the remote URLs in addition to remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to origin and records origin/main as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets tracking information for the successfully pushed branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits from the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch -vv
+
+Explanation:
+Lists local branches with detailed commit and upstream tracking information.
+
+Options:
+- -v = --verbose (verbose): Shows the commit ID and subject for each branch.
+- -v (second occurrence) = increased verbose level: Also shows additional upstream or linked-worktree information when available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git clone \
+  /srv/git/session6.git \
+  /home/deploy/session6-consumer
+
+Explanation:
+Runs Git as deploy and clones the bare repository into /home/deploy/session6-consumer.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd /home/deploy/session6-consumer
+
+Explanation:
+Changes the current shell directory to the cloned repository on DEV-2.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git status
+
+Explanation:
+Runs git status as deploy to show the state of the cloned repository.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git remote -v
+
+Explanation:
+Runs Git as deploy and lists the clone's remotes with their fetch and push URLs.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- -v in git remote = --verbose (verbose): Shows remote URLs in addition to remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git \
+  -C /home/deploy/session6-consumer \
+  config user.name "DEV-2 Operator"
+
+Explanation:
+Runs Git as deploy in the cloned repository and sets the repository commit author name to DEV-2 Operator.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- -C = change working directory: Makes Git operate as if started in /home/deploy/session6-consumer.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git \
+  -C /home/deploy/session6-consumer \
+  config user.email "dev2@example.local"
+
+Explanation:
+Runs Git as deploy in the cloned repository and sets the repository commit author email.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- -C = change working directory: Makes Git operate as if started in /home/deploy/session6-consumer.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Change created from DEV-2" \
+  | sudo -u deploy tee -a \
+  /home/deploy/session6-consumer/README.md \
+  > /dev/null
+
+Explanation:
+Appends the text Change created from DEV-2 to the cloned README.md as the deploy user and suppresses tee output.
+
+Options:
+- | = pipe: Sends echo output to tee standard input.
+- -u = --user (user): Runs tee as deploy.
+- -a = --append (append): Appends to README.md instead of overwriting it.
+- > /dev/null = output redirection: Discards tee standard output.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git \
+  -C /home/deploy/session6-consumer \
+  add README.md
+
+Explanation:
+Runs Git as deploy in the clone and stages README.md.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- -C = change working directory: Makes Git operate as if started in /home/deploy/session6-consumer.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git \
+  -C /home/deploy/session6-consumer \
+  commit -m "docs: update README from DEV-2"
+
+Explanation:
+Runs Git as deploy in the clone and creates a commit with the given documentation message.
+
+Options:
+- -u = --user (user): Runs the following command as deploy.
+- -C = change working directory: Makes Git operate as if started in /home/deploy/session6-consumer.
+- -m = --message (message): Uses the following text as the commit message.
+- "docs: update README from DEV-2" = option value: The commit message stored in the new commit.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u deploy git \
+  -C /home/deploy/session6-consumer \
+  push origin main
+
+Explanation:
+Runs Git as deploy in the clone and pushes its main branch to the origin remote.
+
+Options:
+- -u in sudo = --user (user): Runs the following command as deploy.
+- -C = change working directory: Makes Git operate as if started in /home/deploy/session6-consumer.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git fetch origin
+
+Explanation:
+Downloads updated refs and objects from the origin remote without integrating them into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log HEAD..origin/main --oneline
+
+Explanation:
+Shows commits that are reachable from origin/main but not from the current HEAD in compact form.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact single-line form.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff HEAD..origin/main
+
+Explanation:
+Shows the content differences between the current HEAD commit and origin/main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull --ff-only origin main
+
+Explanation:
+Fetches origin/main and updates the current branch only when the update can be done as a fast-forward.
+
+Options:
+- --ff-only = fast-forward only: Refuses the pull if a merge commit or other non-fast-forward integration would be required.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat README.md
+
+Explanation:
+Prints the current contents of README.md.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git fetch
+
+Explanation:
+Downloads updated objects and refs from the repository's configured remote without integrating them into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull
+
+Explanation:
+Fetches from the configured remote and integrates the upstream branch into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone repository
+
+Explanation:
+Creates a new local repository by cloning the repository location represented by repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants according to Git pathspec rules.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: description"
+
+Explanation:
+Creates a commit from staged changes with the example feature message.
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+- "feat: description" = option value: The commit message stored in the new commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status --short
+
+Explanation:
+Shows repository status using the compact short-format output.
+
+Options:
+- --short = short format: Displays status in a compact two-column format.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git check-ignore -v FILE_NAME
+
+Explanation:
+Checks whether FILE_NAME matches an ignore rule and shows which rule matched.
+
+Options:
+- -v = --verbose (verbose): Prints the matching pattern and source file for the ignore decision.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push --force
+
+Explanation:
+Pushes updates even when they are not a fast-forward and can replace remote branch history.
+
+Options:
+- --force = force update: Disables the normal non-fast-forward protection for the push.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit --amend
+
+Explanation:
+Replaces the most recent commit using the current staged content and opens the editor for the commit message.
+
+Options:
+- --amend = amend commit: Replaces the tip commit with a new commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit --amend -m "correct commit message"
+
+Explanation:
+Replaces the most recent commit and sets its message to correct commit message.
+
+Options:
+- --amend = amend commit: Replaces the tip commit with a new commit.
+- -m = --message (message): Uses the following text as the commit message.
+- "correct commit message" = option value: The replacement commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git restore FILE
+
+Explanation:
+Restores the working-tree file represented by FILE from the staging area.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git restore --staged FILE
+
+Explanation:
+Removes the file represented by FILE from the staging area while keeping its working-tree changes.
+
+Options:
+- --staged = staging area: Restores the index entry instead of the working-tree file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git reflog
+
+Explanation:
+Displays the local reflog, including recent movements of HEAD and other references.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline -5
+
+Explanation:
+Shows at most the five most recent commits in compact one-line format.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact single-line form.
+- -5 = --max-count=5 (maximum count): Limits the output to five commits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status -sb
+
+Explanation:
+Shows compact repository status and includes branch and tracking information.
+
+Options:
+- -s = --short (short): Uses the compact short status format.
+- -b = --branch (branch): Shows branch and tracking information in short format.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log origin/main..HEAD --oneline
+
+Explanation:
+Shows commits that are reachable from HEAD but not from origin/main, which can reveal local commits not yet pushed.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact single-line form.
+------------------------------------------------------------
