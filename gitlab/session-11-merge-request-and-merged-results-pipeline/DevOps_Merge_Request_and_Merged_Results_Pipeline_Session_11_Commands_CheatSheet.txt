@@ -1,0 +1,566 @@
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Shows the installed Git version. This is a quick way to verify that Git is available.
+
+Options:
+- `--version` = version information: Prints the Git version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Shows the installed Python 3 version. This verifies that Python 3 is available for the lab scripts.
+
+Options:
+- `--version` = version information: Prints the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs `gitlab-runner list` with elevated privileges and shows the configured GitLab Runner registrations on the machine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# dpkg -l | grep -E '^ii\s+gitlab-(ce|ee)\s'
+
+Explanation:
+Lists installed Debian packages and filters the result for installed GitLab CE or GitLab EE packages.
+
+Options:
+- `-l` = `--list`: Lists packages known to `dpkg`.
+- `|` = pipe operator: Sends the output of `dpkg -l` to `grep` as input.
+- `-E` = `--extended-regexp`: Makes `grep` interpret the pattern as an extended regular expression.
+- `'^ii\s+gitlab-(ce|ee)\s'` = regular-expression argument: Matches installed package lines for either `gitlab-ce` or `gitlab-ee`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs/cicd-session11-merge-pipeline
+
+Explanation:
+Creates the lab directory and any missing parent directories.
+
+Options:
+- `-p` = `--parents`: Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session11-merge-pipeline
+
+Explanation:
+Changes the current shell directory to the lab repository directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates `main` as the initial branch.
+
+Options:
+- `-b` = `--initial-branch`: Sets the name of the initial branch to `main`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.name "DevOps Lab"
+
+Explanation:
+Sets the Git author name to `DevOps Lab` for the current repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.email "devops-lab@example.local"
+
+Explanation:
+Sets the Git author email to `devops-lab@example.local` for the current repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app.py <<'EOF'
+DEFAULT_PORT = 8080
+EOF
+
+Explanation:
+Writes the shown Python content into `app.py`. The quoted here-document delimiter keeps the content literal.
+
+Options:
+- `>` = output redirection: Creates `app.py` if needed and replaces its existing contents.
+- `<<'EOF'` = quoted here-document: Passes all following lines to `cat` until the closing `EOF`, without shell expansion inside the body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat app.py
+
+Explanation:
+Prints the contents of `app.py` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'GITLAB_CI'
+stages:
+  - test
+
+default:
+  tags:
+    - dev-shell
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - when: never
+
+show_mr_context:
+  stage: test
+  script:
+    - echo "PIPELINE_SOURCE=${CI_PIPELINE_SOURCE}"
+    - echo "MR_EVENT_TYPE=${CI_MERGE_REQUEST_EVENT_TYPE:-not-set}"
+    - echo "SOURCE_BRANCH=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-not-set}"
+    - echo "TARGET_BRANCH=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-not-set}"
+    - echo "SOURCE_SHA=${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-empty}"
+    - echo "TARGET_SHA=${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-empty}"
+    - echo "CI_COMMIT_SHA=${CI_COMMIT_SHA}"
+    - git log -1 --oneline
+
+source_branch_test:
+  stage: test
+  script:
+    - python3 validate_config.py
+GITLAB_CI
+
+Explanation:
+Writes the complete GitLab CI configuration into `.gitlab-ci.yml`. The quoted here-document keeps all CI variables and YAML text unchanged while the file is created.
+
+Options:
+- `>` = output redirection: Creates `.gitlab-ci.yml` if needed and replaces its existing contents.
+- `<<'GITLAB_CI'` = quoted here-document: Passes the following YAML literally to `cat` until the closing `GITLAB_CI`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "PIPELINE_SOURCE=${CI_PIPELINE_SOURCE}"
+
+Explanation:
+Prints the current GitLab pipeline source together with its value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "MR_EVENT_TYPE=${CI_MERGE_REQUEST_EVENT_TYPE:-not-set}"
+
+Explanation:
+Prints the merge request event type. If the variable is unset or empty, the command prints `not-set` instead.
+
+Options:
+- `${CI_MERGE_REQUEST_EVENT_TYPE:-not-set}` = shell parameter expansion: Uses `not-set` when `CI_MERGE_REQUEST_EVENT_TYPE` is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "SOURCE_BRANCH=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-not-set}"
+
+Explanation:
+Prints the merge request source branch name. If the variable is unset or empty, the command prints `not-set`.
+
+Options:
+- `${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-not-set}` = shell parameter expansion: Uses `not-set` when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "TARGET_BRANCH=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-not-set}"
+
+Explanation:
+Prints the merge request target branch name. If the variable is unset or empty, the command prints `not-set`.
+
+Options:
+- `${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-not-set}` = shell parameter expansion: Uses `not-set` when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "SOURCE_SHA=${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-empty}"
+
+Explanation:
+Prints the source branch SHA value. If the variable is unset or empty, the command prints `empty`.
+
+Options:
+- `${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-empty}` = shell parameter expansion: Uses `empty` when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "TARGET_SHA=${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-empty}"
+
+Explanation:
+Prints the target branch SHA value. If the variable is unset or empty, the command prints `empty`.
+
+Options:
+- `${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-empty}` = shell parameter expansion: Uses `empty` when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_COMMIT_SHA=${CI_COMMIT_SHA}"
+
+Explanation:
+Prints the commit SHA used by the current GitLab CI job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log -1 --oneline
+
+Explanation:
+Shows only the most recent commit in a compact one-line format.
+
+Options:
+- `-1` = `--max-count=1`: Limits the log output to one commit.
+- `--oneline` = one-line log format: Shows each commit as an abbreviated commit ID followed by its subject.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 validate_config.py
+
+Explanation:
+Runs the `validate_config.py` script with Python 3 to verify that the deployment port matches the application port.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.py .gitlab-ci.yml
+
+Explanation:
+Stages `app.py` and `.gitlab-ci.yml` for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Initialize merge request pipeline lab"
+
+Explanation:
+Creates a new commit using the provided commit message.
+
+Options:
+- `-m` = `--message`: Uses `Initialize merge request pipeline lab` as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin http://192.168.94.90/root/cicd-session11-merge-pipeline.git
+
+Explanation:
+Adds the GitLab repository URL as a remote named `origin`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Shows configured Git remotes together with their fetch and push URLs.
+
+Options:
+- `-v` = `--verbose`: Displays the remote URLs in addition to the remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local `main` branch to `origin` and sets the remote branch as its upstream.
+
+Options:
+- `-u` = `--set-upstream`: Records the pushed remote branch as the upstream branch for the local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/config-validation
+
+Explanation:
+Creates the branch `feature/config-validation` and switches to it.
+
+Options:
+- `-c` = `--create`: Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out branch.
+
+Options:
+- `--show-current` = show current branch: Prints only the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > deployment.conf <<'EOF'
+PORT=8080
+EOF
+
+Explanation:
+Writes `PORT=8080` into `deployment.conf`. The quoted here-document keeps the content literal.
+
+Options:
+- `>` = output redirection: Creates `deployment.conf` if needed and replaces its existing contents.
+- `<<'EOF'` = quoted here-document: Passes the following line literally to `cat` until the closing `EOF`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > validate_config.py <<'PYTHON'
+from app import DEFAULT_PORT
+
+with open("deployment.conf", encoding="utf-8") as file:
+    line = file.read().strip()
+
+key, value = line.split("=", 1)
+
+if key != "PORT":
+    raise SystemExit("FAIL: deployment.conf must contain PORT")
+
+deploy_port = int(value)
+
+if deploy_port != DEFAULT_PORT:
+    raise SystemExit(
+        f"FAIL: deployment PORT={deploy_port} "
+        f"but application DEFAULT_PORT={DEFAULT_PORT}"
+    )
+
+print(
+    f"PASS: deployment PORT={deploy_port} "
+    f"matches application DEFAULT_PORT={DEFAULT_PORT}"
+)
+PYTHON
+
+Explanation:
+Writes the complete Python validation script into `validate_config.py`. The quoted here-document prevents the shell from expanding anything inside the Python code.
+
+Options:
+- `>` = output redirection: Creates `validate_config.py` if needed and replaces its existing contents.
+- `<<'PYTHON'` = quoted here-document: Passes the Python code literally to `cat` until the closing `PYTHON`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add deployment.conf validate_config.py
+
+Explanation:
+Stages `deployment.conf` and `validate_config.py` for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add deployment port validation"
+
+Explanation:
+Creates a commit with the message `Add deployment port validation`.
+
+Options:
+- `-m` = `--message`: Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/config-validation
+
+Explanation:
+Pushes `feature/config-validation` to `origin` and sets the remote branch as its upstream.
+
+Options:
+- `-u` = `--set-upstream`: Records the pushed remote branch as the upstream branch for the local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the existing `main` branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i 's/DEFAULT_PORT = 8080/DEFAULT_PORT = 9090/' app.py
+
+Explanation:
+Edits `app.py` in place and replaces `DEFAULT_PORT = 8080` with `DEFAULT_PORT = 9090`.
+
+Options:
+- `-i` = `--in-place`: Modifies the file directly instead of writing the changed text to standard output.
+- `'s/DEFAULT_PORT = 8080/DEFAULT_PORT = 9090/'` = sed substitution expression: Replaces the first matching text on each processed line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app.py
+
+Explanation:
+Stages the modified `app.py` for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Change application default port to 9090"
+
+Explanation:
+Creates a commit with the message `Change application default port to 9090`.
+
+Options:
+- `-m` = `--message`: Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local `main` branch to the remote named `origin`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git merge main
+
+Explanation:
+Merges the local `main` branch into the currently checked-out branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git rebase main
+
+Explanation:
+Replays the current branch commits on top of the local `main` branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch feature/config-validation
+
+Explanation:
+Switches the working tree to the existing `feature/config-validation` branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat >> .gitlab-ci.yml <<'GITLAB_CI'
+
+simulate_merged_result:
+  stage: test
+  script:
+    - git config user.name "GitLab CI"
+    - git config user.email "gitlab-ci@example.local"
+    - git fetch origin "${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}:refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - git checkout -B ci-merged-result "$CI_COMMIT_SHA"
+    - git merge --no-commit --no-ff "refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - echo "Testing source branch together with latest target branch"
+    - python3 validate_config.py
+GITLAB_CI
+
+Explanation:
+Appends the `simulate_merged_result` job to the existing `.gitlab-ci.yml` file. The quoted here-document preserves all CI variables and YAML text exactly while appending.
+
+Options:
+- `>>` = append redirection: Adds the new content to the end of `.gitlab-ci.yml` without replacing the existing content.
+- `<<'GITLAB_CI'` = quoted here-document: Passes the following YAML literally to `cat` until the closing `GITLAB_CI`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.name "GitLab CI"
+
+Explanation:
+Sets the Git author name to `GitLab CI` in the current repository context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git config user.email "gitlab-ci@example.local"
+
+Explanation:
+Sets the Git author email to `gitlab-ci@example.local` in the current repository context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git fetch origin "${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}:refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+
+Explanation:
+Fetches the merge request target branch from `origin` and writes it to the matching remote-tracking reference under `refs/remotes/origin/`.
+
+Options:
+- `${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}:refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}` = Git refspec: The left side is the remote source branch and the right side is the local destination reference.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git checkout -B ci-merged-result "$CI_COMMIT_SHA"
+
+Explanation:
+Creates or resets `ci-merged-result` at `CI_COMMIT_SHA` and checks that branch out.
+
+Options:
+- `-B` = create or reset branch: Creates `ci-merged-result` if it does not exist, or resets it to the specified start point if it already exists.
+- `$CI_COMMIT_SHA` = shell variable expansion: Supplies the current CI commit SHA as the branch start point.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git merge --no-commit --no-ff "refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+
+Explanation:
+Merges the fetched target branch into the current branch but stops before creating a merge commit. It also prevents Git from using a fast-forward-only update.
+
+Options:
+- `--no-commit` = do not automatically create the merge commit: Stops before committing a successful non-fast-forward merge.
+- `--no-ff` = no fast-forward: Forces merge-style integration instead of moving the branch pointer with a fast-forward.
+- `${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}` = shell variable expansion: Inserts the merge request target branch name into the remote-tracking reference.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing source branch together with latest target branch"
+
+Explanation:
+Prints a message indicating that the job is testing the source branch together with the latest target branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the modified `.gitlab-ci.yml` file for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Simulate merged result validation"
+
+Explanation:
+Creates a commit with the message `Simulate merged result validation`.
+
+Options:
+- `-m` = `--message`: Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin feature/config-validation
+
+Explanation:
+Pushes the local `feature/config-validation` branch to `origin`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git fetch origin
+
+Explanation:
+Downloads the latest references and objects from the remote named `origin`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git merge origin/main
+
+Explanation:
+Merges the latest fetched `origin/main` remote-tracking branch into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'PORT=9090\n' > deployment.conf
+
+Explanation:
+Writes `PORT=9090` followed by a newline into `deployment.conf`, replacing the existing file contents.
+
+Options:
+- `\n` = newline escape sequence: Makes `printf` end the written line with a newline.
+- `>` = output redirection: Creates `deployment.conf` if needed and replaces its existing contents.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add deployment.conf
+
+Explanation:
+Stages the modified `deployment.conf` file for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Align deployment port with application port"
+
+Explanation:
+Creates a commit with the message `Align deployment port with application port`.
+
+Options:
+- `-m` = `--message`: Uses the following text as the commit message.
+------------------------------------------------------------
