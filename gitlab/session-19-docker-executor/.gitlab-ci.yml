@@ -1,0 +1,41 @@
+stages:
+  - inspect
+  - test
+  - service
+
+default:
+  tags:
+    - docker-executor
+
+inspect_container:
+  stage: inspect
+  image: alpine:3.21
+  script:
+    - echo "=== Operating System ==="
+    - cat /etc/os-release
+    - echo "=== User ==="
+    - whoami
+    - echo "=== Hostname ==="
+    - hostname
+    - echo "=== Working Directory ==="
+    - pwd
+    - echo "=== GitLab Variables ==="
+    - echo "CI_PROJECT_NAME=$CI_PROJECT_NAME"
+    - echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"
+    - echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+
+python_test:
+  stage: test
+  image: python:3.12-alpine
+  script:
+    - python --version
+    - python -c "print('Hello from Docker Executor')"
+
+redis_service_test:
+  stage: service
+  image: redis:7-alpine
+  services:
+    - name: redis:7-alpine
+      alias: redis
+  script:
+    - redis-cli -h redis ping
