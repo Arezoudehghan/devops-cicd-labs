@@ -26,3 +26,5 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-12-team-workflow/` — Enterprise team workflow with short-lived branches, Merge Requests, CI quality gates, code review, approval, and merge-to-main policy.
 - `gitlab/session-14-gitlab-runner-installation-linux/` — Install and verify GitLab Runner on Linux, inspect systemd service and logs, understand `config.toml`, and validate Docker access for the Runner user.
 - `gitlab/session-16-gitlab-runner-scope/` — Instance, Group, and Project Runner scope, Runner tags vs scope, Shell executor, multi-runner lab, and negative scope testing.
+- `gitlab/session-15-register-gitlab-runner/` — Register a GitLab Runner, use the Shell executor, apply Runner tags, verify connectivity, and run a real CI job.
+- `gitlab/session-18-shell-executor/` — Shell Executor internals, Runner user and host inspection, filesystem access, permissions, Docker access, PATH, and troubleshooting.
