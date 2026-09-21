@@ -29,3 +29,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-15-register-gitlab-runner/` — Register a GitLab Runner, use the Shell executor, apply Runner tags, verify connectivity, and run a real CI job.
 - `gitlab/session-18-shell-executor/` — Shell Executor internals, Runner user and host inspection, filesystem access, permissions, Docker access, PATH, and troubleshooting.
 - `gitlab/session-17-runner-tag-untagged-job/` — GitLab Runner tag matching, untagged jobs, `Run untagged jobs`, multi-tag matching, and pending-job troubleshooting.
+- `gitlab/session-20-shell-docker-kubernetes-executors/` — Compare GitLab Runner Shell, Docker, and Kubernetes executors, including isolation, dependency management, security trade-offs, and a practical Shell-vs-Docker pipeline.
