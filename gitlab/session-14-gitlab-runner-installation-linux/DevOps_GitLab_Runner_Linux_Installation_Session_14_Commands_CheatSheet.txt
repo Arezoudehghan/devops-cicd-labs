@@ -1,0 +1,348 @@
+------------------------------------------------------------
+# gitlab-runner run
+
+Explanation:
+Runs GitLab Runner in the foreground and processes configured runners.
+------------------------------------------------------------
+# cat /etc/os-release
+
+Explanation:
+Displays the Linux distribution and operating system information stored in /etc/os-release.
+------------------------------------------------------------
+# uname -m
+
+Explanation:
+Prints the machine hardware architecture.
+
+Options:
+- -m = --machine (machine): Prints the machine hardware name.
+------------------------------------------------------------
+# hostnamectl
+
+Explanation:
+Shows system hostname information and related operating system details.
+------------------------------------------------------------
+# command -v gitlab-runner
+
+Explanation:
+Shows how the shell resolves the gitlab-runner command, such as its executable path.
+
+Options:
+- -v = documented command option: Prints a description of how the command name would be interpreted by the shell.
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Displays the installed GitLab Runner version information.
+
+Options:
+- --version = version: Prints version information.
+------------------------------------------------------------
+# dpkg -l | grep gitlab-runner
+
+Explanation:
+Lists installed Debian packages and filters the output for GitLab Runner.
+
+Options:
+- -l = --list (list): Lists packages known to dpkg.
+- | = pipe operator: Sends the output of dpkg to grep as input.
+------------------------------------------------------------
+# systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening a pager.
+
+Options:
+- --no-pager = no pager: Prints output directly instead of sending it to a pager program.
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Refreshes the local APT package index from configured repositories.
+------------------------------------------------------------
+# sudo apt install -y curl ca-certificates
+
+Explanation:
+Installs curl and ca-certificates with APT and automatically accepts the confirmation prompt.
+
+Options:
+- -y = --assume-yes (assume yes): Automatically answers yes to APT confirmation prompts.
+------------------------------------------------------------
+# curl -I https://packages.gitlab.com
+
+Explanation:
+Requests only the HTTP response headers from packages.gitlab.com.
+
+Options:
+- -I = --head (head): Fetches headers only instead of downloading the response body.
+------------------------------------------------------------
+# curl -k https://packages.gitlab.com
+
+Explanation:
+Technical correction: the lesson showed curl -k without a URL, so the same GitLab Packages URL from the lesson was added to make the command complete. It connects while skipping TLS certificate verification.
+
+Options:
+- -k = --insecure (insecure): Allows insecure TLS connections by disabling certificate verification.
+------------------------------------------------------------
+# cd /tmp
+
+Explanation:
+Changes the current working directory to /tmp.
+------------------------------------------------------------
+# curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" -o script.deb.sh
+
+Explanation:
+Downloads the GitLab Runner repository setup script and saves it as script.deb.sh.
+
+Options:
+- -L = --location (location): Follows HTTP redirects.
+- -o = --output (output): Writes the downloaded content to the specified file.
+- script.deb.sh = output value: The local filename used for the downloaded script.
+------------------------------------------------------------
+# less /tmp/script.deb.sh
+
+Explanation:
+Opens the downloaded repository script in the less pager for inspection.
+------------------------------------------------------------
+# sudo bash /tmp/script.deb.sh
+
+Explanation:
+Runs the downloaded repository setup script with Bash using elevated privileges.
+------------------------------------------------------------
+# apt-cache policy gitlab-runner
+
+Explanation:
+Shows the installed version, candidate version, and available package sources for GitLab Runner.
+------------------------------------------------------------
+# sudo apt install -y gitlab-runner
+
+Explanation:
+Installs the GitLab Runner package with APT and automatically accepts the confirmation prompt.
+
+Options:
+- -y = --assume-yes (assume yes): Automatically answers yes to APT confirmation prompts.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager -l
+
+Explanation:
+Shows detailed systemd status for the gitlab-runner service without opening a pager or truncating long lines.
+
+Options:
+- --no-pager = no pager: Prints output directly instead of sending it to a pager program.
+- -l = --full (full): Shows lines in full instead of ellipsizing them.
+------------------------------------------------------------
+# systemctl is-active gitlab-runner
+
+Explanation:
+Checks whether the gitlab-runner service is currently active.
+------------------------------------------------------------
+# systemctl is-enabled gitlab-runner
+
+Explanation:
+Checks whether the gitlab-runner service is enabled to start automatically.
+------------------------------------------------------------
+# sudo systemctl enable --now gitlab-runner
+
+Explanation:
+Enables the gitlab-runner service for automatic startup and starts it immediately.
+
+Options:
+- --now = now: Starts the service immediately while enabling it.
+------------------------------------------------------------
+# ps -ef | grep '[g]itlab-runner'
+
+Explanation:
+Shows running processes and filters for the GitLab Runner process without matching the grep process itself.
+
+Options:
+- -e = every process: Selects all processes.
+- -f = full-format listing: Displays processes using the full output format.
+- | = pipe operator: Sends the output of ps to grep as input.
+------------------------------------------------------------
+# getent passwd gitlab-runner
+
+Explanation:
+Looks up the gitlab-runner account in the system passwd database.
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group ID, and supplementary groups for the gitlab-runner user.
+------------------------------------------------------------
+# sudo ls -ld /home/gitlab-runner
+
+Explanation:
+Shows detailed information about the /home/gitlab-runner directory itself.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+- -d = --directory (directory): Lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+# sudo ls -la /etc/gitlab-runner/
+
+Explanation:
+Lists all files in /etc/gitlab-runner/ using the long listing format, including hidden entries.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+- -a = --all (all): Includes hidden entries.
+------------------------------------------------------------
+# systemctl cat gitlab-runner
+
+Explanation:
+Displays the systemd unit file and any drop-in configuration for the gitlab-runner service.
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 50 --no-pager
+
+Explanation:
+Shows the last 50 journal entries for the gitlab-runner service without opening a pager.
+
+Options:
+- -u = --unit (unit): Filters logs to the specified systemd unit.
+- -n = --lines (lines): Limits output to the specified number of recent lines.
+- 50 = -n value: Requests the last 50 log lines.
+- --no-pager = no pager: Prints output directly instead of sending it to a pager program.
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -f
+
+Explanation:
+Follows new journal entries for the gitlab-runner service in real time.
+
+Options:
+- -u = --unit (unit): Filters logs to the specified systemd unit.
+- -f = --follow (follow): Continuously displays new log entries as they are added.
+------------------------------------------------------------
+# tail -f
+
+Explanation:
+Follows data appended to its input continuously. In the lesson it was shown only as an analogy for journalctl follow mode.
+
+Options:
+- -f = --follow (follow): Continuously outputs appended data.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service with elevated privileges.
+------------------------------------------------------------
+# sudo systemctl stop gitlab-runner
+
+Explanation:
+Stops the gitlab-runner systemd service.
+------------------------------------------------------------
+# sudo systemctl start gitlab-runner
+
+Explanation:
+Starts the gitlab-runner systemd service.
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: the lesson showed docker build and docker build ... without the required build context, so . was added as the current-directory build context. This builds a Docker image from the current directory.
+------------------------------------------------------------
+# docker login
+
+Explanation:
+Authenticates Docker to a registry using interactive credentials when no registry is specified.
+------------------------------------------------------------
+# docker push IMAGE_NAME:TAG
+
+Explanation:
+Technical correction: the lesson showed docker push without the required image reference, so IMAGE_NAME:TAG was added as a clear placeholder for the image and tag to push. This uploads the tagged image to its configured registry.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user while setting that user's home directory. It verifies whether the Runner user can access the Docker client and daemon.
+
+Options:
+- -u = --user (user): Runs the command as the specified user.
+- gitlab-runner = -u value: Selects the gitlab-runner user.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Appends the user to supplementary groups instead of replacing the current group list.
+- -G = --groups (groups): Specifies the supplementary group list.
+- docker = -G value: Adds the user to the docker group.
+------------------------------------------------------------
+# systemctl list-unit-files | grep gitlab-runner
+
+Explanation:
+Lists systemd unit files and filters the output for GitLab Runner.
+
+Options:
+- | = pipe operator: Sends the output of systemctl to grep as input.
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 100 --no-pager
+
+Explanation:
+Shows the last 100 journal entries for the gitlab-runner service without opening a pager.
+
+Options:
+- -u = --unit (unit): Filters logs to the specified systemd unit.
+- -n = --lines (lines): Limits output to the specified number of recent lines.
+- 100 = -n value: Requests the last 100 log lines.
+- --no-pager = no pager: Prints output directly instead of sending it to a pager program.
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed ownership and permission information for the Docker daemon socket.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+------------------------------------------------------------
+# systemctl status gitlab-runner
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service.
+------------------------------------------------------------
+# systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service.
+------------------------------------------------------------
+# journalctl -u gitlab-runner
+
+Explanation:
+Shows journal entries for the gitlab-runner systemd service.
+
+Options:
+- -u = --unit (unit): Filters logs to the specified systemd unit.
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker ps
+
+Explanation:
+Runs docker ps as the gitlab-runner user while setting that user's home directory. It checks whether the Runner user can list running containers.
+
+Options:
+- -u = --user (user): Runs the command as the specified user.
+- gitlab-runner = -u value: Selects the gitlab-runner user.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 30 --no-pager
+
+Explanation:
+Shows the last 30 journal entries for the gitlab-runner service without opening a pager.
+
+Options:
+- -u = --unit (unit): Filters logs to the specified systemd unit.
+- -n = --lines (lines): Limits output to the specified number of recent lines.
+- 30 = -n value: Requests the last 30 log lines.
+- --no-pager = no pager: Prints output directly instead of sending it to a pager program.
+------------------------------------------------------------
