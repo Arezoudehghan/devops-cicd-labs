@@ -1,0 +1,300 @@
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Displays the installed GitLab Runner version.
+
+Options:
+- --version = version: Shows the GitLab Runner version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current status of the gitlab-runner systemd service with elevated privileges. The output is printed directly in the terminal.
+
+Options:
+- --no-pager = no pager: Prevents systemctl from sending the output to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active gitlab-runner
+
+Explanation:
+Checks whether the gitlab-runner systemd service is currently active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --noproxy '*' -I http://192.168.94.90/users/sign_in
+
+Explanation:
+Sends an HTTP request directly to the GitLab sign-in URL without using a proxy and returns only response headers.
+
+Options:
+- --noproxy '*' = no proxy list: The value '*' tells curl to bypass the proxy for all hosts in this command.
+- -I = --head (HEAD request): Fetches only the HTTP response headers instead of the response body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# read -rsp "Paste Runner Authentication Token: " RUNNER_TOKEN
+
+Explanation:
+Reads the Runner authentication token into the RUNNER_TOKEN shell variable without echoing the typed value.
+
+Options:
+- -r = documented Bash read behavior: Prevents backslashes from escaping characters in the input.
+- -s = documented Bash read behavior: Does not echo terminal input while it is being read.
+- -p = documented Bash read behavior: Displays the following string as a prompt before reading input.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo
+
+Explanation:
+Prints a blank line to the terminal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner register \
+  --non-interactive \
+  --url "http://192.168.94.90" \
+  --token "$RUNNER_TOKEN" \
+  --executor "shell" \
+  --description "dev-1-s15-shell"
+
+Explanation:
+Registers a GitLab Runner non-interactively with the GitLab instance using the supplied authentication token. It configures the Runner to use the Shell executor and assigns the description dev-1-s15-shell.
+
+Options:
+- --non-interactive = non-interactive mode: Performs registration without asking interactive questions.
+- --url "http://192.168.94.90" = GitLab URL: Sets the GitLab instance URL used by the Runner.
+- --token "$RUNNER_TOKEN" = authentication token: Uses the value stored in RUNNER_TOKEN to authenticate the Runner.
+- --executor "shell" = executor: Configures the Runner to execute jobs with the Shell executor.
+- --description "dev-1-s15-shell" = description: Sets the Runner configuration description to dev-1-s15-shell.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner register
+
+Explanation:
+Starts interactive GitLab Runner registration with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner register
+
+Explanation:
+Starts interactive GitLab Runner registration using the current user's permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations stored locally when GitLab Runner is run with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the locally registered Runners can communicate successfully with GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the complete GitLab Runner configuration file in the terminal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E '^[[:space:]]*(name|url|executor)[[:space:]]*=' /etc/gitlab-runner/config.toml
+
+Explanation:
+Reads the GitLab Runner configuration file and prints lines that define name, url, or executor settings.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Enables extended regular expression syntax for the search pattern.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== Runner Registration Test ==="
+
+Explanation:
+Prints a label marking the start of the Runner registration test.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hostname:"
+
+Explanation:
+Prints the Hostname label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Displays the hostname of the machine that is executing the command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running User:"
+
+Explanation:
+Prints the Running User label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Displays the username of the account executing the current job or shell command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project:"
+
+Explanation:
+Prints the Project label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PROJECT_PATH"
+
+Explanation:
+Prints the value of the GitLab CI predefined variable CI_PROJECT_PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID:"
+
+Explanation:
+Prints the Pipeline ID label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_PIPELINE_ID"
+
+Explanation:
+Prints the value of the GitLab CI predefined variable CI_PIPELINE_ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job ID:"
+
+Explanation:
+Prints the Job ID label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_JOB_ID"
+
+Explanation:
+Prints the value of the GitLab CI predefined variable CI_JOB_ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Kernel:"
+
+Explanation:
+Prints the Kernel label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# uname -a
+
+Explanation:
+Displays all available system and kernel information reported by uname.
+
+Options:
+- -a = --all (all): Prints all available uname information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 100 --no-pager
+
+Explanation:
+Displays the latest 100 journal entries for the gitlab-runner systemd service with elevated privileges.
+
+Options:
+- -u = --unit (unit): Filters journal entries to the gitlab-runner systemd unit.
+- -n 100 = --lines=100 (lines): Limits the output to the latest 100 journal entries.
+- --no-pager = no pager: Prints the journal output directly instead of opening it in a pager.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --noproxy '*' -I http://192.168.94.90
+
+Explanation:
+Sends an HTTP request directly to the GitLab host without using a proxy and returns only response headers.
+
+Options:
+- --noproxy '*' = no proxy list: The value '*' tells curl to bypass the proxy for all hosts in this command.
+- -I = --head (HEAD request): Fetches only the HTTP response headers instead of the response body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ip route
+
+Explanation:
+Displays the current IP routing table.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# env | grep -i proxy
+
+Explanation:
+Lists environment variables and filters the output for lines containing the word proxy, ignoring letter case.
+
+Options:
+- | = pipe operator: Sends the output of env to grep as input.
+- -i = --ignore-case (ignore case): Makes grep match proxy without distinguishing uppercase and lowercase letters.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# unset RUNNER_TOKEN
+
+Explanation:
+Removes the RUNNER_TOKEN variable from the current shell environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$RUNNER_TOKEN"
+
+Explanation:
+Prints the current value of the RUNNER_TOKEN shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner unregister --name "dev-1-s15-shell"
+
+Explanation:
+Unregisters the locally configured GitLab Runner whose name is dev-1-s15-shell.
+
+Options:
+- --name "dev-1-s15-shell" = runner name: Selects the Runner configuration named dev-1-s15-shell.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations stored for the current execution context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner verify
+
+Explanation:
+Checks whether the locally registered Runners can communicate successfully with GitLab.
+------------------------------------------------------------
