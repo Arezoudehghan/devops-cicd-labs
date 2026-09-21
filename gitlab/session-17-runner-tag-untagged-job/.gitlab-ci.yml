@@ -1,0 +1,19 @@
+stages:
+  - test
+
+tagged_job:
+  stage: test
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "=== RUNNER TAG LAB ==="
+    - echo "Hostname:"
+    - hostname
+    - echo "User:"
+    - whoami
+    - echo "Runner description:"
+    - echo "$CI_RUNNER_DESCRIPTION"
+    - echo "Runner tags:"
+    - echo "$CI_RUNNER_TAGS"
