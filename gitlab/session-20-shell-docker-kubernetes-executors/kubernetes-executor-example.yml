@@ -1,0 +1,20 @@
+stages:
+  - compare
+
+kubernetes_executor_test:
+  stage: compare
+  image: alpine:3.20
+  tags:
+    - dev-k8s
+  script:
+    - echo "===== KUBERNETES EXECUTOR ====="
+    - echo "Runner = $CI_RUNNER_DESCRIPTION"
+    - echo "Pipeline = $CI_PIPELINE_ID"
+    - echo "Pod/container hostname:"
+    - hostname
+    - echo "User:"
+    - id
+    - echo "Working directory:"
+    - pwd
+    - echo "Operating system:"
+    - cat /etc/os-release
