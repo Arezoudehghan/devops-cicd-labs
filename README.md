@@ -20,3 +20,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-07-branch-commit-tag-merge-request/` — Branch, commit, feature workflow, GitLab Merge Request, merge commits, HEAD, remote-tracking branches, and release tags.
 - `gitlab/session-08-branching-strategy/` — GitLab Flow, feature branches, release branches, hotfix branches, release tags, forward-porting fixes, and branch cleanup.
 - `gitlab/session-09-protected-branch-protected-tag/` — GitLab Protected Branch, Protected Tag, direct-push restrictions, Merge Request flow, release-tag protection, and protected CI/CD variables.
+- `gitlab/session-10-merge-request-pipeline/` — GitLab Merge Request Pipelines, workflow rules, MR predefined variables, pipeline merge gates, health-check failure/fix flow, and duplicate-pipeline prevention.
