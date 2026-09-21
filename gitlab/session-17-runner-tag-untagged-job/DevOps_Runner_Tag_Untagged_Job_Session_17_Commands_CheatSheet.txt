@@ -1,0 +1,146 @@
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current status of the gitlab-runner systemd service. sudo runs systemctl with elevated privileges.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of opening it in a pager.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runners registered in the local GitLab Runner configuration. sudo runs the command with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== RUNNER TAG LAB ==="
+
+Explanation:
+Prints the text === RUNNER TAG LAB === to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hostname:"
+
+Explanation:
+Prints the label Hostname: to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the system host name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "User:"
+
+Explanation:
+Prints the label User: to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the effective user name of the account running the command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner description:"
+
+Explanation:
+Prints the label Runner description: to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the value of the CI_RUNNER_DESCRIPTION environment variable. The shell expands $CI_RUNNER_DESCRIPTION before echo prints it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner tags:"
+
+Explanation:
+Prints the label Runner tags: to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_RUNNER_TAGS"
+
+Explanation:
+Prints the value of the CI_RUNNER_TAGS environment variable. The shell expands $CI_RUNNER_TAGS before echo prints it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "This is an untagged job"
+
+Explanation:
+Prints the text This is an untagged job to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "This should not run on dev-shell runner"
+
+Explanation:
+Prints the text This should not run on dev-shell runner to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the build context in the current directory and names the resulting image myapp.
+
+Options:
+- -t = --tag (tag): Names and optionally tags the image; myapp is the image name used here.
+- . = build context path: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./run-tests.sh
+
+Explanation:
+Executes the run-tests.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Executes the deploy.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the text Build to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints the text Test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the text Deploy to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo test
+
+Explanation:
+Prints the text test to standard output.
+------------------------------------------------------------
