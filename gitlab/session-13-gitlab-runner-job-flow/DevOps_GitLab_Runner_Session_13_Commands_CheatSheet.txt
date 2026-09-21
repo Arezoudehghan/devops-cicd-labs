@@ -1,0 +1,360 @@
+------------------------------------------------------------
+# echo "Running test"
+
+Explanation:
+Prints the text "Running test" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Displays the hostname of the machine where the command runs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Uploads local commits from the current branch to its configured remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints the text "Hello" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo test
+
+Explanation:
+Prints the text test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Displays the installed GitLab Runner version and build information.
+
+Options:
+- --version = version information: Prints the GitLab Runner version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Runs systemctl with elevated privileges and shows the current status of the gitlab-runner service without opening a pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active gitlab-runner
+
+Explanation:
+Runs systemctl with elevated privileges and checks whether the gitlab-runner service is currently active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs GitLab Runner with elevated privileges and lists the runners stored in its configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Runs GitLab Runner with elevated privileges and checks whether the configured runners can connect to GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E '^[[:space:]]*(name|url|executor|shell|limit|request_concurrency)[[:space:]]*=' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration file for selected non-sensitive configuration keys while running grep with elevated privileges.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner lint --config /etc/gitlab-runner/config.toml
+
+Explanation:
+Validates the specified GitLab Runner configuration file for syntax and supported configuration errors.
+
+Options:
+- --config = configuration file: Specifies /etc/gitlab-runner/config.toml as the configuration file to validate.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs
+
+Explanation:
+Creates the gitlab-labs directory under the current user's home directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to gitlab-labs under the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone http://192.168.94.90/YOUR_NAMESPACE/runner-session13-lab.git
+
+Explanation:
+Technical correction: The lesson used <YOUR_NAMESPACE> as a visual placeholder, but the angle brackets are shell metacharacters. Replace YOUR_NAMESPACE with the real GitLab namespace before running this command to clone the repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd runner-session13-lab
+
+Explanation:
+Changes the current shell directory to the cloned runner-session13-lab repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'EOF'
+stages:
+  - inspect
+
+runner_info:
+  stage: inspect
+  tags:
+    - dev-shell
+  script:
+    - echo "===== RUNNER INFORMATION ====="
+    - echo "CI_RUNNER_ID=$CI_RUNNER_ID"
+    - echo "CI_RUNNER_DESCRIPTION=$CI_RUNNER_DESCRIPTION"
+    - echo "CI_RUNNER_TAGS=$CI_RUNNER_TAGS"
+    - echo "CI_RUNNER_VERSION=$CI_RUNNER_VERSION"
+    - echo "CI_RUNNER_EXECUTABLE_ARCH=$CI_RUNNER_EXECUTABLE_ARCH"
+    - echo "CI_PROJECT_DIR=$CI_PROJECT_DIR"
+    - echo "===== OPERATING SYSTEM ====="
+    - whoami
+    - hostname
+    - pwd
+    - id
+    - uname -a
+EOF
+
+Explanation:
+Creates .gitlab-ci.yml and writes the complete GitLab CI configuration shown in the here-document into the file.
+
+Options:
+- > = shell output redirection: Redirects the output of cat into .gitlab-ci.yml and overwrites the file if it already exists.
+- <<'EOF' = quoted here-document operator: Supplies all following lines to cat until the closing EOF line; quoting EOF prevents shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== RUNNER INFORMATION ====="
+
+Explanation:
+Prints a section label before displaying GitLab Runner information in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_RUNNER_ID=$CI_RUNNER_ID"
+
+Explanation:
+Prints the CI_RUNNER_ID variable name together with the ID of the runner executing the job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_RUNNER_DESCRIPTION=$CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the CI_RUNNER_DESCRIPTION variable name together with the description of the runner executing the job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_RUNNER_TAGS=$CI_RUNNER_TAGS"
+
+Explanation:
+Prints the CI_RUNNER_TAGS variable name together with the tags assigned to the runner executing the job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_RUNNER_VERSION=$CI_RUNNER_VERSION"
+
+Explanation:
+Prints the CI_RUNNER_VERSION variable name together with the GitLab Runner version executing the job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_RUNNER_EXECUTABLE_ARCH=$CI_RUNNER_EXECUTABLE_ARCH"
+
+Explanation:
+Prints the CI_RUNNER_EXECUTABLE_ARCH variable name together with the architecture of the GitLab Runner executable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_PROJECT_DIR=$CI_PROJECT_DIR"
+
+Explanation:
+Prints the CI_PROJECT_DIR variable name together with the working directory used for the current project job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== OPERATING SYSTEM ====="
+
+Explanation:
+Prints a section label before displaying operating-system and execution-environment information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Displays the effective username running the current command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Displays the absolute path of the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id
+
+Explanation:
+Displays the current user's user ID, group ID, and group memberships.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# uname -a
+
+Explanation:
+Displays all available system information provided by uname.
+
+Options:
+- -a = --all (all): Prints all available uname information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Displays the complete contents of the .gitlab-ci.yml file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file so its changes can be included in the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: inspect gitlab runner execution"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses "ci: inspect gitlab runner execution" as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -f
+
+Explanation:
+Runs journalctl with elevated privileges and continuously follows log messages for the gitlab-runner service.
+
+Options:
+- -u = --unit (unit): Limits the log output to the gitlab-runner systemd unit.
+- -f = --follow (follow): Keeps the command running and displays new log entries as they arrive.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i 's/dev-shell/no-such-runner/' .gitlab-ci.yml
+
+Explanation:
+Edits .gitlab-ci.yml in place and replaces the first dev-shell match on each processed line with no-such-runner.
+
+Options:
+- -i = --in-place (in place): Modifies .gitlab-ci.yml directly instead of writing the changed text to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep -A2 'tags:' .gitlab-ci.yml
+
+Explanation:
+Finds the line containing tags: in .gitlab-ci.yml and also displays the next two lines.
+
+Options:
+- -A = --after-context (after context): Displays lines after each matching line.
+- 2 = option value: Displays two lines after the matching line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: test unmatched runner tag"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses "ci: test unmatched runner tag" as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -i 's/no-such-runner/dev-shell/' .gitlab-ci.yml
+
+Explanation:
+Edits .gitlab-ci.yml in place and replaces the first no-such-runner match on each processed line with dev-shell.
+
+Options:
+- -i = --in-place (in place): Modifies .gitlab-ci.yml directly instead of writing the changed text to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: restore correct runner tag"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses "fix: restore correct runner tag" as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf some-directory
+
+Explanation:
+Removes some-directory and its contents recursively without prompting for missing files or most confirmation.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and suppresses most confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t app .
+
+Explanation:
+Builds a Docker image from the build context in the current directory and assigns the image the tag app.
+
+Options:
+- -t = --tag (tag): Sets app as the name or name-and-tag for the built image.
+------------------------------------------------------------
