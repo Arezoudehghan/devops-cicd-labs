@@ -1,0 +1,23 @@
+stages:
+  - verify
+
+runner_registration_test:
+  stage: verify
+
+  tags:
+    - s15-shell
+
+  script:
+    - echo "=== Runner Registration Test ==="
+    - echo "Hostname:"
+    - hostname
+    - echo "Running User:"
+    - whoami
+    - echo "Project:"
+    - echo "$CI_PROJECT_PATH"
+    - echo "Pipeline ID:"
+    - echo "$CI_PIPELINE_ID"
+    - echo "Job ID:"
+    - echo "$CI_JOB_ID"
+    - echo "Kernel:"
+    - uname -a
