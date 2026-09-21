@@ -1,0 +1,11 @@
+stages:
+  - test
+
+wrong_tag_job:
+  stage: test
+
+  tags:
+    - docker
+
+  script:
+    - echo "This should not run on dev-shell runner"
