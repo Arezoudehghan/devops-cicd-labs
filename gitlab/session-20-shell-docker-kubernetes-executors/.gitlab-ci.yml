@@ -1,0 +1,43 @@
+stages:
+  - compare
+
+shell_executor_test:
+  stage: compare
+  tags:
+    - dev-shell
+  script:
+    - echo "===== SHELL EXECUTOR ====="
+    - echo "Runner = $CI_RUNNER_DESCRIPTION"
+    - echo "Pipeline = $CI_PIPELINE_ID"
+    - echo "Host:"
+    - hostname
+    - echo "User:"
+    - id
+    - echo "Working directory:"
+    - pwd
+    - echo "Operating system:"
+    - cat /etc/os-release
+    - echo "Creating test file on runner host..."
+    - echo "Created by Shell Executor" > "/tmp/shell-${CI_PIPELINE_ID}.txt"
+    - ls -l "/tmp/shell-${CI_PIPELINE_ID}.txt"
+
+docker_executor_test:
+  stage: compare
+  image: alpine:3.20
+  tags:
+    - dev-docker
+  script:
+    - echo "===== DOCKER EXECUTOR ====="
+    - echo "Runner = $CI_RUNNER_DESCRIPTION"
+    - echo "Pipeline = $CI_PIPELINE_ID"
+    - echo "Container hostname:"
+    - hostname
+    - echo "User:"
+    - id
+    - echo "Working directory:"
+    - pwd
+    - echo "Operating system:"
+    - cat /etc/os-release
+    - echo "Creating test file inside container..."
+    - echo "Created by Docker Executor" > "/tmp/docker-${CI_PIPELINE_ID}.txt"
+    - ls -l "/tmp/docker-${CI_PIPELINE_ID}.txt"
