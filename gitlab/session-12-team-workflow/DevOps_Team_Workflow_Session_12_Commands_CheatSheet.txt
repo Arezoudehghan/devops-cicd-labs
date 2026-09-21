@@ -1,0 +1,286 @@
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/project
+
+Explanation:
+Changes the current shell directory to the project directory inside the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the local main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull origin main
+
+Explanation:
+Fetches the main branch from the remote named origin and integrates it into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/add-healthcheck
+
+Explanation:
+Creates a new branch named feature/add-healthcheck and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch
+
+Explanation:
+Lists the local Git branches and marks the currently checked-out branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "healthcheck enabled" > healthcheck.txt
+
+Explanation:
+Writes the text healthcheck enabled into healthcheck.txt. Existing file content is replaced.
+
+Options:
+- > = output redirection: Sends the command output to healthcheck.txt and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add healthcheck.txt
+
+Explanation:
+Stages healthcheck.txt so its current changes can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add application healthcheck"
+
+Explanation:
+Creates a commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/add-healthcheck
+
+Explanation:
+Pushes feature/add-healthcheck to origin and sets the remote branch as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the remote tracking branch for later push and pull operations.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits from the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch -d feature/add-healthcheck
+
+Explanation:
+Deletes the local feature/add-healthcheck branch if Git considers it safely merged.
+
+Options:
+- -d = --delete (delete): Deletes the specified local branch only when Git's safety checks allow it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin --delete feature/add-healthcheck
+
+Explanation:
+Deletes the feature/add-healthcheck branch from the remote repository named origin.
+
+Options:
+- --delete = delete: Deletes the specified remote branch or reference.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git merge main
+
+Explanation:
+Merges the history and changes from the local main branch into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c bugfix/login-timeout
+
+Explanation:
+Creates a new branch named bugfix/login-timeout and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes under the current directory for the next commit.
+
+Options:
+- . = current directory: Selects changes in the current directory and its subdirectories according to Git's normal add behavior.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: resolve login timeout"
+
+Explanation:
+Creates a commit from the staged changes with the specified bug-fix message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin bugfix/login-timeout
+
+Explanation:
+Pushes bugfix/login-timeout to origin and sets the remote branch as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the remote tracking branch for later push and pull operations.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c hotfix/authentication-failure
+
+Explanation:
+Creates a new branch named hotfix/authentication-failure and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "fix: resolve critical authentication failure"
+
+Explanation:
+Creates a commit from the staged changes with the specified hotfix message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin hotfix/authentication-failure
+
+Explanation:
+Pushes hotfix/authentication-failure to origin and sets the remote branch as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the remote tracking branch for later push and pull operations.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "change"
+
+Explanation:
+Creates a commit from the staged changes with the commit message change.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/new-feature
+
+Explanation:
+Creates a new branch named feature/new-feature and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/session12-workflow
+
+Explanation:
+Creates a new branch named feature/session12-workflow and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Session 12 Team Workflow Lab" > workflow.txt
+
+Explanation:
+Writes the text Session 12 Team Workflow Lab into workflow.txt. Existing file content is replaced.
+
+Options:
+- > = output redirection: Sends the command output to workflow.txt and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add workflow.txt
+
+Explanation:
+Stages workflow.txt so its current changes can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add team workflow lab"
+
+Explanation:
+Creates a commit from the staged changes with the specified feature message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/session12-workflow
+
+Explanation:
+Pushes feature/session12-workflow to origin and sets the remote branch as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the remote tracking branch for later push and pull operations.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline --graph --decorate --all
+
+Explanation:
+Shows commit history in a compact graph and includes references from all available branches and refs.
+
+Options:
+- --oneline = one-line format: Displays each commit as an abbreviated commit ID followed by its subject on one line.
+- --graph = graph display: Draws an ASCII graph of branch and merge history.
+- --decorate = reference decoration: Shows branch, tag, and other reference names next to commits.
+- --all = all references: Shows commits reachable from all refs instead of only the current history.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat workflow.txt
+
+Explanation:
+Prints the contents of workflow.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch feature/session12-workflow
+
+Explanation:
+Switches the working tree to the existing local branch feature/session12-workflow.
+------------------------------------------------------------
