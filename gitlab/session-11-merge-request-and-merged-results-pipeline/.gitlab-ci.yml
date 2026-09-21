@@ -1,0 +1,39 @@
+stages:
+  - test
+
+default:
+  tags:
+    - dev-shell
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - when: never
+
+show_mr_context:
+  stage: test
+  script:
+    - echo "PIPELINE_SOURCE=${CI_PIPELINE_SOURCE}"
+    - echo "MR_EVENT_TYPE=${CI_MERGE_REQUEST_EVENT_TYPE:-not-set}"
+    - echo "SOURCE_BRANCH=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME:-not-set}"
+    - echo "TARGET_BRANCH=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-not-set}"
+    - echo "SOURCE_SHA=${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-empty}"
+    - echo "TARGET_SHA=${CI_MERGE_REQUEST_TARGET_BRANCH_SHA:-empty}"
+    - echo "CI_COMMIT_SHA=${CI_COMMIT_SHA}"
+    - git log -1 --oneline
+
+source_branch_test:
+  stage: test
+  script:
+    - python3 validate_config.py
+
+simulate_merged_result:
+  stage: test
+  script:
+    - git config user.name "GitLab CI"
+    - git config user.email "gitlab-ci@example.local"
+    - git fetch origin "${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}:refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - git checkout -B ci-merged-result "$CI_COMMIT_SHA"
+    - git merge --no-commit --no-ff "refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - echo "Testing source branch together with latest target branch"
+    - python3 validate_config.py
