@@ -1,0 +1,9 @@
+stages:
+  - test
+
+negative-test:
+  stage: test
+  tags:
+    - project-shell
+  script:
+    - echo "This should not normally run on app-b"
