@@ -23,4 +23,5 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-10-merge-request-pipeline/` — GitLab Merge Request Pipelines, workflow rules, MR predefined variables, pipeline merge gates, health-check failure/fix flow, and duplicate-pipeline prevention.
 - `gitlab/session-11-merge-request-and-merged-results-pipeline/` — Standard Merge Request Pipeline, MR context variables, source-vs-target integration risk, and merged-result simulation for GitLab CE.
 - `gitlab/session-13-gitlab-runner-job-flow/` — GitLab Runner job request flow, Runner tags, Shell executor, predefined Runner variables, pending-job troubleshooting, and Runner verification.
+- `gitlab/session-12-team-workflow/` — Enterprise team workflow with short-lived branches, Merge Requests, CI quality gates, code review, approval, and merge-to-main policy.
 - `gitlab/session-14-gitlab-runner-installation-linux/` — Install and verify GitLab Runner on Linux, inspect systemd service and logs, understand `config.toml`, and validate Docker access for the Runner user.
