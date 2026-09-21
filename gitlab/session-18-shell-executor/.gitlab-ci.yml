@@ -1,0 +1,48 @@
+stages:
+  - inspect
+  - host-test
+
+inspect-shell:
+  stage: inspect
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "=== Shell Executor Inspection ==="
+    - echo "Runner User:"
+    - whoami
+    - echo "User ID:"
+    - id
+    - echo "Hostname:"
+    - hostname
+    - echo "Current Directory:"
+    - pwd
+    - echo "Home Directory:"
+    - echo "$HOME"
+    - echo "Shell:"
+    - echo "$SHELL"
+    - echo "Project Directory:"
+    - echo "$CI_PROJECT_DIR"
+    - echo "Git Version:"
+    - git --version
+    - echo "Docker Version:"
+    - docker --version
+    - echo "Kernel:"
+    - uname -a
+
+host-filesystem-test:
+  stage: host-test
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "=== Host Filesystem Test ==="
+    - TEST_FILE="/tmp/shell-executor-${CI_PIPELINE_ID}.txt"
+    - echo "Created by GitLab Shell Executor" > "$TEST_FILE"
+    - echo "Pipeline ID = $CI_PIPELINE_ID" >> "$TEST_FILE"
+    - echo "Runner Host = $(hostname)" >> "$TEST_FILE"
+    - echo "Runner User = $(whoami)" >> "$TEST_FILE"
+    - cat "$TEST_FILE"
+    - ls -l "$TEST_FILE"
