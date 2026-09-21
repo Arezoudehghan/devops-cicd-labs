@@ -1,0 +1,407 @@
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Prints the installed Python 3 version.
+
+Options:
+- --version = version information: Shows the Python 3 version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 app.py
+
+Explanation:
+Runs the app.py script with Python 3.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Prints the Docker CLI version.
+
+Options:
+- --version = version information: Shows the Docker version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy --version
+
+Explanation:
+Prints the installed Trivy version.
+
+Options:
+- --version = version information: Shows the Trivy version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitleaks version
+
+Explanation:
+Prints the installed Gitleaks version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# touch /tmp/test.txt
+
+Explanation:
+Creates /tmp/test.txt if it does not exist, or updates its timestamps if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf /some/path
+
+Explanation:
+Recursively removes /some/path and suppresses normal confirmation and missing-file errors.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and does not prompt for confirmation.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /etc/passwd
+
+Explanation:
+Prints the contents of /etc/passwd to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson also showed docker build without a build context; the final dot supplies the current directory as the required build context. Docker builds an image using the Dockerfile found in that context unless another file is specified.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push <IMAGE>
+
+Explanation:
+Technical correction: The lesson showed docker push without the required image reference. Replace <IMAGE> with the image name and optional tag that you want to push.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image <IMAGE>
+
+Explanation:
+Technical correction: The lesson showed trivy image without the required target image. Replace <IMAGE> with the container image name or image reference that Trivy should scan.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitleaks dir
+
+Explanation:
+Runs a Gitleaks directory scan using the command's default directory behavior.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Starts an SSH session to 192.168.94.91 as the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Adds the user to the listed supplementary groups without removing existing supplementary group memberships.
+- -G = --groups (groups): Specifies the supplementary group list; here the group is docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user and sets HOME to that user's home directory.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs GitLab Runner with elevated privileges and lists the runners registered in the local configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening a pager.
+
+Options:
+- --no-pager = no pager: Prints the status directly instead of sending it to a paging program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows detailed Docker client and server version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull alpine:3.20
+
+Explanation:
+Downloads the alpine image with the 3.20 tag from the configured registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls alpine
+
+Explanation:
+Lists local Docker images whose repository matches alpine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull python:3.12
+
+Explanation:
+Downloads the python image with the 3.12 tag from the configured registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== SHELL EXECUTOR ====="
+
+Explanation:
+Prints a visible label for the Shell Executor section in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner = $CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the current GitLab Runner description from the CI_RUNNER_DESCRIPTION environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline = $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID from the CI_PIPELINE_ID environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Host:"
+
+Explanation:
+Prints the Host: label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the hostname of the current execution environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "User:"
+
+Explanation:
+Prints the User: label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id
+
+Explanation:
+Prints the current user's UID, GID, and group memberships.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Working directory:"
+
+Explanation:
+Prints the Working directory: label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Operating system:"
+
+Explanation:
+Prints the Operating system: label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /etc/os-release
+
+Explanation:
+Prints operating-system identification information from /etc/os-release.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating test file on runner host..."
+
+Explanation:
+Prints a message indicating that the Shell Executor job is about to create a test file on the runner host.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Created by Shell Executor" > "/tmp/shell-${CI_PIPELINE_ID}.txt"
+
+Explanation:
+Writes the text Created by Shell Executor into a pipeline-specific file under /tmp. The CI_PIPELINE_ID variable makes the filename unique to the pipeline.
+
+Options:
+- > = output redirection: Replaces the target file's contents with the command's standard output, creating the file if necessary.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l "/tmp/shell-${CI_PIPELINE_ID}.txt"
+
+Explanation:
+Shows the long listing details for the pipeline-specific Shell Executor test file.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, size, and timestamp.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== DOCKER EXECUTOR ====="
+
+Explanation:
+Prints a visible label for the Docker Executor section in the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Container hostname:"
+
+Explanation:
+Prints the Container hostname: label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating test file inside container..."
+
+Explanation:
+Prints a message indicating that the Docker Executor job is about to create a test file inside the job container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Created by Docker Executor" > "/tmp/docker-${CI_PIPELINE_ID}.txt"
+
+Explanation:
+Writes the text Created by Docker Executor into a pipeline-specific file under /tmp inside the current execution environment. The CI_PIPELINE_ID variable makes the filename unique to the pipeline.
+
+Options:
+- > = output redirection: Replaces the target file's contents with the command's standard output, creating the file if necessary.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l "/tmp/docker-${CI_PIPELINE_ID}.txt"
+
+Explanation:
+Shows the long listing details for the pipeline-specific Docker Executor test file.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, size, and timestamp.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd <PROJECT_PATH>
+
+Explanation:
+Changes the current directory to the project path represented by <PROJECT_PATH>.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: compare shell and docker executors"
+
+Explanation:
+Creates a Git commit with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /tmp/shell-123.txt
+
+Explanation:
+Shows the long listing details for /tmp/shell-123.txt.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, size, and timestamp.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /tmp/shell-123.txt
+
+Explanation:
+Prints the contents of /tmp/shell-123.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /tmp/docker-123.txt
+
+Explanation:
+Shows the long listing details for /tmp/docker-123.txt.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, size, and timestamp.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# apt --version
+
+Explanation:
+Prints the installed APT version.
+
+Options:
+- --version = version information: Shows the APT version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python --version
+
+Explanation:
+Prints the version of the Python interpreter referenced by the python command.
+
+Options:
+- --version = version information: Shows the Python version and exits.
+------------------------------------------------------------
