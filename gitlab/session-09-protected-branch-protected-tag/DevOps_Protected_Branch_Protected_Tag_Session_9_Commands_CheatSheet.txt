@@ -1,0 +1,131 @@
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local branch named main to the remote repository named origin, normally updating the remote main branch. If main is protected against direct pushes, GitLab should reject this command.
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-pipeline-lab
+
+Explanation:
+Changes the current shell directory to the cicd-pipeline-lab repository under ~/gitlab-labs.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree status, including changed, staged, and untracked files.
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists the configured Git remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Shows the remote URLs in addition to the remote names.
+------------------------------------------------------------
+# git branch -a
+
+Explanation:
+Lists local branches and remote-tracking branches.
+
+Options:
+- -a = --all (all): Shows both local and remote-tracking branches.
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists the tags that exist in the local repository.
+------------------------------------------------------------
+# git fetch --all --prune --tags
+
+Explanation:
+Fetches updated references from all configured remotes, removes stale remote-tracking references, and fetches tags.
+
+Options:
+- --all = all remotes: Fetches from all configured remotes.
+- --prune = prune: Removes remote-tracking references that no longer exist on the remote.
+- --tags = tags: Fetches all tags from the remote in addition to the normal fetched references.
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the local main branch.
+------------------------------------------------------------
+# git pull --ff-only origin main
+
+Explanation:
+Fetches the main branch from origin and updates the current branch only when a fast-forward update is possible.
+
+Options:
+- --ff-only = fast-forward only: Refuses the pull if updating the branch would require a merge commit.
+------------------------------------------------------------
+# git switch -c test/session9-direct-push
+
+Explanation:
+Creates a new branch named test/session9-direct-push and switches to it immediately.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+# echo "Protected Branch Test - Session 9" >> protected-demo.txt
+
+Explanation:
+Writes the given text to protected-demo.txt by appending it to the end of the file.
+
+Options:
+- >> = append redirection operator: Appends standard output to the target file instead of overwriting it.
+------------------------------------------------------------
+# git add protected-demo.txt
+
+Explanation:
+Stages protected-demo.txt so its current changes can be included in the next commit.
+------------------------------------------------------------
+# git commit -m "Test protected branch"
+
+Explanation:
+Creates a new commit from the staged changes and uses the provided text as the commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push origin HEAD:main
+
+Explanation:
+Pushes the commit currently referenced by HEAD directly to the remote main branch on origin. This is used to test whether direct pushes to protected main are rejected.
+------------------------------------------------------------
+# git push -u origin test/session9-direct-push
+
+Explanation:
+Pushes test/session9-direct-push to origin and configures the remote branch as the upstream branch for the local branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the pushed remote branch as the upstream branch for future pull and push operations.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch to its configured upstream remote branch using the repository's current Git configuration.
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Release v1.0.0 - Session 9"
+
+Explanation:
+Creates an annotated Git tag named v1.0.0 and stores the provided release message with the tag.
+
+Options:
+- -a = --annotate (annotate): Creates an annotated tag object instead of a lightweight tag.
+- -m = --message (message): Uses the following text as the annotated tag message.
+------------------------------------------------------------
+# git show v1.0.0
+
+Explanation:
+Displays the object referenced by v1.0.0, including the annotated tag information and the referenced commit details.
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the local v1.0.0 tag to the remote repository named origin.
+------------------------------------------------------------
+# git push origin :refs/tags/v1.0.0
+
+Explanation:
+Pushes an empty source to refs/tags/v1.0.0 on origin, which requests deletion of that remote tag. A protected tag should cause GitLab to reject this deletion through Git.
+------------------------------------------------------------
