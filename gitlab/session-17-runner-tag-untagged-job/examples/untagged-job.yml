@@ -1,0 +1,10 @@
+stages:
+  - test
+
+untagged_job:
+  stage: test
+
+  script:
+    - echo "This is an untagged job"
+    - hostname
+    - whoami
