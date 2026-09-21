@@ -1,0 +1,4 @@
+Application: Branching Strategy Lab
+Version: 1.1.0
+Status: Production
+Health: HEALTHY
