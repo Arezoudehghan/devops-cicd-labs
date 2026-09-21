@@ -1,0 +1,271 @@
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch or configured refs to the repository's default remote using the repository's Git push configuration.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to the gitlab-labs directory inside the current user's home directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs
+
+Explanation:
+Creates the gitlab-labs directory inside the current user's home directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# git clone http://192.168.94.90/<YOUR_NAMESPACE>/mr-pipeline-lab.git
+
+Explanation:
+Clones the mr-pipeline-lab Git repository from the GitLab server into a new local directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd mr-pipeline-lab
+
+Explanation:
+Changes the current shell directory to the cloned mr-pipeline-lab repository.
+------------------------------------------------------------
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files in the working tree.
+------------------------------------------------------------
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Runs systemctl with elevated privileges to show the current status of the gitlab-runner service without opening a pager.
+
+Options:
+- --no-pager = do not use a pager: Print the status directly in the terminal instead of opening a pager program.
+------------------------------------------------------------
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs GitLab Runner with elevated privileges and lists the runners registered in the local runner configuration.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p app
+
+Explanation:
+Creates the app directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "healthy" > app/health.txt
+
+Explanation:
+Writes the word healthy to app/health.txt. The file is created if needed and overwritten if it already exists.
+
+Options:
+- > = output redirection operator: Redirect standard output to the file and replace the file's existing contents.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat app/health.txt
+
+Explanation:
+Prints the contents of app/health.txt to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor for editing.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Pipeline source=$CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints the pipeline source value. The shell expands $CI_PIPELINE_SOURCE to the current GitLab CI/CD variable value before echo runs.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "MR IID=$CI_MERGE_REQUEST_IID"
+
+Explanation:
+Prints the Merge Request internal ID. The shell expands $CI_MERGE_REQUEST_IID to its current GitLab CI/CD variable value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Source branch=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+
+Explanation:
+Prints the Merge Request source branch name. The shell expands $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME before echo runs.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Target branch=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+
+Explanation:
+Prints the Merge Request target branch name. The shell expands $CI_MERGE_REQUEST_TARGET_BRANCH_NAME before echo runs.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Commit SHA=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the shortened commit SHA for the current GitLab CI/CD job. The shell expands $CI_COMMIT_SHORT_SHA before echo runs.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Checking health file in merge request..."
+
+Explanation:
+Prints a short message indicating that the Merge Request health-file check is starting.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -f app/health.txt
+
+Explanation:
+Checks whether app/health.txt exists and is a regular file. The command returns a zero exit status when the check succeeds.
+
+Options:
+- -f = regular-file test: Return true when the specified path exists and is a regular file.
+------------------------------------------------------------
+------------------------------------------------------------
+# grep -qx "healthy" app/health.txt
+
+Explanation:
+Checks silently whether app/health.txt contains a line that is exactly healthy. It returns success only when an exact matching line is found.
+
+Options:
+- -q = --quiet (quiet): Suppress normal output and use only the exit status.
+- -x = --line-regexp (line regexp): Match only when the entire line matches the pattern.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Checking main branch..."
+
+Explanation:
+Prints a short message indicating that the main-branch health check is starting.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its subdirectories for the next commit, while respecting Git ignore rules.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "ci: configure merge request pipeline"
+
+Explanation:
+Creates a Git commit from the staged changes with the message ci: configure merge request pipeline.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+------------------------------------------------------------
+# git switch -c feature/break-health-check
+
+Explanation:
+Creates a new branch named feature/break-health-check and switches the working tree to that branch.
+
+Options:
+- -c = --create (create): Create a new branch and switch to it.
+------------------------------------------------------------
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out branch.
+
+Options:
+- --show-current = show current branch: Print the current branch name and print nothing in detached HEAD state.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "unhealthy" > app/health.txt
+
+Explanation:
+Writes the word unhealthy to app/health.txt. The file is created if needed and overwritten if it already exists.
+
+Options:
+- > = output redirection operator: Redirect standard output to the file and replace the file's existing contents.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add app/health.txt
+
+Explanation:
+Stages app/health.txt for the next Git commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "feat: change health status"
+
+Explanation:
+Creates a Git commit from the staged changes with the message feat: change health status.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push -u origin feature/break-health-check
+
+Explanation:
+Pushes feature/break-health-check to origin and records that remote branch as the local branch's upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Add upstream tracking information for the branch that is successfully pushed.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "fix: restore healthy status"
+
+Explanation:
+Creates a Git commit from the staged changes with the message fix: restore healthy status.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push -u
+
+Explanation:
+Pushes according to the repository's configured/default push target and requests upstream tracking for branches that are successfully pushed. In this lesson, the explicit first-push form was git push -u origin feature/break-health-check.
+
+Options:
+- -u = --set-upstream (set upstream): Add upstream tracking information for branches that are successfully pushed.
+------------------------------------------------------------
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the existing main branch.
+------------------------------------------------------------
+------------------------------------------------------------
+# git pull origin main
+
+Explanation:
+Fetches the main branch from origin and integrates it into the currently checked-out local branch.
+------------------------------------------------------------
+------------------------------------------------------------
+# git log --graph --oneline --decorate --all
+
+Explanation:
+Shows commit history for all refs in a compact graph view with branch and tag decorations.
+
+Options:
+- --graph = graph display: Draw an ASCII graph of the branch and merge history.
+- --oneline = one-line log format: Show each commit in a compact single-line format.
+- --decorate = decorate refs: Show reference names such as branches and tags next to commits.
+- --all = all refs: Show commits reachable from all refs.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "MR Test"
+
+Explanation:
+Prints the text MR Test to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "test"
+
+Explanation:
+Prints the text test to standard output.
+------------------------------------------------------------
