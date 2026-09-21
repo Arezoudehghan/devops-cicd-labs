@@ -1,0 +1,44 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - when: never
+
+stages:
+  - validate
+  - test
+
+show-mr-context:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Pipeline source=$CI_PIPELINE_SOURCE"
+    - echo "MR IID=$CI_MERGE_REQUEST_IID"
+    - echo "Source branch=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "Target branch=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - echo "Commit SHA=$CI_COMMIT_SHORT_SHA"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+mr-health-check:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Checking health file in merge request..."
+    - test -f app/health.txt
+    - grep -qx "healthy" app/health.txt
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+main-health-check:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Checking main branch..."
+    - test -f app/health.txt
+    - grep -qx "healthy" app/health.txt
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
