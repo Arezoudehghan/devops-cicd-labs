@@ -1,0 +1,20 @@
+stages:
+  - test
+
+test-instance-runner:
+  stage: test
+  tags:
+    - instance-shell
+  script:
+    - echo "Running on Instance Runner"
+    - echo "Runner = $CI_RUNNER_DESCRIPTION"
+    - hostname
+
+test-group-runner:
+  stage: test
+  tags:
+    - group-shell
+  script:
+    - echo "Running on Group Runner"
+    - echo "Runner = $CI_RUNNER_DESCRIPTION"
+    - hostname
