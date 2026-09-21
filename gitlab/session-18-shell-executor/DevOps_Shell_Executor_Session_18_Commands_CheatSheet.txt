@@ -1,0 +1,469 @@
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the hostname of the machine where the GitLab job is running. It is useful for proving that a Shell Executor job is running directly on the runner host.
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the effective username of the current process. In this lesson, it is used to confirm that the job runs as the GitLab Runner service user.
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Prints the installed Docker client version. This checks whether Docker is available on the Shell Executor host.
+
+Options:
+- --version = version information: Prints the Docker version and exits.
+------------------------------------------------------------
+# python3
+
+Explanation:
+Starts the Python 3 interpreter. In this lesson, it illustrates that Python must be installed on the Shell Executor host if a job needs it.
+------------------------------------------------------------
+# python3 app.py
+
+Explanation:
+Runs the Python script named app.py with Python 3. The script is executed using the Python installation available on the runner host.
+------------------------------------------------------------
+# docker build
+
+Explanation:
+Starts a Docker image build command. Without additional arguments, Docker does not have enough information to complete a normal image build.
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it as myapp.
+
+Options:
+- -t = --tag (tag): Assigns the name myapp to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push registry.example.com/myapp
+
+Explanation:
+Pushes the image registry.example.com/myapp to the configured container registry. If no explicit tag is present, Docker normally uses the default tag.
+------------------------------------------------------------
+# docker
+
+Explanation:
+Runs the Docker CLI without a subcommand. Docker normally displays its command usage and available subcommands.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening the output in a pager.
+
+Options:
+- --no-pager = disable pager: Makes systemctl print the output directly instead of using a pager program.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations registered on the current host. It can show information such as the runner name, URL, and executor.
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the configured GitLab Runner can communicate with GitLab and whether the runner registration is valid.
+------------------------------------------------------------
+# sudo grep -E '^[[:space:]]*(name|url|executor|shell|builds_dir|cache_dir)[[:space:]]*=' /etc/gitlab-runner/config.toml
+
+Explanation:
+Reads selected configuration keys from /etc/gitlab-runner/config.toml while avoiding unrelated lines such as the runner token.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Enables extended regular expression syntax for the search pattern.
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group ID, and supplementary groups for the gitlab-runner user.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'whoami'
+
+Explanation:
+Runs whoami inside a Bash login shell as the gitlab-runner user. This closely simulates the user context used by a Shell Executor job.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'echo $HOME'
+
+Explanation:
+Runs a Bash login shell as gitlab-runner and prints that user's HOME environment variable.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers. In this lesson, it is also used to test whether the current user can access the Docker Engine.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'docker ps'
+
+Explanation:
+Runs docker ps as the gitlab-runner user inside a Bash login shell. This verifies whether GitLab Runner has permission to access Docker.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+------------------------------------------------------------
+# groups gitlab-runner
+
+Explanation:
+Prints the groups that the gitlab-runner user belongs to. It is useful for checking whether the user is a member of the docker group.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds gitlab-runner to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Adds the user to the specified supplementary group list instead of replacing the existing list.
+- -G = --groups (groups): Specifies the supplementary group list; here the group is docker.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service. This is used after changing runner-related permissions or group membership so the service starts with the updated context.
+------------------------------------------------------------
+# echo "=== Shell Executor Inspection ==="
+
+Explanation:
+Prints a visible section header in the CI job log for the Shell Executor inspection steps.
+------------------------------------------------------------
+# echo "Runner User:"
+
+Explanation:
+Prints the label Runner User: in the CI job log.
+------------------------------------------------------------
+# echo "User ID:"
+
+Explanation:
+Prints the label User ID: in the CI job log.
+------------------------------------------------------------
+# id
+
+Explanation:
+Prints the current process user's UID, GID, and group memberships.
+------------------------------------------------------------
+# echo "Hostname:"
+
+Explanation:
+Prints the label Hostname: in the CI job log.
+------------------------------------------------------------
+# echo "Current Directory:"
+
+Explanation:
+Prints the label Current Directory: in the CI job log.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory of the CI job.
+------------------------------------------------------------
+# echo "Home Directory:"
+
+Explanation:
+Prints the label Home Directory: in the CI job log.
+------------------------------------------------------------
+# echo "$HOME"
+
+Explanation:
+Prints the value of the HOME environment variable for the current shell.
+------------------------------------------------------------
+# echo "Shell:"
+
+Explanation:
+Prints the label Shell: in the CI job log.
+------------------------------------------------------------
+# echo "$SHELL"
+
+Explanation:
+Prints the value of the SHELL environment variable.
+------------------------------------------------------------
+# echo "Project Directory:"
+
+Explanation:
+Prints the label Project Directory: in the CI job log.
+------------------------------------------------------------
+# echo "$CI_PROJECT_DIR"
+
+Explanation:
+Prints GitLab's CI_PROJECT_DIR variable, which contains the project working directory used by the job.
+------------------------------------------------------------
+# echo "Git Version:"
+
+Explanation:
+Prints the label Git Version: in the CI job log.
+------------------------------------------------------------
+# git --version
+
+Explanation:
+Prints the installed Git version. This verifies that Git is available on the Shell Executor host.
+
+Options:
+- --version = version information: Prints the Git version and exits.
+------------------------------------------------------------
+# echo "Docker Version:"
+
+Explanation:
+Prints the label Docker Version: in the CI job log.
+------------------------------------------------------------
+# echo "Kernel:"
+
+Explanation:
+Prints the label Kernel: in the CI job log.
+------------------------------------------------------------
+# uname -a
+
+Explanation:
+Prints detailed information about the operating system kernel and machine.
+
+Options:
+- -a = --all (all): Prints all available uname information.
+------------------------------------------------------------
+# echo "=== Host Filesystem Test ==="
+
+Explanation:
+Prints a visible section header for the host filesystem test in the CI job log.
+------------------------------------------------------------
+# TEST_FILE="/tmp/shell-executor-${CI_PIPELINE_ID}.txt"
+
+Explanation:
+Creates the shell variable TEST_FILE and sets it to a pipeline-specific file path under /tmp.
+
+Options:
+- ${CI_PIPELINE_ID} = shell parameter expansion: Inserts the current GitLab pipeline ID into the file name.
+------------------------------------------------------------
+# echo "Created by GitLab Shell Executor" > "$TEST_FILE"
+
+Explanation:
+Writes the text to the file stored in TEST_FILE. Existing file content is replaced.
+
+Options:
+- > = output redirection: Sends standard output to the target file and overwrites existing content.
+------------------------------------------------------------
+# echo "Pipeline ID = $CI_PIPELINE_ID" >> "$TEST_FILE"
+
+Explanation:
+Appends the current GitLab pipeline ID to the file stored in TEST_FILE.
+
+Options:
+- >> = append redirection: Sends standard output to the end of the target file without replacing existing content.
+------------------------------------------------------------
+# echo "Runner Host = $(hostname)" >> "$TEST_FILE"
+
+Explanation:
+Runs hostname, inserts its output into the echo text, and appends the result to TEST_FILE.
+
+Options:
+- $(hostname) = command substitution: Runs hostname and substitutes its output into the surrounding command.
+- >> = append redirection: Appends the command output to the target file.
+------------------------------------------------------------
+# echo "Runner User = $(whoami)" >> "$TEST_FILE"
+
+Explanation:
+Runs whoami, inserts its output into the echo text, and appends the result to TEST_FILE.
+
+Options:
+- $(whoami) = command substitution: Runs whoami and substitutes its output into the surrounding command.
+- >> = append redirection: Appends the command output to the target file.
+------------------------------------------------------------
+# cat "$TEST_FILE"
+
+Explanation:
+Prints the contents of the file whose path is stored in TEST_FILE.
+------------------------------------------------------------
+# ls -l "$TEST_FILE"
+
+Explanation:
+Shows detailed file information for the file stored in TEST_FILE.
+
+Options:
+- -l = long listing format: Shows details such as permissions, owner, size, and modification time.
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current directory to the gitlab-labs directory inside the current user's home directory.
+------------------------------------------------------------
+# git clone 'http://192.168.94.90/<YOUR-NAMESPACE>/cicd-session18-shell-executor.git'
+
+Explanation:
+Technical correction: The URL is quoted so the lesson placeholder <YOUR-NAMESPACE> is not parsed by the shell as redirection syntax. Replace <YOUR-NAMESPACE> with the real GitLab namespace before running the command.
+------------------------------------------------------------
+# cd cicd-session18-shell-executor
+
+Explanation:
+Changes the current directory to the cloned cicd-session18-shell-executor repository.
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor for editing.
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the complete contents of the .gitlab-ci.yml file to the terminal.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area so it can be included in the next commit.
+------------------------------------------------------------
+# git commit -m "ci: demonstrate shell executor"
+
+Explanation:
+Creates a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Uses "ci: demonstrate shell executor" as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+# ls -lh /tmp/shell-executor-*.txt
+
+Explanation:
+Lists matching Shell Executor test files under /tmp using detailed and human-readable size output.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -h = --human-readable (human readable): Displays file sizes in easier-to-read units such as K, M, or G.
+------------------------------------------------------------
+# cat /tmp/shell-executor-*.txt
+
+Explanation:
+Prints the contents of all files under /tmp whose names match shell-executor-*.txt.
+------------------------------------------------------------
+# rm -rf /some/path
+
+Explanation:
+Recursively removes /some/path and its contents without interactive confirmation.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and suppresses most prompts or errors that would require confirmation.
+------------------------------------------------------------
+# docker rm -f production-container
+
+Explanation:
+Forcefully removes the Docker container named production-container.
+
+Options:
+- -f = --force (force): Forces removal of the running container by stopping it first if necessary.
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs tests discovered by pytest in the current project. In this lesson, it is used as an example of a command that can fail when the dependency is missing from the runner host.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'command -v pytest'
+
+Explanation:
+Runs command -v pytest as gitlab-runner to check whether pytest can be found in that user's command search path.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+- -v = command lookup mode: Makes the shell command builtin print how pytest would be resolved.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'git --version'
+
+Explanation:
+Runs git --version as the gitlab-runner user. This checks whether Git is available in the same user context as the Shell Executor job.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+- --version = Git version information: Prints the installed Git version.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'python3 --version'
+
+Explanation:
+Runs python3 --version as the gitlab-runner user. This verifies that Python 3 is available to the Shell Executor user.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+- --version = Python version information: Prints the installed Python version.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'curl --version'
+
+Explanation:
+Runs curl --version as the gitlab-runner user. This verifies that curl is installed and accessible to the Shell Executor user.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+- --version = curl version information: Prints curl version and feature information.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'echo $PATH'
+
+Explanation:
+Runs a Bash login shell as gitlab-runner and prints that user's PATH environment variable.
+
+Options:
+- -u = --user (user): Tells sudo to run the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -l = --login (login shell): Starts Bash as a login shell.
+- -c = command string mode: Tells Bash to execute the following command string.
+------------------------------------------------------------
+# echo "$PATH"
+
+Explanation:
+Prints the PATH environment variable for the current shell.
+------------------------------------------------------------
+# sudo ls -la /home/gitlab-runner
+
+Explanation:
+Shows a detailed listing of all entries, including hidden files, in /home/gitlab-runner.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes hidden entries whose names begin with a dot.
+------------------------------------------------------------
+# sudo cat /home/gitlab-runner/.bash_logout
+
+Explanation:
+Prints the contents of the gitlab-runner user's .bash_logout file for Shell Executor troubleshooting.
+------------------------------------------------------------
+# export TEST=hello
+
+Explanation:
+Creates or updates the shell variable TEST with the value hello and exports it to child processes started from the current shell.
+------------------------------------------------------------
+# echo "$TEST"
+
+Explanation:
+Prints the current value of the TEST shell variable.
+------------------------------------------------------------
