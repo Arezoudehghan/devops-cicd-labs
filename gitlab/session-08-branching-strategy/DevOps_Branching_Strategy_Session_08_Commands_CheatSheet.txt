@@ -1,0 +1,346 @@
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working directory to the local main branch.
+------------------------------------------------------------
+# git pull --ff-only origin main
+
+Explanation:
+Fetches changes from origin/main and updates the current branch only if Git can fast-forward without creating a merge commit.
+
+Options:
+- --ff-only = fast-forward only: Refuses the pull if a fast-forward update is not possible.
+------------------------------------------------------------
+# git switch -c feature/add-health-message
+
+Explanation:
+Creates a new branch named feature/add-health-message and immediately switches to it.
+
+Options:
+- -c = create: Creates a new branch before switching to it.
+------------------------------------------------------------
+# mkdir -p /root/gitlab-labs
+
+Explanation:
+Creates the /root/gitlab-labs directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+# cd /root/gitlab-labs
+
+Explanation:
+Changes the current shell directory to /root/gitlab-labs.
+------------------------------------------------------------
+# git clone GITLAB-CLONE-URL
+
+Explanation:
+Technical correction: The lesson used `git clone <GITLAB-CLONE-URL>`, but angle brackets are interpreted by the shell as redirection syntax. Replace GITLAB-CLONE-URL with the real GitLab clone URL before running the command.
+------------------------------------------------------------
+# cd branching-strategy-lab
+
+Explanation:
+Changes the current shell directory to the branching-strategy-lab repository.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+# git branch
+
+Explanation:
+Lists the local branches and marks the currently checked-out branch with an asterisk.
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists configured Git remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Shows additional remote information, including fetch and push URLs.
+------------------------------------------------------------
+# cat > app.txt <<'EOF'
+Application: Branching Strategy Lab
+Version: 1.0.0
+Status: Production
+EOF
+
+Explanation:
+Creates or overwrites app.txt with the exact text inside the quoted here-document.
+
+Options:
+- > = output redirection: Redirects the command output to app.txt and overwrites the file.
+- <<'EOF' = quoted here-document: Supplies the following lines as standard input until the closing EOF marker, without shell variable or command expansion.
+------------------------------------------------------------
+# git add app.txt
+
+Explanation:
+Stages app.txt so its current changes will be included in the next commit.
+------------------------------------------------------------
+# git commit -m "chore: add initial application"
+
+Explanation:
+Creates a new commit from staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Release v1.0.0"
+
+Explanation:
+Creates an annotated Git tag named v1.0.0 with the specified tag message.
+
+Options:
+- -a = --annotate (annotate): Creates an annotated tag.
+- -m = --message (message): Sets the annotation message for the tag.
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the v1.0.0 tag to the remote named origin.
+------------------------------------------------------------
+# cat >> app.txt <<'EOF'
+Health: OK
+EOF
+
+Explanation:
+Appends the exact Health: OK line to app.txt by using a quoted here-document.
+
+Options:
+- >> = append redirection: Redirects output to app.txt and appends instead of overwriting.
+- <<'EOF' = quoted here-document: Supplies the following lines as standard input until the closing EOF marker, without shell variable or command expansion.
+------------------------------------------------------------
+# cat app.txt
+
+Explanation:
+Prints the contents of app.txt to standard output.
+------------------------------------------------------------
+# git commit -m "feat: add health status"
+
+Explanation:
+Creates a new commit from staged changes with the feature commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push -u origin feature/add-health-message
+
+Explanation:
+Pushes feature/add-health-message to origin and records origin/feature/add-health-message as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the upstream tracking branch for the branch being pushed.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+# git merge feature/add-health-message
+
+Explanation:
+Merges the history of feature/add-health-message into the currently checked-out branch.
+------------------------------------------------------------
+# git branch -d feature/add-health-message
+
+Explanation:
+Deletes the local feature/add-health-message branch using Git's safe branch deletion behavior.
+
+Options:
+- -d = --delete (delete): Deletes the branch only when Git considers its changes safely merged into an appropriate upstream or HEAD history.
+------------------------------------------------------------
+# git branch -a
+
+Explanation:
+Lists both local branches and remote-tracking branches.
+
+Options:
+- -a = --all (all): Shows local and remote-tracking branches.
+------------------------------------------------------------
+# git switch -c release/1.1
+
+Explanation:
+Creates a new release/1.1 branch and immediately switches to it.
+
+Options:
+- -c = create: Creates a new branch before switching to it.
+------------------------------------------------------------
+# git push -u origin release/1.1
+
+Explanation:
+Pushes release/1.1 to origin and records the remote branch as its upstream.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the upstream tracking branch for the branch being pushed.
+------------------------------------------------------------
+# sed -i 's/Version: 1.0.0/Version: 1.1.0/' app.txt
+
+Explanation:
+Replaces the first matching Version: 1.0.0 text on each processed line in app.txt with Version: 1.1.0 and writes the change directly to the file.
+
+Options:
+- -i = --in-place (in-place): Edits the file directly instead of writing the modified text only to standard output.
+------------------------------------------------------------
+# git commit -m "chore: prepare release 1.1.0"
+
+Explanation:
+Creates a commit from staged changes with the release preparation message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git tag -a v1.1.0 -m "Release v1.1.0"
+
+Explanation:
+Creates an annotated tag named v1.1.0 with the specified release message.
+
+Options:
+- -a = --annotate (annotate): Creates an annotated tag.
+- -m = --message (message): Sets the annotation message for the tag.
+------------------------------------------------------------
+# git push origin v1.1.0
+
+Explanation:
+Pushes the v1.1.0 tag to the remote named origin.
+------------------------------------------------------------
+# git switch release/1.1
+
+Explanation:
+Switches the working directory to the local release/1.1 branch.
+------------------------------------------------------------
+# git pull --ff-only origin release/1.1
+
+Explanation:
+Fetches origin/release/1.1 and updates the current branch only when a fast-forward is possible.
+
+Options:
+- --ff-only = fast-forward only: Refuses the pull if Git would need to create a merge commit.
+------------------------------------------------------------
+# git switch -c hotfix/fix-health-status
+
+Explanation:
+Creates a new hotfix/fix-health-status branch and immediately switches to it.
+
+Options:
+- -c = create: Creates a new branch before switching to it.
+------------------------------------------------------------
+# sed -i 's/Health: OK/Health: HEALTHY/' app.txt
+
+Explanation:
+Replaces the first matching Health: OK text on each processed line in app.txt with Health: HEALTHY and writes the change directly to the file.
+
+Options:
+- -i = --in-place (in-place): Edits the file directly instead of writing the modified text only to standard output.
+------------------------------------------------------------
+# git commit -m "fix: correct production health status"
+
+Explanation:
+Creates a new commit from staged changes with the production fix message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push -u origin hotfix/fix-health-status
+
+Explanation:
+Pushes hotfix/fix-health-status to origin and records the remote branch as its upstream.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the upstream tracking branch for the branch being pushed.
+------------------------------------------------------------
+# git tag -a v1.1.1 -m "Hotfix release v1.1.1"
+
+Explanation:
+Creates an annotated tag named v1.1.1 with the specified hotfix release message.
+
+Options:
+- -a = --annotate (annotate): Creates an annotated tag.
+- -m = --message (message): Sets the annotation message for the tag.
+------------------------------------------------------------
+# git push origin v1.1.1
+
+Explanation:
+Pushes the v1.1.1 tag to the remote named origin.
+------------------------------------------------------------
+# git log --oneline release/1.1 -5
+
+Explanation:
+Shows the latest five commits reachable from release/1.1 in a compact one-line format.
+
+Options:
+- --oneline = one-line format: Shows each commit in a compact format with an abbreviated object name and commit subject.
+- -5 = --max-count=5 (maximum count): Limits the output to five commits.
+------------------------------------------------------------
+# git cherry-pick a1b2c3d
+
+Explanation:
+Applies the changes introduced by commit a1b2c3d to the current branch as a new commit. Replace a1b2c3d with the actual commit SHA when using the example from the lesson.
+------------------------------------------------------------
+# git log --graph --oneline --decorate --all
+
+Explanation:
+Displays the commit history as a compact graph and includes branch and tag names from all refs.
+
+Options:
+- --graph = graph display: Draws an ASCII representation of the branch and merge history.
+- --oneline = one-line format: Shows each commit in a compact one-line format.
+- --decorate = decorate refs: Shows reference names such as branches and tags next to commits.
+- --all = all refs: Shows commits reachable from all refs instead of only the current branch.
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists the tags available in the local repository.
+------------------------------------------------------------
+# git cherry-pick 7a75f03
+
+Explanation:
+Applies the changes introduced by commit 7a75f03 to the current branch as a new commit.
+------------------------------------------------------------
+# git branch --merged release/1.1
+
+Explanation:
+Lists local branches whose tips are reachable from release/1.1, helping confirm that their changes are already merged there.
+
+Options:
+- --merged = merged branches: Filters the list to branches whose tips are reachable from the specified commit or branch, here release/1.1.
+------------------------------------------------------------
+# git branch -d hotfix/fix-health-status
+
+Explanation:
+Deletes the local hotfix/fix-health-status branch using Git's safe deletion behavior.
+
+Options:
+- -d = --delete (delete): Deletes the branch only when Git considers its changes safely merged into an appropriate upstream or HEAD history.
+------------------------------------------------------------
+# git push origin --delete feature/add-health-message
+
+Explanation:
+Deletes the remote feature/add-health-message branch from origin.
+
+Options:
+- --delete = delete remote ref: Requests deletion of the specified branch on the remote.
+------------------------------------------------------------
+# git push origin --delete hotfix/fix-health-status
+
+Explanation:
+Deletes the remote hotfix/fix-health-status branch from origin.
+
+Options:
+- --delete = delete remote ref: Requests deletion of the specified branch on the remote.
+------------------------------------------------------------
+# git fetch --prune
+
+Explanation:
+Fetches updated remote references and removes stale remote-tracking references that no longer exist on the remote.
+
+Options:
+- --prune = prune: Removes remote-tracking references that were deleted from the remote.
+------------------------------------------------------------
