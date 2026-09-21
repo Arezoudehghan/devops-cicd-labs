@@ -1,0 +1,295 @@
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+
+------------------------------------------------------------
+# sudo systemctl status docker --no-pager
+
+Explanation:
+Shows the current status of the Docker service without opening an interactive pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of opening it in a pager program.
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Shows the installed GitLab Runner version.
+
+Options:
+- --version = version: Displays version information for GitLab Runner.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations registered on this host.
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user with that user's home environment. It verifies whether the Runner user can access the Docker daemon.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Adds the user to the listed supplementary groups instead of replacing existing group memberships.
+- -G = --groups (groups): Specifies the supplementary group list, here docker.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the GitLab Runner service so it starts again with updated runtime permissions.
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker pull alpine:3.21
+
+Explanation:
+Pulls the alpine:3.21 image while running Docker as the gitlab-runner user. This checks both Docker access and image retrieval for that user.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker pull python:3.12-alpine
+
+Explanation:
+Pulls the python:3.12-alpine image as the gitlab-runner user for the Python CI job.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker pull redis:7-alpine
+
+Explanation:
+Pulls the redis:7-alpine image as the gitlab-runner user for the Redis service test.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# read -s -p "Paste Runner Authentication Token: " RUNNER_TOKEN
+
+Explanation:
+Reads the Runner authentication token into the RUNNER_TOKEN shell variable without displaying the typed value.
+
+Options:
+- -s = silent mode: Does not echo typed characters to the terminal.
+- -p = prompt: Displays the specified prompt text before reading input.
+------------------------------------------------------------
+# echo
+
+Explanation:
+Prints a blank line. In this lesson it is used after the silent token input prompt.
+
+------------------------------------------------------------
+# sudo gitlab-runner register \
+  --non-interactive \
+  --url "http://192.168.94.90/" \
+  --token "$RUNNER_TOKEN" \
+  --executor "docker" \
+  --docker-image "alpine:3.21" \
+  --docker-pull-policy "if-not-present" \
+  --description "dev-1-docker"
+
+Explanation:
+Registers a new GitLab Runner on DEV-1 using the Docker executor and alpine:3.21 as its default image. The Runner connects to GitLab at http://192.168.94.90/ and uses the authentication token stored in RUNNER_TOKEN.
+
+Options:
+- --non-interactive = non-interactive: Registers the Runner without asking interactive setup questions.
+- --url = URL: Sets the GitLab instance URL to http://192.168.94.90/.
+- --token = token: Uses the value of $RUNNER_TOKEN as the Runner authentication token.
+- --executor = executor: Selects docker as the Runner executor.
+- --docker-image = Docker image: Sets alpine:3.21 as the default Docker image for jobs that do not define their own image.
+- --docker-pull-policy = Docker pull policy: Uses if-not-present, so Docker pulls the image only when it is not already available locally.
+- --description = description: Sets the Runner description to dev-1-docker.
+- \ = shell line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+# unset RUNNER_TOKEN
+
+Explanation:
+Removes the RUNNER_TOKEN variable from the current shell environment.
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the registered GitLab Runners can communicate with the GitLab instance.
+
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the Nano text editor.
+
+------------------------------------------------------------
+# echo "=== Operating System ==="
+
+Explanation:
+Prints a label before displaying operating system information in the CI job.
+
+------------------------------------------------------------
+# cat /etc/os-release
+
+Explanation:
+Displays operating system identification information from /etc/os-release.
+
+------------------------------------------------------------
+# echo "=== User ==="
+
+Explanation:
+Prints a label before showing the current user in the CI job.
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the username of the user running the current command.
+
+------------------------------------------------------------
+# echo "=== Hostname ==="
+
+Explanation:
+Prints a label before displaying the container hostname.
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Displays the hostname of the current system or container.
+
+------------------------------------------------------------
+# echo "=== Working Directory ==="
+
+Explanation:
+Prints a label before displaying the current working directory.
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+
+------------------------------------------------------------
+# echo "=== GitLab Variables ==="
+
+Explanation:
+Prints a label before displaying selected GitLab CI/CD variables.
+
+------------------------------------------------------------
+# echo "CI_PROJECT_NAME=$CI_PROJECT_NAME"
+
+Explanation:
+Prints the CI_PROJECT_NAME variable name together with its current GitLab CI/CD value.
+
+------------------------------------------------------------
+# echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"
+
+Explanation:
+Prints the CI_PIPELINE_ID variable name together with its current GitLab CI/CD value.
+
+------------------------------------------------------------
+# echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the CI_COMMIT_SHORT_SHA variable name together with its current GitLab CI/CD value.
+
+------------------------------------------------------------
+# python --version
+
+Explanation:
+Displays the Python version available inside the selected CI job image.
+
+Options:
+- --version = version: Displays the installed Python version.
+------------------------------------------------------------
+# python -c "print('Hello from Docker Executor')"
+
+Explanation:
+Runs a short Python statement directly from the command line and prints Hello from Docker Executor.
+
+Options:
+- -c = command string: Tells Python to execute the following string as Python code.
+------------------------------------------------------------
+# redis-cli -h redis ping
+
+Explanation:
+Uses the Redis command-line client to connect to the host named redis and sends the PING command.
+
+Options:
+- -h = hostname: Sets the Redis server hostname to redis.
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints Hello. This command appears in the example that uses the Runner default Docker image.
+
+------------------------------------------------------------
+# echo "Container is running..."
+
+Explanation:
+Prints a message showing that the temporary Docker Executor job container is active.
+
+------------------------------------------------------------
+# sleep 60
+
+Explanation:
+Pauses the shell for 60 seconds so the running CI job container can be observed from the host.
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+
+------------------------------------------------------------
+# docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"
+
+Explanation:
+Lists running Docker containers using a custom table that shows container ID, image, name, and status.
+
+Options:
+- --format = format: Applies the specified Go-template output format.
+- "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}" = format value: Creates a table with ID, image, name, and status fields; \t inserts tab separators.
+------------------------------------------------------------
+# apt install python3
+
+Explanation:
+Installs the python3 package with APT. It is shown as an example of dependency installation that may be needed with a Shell Executor.
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the current directory and assigns it the tag myapp.
+
+Options:
+- -t = --tag (tag): Assigns the name or tag myapp to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays detailed information about the local Docker client and Docker daemon configuration.
+
+------------------------------------------------------------
+# echo hello
+
+Explanation:
+Prints hello. It appears in the untagged-job example used to explain Runner selection behavior.
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Uploads local Git commits and references to the configured remote repository.
