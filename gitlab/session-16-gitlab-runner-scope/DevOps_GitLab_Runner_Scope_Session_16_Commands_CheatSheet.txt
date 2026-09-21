@@ -1,0 +1,114 @@
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Displays the installed GitLab Runner version.
+
+Options:
+- --version = display version information: Prints the GitLab Runner version and exits.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service with elevated privileges.
+
+Options:
+- --no-pager = disable pager output: Prints the status directly instead of opening it in a pager such as less.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runner configurations registered on the local machine.
+------------------------------------------------------------
+# gitlab-runner unregister --name "<RUNNER_NAME>"
+
+Explanation:
+Technical correction: The lesson showed `gitlab-runner unregister` without a runner selector. This corrected form unregisters the runner whose configured name matches `<RUNNER_NAME>`.
+
+Options:
+- --name "<RUNNER_NAME>" = runner name selector: Selects the registered runner to unregister by its configured name.
+------------------------------------------------------------
+# sudo gitlab-runner register
+
+Explanation:
+Starts the interactive GitLab Runner registration process with elevated privileges.
+------------------------------------------------------------
+# sudo gitlab-runner register \
+  --url "http://192.168.94.90" \
+  --token "<INSTANCE_RUNNER_AUTH_TOKEN>"
+
+Explanation:
+Registers the Instance Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --token "<INSTANCE_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Instance Runner.
+------------------------------------------------------------
+# sudo gitlab-runner register \
+  --url "http://192.168.94.90" \
+  --token "<GROUP_RUNNER_AUTH_TOKEN>"
+
+Explanation:
+Registers the Group Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --token "<GROUP_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Group Runner.
+------------------------------------------------------------
+# sudo gitlab-runner register \
+  --url "http://192.168.94.90" \
+  --token "<PROJECT_RUNNER_AUTH_TOKEN>"
+
+Explanation:
+Registers the Project Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --token "<PROJECT_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Project Runner.
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the locally configured runners are still valid and recognized by the GitLab server.
+------------------------------------------------------------
+# echo "Running on Instance Runner"
+
+Explanation:
+Prints the text `Running on Instance Runner` to the job log.
+------------------------------------------------------------
+# echo "Runner = $CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the description of the GitLab Runner that is executing the current job. The shell expands `$CI_RUNNER_DESCRIPTION` before `echo` prints the line.
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the hostname of the machine that is executing the job.
+------------------------------------------------------------
+# echo "Running on Group Runner"
+
+Explanation:
+Prints the text `Running on Group Runner` to the job log.
+------------------------------------------------------------
+# echo "Running on Project Runner"
+
+Explanation:
+Prints the text `Running on Project Runner` to the job log.
+------------------------------------------------------------
+# echo "This should not normally run on app-b"
+
+Explanation:
+Prints the text `This should not normally run on app-b` to the job log.
+------------------------------------------------------------
+# gitlab-runner register --registration-token "<REGISTRATION_TOKEN>"
+
+Explanation:
+Technical correction: The lesson used `...` as an incomplete placeholder value. This corrected form shows the deprecated registration-token workflow with an explicit `<REGISTRATION_TOKEN>` placeholder.
+
+Options:
+- --registration-token "<REGISTRATION_TOKEN>" = runner registration token: Supplies the legacy registration token used by the older runner registration workflow.
+------------------------------------------------------------
