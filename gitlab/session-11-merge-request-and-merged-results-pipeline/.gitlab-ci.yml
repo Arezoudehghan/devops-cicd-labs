@@ -32,8 +32,8 @@ simulate_merged_result:
   script:
     - git config user.name "GitLab CI"
     - git config user.email "gitlab-ci@example.local"
-    - git fetch origin "${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}:refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - git fetch origin "refs/heads/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
     - git checkout -B ci-merged-result "$CI_COMMIT_SHA"
-    - git merge --no-commit --no-ff "refs/remotes/origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}"
+    - git merge --no-commit --no-ff FETCH_HEAD
     - echo "Testing source branch together with latest target branch"
     - python3 validate_config.py
