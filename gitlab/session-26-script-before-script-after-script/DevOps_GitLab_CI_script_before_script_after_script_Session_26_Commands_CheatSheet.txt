@@ -1,0 +1,667 @@
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image using the Dockerfile and build context in the current directory.
+
+Options:
+- . = build context: uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs the Python test suite with pytest.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the deploy.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp:latest .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as myapp:latest.
+
+Options:
+- -t = --tag (tag): assigns the name and tag myapp:latest to the image.
+- . = build context: uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build completed"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Step 1"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# false
+
+Explanation:
+Returns a failure exit status, which normally causes the CI job command sequence to fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Step 3"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing build environment..."
+
+Explanation:
+Prints the preparation message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays information about the Docker Engine, including server, storage, and runtime details.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export APP_ENV="testing"
+
+Explanation:
+Creates the APP_ENV shell environment variable with the value testing for the current shell context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_ENV"
+
+Explanation:
+Prints the current value of the APP_ENV variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p test-dir
+
+Explanation:
+Creates the test-dir directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and ignores an existing directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd test-dir
+
+Explanation:
+Changes the current working directory to test-dir.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd backend
+
+Explanation:
+Changes the current working directory to backend.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking environment..."
+
+Explanation:
+Prints the environment-check message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Ends the current shell with exit status 1, which represents failure.
+
+Options:
+- 1 = exit status: returns a non-zero failure status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints the test-start message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login "$NEXUS_REGISTRY" -u "$NEXUS_USER" -p "$NEXUS_PASSWORD"
+
+Explanation:
+Logs in to the Docker registry stored in NEXUS_REGISTRY using the provided username and password variables.
+
+Options:
+- -u = --username (username): supplies the registry username from NEXUS_USER.
+- -p = --password (password): supplies the registry password from NEXUS_PASSWORD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with IMAGE_NAME and IMAGE_TAG.
+
+Options:
+- -t = --tag (tag): assigns the image name and tag.
+- . = build context: uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Pushes the image identified by IMAGE_NAME and IMAGE_TAG to its configured Docker registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export MY_VARIABLE="hello"
+
+Explanation:
+Creates the MY_VARIABLE shell environment variable with the value hello in the current shell context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$MY_VARIABLE"
+
+Explanation:
+Prints the current value of MY_VARIABLE.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "${MY_VARIABLE:-NOT_AVAILABLE}"
+
+Explanation:
+Prints MY_VARIABLE when it is set and non-empty; otherwise it prints NOT_AVAILABLE.
+
+Options:
+- ${MY_VARIABLE:-NOT_AVAILABLE} = shell parameter expansion: uses NOT_AVAILABLE when MY_VARIABLE is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p backend
+
+Explanation:
+Creates the backend directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and ignores an existing directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "hello" > result.txt
+
+Explanation:
+Writes hello to result.txt, replacing the file contents if the file already exists.
+
+Options:
+- > = output redirection: writes standard output to result.txt and truncates the file first.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat result.txt
+
+Explanation:
+Displays the contents of result.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== BEFORE_SCRIPT ==="
+
+Explanation:
+Prints a label marking the before_script phase in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Current directory:"
+
+Explanation:
+Prints a label before displaying the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export DEMO_VARIABLE="created-in-before-script"
+
+Explanation:
+Creates DEMO_VARIABLE with the value created-in-before-script in the current shell context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p .ci-demo
+
+Explanation:
+Creates the .ci-demo directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and ignores an existing directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Created by before_script" > .ci-demo/lifecycle.txt
+
+Explanation:
+Writes the text to .ci-demo/lifecycle.txt, replacing any existing contents.
+
+Options:
+- > = output redirection: writes standard output to the file and truncates it first.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd .ci-demo
+
+Explanation:
+Changes the current working directory to .ci-demo.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== SCRIPT ==="
+
+Explanation:
+Prints a label marking the script phase in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "DEMO_VARIABLE=$DEMO_VARIABLE"
+
+Explanation:
+Prints DEMO_VARIABLE together with its current value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Updated by script" >> lifecycle.txt
+
+Explanation:
+Appends the text to lifecycle.txt without removing its existing contents.
+
+Options:
+- >> = append redirection: adds standard output to the end of lifecycle.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== AFTER_SCRIPT ==="
+
+Explanation:
+Prints a label marking the after_script phase in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "DEMO_VARIABLE=${DEMO_VARIABLE:-NOT_AVAILABLE}"
+
+Explanation:
+Prints DEMO_VARIABLE, using NOT_AVAILABLE when the variable is unset or empty.
+
+Options:
+- ${DEMO_VARIABLE:-NOT_AVAILABLE} = shell parameter expansion: uses NOT_AVAILABLE when DEMO_VARIABLE is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Updated by after_script" >> .ci-demo/lifecycle.txt
+
+Explanation:
+Appends the text to .ci-demo/lifecycle.txt without removing its existing contents.
+
+Options:
+- >> = append redirection: adds standard output to the end of the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .ci-demo/lifecycle.txt
+
+Explanation:
+Displays the contents of .ci-demo/lifecycle.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing failure test..."
+
+Explanation:
+Prints the failure-test preparation message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Main script started"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "The next command intentionally fails"
+
+Explanation:
+Prints a message explaining that the next command is expected to fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "after_script is still running"
+
+Explanation:
+Prints a message confirming that after_script is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_JOB_STATUS=$CI_JOB_STATUS"
+
+Explanation:
+Prints the current GitLab CI job status stored in CI_JOB_STATUS.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Main script completed successfully"
+
+Explanation:
+Prints a message indicating that the main script completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "after_script will intentionally fail"
+
+Explanation:
+Prints a message explaining that after_script will intentionally fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy-production.sh
+
+Explanation:
+Runs the deploy-production.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy.sh
+
+Explanation:
+Runs the deploy.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# collect-logs.sh
+
+Explanation:
+Runs the collect-logs.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# generate-summary.sh
+
+Explanation:
+Runs the generate-summary.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cleanup-temp-files.sh
+
+Explanation:
+Runs the cleanup-temp-files.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting job..."
+
+Explanation:
+Prints the job-start message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints Build to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints Test to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job finished"
+
+Explanation:
+Prints the job-finished message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "GLOBAL BEFORE"
+
+Explanation:
+Prints GLOBAL BEFORE to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "BUILD BEFORE"
+
+Explanation:
+Prints BUILD BEFORE to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "BUILD"
+
+Explanation:
+Prints BUILD to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Global initialization"
+
+Explanation:
+Prints the global initialization message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Run without global before_script"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Global command"
+
+Explanation:
+Prints the message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# if [ "$CI_JOB_STATUS" = "canceled" ]; then exit 0; fi
+
+Explanation:
+Checks whether CI_JOB_STATUS equals canceled and exits successfully when the condition is true.
+
+Options:
+- [ ... ] = test command syntax: evaluates the condition inside the brackets.
+- = = string comparison operator: checks whether the two strings are equal.
+- ; = command separator: separates shell commands on the same line.
+- 0 = exit status: returns success when the job status is canceled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./collect-logs.sh
+
+Explanation:
+Runs collect-logs.sh from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking Docker..."
+
+Explanation:
+Prints the Docker-check message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building Docker image..."
+
+Explanation:
+Prints the Docker-build message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the current short Git commit SHA.
+
+Options:
+- -t = --tag (tag): assigns the image name and tag.
+- . = build context: uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build job finished"
+
+Explanation:
+Prints the build-job completion message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images | head
+
+Explanation:
+Lists local Docker images and sends the output to head so only the first lines are shown.
+
+Options:
+- | = pipe operator: sends the standard output of docker images to the standard input of head.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking Docker engine..."
+
+Explanation:
+Prints the Docker Engine check message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Logging in to registry..."
+
+Explanation:
+Prints the registry-login message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login "$REGISTRY" -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+
+Explanation:
+Logs in to the registry stored in REGISTRY using the provided username and password variables.
+
+Options:
+- -u = --username (username): supplies the registry username from REGISTRY_USER.
+- -p = --password (password): supplies the registry password from REGISTRY_PASSWORD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with IMAGE_NAME and the current short Git commit SHA.
+
+Options:
+- -t = --tag (tag): assigns the image name and tag.
+- . = build context: uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Pushes the image identified by IMAGE_NAME and CI_COMMIT_SHORT_SHA to its configured Docker registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build job finished with status $CI_JOB_STATUS"
+
+Explanation:
+Prints the final build-job status stored in CI_JOB_STATUS.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export BUILD_DIR="/tmp/build"
+
+Explanation:
+Creates the BUILD_DIR shell environment variable with the value /tmp/build in the current shell context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$BUILD_DIR"
+
+Explanation:
+Prints the current value of BUILD_DIR.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf "$BUILD_DIR"
+
+Explanation:
+Recursively removes the path stored in BUILD_DIR and suppresses most prompts and missing-file errors.
+
+Options:
+- -r = --recursive (recursive): removes directories and their contents recursively.
+- -f = --force (force): ignores nonexistent files and does not prompt before removal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p "$BUILD_DIR"
+
+Explanation:
+Creates the directory stored in BUILD_DIR and any missing parent directories.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and ignores an existing directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building in $BUILD_DIR"
+
+Explanation:
+Prints the build directory stored in BUILD_DIR.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "done"
+
+Explanation:
+Prints done to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# verify-production.sh
+
+Explanation:
+Runs the verify-production.sh command if that script is available in the shell PATH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export NAME=arezou
+
+Explanation:
+Creates the NAME shell environment variable with the value arezou in the current shell context.
+------------------------------------------------------------
