@@ -39,3 +39,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-27-pipeline-variables/` — GitLab CI/CD global variables, job-level scope, predefined variables, project secrets, variable precedence, and a practical pipeline-variable lab.
 - `gitlab/session-28-predefined-variables/` — GitLab predefined variables, commit SHA tracking, branch-vs-tag pipelines, pipeline IDs, Runner project paths, and rules-based job selection.
 - `gitlab/session-29-rules/` — GitLab CI/CD `rules`, first-match behavior, branch/tag/Merge Request conditions, `changes`, `exists`, manual jobs, and a practical rules lab.
+- `gitlab/session-30-workflow-rules/` — GitLab CI/CD `workflow: rules`, pipeline creation control, branch/tag/Merge Request policies, duplicate-pipeline prevention, and pre-pipeline variable usage.
