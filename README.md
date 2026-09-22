@@ -38,3 +38,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-26-script-before-script-after-script/` — GitLab CI/CD `before_script`, `script`, and `after_script`, shell-context behavior, failure handling, and artifact updates.
 - `gitlab/session-27-pipeline-variables/` — GitLab CI/CD global variables, job-level scope, predefined variables, project secrets, variable precedence, and a practical pipeline-variable lab.
 - `gitlab/session-28-predefined-variables/` — GitLab predefined variables, commit SHA tracking, branch-vs-tag pipelines, pipeline IDs, Runner project paths, and rules-based job selection.
+- `gitlab/session-29-rules/` — GitLab CI/CD `rules`, first-match behavior, branch/tag/Merge Request conditions, `changes`, `exists`, manual jobs, and a practical rules lab.
