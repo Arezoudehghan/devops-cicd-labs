@@ -1,0 +1,68 @@
+stages:
+  - inspect
+  - build
+  - deploy
+
+variables:
+  APP_NAME: "cicd-session27-app"
+  APP_ENV: "lab"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_PORT: "8088"
+
+inspect_variables:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "===== Custom Variables ====="'
+    - 'echo "APP_NAME=$APP_NAME"'
+    - 'echo "APP_ENV=$APP_ENV"'
+    - 'echo "DEPLOY_HOST=$DEPLOY_HOST"'
+    - 'echo "DEPLOY_PORT=$DEPLOY_PORT"'
+
+    - 'echo "===== Predefined Variables ====="'
+    - 'echo "CI_PROJECT_NAME=$CI_PROJECT_NAME"'
+    - 'echo "CI_COMMIT_BRANCH=${CI_COMMIT_BRANCH:-not-a-branch-pipeline}"'
+    - 'echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"'
+    - 'echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"'
+
+job_scope_demo:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  variables:
+    APP_ENV: "job-specific"
+
+  script:
+    - 'echo "APP_ENV inside job_scope_demo=$APP_ENV"'
+
+secret_check:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  script:
+    - 'test -n "$LAB_SECRET"'
+    - 'echo "LAB_SECRET exists. Secret value will not be printed."'
+
+build_metadata:
+  stage: build
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "Image would be: ${APP_NAME}:${CI_COMMIT_SHORT_SHA}"'
+    - 'echo "Pipeline ID: ${CI_PIPELINE_ID}"'
+
+deploy_preview:
+  stage: deploy
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "Application: ${APP_NAME}"'
+    - 'echo "Environment: ${APP_ENV}"'
+    - 'echo "Target: ${DEPLOY_HOST}:${DEPLOY_PORT}"'
+    - 'echo "Image: ${APP_NAME}:${CI_COMMIT_SHORT_SHA}"'
