@@ -1,0 +1,35 @@
+stages:
+  - validate
+  - build
+  - test
+
+variables:
+  APP_NAME: "session24-yaml-lab"
+
+yaml_structure:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Checking YAML structure"
+    - echo "Project is $CI_PROJECT_NAME"
+    - echo "Pipeline ID is $CI_PIPELINE_ID"
+
+build_application:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Starting build for $APP_NAME"
+    - mkdir -p build
+    - echo "Application build completed" > build/result.txt
+    - cat build/result.txt
+
+test_application:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Starting test"
+    - test -f build/result.txt || echo "Build directory is not available in this job"
+    - echo "Test job completed"
