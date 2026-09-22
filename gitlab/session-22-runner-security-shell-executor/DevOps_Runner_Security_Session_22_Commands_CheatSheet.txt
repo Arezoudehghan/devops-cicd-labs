@@ -1,0 +1,192 @@
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Shows the username of the user account that is executing the current shell or CI/CD job.
+------------------------------------------------------------
+# id
+
+Explanation:
+Shows the current user's UID, primary GID, and supplementary group memberships.
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Shows the hostname of the system where the command is executed.
+------------------------------------------------------------
+# ps aux
+
+Explanation:
+Shows a detailed process list, including processes from other users and processes without a controlling terminal.
+
+Options:
+- a = BSD-style "all with terminals" selection: Shows processes for other users as well as the current user.
+- u = BSD-style user-oriented format: Adds user-focused columns such as USER, CPU, and memory information.
+- x = BSD-style include processes without a controlling terminal: Includes background and daemon processes that have no TTY.
+------------------------------------------------------------
+# cat /opt/application/config.txt
+
+Explanation:
+Reads and prints the contents of /opt/application/config.txt to standard output.
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson showed docker build without a required build-context argument. The added . tells Docker to use the current directory as the build context.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Appends the user to the supplementary groups specified with -G instead of replacing existing supplementary groups.
+- -G = --groups (groups): Specifies the supplementary group list; here the group is docker.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs gitlab-runner list with elevated privileges and lists the GitLab Runners registered in the local Runner configuration.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening the output in a pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a paging program such as less.
+------------------------------------------------------------
+# sudo grep -nE 'name|executor|shell' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches /etc/gitlab-runner/config.toml for lines containing name, executor, or shell and prints matching line numbers.
+
+Options:
+- -n = --line-number (line number): Prints the input line number before each matching line.
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+- | inside 'name|executor|shell' = regular-expression alternation: Matches name, executor, or shell. This | is part of the quoted regular expression, not a shell pipe.
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the UID, primary GID, and supplementary groups of the gitlab-runner user.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user with that user's HOME environment and tests whether the user can access the Docker daemon.
+
+Options:
+- -u = --user (user): Runs the command as the specified user; here the user is gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory before running the command.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H sudo -n -l
+
+Explanation:
+Runs a non-interactive sudo permission listing as the gitlab-runner user to show which sudo commands that account may execute.
+
+Options:
+- -u = --user (user): The outer sudo runs the following command as gitlab-runner.
+- -H = --set-home (set home): The outer sudo sets HOME to the target user's home directory.
+- -n = --non-interactive (non-interactive): The inner sudo does not prompt for a password and fails if interaction is required.
+- -l = --list (list): The inner sudo lists the target user's allowed and forbidden sudo commands.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H find /home/gitlab-runner/builds -maxdepth 5 -type d -print 2>/dev/null | head -n 50
+
+Explanation:
+Runs find as gitlab-runner, lists directories under /home/gitlab-runner/builds up to five levels deep, hides error messages, and shows only the first 50 output lines.
+
+Options:
+- -u = --user (user): Runs the command as the specified user; here the user is gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- -maxdepth 5 = maximum search depth: Limits find to at most five directory levels below the starting path.
+- -type d = directory file type: Matches directories only.
+- -print = print action: Prints each matched path.
+- 2>/dev/null = standard-error redirection: Redirects file descriptor 2, stderr, to /dev/null so error messages are discarded.
+- | = shell pipe: Sends the output of find to the input of head.
+- -n = --lines (lines): For head, limits output to the specified number of lines; here the value is 50.
+------------------------------------------------------------
+# echo "=== RUNNER IDENTITY ==="
+
+Explanation:
+Prints a label that marks the Runner identity section of the CI/CD job log.
+------------------------------------------------------------
+# echo "=== HOST ==="
+
+Explanation:
+Prints a label that marks the host-information section of the CI/CD job log.
+------------------------------------------------------------
+# uname -a
+
+Explanation:
+Prints all available system information provided by uname, including kernel name, hostname, kernel release, kernel version, machine architecture, and operating-system information when available.
+
+Options:
+- -a = --all (all): Prints all available uname information.
+------------------------------------------------------------
+# echo "=== WORKING DIRECTORY ==="
+
+Explanation:
+Prints a label that marks the working-directory section of the CI/CD job log.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+# echo "=== HOME ==="
+
+Explanation:
+Prints a label that marks the HOME-variable section of the CI/CD job log.
+------------------------------------------------------------
+# echo "$HOME"
+
+Explanation:
+Prints the value of the HOME environment variable after the shell expands $HOME.
+------------------------------------------------------------
+# echo "=== GROUPS ==="
+
+Explanation:
+Prints a label that marks the group-membership section of the CI/CD job log.
+------------------------------------------------------------
+# groups
+
+Explanation:
+Shows the group memberships of the current user.
+------------------------------------------------------------
+# echo "=== DOCKER ACCESS ==="
+
+Explanation:
+Prints a label that marks the Docker-access test section of the CI/CD job log.
+------------------------------------------------------------
+# docker info >/dev/null 2>&1 && echo "Docker access available" || echo "Docker access unavailable"
+
+Explanation:
+Tests whether Docker information can be retrieved without printing it. It prints an availability message when the command succeeds and an unavailable message when it fails.
+
+Options:
+- >/dev/null = standard-output redirection: Sends normal output to /dev/null so it is discarded.
+- 2>&1 = standard-error redirection: Redirects file descriptor 2, stderr, to the same destination as file descriptor 1, stdout.
+- && = AND operator: Runs echo "Docker access available" only if docker info succeeds.
+- || = OR operator: Runs echo "Docker access unavailable" if the preceding command chain fails.
+------------------------------------------------------------
+# echo "=== COMPLETE ==="
+
+Explanation:
+Prints a label indicating that the Runner security-check commands have finished.
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Shows detailed information about the Docker client, Docker daemon, containers, images, storage driver, plugins, and daemon configuration.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+# cat config.toml
+
+Explanation:
+Reads and prints the contents of config.toml to standard output.
+------------------------------------------------------------
