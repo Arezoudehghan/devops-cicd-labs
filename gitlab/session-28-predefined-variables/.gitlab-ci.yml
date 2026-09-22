@@ -1,0 +1,55 @@
+stages:
+  - inspect
+
+show-predefined-variables:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "===== COMMIT INFORMATION ====="'
+    - 'echo "CI_COMMIT_SHA=$CI_COMMIT_SHA"'
+    - 'echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"'
+
+    - 'echo "===== REF INFORMATION ====="'
+    - 'echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"'
+    - 'echo "CI_COMMIT_TAG=$CI_COMMIT_TAG"'
+
+    - 'echo "===== PIPELINE INFORMATION ====="'
+    - 'echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"'
+
+    - 'echo "===== PROJECT INFORMATION ====="'
+    - 'echo "CI_PROJECT_DIR=$CI_PROJECT_DIR"'
+
+    - 'echo "===== RUNNER WORKING DIRECTORY ====="'
+    - 'pwd'
+
+    - 'echo "===== VERIFY SHORT SHA ====="'
+    - 'echo "$CI_COMMIT_SHA" | cut -c1-8'
+
+    - 'echo "===== PROJECT FILES ====="'
+    - 'ls -la "$CI_PROJECT_DIR"'
+
+branch-only-job:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "This is a branch pipeline."'
+    - 'echo "Branch=$CI_COMMIT_BRANCH"'
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+tag-only-job:
+  stage: inspect
+  tags:
+    - dev-shell
+
+  script:
+    - 'echo "This is a tag pipeline."'
+    - 'echo "Tag=$CI_COMMIT_TAG"'
+
+  rules:
+    - if: '$CI_COMMIT_TAG'
