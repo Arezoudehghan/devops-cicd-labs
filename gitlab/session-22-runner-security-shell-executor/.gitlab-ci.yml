@@ -1,0 +1,31 @@
+stages:
+  - security-check
+
+runner-security-check:
+  stage: security-check
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "=== RUNNER IDENTITY ==="
+    - whoami
+    - id
+
+    - echo "=== HOST ==="
+    - hostname
+    - uname -a
+
+    - echo "=== WORKING DIRECTORY ==="
+    - pwd
+
+    - echo "=== HOME ==="
+    - echo "$HOME"
+
+    - echo "=== GROUPS ==="
+    - groups
+
+    - echo "=== DOCKER ACCESS ==="
+    - docker info >/dev/null 2>&1 && echo "Docker access available" || echo "Docker access unavailable"
+
+    - echo "=== COMPLETE ==="
