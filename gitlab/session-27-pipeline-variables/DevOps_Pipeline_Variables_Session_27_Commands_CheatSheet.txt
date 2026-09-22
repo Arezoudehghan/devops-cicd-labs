@@ -1,0 +1,306 @@
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Connects to the host at 192.168.94.91 over SSH using the deploy user.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$DEPLOY_HOST"
+
+Explanation:
+Prints the current value of the DEPLOY_HOST environment variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t my-app .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and names the image my-app.
+
+Options:
+- -t = --tag (tag): Assigns the specified name and optional tag to the image being built.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker tag my-app nexus.example.com:8085/my-app
+
+Explanation:
+Creates another tag for the local my-app image using the Nexus registry address and repository path.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t "$APP_NAME" .
+
+Explanation:
+Builds a Docker image from the current directory and uses the value of APP_NAME as the image name.
+
+Options:
+- -t = --tag (tag): Assigns the specified name and optional tag to the image being built.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker tag "$APP_NAME" "$REGISTRY/$APP_NAME"
+
+Explanation:
+Creates a new tag for the image named by APP_NAME and prefixes it with the registry value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$APP_NAME"
+
+Explanation:
+Prints the current value of the APP_NAME environment variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$APP_ENV"
+
+Explanation:
+Prints the current value of the APP_ENV environment variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "${APP_NAME}"
+
+Explanation:
+Prints the value of APP_NAME using braced shell variable expansion.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "${APP_NAME}-${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints APP_NAME followed by a hyphen and the current short Git commit SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_PROJECT_NAME"
+
+Explanation:
+Prints GitLab's predefined CI_PROJECT_NAME variable for the current project.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints GitLab's predefined short commit SHA for the current pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_PIPELINE_ID"
+
+Explanation:
+Prints GitLab's predefined pipeline ID for the current pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd /root/gitlab-labs
+
+Explanation:
+Changes the current working directory to /root/gitlab-labs.
+------------------------------------------------------------
+------------------------------------------------------------
+# git clone http://192.168.94.90/YOUR_NAMESPACE/cicd-session27-variables.git
+
+Explanation:
+Technical correction: The angle-bracket placeholder was removed because Bash interprets < and > as redirection operators. Replace YOUR_NAMESPACE with the real GitLab namespace before running the command.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd cicd-session27-variables
+
+Explanation:
+Changes into the cloned cicd-session27-variables repository directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor for editing.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== Custom Variables ====="
+
+Explanation:
+Prints a label that separates the custom-variable section in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "APP_NAME=$APP_NAME"
+
+Explanation:
+Prints the APP_NAME label together with the current APP_NAME value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "APP_ENV=$APP_ENV"
+
+Explanation:
+Prints the APP_ENV label together with the current APP_ENV value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "DEPLOY_HOST=$DEPLOY_HOST"
+
+Explanation:
+Prints the DEPLOY_HOST label together with the current DEPLOY_HOST value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "DEPLOY_PORT=$DEPLOY_PORT"
+
+Explanation:
+Prints the DEPLOY_PORT label together with the current DEPLOY_PORT value.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== Predefined Variables ====="
+
+Explanation:
+Prints a label that separates the predefined-variable section in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_PROJECT_NAME=$CI_PROJECT_NAME"
+
+Explanation:
+Prints the CI_PROJECT_NAME label together with GitLab's current project name.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_BRANCH=${CI_COMMIT_BRANCH:-not-a-branch-pipeline}"
+
+Explanation:
+Prints CI_COMMIT_BRANCH when it is set and non-empty; otherwise it prints not-a-branch-pipeline.
+
+Options:
+- :- = default-value parameter expansion operator: Uses the value after :- when the variable is unset or empty.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the CI_COMMIT_SHORT_SHA label together with GitLab's short commit SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"
+
+Explanation:
+Prints the CI_PIPELINE_ID label together with GitLab's current pipeline ID.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "APP_ENV inside job_scope_demo=$APP_ENV"
+
+Explanation:
+Prints the APP_ENV value that is visible inside the job_scope_demo job.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -n "$LAB_SECRET"
+
+Explanation:
+Checks whether LAB_SECRET expands to a non-empty string and returns a successful exit status when it does.
+
+Options:
+- -n = nonzero string length test: Returns true when the tested string has a length greater than zero.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "LAB_SECRET exists. Secret value will not be printed."
+
+Explanation:
+Prints a confirmation message after the LAB_SECRET existence check succeeds.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Image would be: ${APP_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints the Docker image name that would be formed from APP_NAME and CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Pipeline ID: ${CI_PIPELINE_ID}"
+
+Explanation:
+Prints the current GitLab pipeline ID with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Application: ${APP_NAME}"
+
+Explanation:
+Prints the current application name with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Environment: ${APP_ENV}"
+
+Explanation:
+Prints the current application environment with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Target: ${DEPLOY_HOST}:${DEPLOY_PORT}"
+
+Explanation:
+Prints the deployment target as host and port using DEPLOY_HOST and DEPLOY_PORT.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Image: ${APP_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints the image name and tag formed from APP_NAME and CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the complete contents of .gitlab-ci.yml to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml so its changes are included in the next commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "lab: learn GitLab CI/CD variables"
+
+Explanation:
+Creates a Git commit from the staged changes and uses the supplied text as the commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$LAB_SECRET"
+
+Explanation:
+Prints the current value of the LAB_SECRET environment variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Release channel: ${RELEASE_CHANNEL:-not-set}"
+
+Explanation:
+Prints RELEASE_CHANNEL when it is set and non-empty; otherwise it prints not-set.
+
+Options:
+- :- = default-value parameter expansion operator: Uses the value after :- when the variable is unset or empty.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t "${APP_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with APP_NAME plus CI_COMMIT_SHORT_SHA.
+
+Options:
+- -t = --tag (tag): Assigns the specified name and optional tag to the image being built.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo APP_NAME
+
+Explanation:
+Prints the literal text APP_NAME instead of expanding the APP_NAME environment variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -n "$PASSWORD"
+
+Explanation:
+Checks whether PASSWORD expands to a non-empty string and returns a successful exit status when it does.
+
+Options:
+- -n = nonzero string length test: Returns true when the tested string has a length greater than zero.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$PASSWORD"
+
+Explanation:
+Prints the current value of the PASSWORD environment variable.
+------------------------------------------------------------
