@@ -1,0 +1,379 @@
+------------------------------------------------------------
+# echo "$CI_COMMIT_SHA"
+
+Explanation:
+Prints GitLab's full commit SHA for the current pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA. GitLab defines this as the first 8 characters of CI_COMMIT_SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# git show 0d1c9c1ac75998b3eca417675da750324459df34
+
+Explanation:
+Shows the commit, metadata, and patch for the specified full Git commit SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# git checkout 0d1c9c1ac75998b3eca417675da750324459df34
+
+Explanation:
+Checks out the exact commit identified by the SHA. This normally places the repository in detached HEAD state.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t my-app:$IMAGE_TAG .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the value of IMAGE_TAG.
+
+Options:
+- -t = --tag (tag): Assigns a name and tag to the image.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the branch name when CI_COMMIT_BRANCH is available in the current pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints a deployment message in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Creating release $CI_COMMIT_TAG"
+
+Explanation:
+Prints a release message containing the current Git tag name.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag v1.0.0
+
+Explanation:
+Creates a lightweight local Git tag named v1.0.0 at the current commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the local v1.0.0 tag to the remote repository named origin.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_PIPELINE_ID"
+
+Explanation:
+Prints GitLab's pipeline ID for the current job.
+------------------------------------------------------------
+------------------------------------------------------------
+# tar -czf application-$CI_PIPELINE_ID.tar.gz .
+
+Explanation:
+Creates a gzip-compressed tar archive of the current directory and includes CI_PIPELINE_ID in the archive name.
+
+Options:
+- -c = create a new archive.
+- -z = compress the archive with gzip.
+- -f = use the following archive filename.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_PROJECT_DIR"
+
+Explanation:
+Prints the full project working directory assigned by GitLab Runner.
+------------------------------------------------------------
+------------------------------------------------------------
+# ls -la "$CI_PROJECT_DIR"
+
+Explanation:
+Lists all files in CI_PROJECT_DIR using long format, including hidden files.
+
+Options:
+- -l = long listing format.
+- -a = include hidden files.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat "$CI_PROJECT_DIR/Dockerfile"
+
+Explanation:
+Prints the Dockerfile located inside the GitLab Runner project directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd /home/gitlab-runner/builds/gSwWjME12/0/mygroup/myapp
+
+Explanation:
+Changes to a hard-coded Runner build directory.
+
+Best practice:
+Avoid hard-coding this path because Runner build paths can change. Prefer cd "$CI_PROJECT_DIR".
+------------------------------------------------------------
+------------------------------------------------------------
+# cd "$CI_PROJECT_DIR"
+
+Explanation:
+Changes the shell working directory to the project directory provided by GitLab Runner.
+------------------------------------------------------------
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes to the gitlab-labs directory under the current user's home directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# git clone http://192.168.94.90/YOUR_NAMESPACE/cicd-session28-predefined-vars.git
+
+Explanation:
+Clones the Session 28 GitLab project over HTTP.
+
+Technical correction:
+The lesson used angle-bracket placeholders. In Bash, < and > are redirection operators, so replace YOUR_NAMESPACE with the real GitLab namespace and run the URL without angle brackets.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd cicd-session28-predefined-vars
+
+Explanation:
+Changes into the cloned Session 28 repository directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens .gitlab-ci.yml in the Nano text editor.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== COMMIT INFORMATION ====="
+
+Explanation:
+Prints a section label for commit-related predefined variables.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_SHA=$CI_COMMIT_SHA"
+
+Explanation:
+Prints the full commit SHA with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== REF INFORMATION ====="
+
+Explanation:
+Prints a section label for branch and tag information.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the branch variable with its label. It can be empty in a tag pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_COMMIT_TAG=$CI_COMMIT_TAG"
+
+Explanation:
+Prints the tag variable with its label. It is normally empty in a branch pipeline.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== PIPELINE INFORMATION ====="
+
+Explanation:
+Prints a section label for pipeline-specific information.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_PIPELINE_ID=$CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID with its label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== PROJECT INFORMATION ====="
+
+Explanation:
+Prints a section label for project workspace information.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "CI_PROJECT_DIR=$CI_PROJECT_DIR"
+
+Explanation:
+Prints the GitLab Runner project directory with its label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== RUNNER WORKING DIRECTORY ====="
+
+Explanation:
+Prints a section label before displaying the Runner's current working directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== VERIFY SHORT SHA ====="
+
+Explanation:
+Prints a section label before verifying the short SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_COMMIT_SHA" | cut -c1-8
+
+Explanation:
+Prints CI_COMMIT_SHA and pipes it to cut so only characters 1 through 8 are displayed.
+
+Options:
+- -c1-8 = select character positions 1 through 8.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== PROJECT FILES ====="
+
+Explanation:
+Prints a section label before listing project files.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "This is a branch pipeline."
+
+Explanation:
+Prints a message from the branch-only CI job.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Branch=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current branch name with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "This is a tag pipeline."
+
+Explanation:
+Prints a message from the tag-only CI job.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Tag=$CI_COMMIT_TAG"
+
+Explanation:
+Prints the current tag name with a descriptive label.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the complete contents of .gitlab-ci.yml to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "ci: add predefined variables lab"
+
+Explanation:
+Creates a Git commit containing the staged changes and uses the supplied commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git log -1 --oneline
+
+Explanation:
+Shows only the latest commit in compact one-line format.
+
+Options:
+- -1 = show one commit.
+- --oneline = use abbreviated commit output.
+------------------------------------------------------------
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out branch.
+
+Options:
+- --show-current = display the current branch name.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists local Git tags.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it using IMAGE_NAME and IMAGE_TAG.
+
+Options:
+- -t = --tag (tag): Assigns a name and tag to the image.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t my-app:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image and uses GitLab's short commit SHA as the image tag.
+
+Options:
+- -t = --tag (tag): Assigns a name and tag to the image.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker tag my-app:$CI_COMMIT_SHORT_SHA my-app:latest
+
+Explanation:
+Creates an additional local tag named latest for the image identified by CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag v2.3.0
+
+Explanation:
+Creates a lightweight local Git tag named v2.3.0 at the current commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin v2.3.0
+
+Explanation:
+Pushes the local v2.3.0 tag to the remote repository named origin.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Deploying production release $CI_COMMIT_TAG"
+
+Explanation:
+Prints a production deployment message containing the current Git tag.
+------------------------------------------------------------
+------------------------------------------------------------
+# env
+
+Explanation:
+Prints environment variables available to the current process.
+
+Warning:
+In CI/CD logs this can expose sensitive values. Use it only when you understand what variables may be printed.
+------------------------------------------------------------
+------------------------------------------------------------
+# export
+
+Explanation:
+Displays exported shell variables and their values in Bash.
+
+Warning:
+In CI/CD logs this can expose sensitive values. Avoid using it for broad debugging when secrets may be present.
+------------------------------------------------------------
