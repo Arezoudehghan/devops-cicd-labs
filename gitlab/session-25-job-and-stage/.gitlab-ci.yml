@@ -1,0 +1,53 @@
+stages:
+  - validate
+  - build
+  - test
+  - deploy
+
+validate_app:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Validating application..."
+    - bash -n app.sh
+    - echo "Validation completed successfully."
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building application..."
+    - mkdir -p build
+    - cp app.sh build/app.sh
+    - chmod +x build/app.sh
+    - ./build/app.sh
+    - echo "Build completed successfully."
+
+syntax_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running syntax test..."
+    - bash -n app.sh
+    - echo "Syntax test passed."
+
+health_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running application health test..."
+    - ./app.sh | grep -q "healthy"
+    - echo "Health test passed."
+
+deploy_preview:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "All previous stages passed."
+    - echo "Deployment target would be DEV-2 at 192.168.94.91."
+    - echo "Deployment preview completed."
