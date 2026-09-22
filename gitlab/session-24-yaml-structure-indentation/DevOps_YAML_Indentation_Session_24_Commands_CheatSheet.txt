@@ -1,0 +1,277 @@
+------------------------------------------------------------
+# echo "Building..."
+
+Explanation:
+Prints the text "Building..." to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image using the Dockerfile and build context in the current directory.
+
+Options:
+- . = current directory build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application"
+
+Explanation:
+Prints the text "Building application" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application"
+
+Explanation:
+Prints the text "Testing application" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting build"
+
+Explanation:
+Prints the text "Starting build" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Displays the installed Docker version information.
+
+Options:
+- --version = version information: Prints Docker version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp:latest .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as myapp:latest.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:latest to the built image.
+- . = current directory build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build completed"
+
+Explanation:
+Prints the text "Build completed" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building"
+
+Explanation:
+Prints the text "Building" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --header "Content-Type: application/json" http://example.local
+
+Explanation:
+Sends an HTTP request to http://example.local with a Content-Type request header set to application/json.
+
+Options:
+- --header = header (official short form: -H): Adds or replaces an HTTP request header.
+- "Content-Type: application/json" = header value: Sets the Content-Type header to application/json.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_NAME"
+
+Explanation:
+Prints the current value of the APP_NAME shell environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_ENV"
+
+Explanation:
+Prints the current value of the APP_ENV shell environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing"
+
+Explanation:
+Prints the text "Testing" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying"
+
+Explanation:
+Prints the text "Deploying" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking YAML structure"
+
+Explanation:
+Prints the text "Checking YAML structure" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project is $CI_PROJECT_NAME"
+
+Explanation:
+Prints the GitLab project name by expanding the CI_PROJECT_NAME predefined CI/CD variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID is $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID by expanding the CI_PIPELINE_ID predefined CI/CD variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting build for $APP_NAME"
+
+Explanation:
+Prints a build-start message and expands the APP_NAME variable inside the text.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates a directory named build and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and produces no error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application build completed" > build/result.txt
+
+Explanation:
+Writes the text "Application build completed" into build/result.txt.
+
+Options:
+- > = shell output redirection operator: Redirects standard output to build/result.txt and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat build/result.txt
+
+Explanation:
+Displays the contents of build/result.txt on standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting test"
+
+Explanation:
+Prints the text "Starting test" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f build/result.txt || echo "Build directory is not available in this job"
+
+Explanation:
+Checks whether build/result.txt exists as a regular file. If the check fails, the command on the right prints the fallback message.
+
+Options:
+- -f = regular-file test operator: Returns success only if build/result.txt exists and is a regular file.
+- || = shell OR operator: Runs the command on the right only when the command on the left returns a non-zero exit status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test job completed"
+
+Explanation:
+Prints the text "Test job completed" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the text "Build" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session24-yaml
+
+Explanation:
+Changes the current shell directory to ~/gitlab-labs/cicd-session24-yaml.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists directory entries in long format, including hidden entries.
+
+Options:
+- -l = long listing format: Displays detailed information for each listed entry.
+- -a = --all (all): Includes entries whose names begin with a dot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Displays the contents of the .gitlab-ci.yml file on standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat -A .gitlab-ci.yml
+
+Explanation:
+Displays .gitlab-ci.yml while making non-printing characters and line endings easier to see.
+
+Options:
+- -A = --show-all (show all): Equivalent to -vET and shows non-printing characters, tabs, and line endings.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep -nP '\t' .gitlab-ci.yml
+
+Explanation:
+Searches .gitlab-ci.yml for tab characters and prints the matching line numbers.
+
+Options:
+- -n = --line-number (line number): Prefixes each matching line with its input line number.
+- -P = --perl-regexp (Perl regular expression): Interprets the pattern as a Perl-compatible regular expression.
+- '\t' = regular-expression pattern: Matches a tab character.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the text "Deploy" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application"
+
+Explanation:
+Prints the text "Deploying application" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t app:latest .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as app:latest.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag app:latest to the built image.
+- . = current directory build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
