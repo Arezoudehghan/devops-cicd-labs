@@ -1,0 +1,389 @@
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session25-job-stage
+
+Explanation:
+Changes the current shell directory to the Session 25 GitLab lab repository.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+# cat > app.sh <<'EOF'
+#!/usr/bin/env bash
+
+echo "Application status: healthy"
+EOF
+
+Explanation:
+Creates or overwrites app.sh with the shown Bash script content. The quoted here-document delimiter prevents shell expansion inside the block while it is being written.
+
+Options:
+- > = output redirection: Writes the output of cat to app.sh, replacing the file if it already exists.
+- <<'EOF' = quoted here-document: Supplies all lines up to EOF as standard input to cat without expanding variables or command substitutions.
+------------------------------------------------------------
+# echo "Application status: healthy"
+
+Explanation:
+Prints the application health-status message to standard output.
+------------------------------------------------------------
+# chmod +x app.sh
+
+Explanation:
+Adds execute permission to app.sh so it can be run directly.
+
+Options:
+- +x = add execute permission: Adds the execute bit to the file mode.
+------------------------------------------------------------
+# ./app.sh
+
+Explanation:
+Runs the app.sh script from the current directory.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Runs the GitLab Runner list command with elevated privileges to display configured runners.
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'EOF'
+stages:
+  - validate
+  - build
+  - test
+  - deploy
+
+validate_app:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Validating application..."
+    - bash -n app.sh
+    - echo "Validation completed successfully."
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building application..."
+    - mkdir -p build
+    - cp app.sh build/app.sh
+    - chmod +x build/app.sh
+    - ./build/app.sh
+    - echo "Build completed successfully."
+
+syntax_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running syntax test..."
+    - bash -n app.sh
+    - echo "Syntax test passed."
+
+health_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running application health test..."
+    - ./app.sh | grep -q "healthy"
+    - echo "Health test passed."
+
+deploy_preview:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "All previous stages passed."
+    - echo "Deployment target would be DEV-2 at 192.168.94.91."
+    - echo "Deployment preview completed."
+EOF
+
+Explanation:
+Creates or overwrites .gitlab-ci.yml with the complete four-stage GitLab CI/CD pipeline used in this lab. The quoted here-document preserves the YAML content exactly while writing it.
+
+Options:
+- > = output redirection: Writes the output of cat to .gitlab-ci.yml, replacing the file if it already exists.
+- <<'EOF' = quoted here-document: Supplies all lines up to EOF as standard input to cat without expanding variables or command substitutions.
+------------------------------------------------------------
+# echo "Validating application..."
+
+Explanation:
+Prints a message showing that the validation job has started.
+------------------------------------------------------------
+# bash -n app.sh
+
+Explanation:
+Checks the Bash syntax of app.sh without executing the script.
+
+Options:
+- -n = no-execute mode: Reads and parses commands for syntax errors without running them.
+------------------------------------------------------------
+# echo "Validation completed successfully."
+
+Explanation:
+Prints a message showing that validation completed successfully.
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints a message showing that the build job has started.
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates the build directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and suppresses an error when the target directory already exists.
+------------------------------------------------------------
+# cp app.sh build/app.sh
+
+Explanation:
+Copies app.sh to build/app.sh.
+------------------------------------------------------------
+# chmod +x build/app.sh
+
+Explanation:
+Adds execute permission to the copied build/app.sh file.
+
+Options:
+- +x = add execute permission: Adds the execute bit to the file mode.
+------------------------------------------------------------
+# ./build/app.sh
+
+Explanation:
+Runs the copied application script from the build directory.
+------------------------------------------------------------
+# echo "Build completed successfully."
+
+Explanation:
+Prints a message showing that the build job completed successfully.
+------------------------------------------------------------
+# echo "Running syntax test..."
+
+Explanation:
+Prints a message showing that the syntax-test job has started.
+------------------------------------------------------------
+# echo "Syntax test passed."
+
+Explanation:
+Prints a message showing that the syntax test passed.
+------------------------------------------------------------
+# echo "Running application health test..."
+
+Explanation:
+Prints a message showing that the application health test has started.
+------------------------------------------------------------
+# ./app.sh | grep -q "healthy"
+
+Explanation:
+Runs app.sh and checks whether its output contains the text healthy. grep produces no normal output because quiet mode is enabled.
+
+Options:
+- | = pipe operator: Sends the standard output of ./app.sh to grep as standard input.
+- -q = --quiet (quiet), also available as --silent: Stops normal grep output and uses only the exit status to report whether a match was found.
+------------------------------------------------------------
+# echo "Health test passed."
+
+Explanation:
+Prints a message showing that the health test passed.
+------------------------------------------------------------
+# echo "All previous stages passed."
+
+Explanation:
+Prints a message confirming that the earlier pipeline stages completed successfully.
+------------------------------------------------------------
+# echo "Deployment target would be DEV-2 at 192.168.94.91."
+
+Explanation:
+Prints the deployment-preview target server and IP address.
+------------------------------------------------------------
+# echo "Deployment preview completed."
+
+Explanation:
+Prints a message showing that the deployment-preview job completed.
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the contents of .gitlab-ci.yml to standard output.
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in tracked files.
+------------------------------------------------------------
+# git add app.sh .gitlab-ci.yml
+
+Explanation:
+Stages app.sh and .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+# git commit -m "ci: add jobs and stages lab"
+
+Explanation:
+Creates a Git commit with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote upstream branch.
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to the origin remote and sets it as the upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records origin/main as the upstream tracking branch for the local branch.
+------------------------------------------------------------
+# ./app.sh | grep -q "unhealthy"
+
+Explanation:
+Runs app.sh and checks whether its output contains the text unhealthy. This command was used to intentionally make the health-test job fail.
+
+Options:
+- | = pipe operator: Sends the standard output of ./app.sh to grep as standard input.
+- -q = --quiet (quiet), also available as --silent: Stops normal grep output and uses only the exit status to report whether a match was found.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages only .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+# git commit -m "test: simulate failed health job"
+
+Explanation:
+Creates a Git commit that records the intentionally failing health-test change.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git commit -m "fix: restore health test"
+
+Explanation:
+Creates a Git commit that records the restored healthy test condition.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# echo "Building application"
+
+Explanation:
+Prints the example build message used in the basic Job and Stage example.
+------------------------------------------------------------
+# echo "Testing application"
+
+Explanation:
+Prints the example test message used in the basic Job and Stage example.
+------------------------------------------------------------
+# echo "Deploying application"
+
+Explanation:
+Prints the example deploy message used in the basic Job and Stage example.
+------------------------------------------------------------
+# echo "Building..."
+
+Explanation:
+Prints the build-start message used in the multi-job Stage example.
+------------------------------------------------------------
+# echo "Running Unit Tests..."
+
+Explanation:
+Prints the unit-test message used in the multi-job Stage example.
+------------------------------------------------------------
+# echo "Running Security Tests..."
+
+Explanation:
+Prints the security-test message used in the multi-job Stage example.
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+Prints the deploy message used in the multi-job Stage example.
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints Hello to standard output in the example job without an explicit stage.
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints Build to standard output in the example build job.
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints Test to standard output in the example test job.
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints Deploy to standard output in the example deploy job.
+------------------------------------------------------------
+# echo "Running Gitleaks"
+
+Explanation:
+Prints the Gitleaks scan message used in the security-stage example.
+------------------------------------------------------------
+# echo "Test 1"
+
+Explanation:
+Prints Test 1 in the duplicate-job-name example.
+------------------------------------------------------------
+# echo "Test 2"
+
+Explanation:
+Prints Test 2 in the duplicate-job-name example.
+------------------------------------------------------------
+# echo build
+
+Explanation:
+Prints the lowercase word build in the scenario-based interview pipeline example.
+------------------------------------------------------------
+# echo unit
+
+Explanation:
+Prints the lowercase word unit in the scenario-based interview pipeline example.
+------------------------------------------------------------
+# echo security
+
+Explanation:
+Prints the lowercase word security in the scenario-based interview pipeline example.
+------------------------------------------------------------
+# echo deploy
+
+Explanation:
+Prints the lowercase word deploy in the scenario-based interview pipeline example.
+------------------------------------------------------------
+# echo "unit test"
+
+Explanation:
+Prints the unit test message used in the final practice pipeline.
+------------------------------------------------------------
+# echo "api test"
+
+Explanation:
+Prints the API test message used in the final practice pipeline.
+------------------------------------------------------------
+# echo "security test"
+
+Explanation:
+Prints the security test message used in the final practice pipeline.
+------------------------------------------------------------
+# echo "deploy"
+
+Explanation:
+Prints the lowercase deploy message used in the final practice pipeline.
+------------------------------------------------------------
