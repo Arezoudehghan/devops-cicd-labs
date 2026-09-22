@@ -1,0 +1,32 @@
+stages:
+  - concurrency-test
+
+default:
+  tags:
+    - dev-shell
+
+.concurrency_template:
+  stage: concurrency-test
+  script:
+    - echo "================================"
+    - echo "Job=$CI_JOB_NAME"
+    - echo "Runner=$CI_RUNNER_DESCRIPTION"
+    - echo "Runner_ID=$CI_RUNNER_ID"
+    - echo "Concurrent_ID=$CI_CONCURRENT_ID"
+    - echo "Project_Concurrent_ID=$CI_CONCURRENT_PROJECT_ID"
+    - echo "START=$(date '+%H:%M:%S')"
+    - sleep 30
+    - echo "END=$(date '+%H:%M:%S')"
+    - echo "================================"
+
+job-1:
+  extends: .concurrency_template
+
+job-2:
+  extends: .concurrency_template
+
+job-3:
+  extends: .concurrency_template
+
+job-4:
+  extends: .concurrency_template
