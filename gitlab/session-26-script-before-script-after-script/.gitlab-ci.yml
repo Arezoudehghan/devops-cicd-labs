@@ -1,0 +1,56 @@
+stages:
+  - lab
+
+lifecycle-demo:
+  stage: lab
+  tags:
+    - dev-shell
+  before_script:
+    - echo "=== BEFORE_SCRIPT ==="
+    - echo "Current directory:"
+    - pwd
+    - export DEMO_VARIABLE="created-in-before-script"
+    - mkdir -p .ci-demo
+    - echo "Created by before_script" > .ci-demo/lifecycle.txt
+    - cd .ci-demo
+  script:
+    - echo "=== SCRIPT ==="
+    - echo "DEMO_VARIABLE=$DEMO_VARIABLE"
+    - echo "Current directory:"
+    - pwd
+    - echo "Updated by script" >> lifecycle.txt
+  after_script:
+    - echo "=== AFTER_SCRIPT ==="
+    - echo "Current directory:"
+    - pwd
+    - echo "DEMO_VARIABLE=${DEMO_VARIABLE:-NOT_AVAILABLE}"
+    - echo "Updated by after_script" >> .ci-demo/lifecycle.txt
+    - cat .ci-demo/lifecycle.txt
+  artifacts:
+    when: always
+    paths:
+      - .ci-demo/lifecycle.txt
+
+script-failure-demo:
+  stage: lab
+  tags:
+    - dev-shell
+  before_script:
+    - echo "Preparing failure test..."
+  script:
+    - echo "Main script started"
+    - echo "The next command intentionally fails"
+    - exit 1
+  after_script:
+    - echo "after_script is still running"
+    - echo "CI_JOB_STATUS=$CI_JOB_STATUS"
+
+after-script-failure-demo:
+  stage: lab
+  tags:
+    - dev-shell
+  script:
+    - echo "Main script completed successfully"
+  after_script:
+    - echo "after_script will intentionally fail"
+    - exit 1
