@@ -1,0 +1,217 @@
+------------------------------------------------------------
+# sudo gitlab-runner --version
+
+Explanation:
+Shows the installed GitLab Runner version.
+
+Options:
+- --version = version: Prints the GitLab Runner version information.
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runners registered in the local Runner configuration.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service without opening an interactive pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager such as less.
+------------------------------------------------------------
+# sudo grep -E '^(concurrent|check_interval)|^\[\[runners\]\]|^[[:space:]]+(name|executor|limit|request_concurrency)[[:space:]]*=' /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays only the main concurrency-related Runner settings from config.toml.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+------------------------------------------------------------
+# sudo cp -a /etc/gitlab-runner/config.toml /etc/gitlab-runner/config.toml.bak-session21-$(date +%F-%H%M%S)
+
+Explanation:
+Creates an archive-style backup copy of config.toml with the current date and time in the backup filename.
+
+Options:
+- -a = --archive (archive): Preserves file attributes as much as possible while copying.
+- $(...) = command substitution: Runs date +%F-%H%M%S and inserts its output into the destination filename.
+- +%F-%H%M%S = date format argument: Formats the timestamp as YYYY-MM-DD-HHMMSS.
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the nano text editor.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the GitLab Runner systemd service.
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs
+
+Explanation:
+Creates the gitlab-labs directory under the current user's home directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and ignores an already existing target directory.
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to ~/gitlab-labs.
+------------------------------------------------------------
+# git clone URL_COPIED_FROM_GITLAB
+
+Explanation:
+Technical correction: the original command used <URL_COPIED_FROM_GITLAB>, and unquoted angle brackets are interpreted by the shell as redirection operators. Replace URL_COPIED_FROM_GITLAB with the actual repository URL copied from GitLab before running the command.
+------------------------------------------------------------
+# cd runner-concurrency-lab
+
+Explanation:
+Changes the current shell directory to the runner-concurrency-lab repository.
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml pipeline configuration file in the nano text editor.
+------------------------------------------------------------
+# echo "================================"
+
+Explanation:
+Prints a separator line to the job log.
+------------------------------------------------------------
+# echo "Job=$CI_JOB_NAME"
+
+Explanation:
+Prints the current GitLab CI job name by expanding the CI_JOB_NAME predefined variable.
+------------------------------------------------------------
+# echo "Runner=$CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the description of the GitLab Runner that is executing the job.
+------------------------------------------------------------
+# echo "Runner_ID=$CI_RUNNER_ID"
+
+Explanation:
+Prints the GitLab Runner ID by expanding the CI_RUNNER_ID predefined variable.
+------------------------------------------------------------
+# echo "Concurrent_ID=$CI_CONCURRENT_ID"
+
+Explanation:
+Prints the concurrent execution ID assigned to the running job.
+------------------------------------------------------------
+# echo "Project_Concurrent_ID=$CI_CONCURRENT_PROJECT_ID"
+
+Explanation:
+Prints the concurrent execution ID that is scoped to the current project.
+------------------------------------------------------------
+# echo "START=$(date '+%H:%M:%S')"
+
+Explanation:
+Prints the job start time using the current hour, minute, and second.
+
+Options:
+- $(...) = command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- +%H:%M:%S = date format argument: Formats the time as HH:MM:SS using a 24-hour clock.
+------------------------------------------------------------
+# sleep 30
+
+Explanation:
+Pauses the job for 30 seconds so concurrent execution can be observed.
+------------------------------------------------------------
+# echo "END=$(date '+%H:%M:%S')"
+
+Explanation:
+Prints the job end time using the current hour, minute, and second.
+
+Options:
+- $(...) = command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- +%H:%M:%S = date format argument: Formats the time as HH:MM:SS using a 24-hour clock.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+# git commit -m "lab: test runner concurrency"
+
+Explanation:
+Creates a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote repository.
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the deploy.sh script from the current directory.
+------------------------------------------------------------
+# docker rm -f my-app
+
+Explanation:
+Removes the container named my-app and force-stops it first if it is running.
+
+Options:
+- -f = --force (force): Forces removal of a running container by stopping it before removal.
+------------------------------------------------------------
+# docker rm -f production-app
+
+Explanation:
+Removes the container named production-app and force-stops it first if it is running.
+
+Options:
+- -f = --force (force): Forces removal of a running container by stopping it before removal.
+------------------------------------------------------------
+# docker run IMAGE
+
+Explanation:
+Technical correction: the original lesson example used docker run ... and was incomplete. IMAGE represents the required image name and must be replaced with the actual image to run.
+------------------------------------------------------------
+# htop
+
+Explanation:
+Starts the interactive htop process viewer for monitoring CPU, memory, and running processes.
+------------------------------------------------------------
+# top
+
+Explanation:
+Starts the top process viewer for monitoring system load, CPU, memory, and running processes.
+------------------------------------------------------------
+# ps -u gitlab-runner -o pid,ppid,etime,%cpu,%mem,cmd
+
+Explanation:
+Shows processes owned by the gitlab-runner user with selected process columns.
+
+Options:
+- -u = --user (user): Selects processes by effective user; here the user is gitlab-runner.
+- -o = --format (format): Selects the output columns; here they are PID, parent PID, elapsed time, CPU percentage, memory percentage, and command.
+------------------------------------------------------------
+# watch -n 1 'ps -u gitlab-runner -o pid,ppid,etime,%cpu,%mem,cmd'
+
+Explanation:
+Runs the ps command repeatedly so GitLab Runner processes can be monitored live.
+
+Options:
+- -n = --interval (interval): Sets the refresh interval; here it is 1 second.
+- Inner -u = --user (user): Selects processes owned by the gitlab-runner effective user.
+- Inner -o = --format (format): Selects PID, parent PID, elapsed time, CPU percentage, memory percentage, and command columns.
+------------------------------------------------------------
+# sudo grep '^concurrent' /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the line that starts with concurrent in the GitLab Runner configuration file.
+------------------------------------------------------------
+# sudo grep -E '^(concurrent)|^[[:space:]]+(name|limit|executor)[[:space:]]*=' /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the global concurrent setting and selected per-runner settings from config.toml.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+------------------------------------------------------------
