@@ -33,3 +33,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-21-concurrent-job-runner-capacity/` — GitLab Runner concurrent jobs, global `concurrent`, per-runner `limit`, `request_concurrency`, capacity testing, and Runner process monitoring.
 - `gitlab/session-22-runner-security-shell-executor/` — GitLab Runner security, Shell Executor risks, Runner-user permissions, Docker-group privilege, CI/CD secret exposure, and Runner hardening.
 - `gitlab/session-23-runner-troubleshooting/` — GitLab Runner troubleshooting for pending/stuck jobs, offline Runner, tag mismatch, Linux permissions, Docker socket access, and diagnostic workflow.
+- `gitlab/session-24-yaml-structure-indentation/` — YAML mappings, sequences, indentation, GitLab CI/CD parent/child structure, tab detection, and a practical `.gitlab-ci.yml` validation lab.
