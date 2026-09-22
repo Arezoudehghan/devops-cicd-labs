@@ -1,0 +1,550 @@
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson showed `docker build ...`, where `...` was incomplete. This corrected form builds an image using the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push IMAGE
+
+Explanation:
+Technical correction: The lesson showed `docker push ...`, where `...` was incomplete. `IMAGE` represents the image name or image reference that Docker should push.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service without opening the output in a pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner status
+
+Explanation:
+Shows the service status reported by the GitLab Runner command-line tool.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runners stored in the local Runner configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the locally registered Runner can communicate with the GitLab server.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 100 --no-pager
+
+Explanation:
+Shows the latest 100 log lines for the GitLab Runner systemd unit without using a pager.
+
+Options:
+- -u = --unit (unit): Limits logs to the `gitlab-runner` systemd unit.
+- -n = --lines (lines): Shows the specified number of recent log lines; here the value is `100`.
+- --no-pager = no pager: Prints the output directly instead of opening a pager.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -f
+
+Explanation:
+Follows the GitLab Runner service logs in real time.
+
+Options:
+- -u = --unit (unit): Limits logs to the `gitlab-runner` systemd unit.
+- -f = --follow (follow): Continuously displays new log entries as they are written.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner lint --config /etc/gitlab-runner/config.toml
+
+Explanation:
+Checks the specified GitLab Runner configuration file for configuration errors.
+
+Options:
+- --config = configuration file: Uses `/etc/gitlab-runner/config.toml` as the Runner configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Prints the GitLab Runner configuration file to standard output with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# systemctl status
+
+Explanation:
+Shows the overall systemd manager status when no unit name is supplied.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner list
+
+Explanation:
+Lists GitLab Runners stored in the local Runner configuration for the current execution context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner verify
+
+Explanation:
+Checks communication between locally registered GitLab Runner entries and GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# journalctl
+
+Explanation:
+Displays entries from the systemd journal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl stop gitlab-runner
+
+Explanation:
+Stops the GitLab Runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl start gitlab-runner
+
+Explanation:
+Starts the GitLab Runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build"
+
+Explanation:
+Prints the text `build` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner is working"
+
+Explanation:
+Prints the text `Runner is working` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test"
+
+Explanation:
+Prints the text `test` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl enable gitlab-runner
+
+Explanation:
+Enables the GitLab Runner service so systemd can start it automatically at boot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-enabled gitlab-runner
+
+Explanation:
+Checks whether the GitLab Runner service is enabled to start automatically.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active gitlab-runner
+
+Explanation:
+Checks whether the GitLab Runner service is currently active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -I http://192.168.94.90
+
+Explanation:
+Requests only the HTTP response headers from the GitLab server address to test basic HTTP reachability.
+
+Options:
+- -I = --head (HEAD request): Fetches response headers instead of downloading the response body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 200 --no-pager
+
+Explanation:
+Shows the latest 200 log lines for the GitLab Runner systemd unit without using a pager.
+
+Options:
+- -u = --unit (unit): Limits logs to the `gitlab-runner` systemd unit.
+- -n = --lines (lines): Shows the specified number of recent log lines; here the value is `200`.
+- --no-pager = no pager: Prints the output directly instead of opening a pager.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups of the `gitlab-runner` account.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H whoami
+
+Explanation:
+Runs `whoami` as the `gitlab-runner` user and prints the effective user name.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here `gitlab-runner`.
+- -H = --set-home (set HOME): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /opt/myapp/config.txt
+
+Explanation:
+Prints the contents of `/opt/myapp/config.txt` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /opt/myapp/config.txt
+
+Explanation:
+Prints `/opt/myapp/config.txt` with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H cat /opt/myapp/config.txt
+
+Explanation:
+Attempts to read `/opt/myapp/config.txt` as the `gitlab-runner` user, which helps test the same file permission context used by a Shell Executor job.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here `gitlab-runner`.
+- -H = --set-home (set HOME): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo mkdir -p /opt/runner-permission-lab
+
+Explanation:
+Creates the `/opt/runner-permission-lab` directory with elevated privileges and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not report an error if the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "runner test" | sudo tee /opt/runner-permission-lab/test.txt
+
+Explanation:
+Sends the text `runner test` through a pipe to `sudo tee`, which writes it into `/opt/runner-permission-lab/test.txt`.
+
+Options:
+- | = shell pipe: Sends the standard output of `echo` to the standard input of `sudo tee`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 700 /opt/runner-permission-lab
+
+Explanation:
+Sets the directory permissions so the owner has read, write, and execute access while group and others have no permissions.
+
+Options:
+- 700 = permission mode: Owner gets `rwx`; group and others get no permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 600 /opt/runner-permission-lab/test.txt
+
+Explanation:
+Sets the file permissions so the owner can read and write it while group and others have no permissions.
+
+Options:
+- 600 = permission mode: Owner gets `rw`; group and others get no permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H cat /opt/runner-permission-lab/test.txt
+
+Explanation:
+Attempts to read the lab file as the `gitlab-runner` user to test its effective file access.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here `gitlab-runner`.
+- -H = --set-home (set HOME): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# namei -l /opt/runner-permission-lab/test.txt
+
+Explanation:
+Shows each path component of the file together with detailed permission and ownership information.
+
+Options:
+- -l = --long (long listing): Uses a long listing format for each path component.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -ld /opt/runner-permission-lab
+
+Explanation:
+Shows detailed information about the directory itself instead of listing the directory contents.
+
+Options:
+- -l = --long (long listing): Displays detailed file information such as permissions, owner, group, size, and time.
+- -d = --directory (directory): Lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /opt/runner-permission-lab/test.txt
+
+Explanation:
+Shows detailed information about the specified test file.
+
+Options:
+- -l = --long (long listing): Displays detailed file information such as permissions, owner, group, size, and time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod -R 777 /opt/runner-permission-lab
+
+Explanation:
+Technical correction: The lesson showed `chmod -R 777 ...`, where the target path was incomplete. This corrected form uses the existing lab directory and recursively gives read, write, and execute permissions to owner, group, and others.
+
+Options:
+- -R = --recursive (recursive): Applies the permission change to the directory and its contents recursively.
+- 777 = permission mode: Owner, group, and others each get `rwx` permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo groupadd -f cicd
+
+Explanation:
+Creates the `cicd` group, while the force option allows the command to succeed if that group already exists.
+
+Options:
+- -f = --force (force): Exits successfully if the specified group already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG cicd gitlab-runner
+
+Explanation:
+Adds the `gitlab-runner` user to the supplementary `cicd` group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Adds the user to supplementary groups without removing existing group memberships.
+- -G = --groups (groups): Specifies the supplementary group list; here the group is `cicd`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown -R root:cicd /opt/runner-permission-lab
+
+Explanation:
+Recursively changes ownership of the lab directory and its contents to user `root` and group `cicd`.
+
+Options:
+- -R = --recursive (recursive): Applies the ownership change to the directory and all contents recursively.
+- root:cicd = owner:group value: Sets user ownership to `root` and group ownership to `cicd`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 750 /opt/runner-permission-lab
+
+Explanation:
+Sets the directory so the owner has full access, the group can read and enter it, and others have no access.
+
+Options:
+- 750 = permission mode: Owner gets `rwx`, group gets `r-x`, and others get no permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chmod 640 /opt/runner-permission-lab/test.txt
+
+Explanation:
+Sets the file so the owner can read and write it, the group can read it, and others have no permissions.
+
+Options:
+- 640 = permission mode: Owner gets `rw`, group gets `r`, and others get no permissions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the GitLab Runner systemd service so it starts again with the current configuration and group memberships.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status docker --no-pager
+
+Explanation:
+Shows the current Docker systemd service status without opening a pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays Docker client and daemon information and also confirms whether the client can communicate with the Docker daemon.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs `docker info` as the `gitlab-runner` user to test that user's access to the Docker daemon.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here `gitlab-runner`.
+- -H = --set-home (set HOME): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed ownership and permission information for the Docker Unix socket.
+
+Options:
+- -l = --long (long listing): Displays detailed file information such as permissions, owner, group, size, and time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# getent group docker
+
+Explanation:
+Queries the system account database for the `docker` group and prints its group entry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the `gitlab-runner` account to the supplementary `docker` group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Adds the user to supplementary groups without removing existing group memberships.
+- -G = --groups (groups): Specifies the supplementary group list; here the group is `docker`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker ps
+
+Explanation:
+Runs `docker ps` as the `gitlab-runner` user to verify that it can communicate with Docker and list running containers.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, here `gitlab-runner`.
+- -H = --set-home (set HOME): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl start docker
+
+Explanation:
+Starts the Docker systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== USER ====="
+
+Explanation:
+Prints the diagnostic section label `===== USER =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the effective user name of the process running the command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== ID ====="
+
+Explanation:
+Prints the diagnostic section label `===== ID =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id
+
+Explanation:
+Prints the current user's user ID, primary group, and supplementary groups.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== HOST ====="
+
+Explanation:
+Prints the diagnostic section label `===== HOST =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the current system host name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== WORKDIR ====="
+
+Explanation:
+Prints the diagnostic section label `===== WORKDIR =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== DOCKER ====="
+
+Explanation:
+Prints the diagnostic section label `===== DOCKER =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== CONTAINERS ====="
+
+Explanation:
+Prints the diagnostic section label `===== CONTAINERS =====`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# systemctl status gitlab-runner
+
+Explanation:
+Shows the current systemd status of the GitLab Runner service without using `sudo`.
+------------------------------------------------------------
