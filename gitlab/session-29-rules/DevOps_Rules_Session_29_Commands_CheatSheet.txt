@@ -1,0 +1,602 @@
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints a deployment message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints a short deployment message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests"
+
+Explanation:
+Prints a test execution message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing branch..."
+
+Explanation:
+Prints a branch testing message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating release..."
+
+Explanation:
+Prints a release creation message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing frontend..."
+
+Explanation:
+Prints a frontend testing message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker project detected"
+
+Explanation:
+Prints a message indicating that a Docker project was detected.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker build"
+
+Explanation:
+Prints a Docker build message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Python test"
+
+Explanation:
+Prints a Python test message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying Production..."
+
+Explanation:
+Prints a production deployment message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running test"
+
+Explanation:
+Prints a test execution message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend test"
+
+Explanation:
+Prints a frontend test message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security scan"
+
+Explanation:
+Prints a security scan message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the deploy.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current directory to the gitlab-labs directory inside the current user home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p cicd-session29-rules
+
+Explanation:
+Creates the cicd-session29-rules directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd cicd-session29-rules
+
+Explanation:
+Changes the current directory to cicd-session29-rules.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates main as its initial branch.
+
+Options:
+- -b = --initial-branch <branch-name> (initial branch): Use main as the initial branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p app docs
+
+Explanation:
+Creates the app and docs directories and does not fail if they already exist.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if a directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > app/app.sh <<'EOF'
+#!/usr/bin/env bash
+
+echo "Application is running"
+EOF
+
+Explanation:
+Creates app/app.sh and writes the shown Bash script into it.
+
+Options:
+- > = output redirection: Create or overwrite app/app.sh with the output from cat.
+- <<'EOF' = quoted here-document: Pass the following lines to cat until EOF is reached, without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application is running"
+
+Explanation:
+Prints the application running message when the Bash script is executed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod +x app/app.sh
+
+Explanation:
+Adds execute permission to app/app.sh.
+
+Options:
+- +x = add execute permission: Adds the execute bit for the applicable user, group, and other permission classes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > docs/README.md <<'EOF'
+# CI/CD Rules Lab
+
+GitLab CI/CD rules training project.
+EOF
+
+Explanation:
+Creates docs/README.md and writes the shown documentation content into it.
+
+Options:
+- > = output redirection: Create or overwrite docs/README.md with the output from cat.
+- <<'EOF' = quoted here-document: Pass the following lines to cat until EOF is reached, without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > Dockerfile <<'EOF'
+FROM alpine:3.22
+
+CMD ["echo", "GitLab Rules Lab"]
+EOF
+
+Explanation:
+Creates Dockerfile and writes the shown Dockerfile instructions into it.
+
+Options:
+- > = output redirection: Create or overwrite Dockerfile with the output from cat.
+- <<'EOF' = quoted here-document: Pass the following lines to cat until EOF is reached, without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM alpine:3.22
+
+Explanation:
+Uses alpine:3.22 as the base image for the Dockerfile build stage.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["echo", "GitLab Rules Lab"]
+
+Explanation:
+Sets the default container command to run echo with the argument GitLab Rules Lab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'EOF'
+stages:
+  - verify
+  - test
+  - build
+  - deploy
+  - release
+
+branch-check:
+  stage: verify
+  tags:
+    - dev-shell
+  script:
+    - echo "Pipeline Source = $CI_PIPELINE_SOURCE"
+    - echo "Branch = $CI_COMMIT_BRANCH"
+    - echo "Tag = $CI_COMMIT_TAG"
+    - echo "Commit = $CI_COMMIT_SHORT_SHA"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+
+mr-test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Merge Request Pipeline detected"
+    - echo "Source Branch = $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "Target Branch = $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - ./app/app.sh
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+docs-check:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Documentation changed in Merge Request"
+    - test -f docs/README.md
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - docs/**/*
+
+docker-check:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Dockerfile exists"
+    - test -f Dockerfile
+  rules:
+    - exists:
+        - Dockerfile
+
+build-main:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building commit $CI_COMMIT_SHORT_SHA"
+    - ./app/app.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+deploy-production:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Production deployment simulation"
+    - echo "Commit = $CI_COMMIT_SHORT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+      allow_failure: false
+
+release:
+  stage: release
+  tags:
+    - dev-shell
+  script:
+    - echo "Creating release for $CI_COMMIT_TAG"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/'
+EOF
+
+Explanation:
+Creates .gitlab-ci.yml and writes the complete GitLab CI/CD rules lab configuration into it.
+
+Options:
+- > = output redirection: Create or overwrite .gitlab-ci.yml with the output from cat.
+- <<'EOF' = quoted here-document: Pass the following lines to cat until EOF is reached, without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline Source = $CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints the current GitLab pipeline source value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch = $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current Git branch name when CI_COMMIT_BRANCH is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Tag = $CI_COMMIT_TAG"
+
+Explanation:
+Prints the current Git tag value when CI_COMMIT_TAG is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the shortened commit SHA provided by GitLab CI.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Merge Request Pipeline detected"
+
+Explanation:
+Prints a message indicating that a merge request pipeline was detected.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Source Branch = $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+
+Explanation:
+Prints the merge request source branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Target Branch = $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+
+Explanation:
+Prints the merge request target branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./app/app.sh
+
+Explanation:
+Runs the app/app.sh script from the repository working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Documentation changed in Merge Request"
+
+Explanation:
+Prints a message indicating that documentation changed in the merge request.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f docs/README.md
+
+Explanation:
+Returns success if docs/README.md exists and is a regular file.
+
+Options:
+- -f = regular file test: Succeeds when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Dockerfile exists"
+
+Explanation:
+Prints a message indicating that Dockerfile exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f Dockerfile
+
+Explanation:
+Returns success if Dockerfile exists and is a regular file.
+
+Options:
+- -f = regular file test: Succeeds when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building commit $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints a build message containing the shortened Git commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production deployment simulation"
+
+Explanation:
+Prints a message indicating a simulated production deployment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating release for $CI_COMMIT_TAG"
+
+Explanation:
+Prints a release creation message containing the current Git tag.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the contents of .gitlab-ci.yml to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --check
+
+Explanation:
+Checks the current diff for whitespace errors.
+
+Options:
+- --check = whitespace error check: Warn about changes that introduce conflict markers or whitespace errors.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its tracked or untracked descendants for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: add rules training pipeline"
+
+Explanation:
+Creates a Git commit with the message ci: add rules training pipeline.
+
+Options:
+- -m = --message=<msg> (message): Use the supplied text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/rules-lab
+
+Explanation:
+Creates the feature/rules-lab branch and switches to it.
+
+Options:
+- -c = --create <new-branch> (create): Create a new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo 'echo "Feature rules lab"' >> app/app.sh
+
+Explanation:
+Appends the line echo "Feature rules lab" to app/app.sh.
+
+Options:
+- >> = append redirection: Append the command output to app/app.sh without overwriting the existing file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add app/app.sh
+
+Explanation:
+Stages the changes in app/app.sh for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: update application for rules lab"
+
+Explanation:
+Creates a Git commit with the message feat: update application for rules lab.
+
+Options:
+- -m = --message=<msg> (message): Use the supplied text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/rules-lab
+
+Explanation:
+Pushes feature/rules-lab to the origin remote and sets its upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Set upstream tracking information for the pushed branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the current Git branch.
+
+Options:
+- --show-current = show current branch: Print the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Rules changes test" >> docs/README.md
+
+Explanation:
+Appends Rules changes test to docs/README.md.
+
+Options:
+- >> = append redirection: Append the command output to docs/README.md without overwriting the existing file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add docs/README.md
+
+Explanation:
+Stages the changes in docs/README.md for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "docs: update rules documentation"
+
+Explanation:
+Creates a Git commit with the message docs: update rules documentation.
+
+Options:
+- -m = --message=<msg> (message): Use the supplied text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits from the current branch to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull
+
+Explanation:
+Fetches changes from the configured remote and integrates them into the current branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Release v1.0.0"
+
+Explanation:
+Creates an annotated Git tag named v1.0.0 with the message Release v1.0.0.
+
+Options:
+- -a = --annotate (annotate): Create an unsigned annotated tag.
+- -m = --message=<msg> (message): Use the supplied text as the tag message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the v1.0.0 tag to the origin remote.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export DEPLOY=true
+
+Explanation:
+Sets the shell variable DEPLOY to true and exports it to child processes.
+------------------------------------------------------------
