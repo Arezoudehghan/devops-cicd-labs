@@ -1,0 +1,302 @@
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch's commits to its configured remote/upstream according to Git's push configuration.
+------------------------------------------------------------
+# git switch main
+
+Explanation:
+Switches the working tree to the local branch named main.
+------------------------------------------------------------
+# git switch feature/login
+
+Explanation:
+Switches the working tree to the local branch named feature/login.
+------------------------------------------------------------
+# git tag v1.0.0
+
+Explanation:
+Creates a lightweight Git tag named v1.0.0 at the current commit.
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the v1.0.0 ref, used as a tag in this lesson, to the remote named origin.
+------------------------------------------------------------
+# cd /root/gitlab-labs
+
+Explanation:
+Changes the current shell directory to /root/gitlab-labs.
+------------------------------------------------------------
+# git clone http://192.168.94.90/root/cicd-session30-workflow-rules.git
+
+Explanation:
+Clones the Git repository from the specified GitLab HTTP URL into a new local directory.
+------------------------------------------------------------
+# cd cicd-session30-workflow-rules
+
+Explanation:
+Changes the current shell directory to cicd-session30-workflow-rules.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current repository state, including the active branch and staged, modified, or untracked files.
+------------------------------------------------------------
+# git branch
+
+Explanation:
+Lists the local Git branches and marks the currently checked-out branch.
+------------------------------------------------------------
+# echo "GitLab workflow rules lab" > app.txt
+
+Explanation:
+Writes the text GitLab workflow rules lab to app.txt. The file is created if it does not exist and overwritten if it already exists.
+
+Options:
+- > = shell output redirection: Sends standard output to app.txt and overwrites the file.
+------------------------------------------------------------
+# cat app.txt
+
+Explanation:
+Prints the contents of app.txt to standard output.
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens .gitlab-ci.yml in the Nano text editor.
+------------------------------------------------------------
+# echo "CI_PIPELINE_SOURCE=${CI_PIPELINE_SOURCE:-EMPTY}"
+
+Explanation:
+Prints the value of CI_PIPELINE_SOURCE; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_PIPELINE_SOURCE:-EMPTY} = shell parameter expansion: Uses CI_PIPELINE_SOURCE when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_COMMIT_BRANCH=${CI_COMMIT_BRANCH:-EMPTY}"
+
+Explanation:
+Prints the value of CI_COMMIT_BRANCH; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_COMMIT_BRANCH:-EMPTY} = shell parameter expansion: Uses CI_COMMIT_BRANCH when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_COMMIT_TAG=${CI_COMMIT_TAG:-EMPTY}"
+
+Explanation:
+Prints the value of CI_COMMIT_TAG; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_COMMIT_TAG:-EMPTY} = shell parameter expansion: Uses CI_COMMIT_TAG when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_DEFAULT_BRANCH=${CI_DEFAULT_BRANCH:-EMPTY}"
+
+Explanation:
+Prints the value of CI_DEFAULT_BRANCH; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_DEFAULT_BRANCH:-EMPTY} = shell parameter expansion: Uses CI_DEFAULT_BRANCH when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_OPEN_MERGE_REQUESTS=${CI_OPEN_MERGE_REQUESTS:-EMPTY}"
+
+Explanation:
+Prints the value of CI_OPEN_MERGE_REQUESTS; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_OPEN_MERGE_REQUESTS:-EMPTY} = shell parameter expansion: Uses CI_OPEN_MERGE_REQUESTS when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_MERGE_REQUEST_IID=${CI_MERGE_REQUEST_IID:-EMPTY}"
+
+Explanation:
+Prints the value of CI_MERGE_REQUEST_IID; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_MERGE_REQUEST_IID:-EMPTY} = shell parameter expansion: Uses CI_MERGE_REQUEST_IID when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "CI_COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA:-EMPTY}"
+
+Explanation:
+Prints the value of CI_COMMIT_SHORT_SHA; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_COMMIT_SHORT_SHA:-EMPTY} = shell parameter expansion: Uses CI_COMMIT_SHORT_SHA when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "Running application tests..."
+
+Explanation:
+Prints the message Running application tests... to standard output.
+------------------------------------------------------------
+# test -f app.txt
+
+Explanation:
+Checks whether app.txt exists and is a regular file. The command returns a successful exit status when the check passes.
+
+Options:
+- -f = regular-file test operator: Succeeds when the specified path exists and is a regular file.
+------------------------------------------------------------
+# grep -q "GitLab workflow rules lab" app.txt
+
+Explanation:
+Checks whether app.txt contains the text GitLab workflow rules lab without printing matching lines.
+
+Options:
+- -q = --quiet (quiet): Suppresses normal output and uses the exit status to indicate whether a match was found.
+------------------------------------------------------------
+# echo "Tests passed."
+
+Explanation:
+Prints the message Tests passed. to standard output.
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the message Building application... to standard output.
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the directory dist if needed and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error when the target directory already exists.
+------------------------------------------------------------
+# cp app.txt dist/app.txt
+
+Explanation:
+Copies app.txt to dist/app.txt.
+------------------------------------------------------------
+# echo "Build completed."
+
+Explanation:
+Prints the message Build completed. to standard output.
+------------------------------------------------------------
+# echo "Production deployment would run here."
+
+Explanation:
+Prints the message Production deployment would run here. to standard output.
+------------------------------------------------------------
+# echo "Branch=${CI_COMMIT_BRANCH}"
+
+Explanation:
+Prints Branch= followed by the current value of the CI_COMMIT_BRANCH environment variable.
+------------------------------------------------------------
+# echo "SHA=${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints SHA= followed by the current value of the CI_COMMIT_SHORT_SHA environment variable.
+------------------------------------------------------------
+# git add .gitlab-ci.yml app.txt
+
+Explanation:
+Stages .gitlab-ci.yml and app.txt for the next Git commit.
+------------------------------------------------------------
+# git commit -m "ci: add workflow rules lab"
+
+Explanation:
+Creates a Git commit from the staged changes using the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+# git switch -c feature/workflow-test
+
+Explanation:
+Creates a new branch named feature/workflow-test and switches to it.
+
+Options:
+- -c = --create (create): Creates a new branch before switching to it.
+------------------------------------------------------------
+# echo "Feature branch change" >> app.txt
+
+Explanation:
+Appends the text Feature branch change to app.txt without replacing the existing file contents.
+
+Options:
+- >> = shell append redirection: Sends standard output to the end of app.txt.
+------------------------------------------------------------
+# git add app.txt
+
+Explanation:
+Stages app.txt for the next Git commit.
+------------------------------------------------------------
+# git commit -m "feat: update application"
+
+Explanation:
+Creates a Git commit from the staged changes using the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push -u origin feature/workflow-test
+
+Explanation:
+Pushes feature/workflow-test to origin and configures that remote branch as the upstream for the local branch.
+
+Options:
+- -u = --set-upstream (set upstream): Records the destination branch as the upstream used by later pull and push operations.
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Prints only the current branch name.
+------------------------------------------------------------
+# echo "Second feature change" >> app.txt
+
+Explanation:
+Appends the text Second feature change to app.txt without replacing the existing file contents.
+
+Options:
+- >> = shell append redirection: Sends standard output to the end of app.txt.
+------------------------------------------------------------
+# git commit -m "feat: add second workflow test"
+
+Explanation:
+Creates a Git commit from the staged changes using the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git pull origin main
+
+Explanation:
+Fetches changes from the main branch on origin and integrates them into the current local branch.
+------------------------------------------------------------
+# echo "SOURCE=$CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints SOURCE= followed by the value of the CI_PIPELINE_SOURCE environment variable.
+------------------------------------------------------------
+# echo "BRANCH=${CI_COMMIT_BRANCH:-EMPTY}"
+
+Explanation:
+Prints the value of CI_COMMIT_BRANCH; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_COMMIT_BRANCH:-EMPTY} = shell parameter expansion: Uses CI_COMMIT_BRANCH when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "TAG=${CI_COMMIT_TAG:-EMPTY}"
+
+Explanation:
+Prints the value of CI_COMMIT_TAG; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_COMMIT_TAG:-EMPTY} = shell parameter expansion: Uses CI_COMMIT_TAG when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
+# echo "OPEN_MR=${CI_OPEN_MERGE_REQUESTS:-EMPTY}"
+
+Explanation:
+Prints the value of CI_OPEN_MERGE_REQUESTS; if it is unset or empty, it prints EMPTY instead.
+
+Options:
+- ${CI_OPEN_MERGE_REQUESTS:-EMPTY} = shell parameter expansion: Uses CI_OPEN_MERGE_REQUESTS when it is set and non-empty; otherwise uses EMPTY.
+------------------------------------------------------------
