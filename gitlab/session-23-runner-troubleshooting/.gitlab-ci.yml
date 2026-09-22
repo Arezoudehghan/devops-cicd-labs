@@ -1,0 +1,27 @@
+stages:
+  - diagnose
+
+runner_diagnose:
+  stage: diagnose
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "===== USER ====="
+    - whoami
+
+    - echo "===== ID ====="
+    - id
+
+    - echo "===== HOST ====="
+    - hostname
+
+    - echo "===== WORKDIR ====="
+    - pwd
+
+    - echo "===== DOCKER ====="
+    - docker info
+
+    - echo "===== CONTAINERS ====="
+    - docker ps
