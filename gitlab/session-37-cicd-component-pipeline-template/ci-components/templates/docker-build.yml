@@ -1,0 +1,36 @@
+spec:
+  description: "Build a Docker image using the shell runner"
+
+  inputs:
+    job-name:
+      description: "Name of the Docker build job"
+      default: "docker-build"
+
+    stage:
+      description: "Stage where the Docker build job runs"
+      default: "build"
+
+    image-name:
+      description: "Docker image name"
+
+    dockerfile:
+      description: "Path to Dockerfile"
+      default: "Dockerfile"
+
+---
+
+"$[[ inputs.job-name ]]":
+  stage: $[[ inputs.stage ]]
+
+  tags:
+    - dev-shell
+
+  variables:
+    COMPONENT_IMAGE_NAME: "$[[ inputs.image-name ]]"
+    COMPONENT_DOCKERFILE: "$[[ inputs.dockerfile ]]"
+
+  script:
+    - echo "Building ${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - docker build -f "${COMPONENT_DOCKERFILE}" -t "${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+    - docker image inspect "${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" > /dev/null
+    - echo "Docker image created successfully"

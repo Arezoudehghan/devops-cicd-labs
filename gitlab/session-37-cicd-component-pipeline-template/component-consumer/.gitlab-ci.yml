@@ -1,0 +1,21 @@
+stages:
+  - build
+  - verify
+
+include:
+  - component: $CI_SERVER_FQDN/devops-lab/ci-components/docker-build@1.0.0
+    inputs:
+      job-name: build-via-component
+      stage: build
+      image-name: session37-component-demo
+      dockerfile: Dockerfile
+
+verify-image:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  script:
+    - docker image inspect "session37-component-demo:${CI_COMMIT_SHORT_SHA}"
+    - echo "Image verification successful"

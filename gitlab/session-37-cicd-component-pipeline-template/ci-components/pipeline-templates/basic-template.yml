@@ -1,0 +1,21 @@
+spec:
+  inputs:
+    stage:
+      default: test
+
+    message:
+      default: "Loaded from shared pipeline template"
+
+---
+
+shared-template-check:
+  stage: $[[ inputs.stage ]]
+
+  tags:
+    - dev-shell
+
+  variables:
+    TEMPLATE_MESSAGE: "$[[ inputs.message ]]"
+
+  script:
+    - echo "${TEMPLATE_MESSAGE}"
