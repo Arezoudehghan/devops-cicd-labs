@@ -1,0 +1,312 @@
+------------------------------------------------------------
+# echo "Preparing environment"
+
+Explanation:
+Prints the text "Preparing environment" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application"
+
+Explanation:
+Prints the text "Building application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application"
+
+Explanation:
+Prints the text "Testing application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Scanning application"
+
+Explanation:
+Prints the text "Scanning application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing build environment"
+
+Explanation:
+Prints the text "Preparing build environment" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting job"
+
+Explanation:
+Prints the text "Starting job" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the text "Build" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints the text "Test" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying to $APP_ENV"
+
+Explanation:
+Prints the deployment message and expands the shell variable $APP_ENV to its current value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the text "Deploy" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Command A"
+
+Explanation:
+Prints the text "Command A" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Command B"
+
+Explanation:
+Prints the text "Command B" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Command C"
+
+Explanation:
+Prints the text "Command C" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints the text "Hello" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "======================================"
+
+Explanation:
+Prints a separator line to make the CI/CD job log easier to read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job: $CI_JOB_NAME"
+
+Explanation:
+Prints the current GitLab CI/CD job name by expanding the $CI_JOB_NAME predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID: $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID by expanding the $CI_PIPELINE_ID predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project: $CI_PROJECT_NAME"
+
+Explanation:
+Prints the current GitLab project name by expanding the $CI_PROJECT_NAME predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Environment: $APP_ENV"
+
+Explanation:
+Prints the current value of the $APP_ENV shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints a message showing that the build step has started.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents: Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application build from pipeline $CI_PIPELINE_ID" > dist/app.txt
+
+Explanation:
+Writes a build message containing the current pipeline ID into dist/app.txt. The file is created if it does not exist.
+
+Options:
+- > = output redirection: Redirect standard output to dist/app.txt and overwrite the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat dist/app.txt
+
+Explanation:
+Displays the contents of dist/app.txt in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints a message showing that the test step has started.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f dist/app.txt
+
+Explanation:
+Checks whether dist/app.txt exists and is a regular file. The command returns a successful exit status when the condition is true.
+
+Options:
+- -f = regular-file test operator: Return true when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep -q "Application build" dist/app.txt
+
+Explanation:
+Checks whether dist/app.txt contains the text "Application build" without printing matching lines.
+
+Options:
+- -q = --quiet: Suppress normal output and use only the command exit status to indicate whether a match was found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Tests passed successfully."
+
+Explanation:
+Prints a message showing that the tests completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints a message showing that the deployment step has started.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deployment simulation completed."
+
+Explanation:
+Prints a message showing that the simulated deployment has completed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: add hidden job templates"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message: Use the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays information about the Docker client, Docker daemon, and current Docker environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login
+
+Explanation:
+Technical correction: The lesson used `docker login ...`; the placeholder `...` is not valid Docker syntax, so it was removed. This command starts an interactive Docker registry login.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and assigns the image tag myapp.
+
+Options:
+- -t = --tag: Set the name and optional tag for the built image.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image myapp
+
+Explanation:
+Scans the Docker image named myapp with Trivy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy production"
+
+Explanation:
+Prints the text "Deploy production" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job1"
+
+Explanation:
+Prints the text "Job1" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Template"
+
+Explanation:
+Prints the text "Template" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job"
+
+Explanation:
+Prints the text "Job" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$ENV"
+
+Explanation:
+Prints the current value of the $ENV shell variable.
+------------------------------------------------------------
