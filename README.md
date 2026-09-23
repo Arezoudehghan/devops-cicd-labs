@@ -43,3 +43,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-31-rules-vs-only-except/` — Compare GitLab CI/CD `rules` with legacy `only/except`, first-match behavior, `when: never`, branch/Merge Request conditions, and migration patterns.
 - `gitlab/session-32-conditional-pipeline-rules/` — Conditional GitLab CI/CD execution based on branch, tag, Merge Request, file changes, variables, and schedules.
 - `gitlab/session-35-yaml-anchor-alias/` — YAML anchors, aliases, merge keys, reusable hidden-job configuration, shared scripts, and comparison with `extends`.
+- `gitlab/session-36-pipeline-include/` — Split GitLab CI/CD configuration with `include`, reusable hidden-job templates, build/test/deploy job files, artifacts, `needs`, and branch-aware deployment rules.

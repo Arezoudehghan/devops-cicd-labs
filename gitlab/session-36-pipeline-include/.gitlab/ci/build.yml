@@ -1,0 +1,15 @@
+build-application:
+  extends: .default-job
+
+  stage: build
+
+  script:
+    - echo "Building application..."
+    - mkdir -p dist
+    - echo "Application build from commit $CI_COMMIT_SHORT_SHA" > dist/application.txt
+    - cat dist/application.txt
+
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour

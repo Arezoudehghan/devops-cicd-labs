@@ -1,0 +1,16 @@
+deploy-application:
+  extends: .default-job
+
+  stage: deploy
+
+  script:
+    - echo "Deploying application..."
+    - cat dist/application.txt
+    - echo "Deployment simulation completed"
+
+  needs:
+    - job: build-application
+      artifacts: true
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

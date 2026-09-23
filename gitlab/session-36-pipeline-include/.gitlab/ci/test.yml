@@ -1,0 +1,14 @@
+test-application:
+  extends: .default-job
+
+  stage: test
+
+  script:
+    - echo "Testing application..."
+    - test -f dist/application.txt
+    - grep "Application build" dist/application.txt
+    - echo "Test passed successfully"
+
+  needs:
+    - job: build-application
+      artifacts: true

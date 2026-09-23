@@ -1,0 +1,11 @@
+.default-job:
+  tags:
+    - dev-shell
+
+  before_script:
+    - echo "=================================="
+    - echo "Project  : $CI_PROJECT_NAME"
+    - echo "Branch   : $CI_COMMIT_BRANCH"
+    - echo "Pipeline : $CI_PIPELINE_ID"
+    - echo "Runner   : $CI_RUNNER_DESCRIPTION"
+    - echo "=================================="

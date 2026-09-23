@@ -1,0 +1,204 @@
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the text "Building application..." to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p .gitlab/ci
+
+Explanation:
+Creates the .gitlab/ci directory path.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tree -a .gitlab
+
+Explanation:
+Displays the directory tree starting from .gitlab, including hidden files and directories.
+
+Options:
+- -a = --all (all): Includes hidden files and directories in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# find .gitlab -type f -o -type d
+
+Explanation:
+Searches under .gitlab and matches both regular files and directories.
+
+Options:
+- -type f = file type test: Matches regular files.
+- -o = logical OR: Matches when either the expression on the left or the expression on the right is true.
+- -type d = directory type test: Matches directories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=================================="
+
+Explanation:
+Prints a separator line to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project  : $CI_PROJECT_NAME"
+
+Explanation:
+Prints the current GitLab project name by expanding the CI_PROJECT_NAME predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch   : $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current Git branch name by expanding the CI_COMMIT_BRANCH predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline : $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID by expanding the CI_PIPELINE_ID predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner   : $CI_RUNNER_DESCRIPTION"
+
+Explanation:
+Prints the GitLab Runner description by expanding the CI_RUNNER_DESCRIPTION predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application build from commit $CI_COMMIT_SHORT_SHA" > dist/application.txt
+
+Explanation:
+Writes a line containing the current short commit SHA into dist/application.txt, replacing any existing file content.
+
+Options:
+- > = shell output redirection: Sends standard output to the specified file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat dist/application.txt
+
+Explanation:
+Prints the contents of dist/application.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application..."
+
+Explanation:
+Prints the text "Testing application..." to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f dist/application.txt
+
+Explanation:
+Checks whether dist/application.txt exists and is a regular file.
+
+Options:
+- -f = regular file test: Returns success when the path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep "Application build" dist/application.txt
+
+Explanation:
+Searches dist/application.txt for lines containing the text "Application build".
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test passed successfully"
+
+Explanation:
+Prints the text "Test passed successfully" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints the text "Deploying application..." to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deployment simulation completed"
+
+Explanation:
+Prints the text "Deployment simulation completed" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml .gitlab/
+
+Explanation:
+Adds .gitlab-ci.yml and the .gitlab/ directory contents to the Git staging area.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: split pipeline configuration using include"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "..."
+
+Explanation:
+Prints three dots to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "A"
+
+Explanation:
+Prints the text "A" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "B"
+
+Explanation:
+Prints the text "B" to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "C"
+
+Explanation:
+Prints the text "C" to standard output.
+------------------------------------------------------------
