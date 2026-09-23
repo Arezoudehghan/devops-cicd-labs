@@ -1,0 +1,694 @@
+------------------------------------------------------------
+# echo "Release pipeline"
+
+Explanation:
+Prints a simple message to the GitLab CI job log to show that the release job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing Merge Request"
+
+Explanation:
+Prints a message to the GitLab CI job log to show that the Merge Request test job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "MR=$CI_MERGE_REQUEST_IID"
+
+Explanation:
+Prints the Merge Request internal ID by expanding the CI_MERGE_REQUEST_IID predefined GitLab variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Source=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+
+Explanation:
+Prints the source branch name of the Merge Request by expanding the corresponding GitLab predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Target=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+
+Explanation:
+Prints the target branch name of the Merge Request by expanding the corresponding GitLab predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker image should be rebuilt"
+
+Explanation:
+Prints a message indicating that Docker-related changes require the image to be rebuilt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker files changed in Merge Request"
+
+Explanation:
+Prints a message indicating that Docker-related files changed in a Merge Request.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running security scan"
+
+Explanation:
+Prints a message indicating that the conditional security scan job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+Prints a deployment message to the job log when the deploy job is selected by its rule.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running nightly maintenance"
+
+Explanation:
+Prints a message indicating that the scheduled nightly maintenance job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to the gitlab-labs directory inside the current user home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p cicd-session32-conditional-pipeline
+
+Explanation:
+Creates the session directory. If it already exists, mkdir does not report an error because -p is used.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd cicd-session32-conditional-pipeline
+
+Explanation:
+Changes the current directory to the session 32 conditional pipeline lab directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p src docker docs
+
+Explanation:
+Creates the src, docker, and docs directories in one command. Existing directories are accepted because -p is used.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if a listed directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# find . -maxdepth 2 -type d
+
+Explanation:
+Lists directories starting from the current directory and limits the search depth to two levels.
+
+Options:
+- -maxdepth 2 = maximum depth: Searches at most two directory levels below the starting point.
+- -type d = type directory: Matches directory entries only; d means directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Session 32 application" > src/app.txt
+
+Explanation:
+Writes the text Session 32 application into src/app.txt. Existing content in the file is replaced.
+
+Options:
+- > = output redirection: Sends standard output to src/app.txt and creates or truncates the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Session 32 documentation" > docs/README.md
+
+Explanation:
+Writes the text Session 32 documentation into docs/README.md. Existing content in the file is replaced.
+
+Options:
+- > = output redirection: Sends standard output to docs/README.md and creates or truncates the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "docker config" > docker/config.txt
+
+Explanation:
+Writes the text docker config into docker/config.txt. Existing content in the file is replaced.
+
+Options:
+- > = output redirection: Sends standard output to docker/config.txt and creates or truncates the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > Dockerfile <<'EOF'
+FROM alpine:3.20
+CMD ["echo", "Session 32"]
+EOF
+
+Explanation:
+Creates or overwrites Dockerfile with the exact Dockerfile content shown in the lab. The quoted here-document keeps the block literal while cat writes it to the file.
+
+Options:
+- > = output redirection: Sends cat output to Dockerfile and creates or truncates the file.
+- <<'EOF' = quoted here-document: Supplies the following lines to cat as standard input until EOF and prevents shell expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat > .gitlab-ci.yml <<'EOF'
+stages:
+  - inspect
+  - test
+  - build
+  - security
+  - release
+  - maintenance
+
+default:
+  tags:
+    - dev-shell
+
+workflow:
+  rules:
+    # 1. Allow Merge Request pipelines
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+    # 2. Prevent duplicate branch pipeline when MR is already open
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+
+    # 3. Allow branch and tag push pipelines
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+    # 4. Allow scheduled pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+    # 5. Allow manually started pipelines from GitLab UI
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
+    # 6. Block everything else
+    - when: never
+
+
+show_context:
+  stage: inspect
+  script:
+    - echo "========================================"
+    - echo "CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE"
+    - echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
+    - echo "CI_COMMIT_TAG=$CI_COMMIT_TAG"
+    - echo "CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME"
+    - echo "CI_DEFAULT_BRANCH=$CI_DEFAULT_BRANCH"
+    - echo "CI_MERGE_REQUEST_IID=$CI_MERGE_REQUEST_IID"
+    - echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - echo "RUN_SECURITY_SCAN=$RUN_SECURITY_SCAN"
+    - echo "========================================"
+  rules:
+    - when: always
+
+
+branch_push:
+  stage: test
+  script:
+    - echo "Branch push detected"
+    - echo "Branch=$CI_COMMIT_BRANCH"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+
+
+main_branch:
+  stage: build
+  script:
+    - echo "Push to default branch detected"
+    - echo "Default branch=$CI_DEFAULT_BRANCH"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+
+merge_request_test:
+  stage: test
+  script:
+    - echo "Merge Request pipeline detected"
+    - echo "MR IID=$CI_MERGE_REQUEST_IID"
+    - echo "Source=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "Target=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+
+docker_changes:
+  stage: build
+  script:
+    - echo "Docker-related files changed"
+    - echo "Docker validation/build should run here"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - Dockerfile
+        - docker/**/*
+
+
+security_scan:
+  stage: security
+  script:
+    - echo "RUN_SECURITY_SCAN=true"
+    - echo "Security scan should run here"
+  rules:
+    - if: '$RUN_SECURITY_SCAN == "true"'
+
+
+release_tag:
+  stage: release
+  script:
+    - echo "Release pipeline detected"
+    - echo "Release tag=$CI_COMMIT_TAG"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/'
+
+
+scheduled_job:
+  stage: maintenance
+  script:
+    - echo "Scheduled pipeline detected"
+    - echo "Running scheduled maintenance"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+EOF
+
+Explanation:
+Creates or overwrites .gitlab-ci.yml with the complete conditional pipeline configuration used in the lab. The quoted here-document keeps GitLab variables and YAML characters literal while the file is being written.
+
+Options:
+- > = output redirection: Sends cat output to .gitlab-ci.yml and creates or truncates the file.
+- <<'EOF' = quoted here-document: Supplies the YAML block to cat as standard input until EOF and prevents shell variable expansion inside the block.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "========================================"
+
+Explanation:
+Prints a separator line in the show_context job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints the pipeline source value so you can see whether the pipeline came from push, Merge Request, schedule, web, or another source.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current branch name when CI_COMMIT_BRANCH is available in the pipeline context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_COMMIT_TAG=$CI_COMMIT_TAG"
+
+Explanation:
+Prints the current Git tag when the pipeline is a tag pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME"
+
+Explanation:
+Prints the branch or tag ref name represented by CI_COMMIT_REF_NAME.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_DEFAULT_BRANCH=$CI_DEFAULT_BRANCH"
+
+Explanation:
+Prints the project default branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_MERGE_REQUEST_IID=$CI_MERGE_REQUEST_IID"
+
+Explanation:
+Prints the Merge Request internal ID in the show_context job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+
+Explanation:
+Prints the Merge Request source branch name in the show_context job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+
+Explanation:
+Prints the Merge Request target branch name in the show_context job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "RUN_SECURITY_SCAN=$RUN_SECURITY_SCAN"
+
+Explanation:
+Prints the current value of the custom RUN_SECURITY_SCAN variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch push detected"
+
+Explanation:
+Prints a message when the branch_push job runs for a branch push pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the branch name used by the branch_push job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Push to default branch detected"
+
+Explanation:
+Prints a message when the main_branch job detects a push to the project default branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Default branch=$CI_DEFAULT_BRANCH"
+
+Explanation:
+Prints the project default branch name from CI_DEFAULT_BRANCH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Merge Request pipeline detected"
+
+Explanation:
+Prints a message when the Merge Request pipeline job runs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "MR IID=$CI_MERGE_REQUEST_IID"
+
+Explanation:
+Prints the Merge Request internal ID with a readable MR IID label.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker-related files changed"
+
+Explanation:
+Prints a message when the docker_changes job is selected because Docker-related files changed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Docker validation/build should run here"
+
+Explanation:
+Prints a placeholder message showing where Docker validation or build commands would run.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "RUN_SECURITY_SCAN=true"
+
+Explanation:
+Prints the literal text RUN_SECURITY_SCAN=true in the security_scan job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security scan should run here"
+
+Explanation:
+Prints a placeholder message showing where the security scan command would run.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Release pipeline detected"
+
+Explanation:
+Prints a message when a matching release tag starts the release job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Release tag=$CI_COMMIT_TAG"
+
+Explanation:
+Prints the Git tag that triggered the release job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Scheduled pipeline detected"
+
+Explanation:
+Prints a message when the scheduled_job runs from a scheduled pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin feature/login
+
+Explanation:
+Technical correction: The lesson diagram showed git push feature/login, which treats feature/login as a remote name. This corrected form pushes the feature/login branch to the existing origin remote.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sed -n '1,260p' .gitlab-ci.yml
+
+Explanation:
+Prints lines 1 through 260 of .gitlab-ci.yml so the generated configuration can be reviewed without editing it.
+
+Options:
+- -n = --quiet / --silent (quiet/silent): Suppresses sed automatic output so only explicitly printed lines are shown.
+- 1,260p = sed script: Selects lines 1 through 260 and prints them with the p command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --check
+
+Explanation:
+Checks pending Git differences for whitespace errors and conflict-marker problems. It does not validate GitLab CI YAML syntax.
+
+Options:
+- --check = check whitespace/conflict markers: Warns if changes introduce whitespace errors or conflict markers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and names its initial branch main.
+
+Options:
+- -b = --initial-branch (initial branch): Sets main as the name of the initial branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current repository state, including the active branch and tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: add conditional pipeline rules lab"
+
+Explanation:
+Creates a commit containing the staged lab files with the supplied commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin YOUR-GITLAB-CLONE-URL
+
+Explanation:
+Technical correction: The lesson used <YOUR-GITLAB-CLONE-URL>, but angle brackets are shell redirection syntax if copied literally. Replace YOUR-GITLAB-CLONE-URL with the actual GitLab project clone URL before running the command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Lists configured Git remotes and shows their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Shows the remote URLs in addition to the remote names.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to the origin remote and records origin/main as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the remote tracking branch for the pushed local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git checkout -b feature/session32
+
+Explanation:
+Creates a new branch named feature/session32 and switches the working tree to that branch.
+
+Options:
+- -b = create and check out a new branch: Creates feature/session32 before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "feature change" >> src/app.txt
+
+Explanation:
+Appends the text feature change to src/app.txt without replacing the existing file content.
+
+Options:
+- >> = append redirection: Sends standard output to the end of src/app.txt and creates the file if it does not exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add src/app.txt
+
+Explanation:
+Stages the current changes in src/app.txt for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: update application"
+
+Explanation:
+Creates a commit for the staged application change with the supplied message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/session32
+
+Explanation:
+Pushes feature/session32 to origin and records origin/feature/session32 as its upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets the remote tracking branch for the pushed local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "second feature change" >> src/app.txt
+
+Explanation:
+Appends a second feature-change line to src/app.txt while preserving the existing content.
+
+Options:
+- >> = append redirection: Sends standard output to the end of src/app.txt and creates the file if it does not exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: update feature again"
+
+Explanation:
+Creates a commit for the staged second feature change with the supplied message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch to its configured upstream remote branch. This works here because the feature branch upstream was set earlier with git push -u.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "# Session 32 change" >> Dockerfile
+
+Explanation:
+Appends the literal comment line # Session 32 change to Dockerfile.
+
+Options:
+- >> = append redirection: Sends standard output to the end of Dockerfile and creates the file if it does not exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add Dockerfile
+
+Explanation:
+Stages the Dockerfile change for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "build: update Dockerfile"
+
+Explanation:
+Creates a commit for the staged Dockerfile change with the supplied build-related message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "normal source change" >> src/app.txt
+
+Explanation:
+Appends the text normal source change to src/app.txt while preserving the existing file content.
+
+Options:
+- >> = append redirection: Sends standard output to the end of src/app.txt and creates the file if it does not exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "feat: source-only update"
+
+Explanation:
+Creates a commit for the staged source-only change with the supplied message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git checkout main
+
+Explanation:
+Switches the working tree from the current branch to the existing main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git pull
+
+Explanation:
+Fetches changes from the configured upstream branch and integrates them into the current local branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag v1.0.0
+
+Explanation:
+Creates a lightweight Git tag named v1.0.0 at the current commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git tag
+
+Explanation:
+Lists tags available in the local Git repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the local v1.0.0 tag to the origin remote.
+------------------------------------------------------------
