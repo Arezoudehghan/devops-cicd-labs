@@ -46,5 +46,5 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-36-pipeline-include/` — Split GitLab CI/CD configuration with `include`, reusable hidden-job templates, build/test/deploy job files, artifacts, `needs`, and branch-aware deployment rules.
 - `gitlab/session-37-cicd-component-pipeline-template/` — Reusable GitLab CI/CD Components, `spec:inputs`, versioned component consumption, shared pipeline templates, and a Docker build/verify lab.
 - `gitlab/session-38-stage-execution-order/` — GitLab CI/CD stage ordering, same-stage parallel jobs, stage barriers, Runner concurrency, failure gating, `allow_failure`, `when: always`, and `.pre`/`.post` stages.
-- `gitlab/session-40-needs/` — GitLab CI/CD `needs`, DAG job dependencies, `needs: []`, artifact transfer with `needs:artifacts`, optional needs, and Runner concurrency.
 - `gitlab/session-39-parallel-jobs/` — GitLab CI/CD parallel jobs, Runner `concurrent` and `limit`, `parallel: N`, matrix jobs, DAG execution with `needs`, capacity testing, and Shell Executor resource-conflict handling.
+- `gitlab/session-40-needs/` — GitLab CI/CD `needs`, DAG job dependencies, `needs: []`, artifact transfer with `needs:artifacts`, optional needs, and Runner concurrency.
