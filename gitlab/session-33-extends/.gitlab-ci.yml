@@ -1,0 +1,69 @@
+stages:
+  - prepare
+  - test
+  - deploy
+
+.base-job:
+  tags:
+    - dev-shell
+  interruptible: true
+  variables:
+    LAB_NAME: "session-33"
+    APP_NAME: "extends-demo"
+  before_script:
+    - echo "========================================"
+    - echo "Running job: $CI_JOB_NAME"
+    - echo "Pipeline ID: $CI_PIPELINE_ID"
+    - echo "Branch: $CI_COMMIT_BRANCH"
+    - echo "Lab: $LAB_NAME"
+    - echo "Application: $APP_NAME"
+    - echo "========================================"
+
+.deploy-template:
+  variables:
+    DEPLOY_ENVIRONMENT: "staging"
+  after_script:
+    - echo "Deploy job finished"
+
+prepare-job:
+  extends: .base-job
+  stage: prepare
+  script:
+    - echo "Preparing application..."
+    - mkdir -p build
+    - echo "Build created by pipeline $CI_PIPELINE_ID" > build/info.txt
+    - cat build/info.txt
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+
+test-job:
+  extends: .base-job
+  stage: test
+  script:
+    - echo "Running tests..."
+    - test -f build/info.txt
+    - cat build/info.txt
+    - echo "Tests passed successfully"
+  needs:
+    - job: prepare-job
+      artifacts: true
+
+deploy-job:
+  extends:
+    - .base-job
+    - .deploy-template
+  stage: deploy
+  variables:
+    DEPLOY_ENVIRONMENT: "production"
+  script:
+    - echo "Deploying $APP_NAME"
+    - echo "Environment: $DEPLOY_ENVIRONMENT"
+    - echo "Commit: $CI_COMMIT_SHORT_SHA"
+    - echo "Deployment simulation completed"
+  needs:
+    - job: prepare-job
+      artifacts: true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
