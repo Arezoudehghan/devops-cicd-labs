@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+
+.common_job: &common_job
+  tags:
+    - dev-shell
+
+  before_script:
+    - echo "================================="
+    - echo "Preparing job environment"
+    - echo "Project: $CI_PROJECT_NAME"
+    - echo "Pipeline ID: $CI_PIPELINE_ID"
+    - echo "Commit: $CI_COMMIT_SHORT_SHA"
+    - echo "================================="
+
+  after_script:
+    - echo "================================="
+    - echo "Job finished"
+    - echo "================================="
+
+build_job:
+  <<: *common_job
+
+  stage: build
+
+  script:
+    - echo "Starting build..."
+    - echo "Application build completed successfully."
+
+test_job:
+  <<: *common_job
+
+  stage: test
+
+  script:
+    - echo "Starting tests..."
+    - echo "Running application tests..."
+    - echo "All tests passed successfully."
