@@ -1,0 +1,49 @@
+stages:
+  - build
+  - test
+  - package
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "BUILD START $(date '+%H:%M:%S')"
+    - sleep 10
+    - echo "BUILD END   $(date '+%H:%M:%S')"
+
+unit_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "UNIT TEST START $(date '+%H:%M:%S')"
+    - sleep 20
+    - echo "UNIT TEST END   $(date '+%H:%M:%S')"
+
+lint_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "LINT START $(date '+%H:%M:%S')"
+    - sleep 20
+    - echo "LINT END   $(date '+%H:%M:%S')"
+
+security_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "SECURITY START $(date '+%H:%M:%S')"
+    - sleep 20
+    - echo "SECURITY END   $(date '+%H:%M:%S')"
+
+package_app:
+  stage: package
+  tags:
+    - dev-shell
+  script:
+    - echo "PACKAGE START $(date '+%H:%M:%S')"
+    - sleep 5
+    - echo "PACKAGE END   $(date '+%H:%M:%S')"
