@@ -1,0 +1,14 @@
+stages:
+  - test
+
+test_only_main:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "=== ONLY TEST ==="
+    - echo "Branch=$CI_COMMIT_BRANCH"
+    - echo "Pipeline Source=$CI_PIPELINE_SOURCE"
+    - echo "Commit=$CI_COMMIT_SHORT_SHA"
+  only:
+    - main

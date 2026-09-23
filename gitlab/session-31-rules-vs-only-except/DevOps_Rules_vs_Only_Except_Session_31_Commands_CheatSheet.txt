@@ -1,0 +1,238 @@
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints the text `Deploying application...` to standard output. In a CI job, this is commonly used to show progress in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch or configured references to the default remote according to the repository's Git push configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+Prints the text `Deploying...` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the text `Deploy` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints the text `Test` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Release"
+
+Explanation:
+Prints the text `Release` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "MR Test"
+
+Explanation:
+Prints the text `MR Test` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security Scan"
+
+Explanation:
+Prints the text `Security Scan` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing feature branch..."
+
+Explanation:
+Prints the text `Testing feature branch...` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building Docker image..."
+
+Explanation:
+Prints the text `Building Docker image...` to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the Dockerfile and build context in the current directory, and names the image `myapp`.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag; here the value is `myapp`.
+- . = current directory build context: Uses the current directory as the files and Dockerfile context for the build.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current shell directory to `~/gitlab-labs`. The `~` expands to the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree status, including staged, unstaged, and untracked changes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git switch -c feature/session31-rules
+
+Explanation:
+Creates a new branch named `feature/session31-rules` and switches to it.
+
+Options:
+- -c = --create (create): Creates the new branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Displays only the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the `.gitlab-ci.yml` file in the Nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== ONLY TEST ==="
+
+Explanation:
+Prints the label `=== ONLY TEST ===` to the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current GitLab branch value from the `CI_COMMIT_BRANCH` environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline Source=$CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints the GitLab pipeline source value from the `CI_PIPELINE_SOURCE` environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the shortened Git commit SHA from the `CI_COMMIT_SHORT_SHA` environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the `.gitlab-ci.yml` file in the Git index so its changes can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: test only main behavior"
+
+Explanation:
+Creates a Git commit from the staged changes with the message `lab: test only main behavior`.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/session31-rules
+
+Explanation:
+Pushes the local `feature/session31-rules` branch to the remote named `origin` and configures its upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Adds upstream tracking information for the successfully pushed branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== EXCEPT TEST ==="
+
+Explanation:
+Prints the label `=== EXCEPT TEST ===` to the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: test except main behavior"
+
+Explanation:
+Creates a Git commit from the staged changes with the message `lab: test except main behavior`.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== RULES TEST ==="
+
+Explanation:
+Prints the label `=== RULES TEST ===` to the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "refactor: migrate except to rules"
+
+Explanation:
+Creates a Git commit from the staged changes with the message `refactor: migrate except to rules`.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints the text `Running tests...` to the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Source=$CI_PIPELINE_SOURCE"
+
+Explanation:
+Prints the GitLab pipeline source from the `CI_PIPELINE_SOURCE` environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the text `Building application...` to the CI job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the executable shell script named `deploy.sh` from the current directory.
+------------------------------------------------------------

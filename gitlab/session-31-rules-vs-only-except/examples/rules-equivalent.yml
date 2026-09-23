@@ -1,0 +1,17 @@
+stages:
+  - test
+
+test_rules:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "=== RULES TEST ==="
+    - echo "Branch=$CI_COMMIT_BRANCH"
+    - echo "Pipeline Source=$CI_PIPELINE_SOURCE"
+    - echo "Commit=$CI_COMMIT_SHORT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+      when: on_success
