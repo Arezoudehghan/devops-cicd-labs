@@ -1,0 +1,545 @@
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints a simple message indicating that the application build step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application..."
+
+Explanation:
+Prints a simple message indicating that the application test step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building API..."
+
+Explanation:
+Prints a message indicating that the API build step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building Frontend..."
+
+Explanation:
+Prints a message indicating that the frontend build step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing API..."
+
+Explanation:
+Prints a message indicating that the API test step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing Frontend..."
+
+Explanation:
+Prints a message indicating that the frontend test step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -nE '^(concurrent|[[:space:]]*limit[[:space:]]*=)' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration for the global concurrent setting and any runner-specific limit setting. sudo runs grep with elevated privileges.
+
+Options:
+- -n = --line-number (line number): Prints the line number for each matching line.
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cp /etc/gitlab-runner/config.toml /etc/gitlab-runner/config.toml.bak-session40
+
+Explanation:
+Creates a backup copy of the GitLab Runner configuration file before editing it. sudo runs cp with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the nano text editor with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the configured GitLab Runner can connect to GitLab and is valid.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service without opening an interactive pager. sudo runs systemctl with elevated privileges.
+
+Options:
+- --no-pager = disable pager output: Prints the status directly in the terminal instead of opening a pager such as less.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service so it runs again with the current configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs/needs-lab
+
+Explanation:
+Creates the needs-lab directory and any missing parent directories under ~/gitlab-labs.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not report an error if the directory already exists.
+- ~ = shell home-directory expansion: Expands to the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/needs-lab
+
+Explanation:
+Changes the current shell directory to the needs-lab project directory.
+
+Options:
+- ~ = shell home-directory expansion: Expands to the current user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and creates main as its initial branch.
+
+Options:
+- -b = --initial-branch=<branch-name> (initial branch): Sets the name of the initial branch to main.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git remote add origin http://192.168.94.90/root/needs-lab.git
+
+Explanation:
+Adds a Git remote named origin that points to the GitLab repository at the specified URL.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "# GitLab CI needs Lab" > README.md
+
+Explanation:
+Writes the text '# GitLab CI needs Lab' into README.md. The file is created if it does not exist, or overwritten if it already exists.
+
+Options:
+- > = shell output redirection operator: Sends the command output to README.md and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml pipeline configuration file in the nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_api START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_api start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 10
+
+Explanation:
+Pauses the current shell job for 10 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_api END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_api end label, including the original spacing from the lesson, followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_frontend START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_frontend start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 40
+
+Explanation:
+Pauses the current shell job for 40 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_frontend END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_frontend end label, including the original spacing from the lesson, followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_api START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_api start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses the current shell job for 5 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_api END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_api end label, including the original spacing from the lesson, followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_frontend START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_frontend start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_frontend END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_frontend end label, including the original spacing from the lesson, followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints a message indicating that the application deployment step is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff -- .gitlab-ci.yml
+
+Explanation:
+Shows unstaged changes for .gitlab-ci.yml only.
+
+Options:
+- -- = end-of-options marker: Tells Git that the following value is a pathspec, not another option.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add README.md .gitlab-ci.yml
+
+Explanation:
+Stages README.md and .gitlab-ci.yml so their current changes are included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: pipeline without needs"
+
+Explanation:
+Creates a Git commit with the staged changes and the specified commit message.
+
+Options:
+- -m = --message=<msg> (message): Uses 'lab: pipeline without needs' as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to the origin remote and records it as the upstream branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets origin/main as the upstream tracking branch for the local main branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "deploy START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the deploy start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the current changes in .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: optimize pipeline with needs"
+
+Explanation:
+Creates a Git commit with the staged pipeline changes and the specified message.
+
+Options:
+- -m = --message=<msg> (message): Uses 'lab: optimize pipeline with needs' as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "lint START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the lint job start label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "lint END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the lint job end label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p output
+
+Explanation:
+Creates the output directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not report an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "API BUILD" > output/api.txt
+
+Explanation:
+Writes the text 'API BUILD' into output/api.txt. The file is created if needed or overwritten if it already exists.
+
+Options:
+- > = shell output redirection operator: Sends the echo output to output/api.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat output/api.txt
+
+Explanation:
+Displays the contents of output/api.txt in the job log or terminal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy..."
+
+Explanation:
+Prints a short deployment message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "API build $CI_COMMIT_SHORT_SHA" > output/api.txt
+
+Explanation:
+Writes an API build label and the current GitLab commit short SHA into output/api.txt.
+
+Options:
+- $CI_COMMIT_SHORT_SHA = GitLab CI predefined variable: Expands to the shortened commit SHA for the current pipeline.
+- > = shell output redirection operator: Sends the echo output to output/api.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Received artifact:"
+
+Explanation:
+Prints a label before displaying the downloaded artifact content.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "A"
+
+Explanation:
+Prints the text A.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "B"
+
+Explanation:
+Prints the text B.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security scan..."
+
+Explanation:
+Prints a message indicating that the security scan job is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_api END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_api end label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend build $CI_COMMIT_SHORT_SHA" > output/frontend.txt
+
+Explanation:
+Writes a frontend build label and the current GitLab commit short SHA into output/frontend.txt.
+
+Options:
+- $CI_COMMIT_SHORT_SHA = GitLab CI predefined variable: Expands to the shortened commit SHA for the current pipeline.
+- > = shell output redirection operator: Sends the echo output to output/frontend.txt and overwrites the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build_frontend END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build_frontend end label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_api END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_api end label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat output/frontend.txt
+
+Explanation:
+Displays the contents of output/frontend.txt in the job log or terminal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "test_frontend END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the test_frontend end label followed by the current time.
+
+Options:
+- $(...) = shell command substitution: Runs date '+%H:%M:%S' and inserts its output into the echo text.
+- '+%H:%M:%S' = date format argument: %H is the 24-hour hour, %M is minutes, and %S is seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "All required jobs passed."
+
+Explanation:
+Prints a message confirming that the required pipeline jobs have passed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying commit $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA that is being deployed.
+
+Options:
+- $CI_COMMIT_SHORT_SHA = GitLab CI predefined variable: Expands to the shortened commit SHA for the current pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff --cached
+
+Explanation:
+Shows the changes that are currently staged in the Git index and would be included in the next commit.
+
+Options:
+- --cached = compare staged changes: Shows differences between the staged index and the current HEAD.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: complete needs and artifacts scenario"
+
+Explanation:
+Creates a Git commit with the staged final needs-and-artifacts lab changes.
+
+Options:
+- -m = --message=<msg> (message): Uses 'lab: complete needs and artifacts scenario' as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep '^concurrent' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration file for lines that begin with concurrent. sudo runs grep with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -lh dist/app.tar.gz
+
+Explanation:
+Shows detailed information about dist/app.tar.gz with a human-readable file size.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, size, and modification time.
+- -h = --human-readable (human readable): Displays file sizes using readable units such as K, M, or G.
+------------------------------------------------------------
