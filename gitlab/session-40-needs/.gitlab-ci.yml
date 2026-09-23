@@ -1,0 +1,86 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_api:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "build_api START $(date '+%H:%M:%S')"
+    - mkdir -p output
+    - sleep 10
+    - echo "API build $CI_COMMIT_SHORT_SHA" > output/api.txt
+    - echo "build_api END $(date '+%H:%M:%S')"
+  artifacts:
+    paths:
+      - output/api.txt
+    expire_in: 1 hour
+
+build_frontend:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "build_frontend START $(date '+%H:%M:%S')"
+    - mkdir -p output
+    - sleep 40
+    - echo "Frontend build $CI_COMMIT_SHORT_SHA" > output/frontend.txt
+    - echo "build_frontend END $(date '+%H:%M:%S')"
+  artifacts:
+    paths:
+      - output/frontend.txt
+    expire_in: 1 hour
+
+lint:
+  stage: test
+  tags:
+    - dev-shell
+  needs: []
+  script:
+    - echo "lint START $(date '+%H:%M:%S')"
+    - sleep 5
+    - echo "lint END $(date '+%H:%M:%S')"
+
+test_api:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - job: build_api
+      artifacts: true
+  script:
+    - echo "test_api START $(date '+%H:%M:%S')"
+    - cat output/api.txt
+    - sleep 5
+    - echo "test_api END $(date '+%H:%M:%S')"
+
+test_frontend:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - job: build_frontend
+      artifacts: true
+  script:
+    - echo "test_frontend START $(date '+%H:%M:%S')"
+    - cat output/frontend.txt
+    - sleep 5
+    - echo "test_frontend END $(date '+%H:%M:%S')"
+
+deploy:
+  stage: deploy
+  tags:
+    - dev-shell
+  needs:
+    - job: test_api
+      artifacts: false
+    - job: test_frontend
+      artifacts: false
+    - job: lint
+      artifacts: false
+  script:
+    - echo "deploy START $(date '+%H:%M:%S')"
+    - echo "All required jobs passed."
+    - echo "Deploying commit $CI_COMMIT_SHORT_SHA"
