@@ -1,0 +1,67 @@
+stages:
+  - prepare
+  - build
+  - test
+  - deploy
+
+prepare_job:
+  stage: prepare
+  tags:
+    - dev-shell
+  script:
+    - echo "===== PREPARE STAGE ====="
+    - echo "Pipeline ID: $CI_PIPELINE_ID"
+    - echo "Branch: $CI_COMMIT_BRANCH"
+    - date
+    - sleep 3
+    - echo "Prepare finished"
+
+build_backend:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "===== BUILD BACKEND ====="
+    - date
+    - sleep 10
+    - echo "Backend build finished"
+
+build_frontend:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "===== BUILD FRONTEND ====="
+    - date
+    - sleep 5
+    - echo "Frontend build finished"
+
+unit_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "===== UNIT TEST ====="
+    - date
+    - sleep 5
+    - echo "Unit tests passed"
+
+security_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "===== SECURITY TEST ====="
+    - date
+    - sleep 8
+    - echo "Security tests passed"
+
+deploy_job:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "===== DEPLOY ====="
+    - date
+    - sleep 3
+    - echo "Deployment finished"

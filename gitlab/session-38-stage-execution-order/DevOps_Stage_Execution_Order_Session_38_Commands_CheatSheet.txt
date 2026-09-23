@@ -1,0 +1,347 @@
+------------------------------------------------------------
+# echo "Building frontend"
+
+Explanation:
+Prints the text "Building frontend" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building backend"
+
+Explanation:
+Prints the text "Building backend" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the text "Deploy" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints the text "Test" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the text "Build" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building image"
+
+Explanation:
+Prints the text "Building image" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build application"
+
+Explanation:
+Prints the text "Build application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test application"
+
+Explanation:
+Prints the text "Test application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy application"
+
+Explanation:
+Prints the text "Deploy application" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running unit tests"
+
+Explanation:
+Prints the text "Running unit tests" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running security tests"
+
+Explanation:
+Prints the text "Running security tests" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano terminal text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== PREPARE STAGE ====="
+
+Explanation:
+Prints a visible PREPARE STAGE separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID: $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID. The shell expands $CI_PIPELINE_ID before echo prints the line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch: $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current GitLab branch name. The shell expands $CI_COMMIT_BRANCH before echo prints the line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# date
+
+Explanation:
+Prints the current system date and time.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 3
+
+Explanation:
+Pauses the shell execution for 3 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Prepare finished"
+
+Explanation:
+Prints the text "Prepare finished" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== BUILD BACKEND ====="
+
+Explanation:
+Prints a visible BUILD BACKEND separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 10
+
+Explanation:
+Pauses the shell execution for 10 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend build finished"
+
+Explanation:
+Prints the text "Backend build finished" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== BUILD FRONTEND ====="
+
+Explanation:
+Prints a visible BUILD FRONTEND separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses the shell execution for 5 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend build finished"
+
+Explanation:
+Prints the text "Frontend build finished" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== UNIT TEST ====="
+
+Explanation:
+Prints a visible UNIT TEST separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Unit tests passed"
+
+Explanation:
+Prints the text "Unit tests passed" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== SECURITY TEST ====="
+
+Explanation:
+Prints a visible SECURITY TEST separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 8
+
+Explanation:
+Pauses the shell execution for 8 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security tests passed"
+
+Explanation:
+Prints the text "Security tests passed" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "===== DEPLOY ====="
+
+Explanation:
+Prints a visible DEPLOY separator in the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deployment finished"
+
+Explanation:
+Prints the text "Deployment finished" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: demonstrate stage execution order"
+
+Explanation:
+Creates a new Git commit with the specified commit message.
+
+Options:
+-m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -n '^concurrent' /etc/gitlab-runner/config.toml
+
+Explanation:
+Runs grep with elevated privileges and searches the GitLab Runner configuration for lines that begin with "concurrent".
+
+Options:
+-n = --line-number (line number): Prints the matching line number before the matching text.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build OK"
+
+Explanation:
+Prints the text "Build OK" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test failed"
+
+Explanation:
+Prints the text "Test failed" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Ends the current shell or CI job with exit status 1, which normally marks the command or job as failed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Simulating security failure"
+
+Explanation:
+Prints the text "Simulating security failure" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: simulate test failure"
+
+Explanation:
+Creates a new Git commit with the specified commit message.
+
+Options:
+-m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: restore successful security test"
+
+Explanation:
+Creates a new Git commit with the specified commit message.
+
+Options:
+-m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security scan failed"
+
+Explanation:
+Prints the text "Security scan failed" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Cleaning temporary files"
+
+Explanation:
+Prints the text "Cleaning temporary files" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Prepare environment"
+
+Explanation:
+Prints the text "Prepare environment" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Cleanup"
+
+Explanation:
+Prints the text "Cleanup" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints the text "Hello" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 15
+
+Explanation:
+Pauses the shell execution for 15 seconds.
+------------------------------------------------------------
