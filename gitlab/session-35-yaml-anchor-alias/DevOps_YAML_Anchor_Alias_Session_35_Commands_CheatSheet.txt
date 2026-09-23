@@ -1,0 +1,226 @@
+------------------------------------------------------------
+# echo "Preparing environment..."
+
+Explanation:
+Prints the text "Preparing environment..." to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building..."
+
+Explanation:
+Prints the text "Building..." to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing..."
+
+Explanation:
+Prints the text "Testing..." to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "================================="
+
+Explanation:
+Prints a separator line made of equal signs to make the job log easier to read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing job environment"
+
+Explanation:
+Prints a message that indicates the job environment preparation step.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project: $CI_PROJECT_NAME"
+
+Explanation:
+Prints the current GitLab project name using the CI_PROJECT_NAME predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID: $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID using the CI_PIPELINE_ID predefined variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit: $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA for the current GitLab pipeline using CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job finished"
+
+Explanation:
+Prints a message that indicates the job has finished.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting build..."
+
+Explanation:
+Prints a message that indicates the build step is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application build completed successfully."
+
+Explanation:
+Prints a message that indicates the application build completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting tests..."
+
+Explanation:
+Prints a message that indicates the test step is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running application tests..."
+
+Explanation:
+Prints a message that indicates application tests are running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "All tests passed successfully."
+
+Explanation:
+Prints a message that indicates all tests passed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file so it can be included in the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: add yaml anchor and alias example"
+
+Explanation:
+Creates a new Git commit with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes local commits to the configured upstream remote branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_ENV"
+
+Explanation:
+Prints the current value of the APP_ENV shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$LOG_LEVEL"
+
+Explanation:
+Prints the current value of the LOG_LEVEL shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking environment..."
+
+Explanation:
+Prints a message that indicates the environment check is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the system hostname.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the username of the current effective user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running build..."
+
+Explanation:
+Prints a message that indicates the build is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints a message that indicates the tests are running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking Docker..."
+
+Explanation:
+Prints a message that indicates Docker checks are starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays detailed information about the Docker client, server, storage, runtime, and environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Displays Docker client and server version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Hello"
+
+Explanation:
+Prints the text "Hello" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the text "Build" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "build"
+
+Explanation:
+Prints the lowercase text "build" to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline: $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID using the CI_PIPELINE_ID predefined variable.
+------------------------------------------------------------
