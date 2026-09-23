@@ -1,0 +1,455 @@
+------------------------------------------------------------
+# echo "Preparing environment..."
+
+Explanation:
+Prints a preparation message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints a build message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application..."
+
+Explanation:
+Prints a test message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints a deployment message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building..."
+
+Explanation:
+Prints a short build message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_ENV"
+
+Explanation:
+Prints the current value of the APP_ENV environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$LOG_LEVEL"
+
+Explanation:
+Prints the current value of the LOG_LEVEL environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Step 1"
+
+Explanation:
+Prints the text Step 1 to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Step 2"
+
+Explanation:
+Prints the text Step 2 to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests"
+
+Explanation:
+Prints a message indicating that tests are running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running unit tests"
+
+Explanation:
+Prints a message indicating that unit tests are running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running..."
+
+Explanation:
+Prints a short running-status message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_NAME"
+
+Explanation:
+Prints the current value of the APP_NAME environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the word Build to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing CI environment"
+
+Explanation:
+Prints a message indicating that the CI environment is being prepared.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login "$REGISTRY"
+
+Explanation:
+Technical correction: The lesson also showed the incomplete form docker login ...; this complete form already appears later in the same lesson. It authenticates Docker to the registry stored in REGISTRY.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Technical correction: The lesson showed docker pull ..., which is incomplete. This executable form uses the image name and commit-based tag variables already used in this lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Technical correction: The lesson showed docker run ..., which is incomplete. This executable form uses the image name and commit-based tag variables already used in this lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays information about the Docker client, Docker daemon, storage, runtime, and related configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image using the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and assigns it a name and tag based on CI variables.
+
+Options:
+- -t = --tag (tag): Assigns the image name and tag $IMAGE_NAME:$CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+Prints a short deployment message to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs tests discovered by pytest using its default discovery behavior.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh root@192.168.94.90
+
+Explanation:
+Starts an SSH session to 192.168.94.90 using the root account.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs/cicd-session33-extends
+
+Explanation:
+Changes the current shell directory to the session 33 GitLab lab repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "========================================"
+
+Explanation:
+Prints a separator line to make CI job logs easier to read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running job: $CI_JOB_NAME"
+
+Explanation:
+Prints the name of the current GitLab CI job using CI_JOB_NAME.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline ID: $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID using CI_PIPELINE_ID.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch: $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the branch name stored in CI_COMMIT_BRANCH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Lab: $LAB_NAME"
+
+Explanation:
+Prints the current LAB_NAME variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Application: $APP_NAME"
+
+Explanation:
+Prints the current APP_NAME variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy job finished"
+
+Explanation:
+Prints a message indicating that the deploy job has finished.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Preparing application..."
+
+Explanation:
+Prints a message indicating that application preparation is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates the build directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and suppresses an error if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build created by pipeline $CI_PIPELINE_ID" > build/info.txt
+
+Explanation:
+Writes the pipeline ID message into build/info.txt.
+
+Options:
+- > = output redirection operator: Sends standard output to build/info.txt and replaces the file contents if the file already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat build/info.txt
+
+Explanation:
+Displays the contents of build/info.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints a message indicating that the test step is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f build/info.txt
+
+Explanation:
+Checks whether build/info.txt exists and is a regular file. The command succeeds when the condition is true.
+
+Options:
+- -f = regular-file test: Returns success when the given path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Tests passed successfully"
+
+Explanation:
+Prints a message indicating that the tests passed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying $APP_NAME"
+
+Explanation:
+Prints the name of the application being deployed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Environment: $DEPLOY_ENVIRONMENT"
+
+Explanation:
+Prints the current deployment environment stored in DEPLOY_ENVIRONMENT.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit: $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA provided by GitLab CI.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deployment simulation completed"
+
+Explanation:
+Prints a message indicating that the deployment simulation completed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Displays the full contents of the .gitlab-ci.yml file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in the Git working tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 - <<'PY'
+import yaml
+
+with open(".gitlab-ci.yml") as f:
+    yaml.safe_load(f)
+
+print("YAML syntax OK")
+PY
+
+Explanation:
+Runs an inline Python script that loads .gitlab-ci.yml with PyYAML and prints a success message if YAML parsing completes without an exception.
+
+Options:
+- - = standard-input script indicator: Tells Python to read the script from standard input.
+- <<'PY' = quoted here-document operator: Passes all lines up to the closing PY marker to Python without shell expansion inside the here-document.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: demonstrate extends templates"
+
+Explanation:
+Creates a Git commit from the staged changes with the given commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Displays only the current branch name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "APP_NAME=$APP_NAME"
+
+Explanation:
+Prints APP_NAME together with its current value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "COMMON BEFORE SCRIPT"
+
+Explanation:
+Prints a message representing the common before_script action.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "TEST BEFORE SCRIPT"
+
+Explanation:
+Prints a message representing the test-specific before_script action.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test"
+
+Explanation:
+Prints the word Test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "..."
+
+Explanation:
+Prints three dots. In the lesson, this command is used only as a simplified placeholder inside an expanded configuration example.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo parent
+
+Explanation:
+Prints the word parent to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo child
+
+Explanation:
+Prints the word child to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$ENV"
+
+Explanation:
+Prints the current value of the ENV environment variable.
+------------------------------------------------------------
