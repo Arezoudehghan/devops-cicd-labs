@@ -1,0 +1,118 @@
+stages:
+  - inspect
+  - test
+  - build
+  - security
+  - release
+  - maintenance
+
+default:
+  tags:
+    - dev-shell
+
+workflow:
+  rules:
+    # 1. Allow Merge Request pipelines
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+    # 2. Prevent duplicate branch pipeline when MR is already open
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+
+    # 3. Allow branch and tag push pipelines
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+    # 4. Allow scheduled pipelines
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+    # 5. Allow manually started pipelines from GitLab UI
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
+    # 6. Block everything else
+    - when: never
+
+
+show_context:
+  stage: inspect
+  script:
+    - echo "========================================"
+    - echo "CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE"
+    - echo "CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH"
+    - echo "CI_COMMIT_TAG=$CI_COMMIT_TAG"
+    - echo "CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME"
+    - echo "CI_DEFAULT_BRANCH=$CI_DEFAULT_BRANCH"
+    - echo "CI_MERGE_REQUEST_IID=$CI_MERGE_REQUEST_IID"
+    - echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - echo "RUN_SECURITY_SCAN=$RUN_SECURITY_SCAN"
+    - echo "========================================"
+  rules:
+    - when: always
+
+
+branch_push:
+  stage: test
+  script:
+    - echo "Branch push detected"
+    - echo "Branch=$CI_COMMIT_BRANCH"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH'
+
+
+main_branch:
+  stage: build
+  script:
+    - echo "Push to default branch detected"
+    - echo "Default branch=$CI_DEFAULT_BRANCH"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+
+merge_request_test:
+  stage: test
+  script:
+    - echo "Merge Request pipeline detected"
+    - echo "MR IID=$CI_MERGE_REQUEST_IID"
+    - echo "Source=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "Target=$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+
+docker_changes:
+  stage: build
+  script:
+    - echo "Docker-related files changed"
+    - echo "Docker validation/build should run here"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - Dockerfile
+        - docker/**/*
+
+
+security_scan:
+  stage: security
+  script:
+    - echo "RUN_SECURITY_SCAN=true"
+    - echo "Security scan should run here"
+  rules:
+    - if: '$RUN_SECURITY_SCAN == "true"'
+
+
+release_tag:
+  stage: release
+  script:
+    - echo "Release pipeline detected"
+    - echo "Release tag=$CI_COMMIT_TAG"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/'
+
+
+scheduled_job:
+  stage: maintenance
+  script:
+    - echo "Scheduled pipeline detected"
+    - echo "Running scheduled maintenance"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
