@@ -1,0 +1,489 @@
+------------------------------------------------------------
+# echo "Building..."
+
+Explanation:
+Prints a simple build message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Unit Test..."
+
+Explanation:
+Prints a unit-test message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Lint..."
+
+Explanation:
+Prints a lint-test message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security Test..."
+
+Explanation:
+Prints a security-test message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy..."
+
+Explanation:
+Prints a deployment message to the job log.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the GitLab Runner configuration file with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists the GitLab Runners registered in the local GitLab Runner configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E 'concurrent|limit|executor|name' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the Runner configuration for lines matching concurrent, limit, executor, or name. The quoted pattern uses regular-expression alternation.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Treats the search pattern as an extended regular expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cp /etc/gitlab-runner/config.toml /etc/gitlab-runner/config.toml.bak-session39
+
+Explanation:
+Creates a backup copy of the GitLab Runner configuration before editing it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the Nano text editor with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the locally registered GitLab Runners can connect to GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the GitLab Runner systemd service so configuration changes can take effect.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current status of the GitLab Runner systemd service without opening an interactive pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep '^concurrent' /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays lines in the Runner configuration that start with concurrent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current directory to the gitlab-labs directory inside the current user home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the GitLab CI/CD pipeline configuration file in the Nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "BUILD START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 10
+
+Explanation:
+Pauses the current shell job for 10 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "BUILD END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the build end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "UNIT TEST START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the unit-test start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 20
+
+Explanation:
+Pauses the current shell job for 20 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "UNIT TEST END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the unit-test end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "LINT START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the lint-test start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "LINT END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the lint-test end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "SECURITY START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the security-test start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "SECURITY END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the security-test end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "PACKAGE START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the package-job start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses the current shell job for 5 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "PACKAGE END   $(date '+%H:%M:%S')"
+
+Explanation:
+Prints the package-job end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working-tree status, including changed and staged files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "lab: test parallel jobs"
+
+Explanation:
+Creates a Git commit with the provided commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 100 --no-pager
+
+Explanation:
+Shows the latest 100 journal entries for the GitLab Runner systemd unit without opening a pager.
+
+Options:
+- -u = --unit (unit): Filters messages for the specified systemd unit, here gitlab-runner.
+- -n 100 = --lines=100 (lines): Shows the most recent 100 journal entries.
+- --no-pager = no pager: Prints the output directly instead of sending it to a pager program.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Node Index = $CI_NODE_INDEX"
+
+Explanation:
+Prints the current parallel job instance index from the GitLab predefined CI_NODE_INDEX variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Node Total = $CI_NODE_TOTAL"
+
+Explanation:
+Prints the total number of parallel job instances from the GitLab predefined CI_NODE_TOTAL variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "START $(date '+%H:%M:%S')"
+
+Explanation:
+Prints a job start time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "END $(date '+%H:%M:%S')"
+
+Explanation:
+Prints a job end time. The date command is executed inside command substitution and its result is inserted into the message.
+
+Options:
+- $(...) = command substitution: Runs the enclosed command and inserts its output into the surrounding command.
+- +%H:%M:%S = date format argument: %H is the 24-hour hour, %M is the minute, and %S is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running tests"
+
+Explanation:
+Prints a message indicating that tests are running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing with Python $PYTHON_VERSION"
+
+Explanation:
+Prints the Python version selected for the current matrix job by expanding the PYTHON_VERSION variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "OS=$OS Python=$PYTHON"
+
+Explanation:
+Prints the OS and Python values selected for the current matrix job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend built"
+
+Explanation:
+Prints a message indicating that the frontend build has completed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 30
+
+Explanation:
+Pauses the current shell job for 30 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend built"
+
+Explanation:
+Prints a message indicating that the backend build has completed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing frontend"
+
+Explanation:
+Prints a message indicating that frontend testing is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing backend"
+
+Explanation:
+Prints a message indicating that backend testing is running.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --name test-app nginx
+
+Explanation:
+Starts a container from the nginx image and assigns the container the fixed name test-app.
+
+Options:
+- --name = container name: Assigns the specified name to the new container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --name "test-app-$CI_JOB_ID" nginx
+
+Explanation:
+Starts an nginx container with a job-specific name. CI_JOB_ID makes the container name unique for each GitLab CI/CD job.
+
+Options:
+- --name = container name: Assigns the specified name to the new container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -p 8080:80 nginx
+
+Explanation:
+Starts an nginx container and publishes container port 80 on host port 8080.
+
+Options:
+- -p = --publish (publish): Publishes a container port to the host.
+- 8080:80 = publish value: Maps host port 8080 to container port 80.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "result" > "/tmp/result-$CI_JOB_ID.txt"
+
+Explanation:
+Writes the word result to a job-specific file in /tmp. The CI_JOB_ID variable gives each parallel job a different filename.
+
+Options:
+- > = output redirection: Writes standard output to the target file, replacing the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson showed docker build without a required build context. docker build . builds an image using the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo grep -E 'concurrent|limit' /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the Runner configuration for lines matching concurrent or limit. The quoted pattern uses regular-expression alternation.
+
+Options:
+- -E = --extended-regexp (extended regular expression): Treats the search pattern as an extended regular expression.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nproc
+
+Explanation:
+Prints the number of processing units available to the current process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# free -h
+
+Explanation:
+Displays system memory and swap usage in human-readable units.
+
+Options:
+- -h = --human (human-readable): Automatically scales memory values and shows readable unit suffixes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Displays filesystem disk-space usage in human-readable units.
+
+Options:
+- -h = --human-readable (human-readable): Prints sizes in readable unit multiples such as KiB, MiB, and GiB.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# uptime
+
+Explanation:
+Shows how long the system has been running together with the current load averages.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "INDEX=$CI_NODE_INDEX"
+
+Explanation:
+Prints the current parallel job instance index using the CI_NODE_INDEX variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "TOTAL=$CI_NODE_TOTAL"
+
+Explanation:
+Prints the total number of parallel job instances using the CI_NODE_TOTAL variable.
+------------------------------------------------------------
