@@ -1,0 +1,68 @@
+stages:
+  - build
+  - test
+  - deploy
+
+.base_template:
+  tags:
+    - dev-shell
+
+  variables:
+    APP_ENV: "lab"
+
+  before_script:
+    - echo "======================================"
+    - echo "Job: $CI_JOB_NAME"
+    - echo "Pipeline ID: $CI_PIPELINE_ID"
+    - echo "Project: $CI_PROJECT_NAME"
+    - echo "Environment: $APP_ENV"
+    - echo "======================================"
+
+.build_template:
+  extends: .base_template
+
+  stage: build
+
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+.test_template:
+  extends: .base_template
+
+  stage: test
+
+.deploy_template:
+  extends: .base_template
+
+  stage: deploy
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+build_app:
+  extends: .build_template
+
+  script:
+    - echo "Building application..."
+    - mkdir -p dist
+    - echo "Application build from pipeline $CI_PIPELINE_ID" > dist/app.txt
+    - cat dist/app.txt
+
+test_app:
+  extends: .test_template
+
+  script:
+    - echo "Running tests..."
+    - test -f dist/app.txt
+    - grep -q "Application build" dist/app.txt
+    - echo "Tests passed successfully."
+
+deploy_app:
+  extends: .deploy_template
+
+  script:
+    - echo "Deploying application..."
+    - cat dist/app.txt
+    - echo "Deployment simulation completed."
