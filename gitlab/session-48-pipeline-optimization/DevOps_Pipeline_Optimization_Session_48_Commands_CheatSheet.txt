@@ -1,0 +1,204 @@
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates the build directory if it does not already exist.
+
+Options:
+- -p = --parents: Creates parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "application" > build/app.txt
+
+Explanation:
+Writes the text application into build/app.txt, replacing any existing file content.
+
+Options:
+- > = shell output redirection operator: Sends standard output to the target file and overwrites the file.
+------------------------------------------------------------
+# echo "Starting application build..."
+
+Explanation:
+Prints a status message indicating that the application build is starting.
+------------------------------------------------------------
+# echo "app-$CI_COMMIT_SHORT_SHA" > build/app.txt
+
+Explanation:
+Writes app- followed by the value of the GitLab CI variable CI_COMMIT_SHORT_SHA into build/app.txt.
+
+Options:
+- > = shell output redirection operator: Sends standard output to the target file and overwrites the file.
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses the current shell job for 5 seconds.
+------------------------------------------------------------
+# echo "Application build finished."
+
+Explanation:
+Prints a status message indicating that the application build has finished.
+------------------------------------------------------------
+# echo "Starting documentation build..."
+
+Explanation:
+Prints a status message indicating that the documentation build is starting.
+------------------------------------------------------------
+# sleep 20
+
+Explanation:
+Pauses the current shell job for 20 seconds.
+------------------------------------------------------------
+# mkdir -p docs-output
+
+Explanation:
+Creates the docs-output directory if it does not already exist.
+
+Options:
+- -p = --parents: Creates parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "documentation" > docs-output/index.txt
+
+Explanation:
+Writes the text documentation into docs-output/index.txt, replacing any existing file content.
+
+Options:
+- > = shell output redirection operator: Sends standard output to the target file and overwrites the file.
+------------------------------------------------------------
+# echo "Documentation build finished."
+
+Explanation:
+Prints a status message indicating that the documentation build has finished.
+------------------------------------------------------------
+# echo "Testing application..."
+
+Explanation:
+Prints a status message indicating that application testing is starting.
+------------------------------------------------------------
+# test -f build/app.txt
+
+Explanation:
+Checks whether build/app.txt exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = regular file test: Returns true if the specified path exists and is a regular file.
+------------------------------------------------------------
+# cat build/app.txt
+
+Explanation:
+Prints the contents of build/app.txt to standard output.
+------------------------------------------------------------
+# echo "Tests passed."
+
+Explanation:
+Prints a status message indicating that the tests passed.
+------------------------------------------------------------
+# echo "Packaging application..."
+
+Explanation:
+Prints a status message indicating that application packaging is starting.
+------------------------------------------------------------
+# tar -czf app-package.tar.gz build/app.txt
+
+Explanation:
+Creates a gzip-compressed tar archive named app-package.tar.gz containing build/app.txt.
+
+Options:
+- -c = --create: Creates a new archive.
+- -z = --gzip: Filters the archive through gzip compression.
+- -f = --file=ARCHIVE: Uses app-package.tar.gz as the archive file.
+------------------------------------------------------------
+# echo "Deploy simulation..."
+
+Explanation:
+Prints a status message indicating that the deployment simulation is starting.
+------------------------------------------------------------
+# test -f app-package.tar.gz
+
+Explanation:
+Checks whether app-package.tar.gz exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = regular file test: Returns true if the specified path exists and is a regular file.
+------------------------------------------------------------
+# sleep 1
+
+Explanation:
+Pauses the current shell job for 1 second.
+------------------------------------------------------------
+# echo "Deployment completed."
+
+Explanation:
+Prints a status message indicating that the deployment simulation has completed.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area for the next commit.
+------------------------------------------------------------
+# git commit -m "Add stage based pipeline"
+
+Explanation:
+Creates a new Git commit with the specified commit message.
+
+Options:
+- -m = --message=<msg>: Uses "Add stage based pipeline" as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+# python3 -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through Python 3 and installs the dependencies listed in requirements.txt.
+
+Options:
+- -m = module-name: Runs the named Python module as a script; here the module is pip.
+- -r = --requirement <file>: Installs packages from the specified requirements file; here the file is requirements.txt.
+------------------------------------------------------------
+# python3 -m pytest
+
+Explanation:
+Runs the pytest module using Python 3.
+
+Options:
+- -m = module-name: Runs the named Python module as a script; here the module is pytest.
+------------------------------------------------------------
+# sudo ls -lah /home/gitlab-runner/cache/
+
+Explanation:
+Runs ls with elevated privileges and shows detailed information for all entries in /home/gitlab-runner/cache/ with human-readable sizes.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+- -a = --all: Includes entries whose names begin with a dot.
+- -h = --human-readable: Shows file sizes in readable units such as KiB, MiB, and GiB.
+------------------------------------------------------------
+# sudo du -sh /home/gitlab-runner/cache/
+
+Explanation:
+Runs du with elevated privileges and shows the total disk space used by /home/gitlab-runner/cache/ in human-readable form.
+
+Options:
+- -s = --summarize: Displays only the total size for the specified path.
+- -h = --human-readable: Shows sizes in readable units such as KiB, MiB, and GiB.
+------------------------------------------------------------
+# du -sh build/
+
+Explanation:
+Shows the total disk space used by the build/ directory in human-readable form.
+
+Options:
+- -s = --summarize: Displays only the total size for the specified path.
+- -h = --human-readable: Shows sizes in readable units such as KiB, MiB, and GiB.
+------------------------------------------------------------
+# ls -lh app-package.tar.gz
+
+Explanation:
+Shows detailed information about app-package.tar.gz with its size in human-readable form.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+- -h = --human-readable: Shows the file size in readable units such as KiB, MiB, and GiB.
+------------------------------------------------------------
