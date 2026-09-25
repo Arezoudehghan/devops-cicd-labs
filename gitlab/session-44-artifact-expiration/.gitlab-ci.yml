@@ -1,0 +1,42 @@
+stages:
+  - build
+  - verify
+
+build_artifact:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "Creating artifact..."
+    - mkdir -p dist
+    - echo "Project: $CI_PROJECT_NAME" > dist/build-info.txt
+    - echo "Branch: $CI_COMMIT_BRANCH" >> dist/build-info.txt
+    - echo "Commit: $CI_COMMIT_SHORT_SHA" >> dist/build-info.txt
+    - echo "Pipeline: $CI_PIPELINE_ID" >> dist/build-info.txt
+    - date >> dist/build-info.txt
+    - cat dist/build-info.txt
+    - ls -lah dist/
+
+  artifacts:
+    name: "session44-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - dist/
+    expire_in: 2 minutes
+
+verify_artifact:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  dependencies:
+    - build_artifact
+
+  script:
+    - echo "Checking artifact received from build_artifact..."
+    - ls -lah dist/
+    - cat dist/build-info.txt
+    - test -f dist/build-info.txt
+    - echo "Artifact verification successful."
