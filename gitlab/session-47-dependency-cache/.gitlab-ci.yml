@@ -1,0 +1,94 @@
+stages:
+  - test
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle-user-home"
+
+python-test:
+  stage: test
+  tags:
+    - dev-shell
+  rules:
+    - exists:
+        - requirements.txt
+  cache:
+    key:
+      files:
+        - requirements.txt
+      prefix: python
+    paths:
+      - .cache/pip/
+    policy: pull-push
+  script:
+    - python3 --version
+    - python3 -m pip --version
+    - python3 -m pip install -r requirements.txt
+    - python3 -m pip cache dir
+    - du -sh .cache/pip || true
+
+node-test:
+  stage: test
+  tags:
+    - dev-shell
+  rules:
+    - exists:
+        - package-lock.json
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: node
+    paths:
+      - .npm/
+    policy: pull-push
+  script:
+    - node --version
+    - npm --version
+    - npm ci --cache .npm --prefer-offline
+    - du -sh .npm || true
+    - npm test
+
+maven-test:
+  stage: test
+  tags:
+    - dev-shell
+  rules:
+    - exists:
+        - pom.xml
+  cache:
+    key:
+      files:
+        - pom.xml
+      prefix: maven
+    paths:
+      - .m2/repository/
+    policy: pull-push
+  script:
+    - java -version
+    - mvn --version
+    - mvn -Dmaven.repo.local="$CI_PROJECT_DIR/.m2/repository" clean test
+    - du -sh .m2/repository || true
+
+gradle-test:
+  stage: test
+  tags:
+    - dev-shell
+  rules:
+    - exists:
+        - build.gradle
+  cache:
+    key:
+      files:
+        - build.gradle
+        - gradle/wrapper/gradle-wrapper.properties
+      prefix: gradle
+    paths:
+      - .gradle-user-home/caches/
+      - .gradle-user-home/wrapper/
+    policy: pull-push
+  script:
+    - java -version
+    - ./gradlew --version
+    - ./gradlew --no-daemon test
+    - du -sh .gradle-user-home || true
