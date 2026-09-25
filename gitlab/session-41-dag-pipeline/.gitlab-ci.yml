@@ -1,0 +1,138 @@
+stages:
+  - build
+  - test
+  - deploy
+  - release
+
+default:
+  tags:
+    - dev-shell
+
+build_frontend:
+  stage: build
+  script:
+    - echo "Starting frontend build..."
+    - sleep 10
+    - echo "Frontend build completed" > frontend-build.txt
+  artifacts:
+    paths:
+      - frontend-build.txt
+    expire_in: 1 day
+
+build_backend:
+  stage: build
+  script:
+    - echo "Starting backend build..."
+    - sleep 30
+    - echo "Backend build completed" > backend-build.txt
+  artifacts:
+    paths:
+      - backend-build.txt
+    expire_in: 1 day
+
+lint:
+  stage: test
+  needs: []
+  script:
+    - echo "Starting lint..."
+    - sleep 8
+    - echo "Lint passed" > lint-report.txt
+  artifacts:
+    paths:
+      - lint-report.txt
+    expire_in: 1 day
+
+security_scan:
+  stage: test
+  needs: []
+  script:
+    - echo "Starting security scan..."
+    - sleep 40
+    - echo "Security scan passed" > security-report.txt
+  artifacts:
+    paths:
+      - security-report.txt
+    expire_in: 1 day
+
+test_frontend:
+  stage: test
+  needs:
+    - job: build_frontend
+      artifacts: true
+  script:
+    - test -f frontend-build.txt
+    - cat frontend-build.txt
+    - echo "Starting frontend tests..."
+    - sleep 5
+    - echo "Frontend tests passed" > frontend-test.txt
+  artifacts:
+    paths:
+      - frontend-test.txt
+    expire_in: 1 day
+
+test_backend:
+  stage: test
+  needs:
+    - job: build_backend
+      artifacts: true
+  script:
+    - test -f backend-build.txt
+    - cat backend-build.txt
+    - echo "Starting backend tests..."
+    - sleep 10
+    - echo "Backend tests passed" > backend-test.txt
+  artifacts:
+    paths:
+      - backend-test.txt
+    expire_in: 1 day
+
+deploy_frontend:
+  stage: deploy
+  needs:
+    - job: test_frontend
+      artifacts: true
+  script:
+    - test -f frontend-test.txt
+    - cat frontend-test.txt
+    - echo "Deploying frontend..."
+    - sleep 5
+    - echo "Frontend deployed" > frontend-deploy.txt
+  artifacts:
+    paths:
+      - frontend-deploy.txt
+    expire_in: 1 day
+
+deploy_backend:
+  stage: deploy
+  needs:
+    - job: test_backend
+      artifacts: true
+  script:
+    - test -f backend-test.txt
+    - cat backend-test.txt
+    - echo "Deploying backend..."
+    - sleep 5
+    - echo "Backend deployed" > backend-deploy.txt
+  artifacts:
+    paths:
+      - backend-deploy.txt
+    expire_in: 1 day
+
+release_report:
+  stage: release
+  needs:
+    - job: deploy_frontend
+      artifacts: true
+    - job: deploy_backend
+      artifacts: true
+    - job: security_scan
+      artifacts: true
+    - job: lint
+      artifacts: true
+  script:
+    - echo "Creating final release report..."
+    - cat frontend-deploy.txt
+    - cat backend-deploy.txt
+    - cat security-report.txt
+    - cat lint-report.txt
+    - echo "Release pipeline completed successfully"
