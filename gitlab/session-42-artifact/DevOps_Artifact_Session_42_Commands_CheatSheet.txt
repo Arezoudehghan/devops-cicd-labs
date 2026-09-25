@@ -1,0 +1,245 @@
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates the build directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "Hello Artifact" > build/result.txt
+
+Explanation:
+Writes the text Hello Artifact into build/result.txt.
+
+Options:
+- > = shell output redirection: Create or overwrite build/result.txt with the command output.
+------------------------------------------------------------
+# mkdir build
+
+Explanation:
+Creates a directory named build in the current working directory.
+------------------------------------------------------------
+# echo "hello" > build/app.txt
+
+Explanation:
+Writes the text hello into build/app.txt.
+
+Options:
+- > = shell output redirection: Create or overwrite build/app.txt with the command output.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging status.
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Print the name of the current branch.
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor.
+------------------------------------------------------------
+# echo "=== BUILD JOB ==="
+
+Explanation:
+Prints a label that identifies the build job in the job log.
+------------------------------------------------------------
+# echo "Project=${CI_PROJECT_NAME}" > build/application.txt
+
+Explanation:
+Writes the current GitLab project name into build/application.txt.
+
+Options:
+- ${CI_PROJECT_NAME} = shell parameter expansion: Replace the variable reference with the value of CI_PROJECT_NAME.
+- > = shell output redirection: Create or overwrite build/application.txt with the command output.
+------------------------------------------------------------
+# echo "Commit=${CI_COMMIT_SHORT_SHA}" >> build/application.txt
+
+Explanation:
+Appends the short Git commit SHA to build/application.txt.
+
+Options:
+- ${CI_COMMIT_SHORT_SHA} = shell parameter expansion: Replace the variable reference with the value of CI_COMMIT_SHORT_SHA.
+- >> = shell append redirection: Append the command output to build/application.txt without overwriting existing content.
+------------------------------------------------------------
+# echo "Pipeline=${CI_PIPELINE_ID}" >> build/application.txt
+
+Explanation:
+Appends the GitLab pipeline ID to build/application.txt.
+
+Options:
+- ${CI_PIPELINE_ID} = shell parameter expansion: Replace the variable reference with the value of CI_PIPELINE_ID.
+- >> = shell append redirection: Append the command output to build/application.txt without overwriting existing content.
+------------------------------------------------------------
+# echo "Build completed successfully" >> build/application.txt
+
+Explanation:
+Appends a build completion message to build/application.txt.
+
+Options:
+- >> = shell append redirection: Append the command output to build/application.txt without overwriting existing content.
+------------------------------------------------------------
+# ls -lah build/
+
+Explanation:
+Lists the contents of the build directory with detailed information, including hidden files and human-readable sizes.
+
+Options:
+- -l = --format=long (long listing format): Show detailed file information.
+- -a = --all (all): Include hidden entries.
+- -h = --human-readable (human readable): Show file sizes using units such as K, M, and G.
+------------------------------------------------------------
+# cat build/application.txt
+
+Explanation:
+Prints the contents of build/application.txt to standard output.
+------------------------------------------------------------
+# echo "=== VERIFY JOB ==="
+
+Explanation:
+Prints a label that identifies the verify job in the job log.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+# ls -lah
+
+Explanation:
+Lists the current directory with detailed information, including hidden files and human-readable sizes.
+
+Options:
+- -l = --format=long (long listing format): Show detailed file information.
+- -a = --all (all): Include hidden entries.
+- -h = --human-readable (human readable): Show file sizes using units such as K, M, and G.
+------------------------------------------------------------
+# test -f build/application.txt
+
+Explanation:
+Checks whether build/application.txt exists and is a regular file. The command returns exit status 0 when the test succeeds.
+
+Options:
+- -f = regular file test: Return success only if the path exists and is a regular file.
+------------------------------------------------------------
+# echo "Artifact received successfully"
+
+Explanation:
+Prints a confirmation message that the artifact file was received.
+------------------------------------------------------------
+# git diff -- .gitlab-ci.yml
+
+Explanation:
+Shows unstaged changes for the .gitlab-ci.yml file.
+
+Options:
+- -- = end of options separator: Treat the following value as a path instead of an option or revision.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+# git commit -m "lab: learn GitLab artifacts"
+
+Explanation:
+Creates a Git commit with the provided commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+# mvn package
+
+Explanation:
+Runs the Maven package lifecycle phase to compile, test, and package the project according to the project configuration.
+------------------------------------------------------------
+# npm run build
+
+Explanation:
+Runs the npm script named build from the project's package.json file.
+------------------------------------------------------------
+# ./run-tests.sh
+
+Explanation:
+Executes the run-tests.sh script from the current directory.
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Technical correction: The lesson showed docker build without the required build context. The dot uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push IMAGE
+
+Explanation:
+Technical correction: The lesson showed docker push without the required image reference. Replace IMAGE with the image name and optional tag that must be pushed.
+------------------------------------------------------------
+# docker save -o image.tar IMAGE
+
+Explanation:
+Technical correction: The lesson showed docker save without the required image argument or an output file. This corrected form exports IMAGE to the image.tar archive mentioned in the lesson.
+
+Options:
+- -o = --output (output): Write the image archive to image.tar instead of standard output.
+------------------------------------------------------------
+# docker load -i image.tar
+
+Explanation:
+Technical correction: The lesson showed docker load without specifying the image.tar file mentioned in the scenario. This corrected form loads the Docker image archive from image.tar.
+
+Options:
+- -i = --input (input): Read the Docker image archive from image.tar instead of standard input.
+------------------------------------------------------------
+# find . -maxdepth 3 -type f
+
+Explanation:
+Searches from the current directory and lists regular files up to three directory levels deep.
+
+Options:
+- . = starting path: Start the search in the current directory.
+- -maxdepth 3 = maximum search depth: Do not descend more than three levels below the starting path.
+- -type f = file type test: Match regular files only.
+------------------------------------------------------------
+# du -sh build/
+
+Explanation:
+Shows the total disk space used by the build directory in a human-readable format.
+
+Options:
+- -s = --summarize (summarize): Show only the total size for the specified path.
+- -h = --human-readable (human readable): Show sizes using units such as K, M, and G.
+------------------------------------------------------------
+# ls -lh build/
+
+Explanation:
+Lists the contents of the build directory with detailed information and human-readable sizes.
+
+Options:
+- -l = --format=long (long listing format): Show detailed file information.
+- -h = --human-readable (human readable): Show file sizes using units such as K, M, and G.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits to the configured upstream remote and branch when upstream tracking is already set.
+------------------------------------------------------------
+# find . -name "*.jar"
+
+Explanation:
+Searches from the current directory for entries whose names match the *.jar pattern.
+
+Options:
+- . = starting path: Start the search in the current directory.
+- -name "*.jar" = name pattern test: Match names ending in .jar; the quotes prevent the shell from expanding the wildcard before find receives it.
+------------------------------------------------------------

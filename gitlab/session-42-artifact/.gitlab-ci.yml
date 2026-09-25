@@ -1,0 +1,35 @@
+stages:
+  - build
+  - verify
+
+build_package:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "=== BUILD JOB ==="
+    - mkdir -p build
+    - echo "Project=${CI_PROJECT_NAME}" > build/application.txt
+    - echo "Commit=${CI_COMMIT_SHORT_SHA}" >> build/application.txt
+    - echo "Pipeline=${CI_PIPELINE_ID}" >> build/application.txt
+    - echo "Build completed successfully" >> build/application.txt
+    - ls -lah build/
+    - cat build/application.txt
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - build/
+    expire_in: 1 day
+
+verify_package:
+  stage: verify
+  tags:
+    - dev-shell
+  script:
+    - echo "=== VERIFY JOB ==="
+    - pwd
+    - ls -lah
+    - ls -lah build/
+    - test -f build/application.txt
+    - cat build/application.txt
+    - echo "Artifact received successfully"
