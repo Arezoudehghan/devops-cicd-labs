@@ -1,0 +1,75 @@
+stages:
+  - build
+  - test
+  - package
+  - deploy
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Starting application build..."
+    - mkdir -p build
+    - echo "app-$CI_COMMIT_SHORT_SHA" > build/app.txt
+    - sleep 5
+    - echo "Application build finished."
+  artifacts:
+    paths:
+      - build/app.txt
+    expire_in: 1 hour
+
+build_docs:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Starting documentation build..."
+    - sleep 20
+    - mkdir -p docs-output
+    - echo "documentation" > docs-output/index.txt
+    - echo "Documentation build finished."
+
+test_app:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - job: build_app
+      artifacts: true
+  script:
+    - echo "Testing application..."
+    - test -f build/app.txt
+    - cat build/app.txt
+    - sleep 5
+    - echo "Tests passed."
+
+package_app:
+  stage: package
+  tags:
+    - dev-shell
+  needs:
+    - job: build_app
+      artifacts: true
+    - job: test_app
+      artifacts: false
+  script:
+    - echo "Packaging application..."
+    - tar -czf app-package.tar.gz build/app.txt
+  artifacts:
+    paths:
+      - app-package.tar.gz
+    expire_in: 1 hour
+
+deploy_app:
+  stage: deploy
+  tags:
+    - dev-shell
+  needs:
+    - job: package_app
+      artifacts: true
+  script:
+    - echo "Deploy simulation..."
+    - test -f app-package.tar.gz
+    - sleep 1
+    - echo "Deployment completed."
