@@ -51,5 +51,6 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-41-dag-pipeline/` — GitLab CI/CD DAG pipelines, direct job dependencies, parallel execution, artifact flow, and practical dependency graph design.
 - `gitlab/session-43-artifact-transfer-between-jobs/` — Transfer build outputs between jobs with artifacts, `dependencies`, `needs:artifacts`, checksum verification, and build-once/test-same-artifact packaging.
 - `gitlab/session-41-dag-pipeline/` — GitLab CI/CD DAG pipeline design, real job dependencies with `needs`, independent jobs with `needs: []`, artifact flow, critical path analysis, and Runner concurrency.
+- `gitlab/session-44-artifact-expiration/` — GitLab CI/CD artifact retention with `artifacts:expire_in`, latest-successful artifact behavior, periodic cleanup, artifact transfer with `dependencies`, and storage policy.
 - `gitlab/session-45-cache/` — GitLab CI/CD Cache, Cache Hit/Miss, cache keys and paths, pull/push policies, Shell Runner local cache, cache invalidation, dependency cache patterns, and troubleshooting.
 - `gitlab/session-46-cache-vs-artifact/` — GitLab CI/CD cache versus artifact, cache hit/miss, cache keys, artifact expiration, `needs:artifacts`, and a practical build/verify lab.
