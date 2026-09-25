@@ -1,0 +1,213 @@
+------------------------------------------------------------
+# ruff check .
+
+Explanation:
+Run Ruff's linter against the current directory.
+
+------------------------------------------------------------
+# python -m ruff check .
+
+Explanation:
+Run the Ruff module with the current Python interpreter and lint the current directory.
+
+Options:
+- -m = module: Run the named Python module as a script.
+------------------------------------------------------------
+# python -m pytest
+
+Explanation:
+Run the pytest test suite through the current Python interpreter.
+
+Options:
+- -m = module: Run the named Python module as a script.
+------------------------------------------------------------
+# true
+
+Explanation:
+Run the shell command that exits successfully with status code 0.
+
+------------------------------------------------------------
+# echo $?
+
+Explanation:
+Print the exit status of the most recently completed foreground command.
+
+Options:
+- $? = last exit status: Shell special parameter containing the previous command's exit code.
+------------------------------------------------------------
+# false
+
+Explanation:
+Run the shell command that exits unsuccessfully with a non-zero status, normally 1.
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Display the installed Python 3 version.
+
+Options:
+- --version = version: Print the Python version and exit.
+------------------------------------------------------------
+# python3 -m venv --help
+
+Explanation:
+Open the help for Python's venv module.
+
+Options:
+- -m = module: Run the named Python module as a script.
+- --help = help: Display help information and exit.
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Run APT's package-index update with elevated privileges.
+
+------------------------------------------------------------
+# sudo apt install -y python3-venv
+
+Explanation:
+Install the python3-venv package with elevated privileges and automatically accept confirmation prompts.
+
+Options:
+- -y = --yes / --assume-yes: Automatically answer yes to prompts.
+------------------------------------------------------------
+# mkdir -p tests
+
+Explanation:
+Create the tests directory and do not fail if the directory already exists.
+
+Options:
+- -p = --parents: Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# python3 -m venv .venv
+
+Explanation:
+Create a Python virtual environment in the .venv directory.
+
+Options:
+- -m = module: Run the named Python module as a script.
+------------------------------------------------------------
+# . .venv/bin/activate
+
+Explanation:
+Source the virtual-environment activation script into the current shell.
+
+------------------------------------------------------------
+# python -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+Explanation:
+Install the dependencies listed in requirements-dev.txt with pip while disabling pip's version-check message.
+
+Options:
+- -m = module: Run the named Python module as a script.
+- --disable-pip-version-check = disable pip version check: Do not periodically check PyPI for a newer pip version.
+- -r = --requirement: Install packages from the specified requirements file.
+------------------------------------------------------------
+# python -m pytest -q
+
+Explanation:
+Run the pytest test suite through the current Python interpreter with quieter output.
+
+Options:
+- -m = module: Run the named Python module as a script.
+- -q = --quiet (quiet): Reduce pytest's output verbosity.
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Create the dist directory and do not fail if the directory already exists.
+
+Options:
+- -p = --parents: Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# tar -czf "dist/app-${CI_COMMIT_SHORT_SHA}.tar.gz" app.py
+
+Explanation:
+Create a gzip-compressed tar archive containing app.py and name it with the current GitLab short commit SHA.
+
+Options:
+- -c = --create (create): Create a new archive.
+- -z = --gzip (gzip): Compress the archive with gzip.
+- -f = --file (file): Use the following value as the archive filename.
+- ${CI_COMMIT_SHORT_SHA} = shell variable expansion: Insert the value of the GitLab CI_COMMIT_SHORT_SHA variable into the archive filename.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Show the current Git working-tree and staging-area status.
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stage changes from the current directory for the next commit.
+
+------------------------------------------------------------
+# git commit -m "add lint test and quality gate pipeline"
+
+Explanation:
+Create a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Push the current branch's commits to its configured remote repository.
+
+------------------------------------------------------------
+# git add app.py
+
+Explanation:
+Stage changes to app.py for the next commit.
+
+------------------------------------------------------------
+# git commit -m "test lint failure"
+
+Explanation:
+Create a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git commit -m "fix lint issue"
+
+Explanation:
+Create a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git commit -m "introduce unit test failure"
+
+Explanation:
+Create a Git commit using the supplied commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# ./experimental-check.sh
+
+Explanation:
+Execute the experimental-check.sh script from the current directory.
+
+------------------------------------------------------------
+# python -m pytest || true
+
+Explanation:
+Run pytest through Python, but force the overall shell command to succeed if pytest fails because true is executed after a failure.
+
+Options:
+- -m = module: Run the named Python module as a script.
+- || = shell OR operator: Run the command on the right only if the command on the left fails.
+------------------------------------------------------------
+# pytest || true
+
+Explanation:
+Run pytest directly, but force the overall shell command to succeed if pytest fails because true is executed after a failure.
+
+Options:
+- || = shell OR operator: Run the command on the right only if the command on the left fails.
+------------------------------------------------------------

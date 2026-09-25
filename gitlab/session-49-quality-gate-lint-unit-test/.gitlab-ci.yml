@@ -1,0 +1,38 @@
+stages:
+  - lint
+  - test
+  - build
+
+default:
+  tags:
+    - dev-shell
+
+.python_setup:
+  before_script:
+    - python3 -m venv .venv
+    - . .venv/bin/activate
+    - python -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+lint:
+  stage: lint
+  extends: .python_setup
+  script:
+    - python -m ruff check .
+  allow_failure: false
+
+unit_test:
+  stage: test
+  extends: .python_setup
+  script:
+    - python -m pytest -q
+  allow_failure: false
+
+build:
+  stage: build
+  script:
+    - mkdir -p dist
+    - tar -czf "dist/app-${CI_COMMIT_SHORT_SHA}.tar.gz" app.py
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
