@@ -1,0 +1,181 @@
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Installs the Python packages listed in requirements.txt by using pip.
+
+Options:
+- -r = --requirement: Reads package requirements from the specified file, here requirements.txt.
+------------------------------------------------------------
+# echo "Running job"
+
+Explanation:
+Prints the text "Running job" to the job log.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree status, including changed, staged, and untracked files.
+------------------------------------------------------------
+# mkdir -p .ci-cache/
+
+Explanation:
+Creates the .ci-cache/ directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+# if [ -f .ci-cache/dependency.txt ]; then
+  echo "CACHE HIT"
+  echo "Existing cache content:"
+  cat .ci-cache/dependency.txt
+else
+  echo "CACHE MISS"
+  echo "Creating cache for the first time..."
+  date > .ci-cache/dependency.txt
+fi
+
+Explanation:
+Checks whether .ci-cache/dependency.txt exists as a regular file. If it exists, the script reports a cache hit and displays the file; otherwise, it reports a cache miss and writes the current date into the file.
+
+Options:
+- -f = regular file test: Returns true when the specified path exists and is a regular file.
+- > = shell output redirection: Writes the output of date to .ci-cache/dependency.txt, replacing the file if it already exists.
+------------------------------------------------------------
+# echo "Checking restored cache..."
+
+Explanation:
+Prints a message indicating that the job is about to verify the restored cache.
+------------------------------------------------------------
+# test -f .ci-cache/dependency.txt
+
+Explanation:
+Checks whether .ci-cache/dependency.txt exists and is a regular file. The command returns a successful exit status when the file exists.
+
+Options:
+- -f = regular file test: Tests whether the specified path exists and is a regular file.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml so its changes can be included in the next Git commit.
+------------------------------------------------------------
+# git commit -m "lab: add cache demo pipeline"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+# echo "# cache test" >> README.md
+
+Explanation:
+Appends the text "# cache test" to README.md without replacing the existing file content.
+
+Options:
+- >> = shell append redirection: Appends standard output to README.md instead of overwriting it.
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Stages README.md so its changes can be included in the next Git commit.
+------------------------------------------------------------
+# git commit -m "test: verify cache reuse"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified cache test message.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# sudo find /home/gitlab-runner/cache -type f -name 'cache.zip' 2>/dev/null
+
+Explanation:
+Runs find with elevated privileges to locate files named cache.zip under /home/gitlab-runner/cache. Error messages are discarded.
+
+Options:
+- -type f = file type test: Matches only regular files.
+- -name 'cache.zip' = name pattern test: Matches entries whose name is exactly cache.zip.
+- 2>/dev/null = shell error redirection: Redirects file descriptor 2, standard error, to /dev/null.
+------------------------------------------------------------
+# sudo du -sh /home/gitlab-runner/cache
+
+Explanation:
+Shows the total disk space used by /home/gitlab-runner/cache in a human-readable format.
+
+Options:
+- -s = --summarize (summarize): Displays only the total size for the specified path.
+- -h = --human-readable (human-readable): Displays sizes using readable units such as K, M, and G.
+------------------------------------------------------------
+# python3 -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through Python 3 and installs the packages listed in requirements.txt.
+
+Options:
+- -m = module-name execution: Runs the specified Python module as a script, here pip.
+- -r = --requirement: Reads package requirements from the specified file, here requirements.txt.
+------------------------------------------------------------
+# python3 -m pytest
+
+Explanation:
+Runs the pytest module with Python 3 to execute the project's tests.
+
+Options:
+- -m = module-name execution: Runs the specified Python module as a script, here pytest.
+------------------------------------------------------------
+# npm ci
+
+Explanation:
+Performs a clean, reproducible installation of Node.js dependencies based on the project's lock file.
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the project's test script defined for npm.
+------------------------------------------------------------
+# npm ci --cache .npm
+
+Explanation:
+Performs a clean npm dependency installation while using .npm as the npm cache directory.
+
+Options:
+- --cache .npm = cache directory: Sets .npm as the directory npm uses for cached package data.
+------------------------------------------------------------
+# npm run build
+
+Explanation:
+Runs the project's npm script named build.
+------------------------------------------------------------
+# rm -rf /home/gitlab-runner/cache
+
+Explanation:
+Removes /home/gitlab-runner/cache and its contents recursively without prompting for confirmation.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and arguments and does not prompt.
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Displays filesystem disk space usage in a human-readable format.
+
+Options:
+- -h = --human-readable (human-readable): Displays sizes using readable units such as K, M, and G.
+------------------------------------------------------------
+# sudo du -sh /home/gitlab-runner/cache 2>/dev/null
+
+Explanation:
+Shows the total disk space used by /home/gitlab-runner/cache in a human-readable format while discarding error messages.
+
+Options:
+- -s = --summarize (summarize): Displays only the total size for the specified path.
+- -h = --human-readable (human-readable): Displays sizes using readable units such as K, M, and G.
+- 2>/dev/null = shell error redirection: Redirects file descriptor 2, standard error, to /dev/null.
