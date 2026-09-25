@@ -1,0 +1,227 @@
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Create missing parent directories as needed and ignore an existing target directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "application" > dist/app.txt
+
+Explanation:
+Writes the text application to dist/app.txt.
+
+Options:
+- > = shell output redirection: Write standard output to dist/app.txt and overwrite the file if it already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# tar -czf dist/application.tar.gz app/
+
+Explanation:
+Creates a gzip-compressed tar archive named dist/application.tar.gz from the app/ directory.
+
+Options:
+- -c = --create (create): Create a new archive.
+- -z = --gzip (gzip): Compress the archive with gzip.
+- -f = --file (file): Use dist/application.tar.gz as the archive file name.
+------------------------------------------------------------
+------------------------------------------------------------
+# python3 -m venv .venv
+
+Explanation:
+Runs Python's venv module and creates a virtual environment in .venv.
+
+Options:
+- -m = Python module execution option: Run the named Python module as a script.
+------------------------------------------------------------
+------------------------------------------------------------
+# .venv/bin/python -m pip install -r requirements.txt
+
+Explanation:
+Uses the Python interpreter inside .venv to run pip and install all dependencies listed in requirements.txt.
+
+Options:
+- -m = Python module execution option: Run the pip module as a script.
+- -r = --requirement (requirement): Read package requirements from requirements.txt.
+------------------------------------------------------------
+------------------------------------------------------------
+# .venv/bin/python -m pytest
+
+Explanation:
+Runs pytest by using the Python interpreter inside the .venv virtual environment.
+
+Options:
+- -m = Python module execution option: Run the pytest module as a script.
+------------------------------------------------------------
+------------------------------------------------------------
+# npm ci
+
+Explanation:
+Installs Node.js dependencies exactly from the lock file in a clean and reproducible way.
+------------------------------------------------------------
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the project's npm test script defined in package.json.
+------------------------------------------------------------
+------------------------------------------------------------
+# npm run build
+
+Explanation:
+Runs the project's npm build script defined in package.json.
+------------------------------------------------------------
+------------------------------------------------------------
+# ls -lh dist/
+
+Explanation:
+Lists the files in dist/ with detailed information and human-readable file sizes.
+
+Options:
+- -l = long listing format: Show detailed information such as permissions, owner, size, and modification time.
+- -h = --human-readable (human-readable): Display sizes using readable units such as KB or MB.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p .cache/demo/
+
+Explanation:
+Creates the .cache/demo/ directory and any missing parent directories.
+
+Options:
+- -p = --parents (parents): Create missing parent directories and do not fail if the target directory already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# if [ -f .cache/demo/dependency.txt ]; then
+  echo "CACHE HIT"
+else
+  echo "CACHE MISS"
+  echo "Creating dependency..."
+  sleep 10
+  date > .cache/demo/dependency.txt
+fi
+
+Explanation:
+Checks whether the cached dependency file exists. It reports a cache hit when the file exists; otherwise it waits ten seconds and creates the dependency file.
+
+Options:
+- -f = regular-file test: Return true when .cache/demo/dependency.txt exists and is a regular file.
+- > = shell output redirection: Write the date command output to .cache/demo/dependency.txt and overwrite the file if it already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat .cache/demo/dependency.txt
+
+Explanation:
+Prints the contents of the cached dependency.txt file to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p dist/
+
+Explanation:
+Creates the dist/ directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Create missing parent directories as needed and ignore an existing target directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Commit SHA: $CI_COMMIT_SHA" > dist/build-info.txt
+
+Explanation:
+Writes the current GitLab commit SHA to dist/build-info.txt.
+
+Options:
+- > = shell output redirection: Write standard output to dist/build-info.txt and overwrite the file if it already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Pipeline ID: $CI_PIPELINE_ID" >> dist/build-info.txt
+
+Explanation:
+Appends the current GitLab pipeline ID to dist/build-info.txt.
+
+Options:
+- >> = shell append redirection: Append standard output to dist/build-info.txt without removing its existing content.
+------------------------------------------------------------
+------------------------------------------------------------
+# tar -czf "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz" dist/build-info.txt
+
+Explanation:
+Creates a gzip-compressed tar archive whose file name contains the current short commit SHA and includes dist/build-info.txt.
+
+Options:
+- -c = --create (create): Create a new archive.
+- -z = --gzip (gzip): Compress the archive with gzip.
+- -f = --file (file): Use the following value as the archive file name.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Checking downloaded artifact..."
+
+Explanation:
+Prints a status message before the artifact verification commands run.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -f "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz"
+
+Explanation:
+Checks that the expected tar.gz artifact exists and is a regular file. The command returns a nonzero exit status if the file is missing or is not a regular file.
+
+Options:
+- -f = regular-file test: Succeed when the specified path exists and is a regular file.
+------------------------------------------------------------
+------------------------------------------------------------
+# tar -tzf "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz"
+
+Explanation:
+Lists the contents of the gzip-compressed tar archive without extracting it.
+
+Options:
+- -t = --list (list): List archive contents.
+- -z = --gzip (gzip): Process the archive through gzip.
+- -f = --file (file): Use the following value as the archive file name.
+------------------------------------------------------------
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages .gitlab-ci.yml so its changes are included in the next commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "lab: compare cache and artifacts"
+
+Explanation:
+Creates a Git commit with the message lab: compare cache and artifacts.
+
+Options:
+- -m = --message (message): Use the following string as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin HEAD
+
+Explanation:
+Pushes the commit referenced by HEAD to the remote named origin using Git's normal refspec handling.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with myapp plus the current short GitLab commit SHA.
+
+Options:
+- -t = --tag (tag): Apply the name and tag myapp:$CI_COMMIT_SHORT_SHA to the built image.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker save myapp:$CI_COMMIT_SHORT_SHA | gzip > image.tar.gz
+
+Explanation:
+Exports the Docker image, compresses the exported stream with gzip, and writes the result to image.tar.gz.
+
+Options:
+- | = shell pipeline operator: Send the standard output of docker save to gzip as standard input.
+- > = shell output redirection: Write gzip output to image.tar.gz and overwrite the file if it already exists.
+------------------------------------------------------------
