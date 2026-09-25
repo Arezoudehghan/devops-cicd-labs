@@ -1,0 +1,356 @@
+------------------------------------------------------------
+# python3 -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through Python and installs the dependencies listed in requirements.txt.
+
+Options:
+- -m = module: Runs the specified Python module as a script; here it runs pip.
+- -r = --requirement: Installs packages from the specified requirements file, requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Displays the installed Python version.
+
+Options:
+- --version = version: Prints the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m pip --version
+
+Explanation:
+Runs pip through Python and displays the installed pip version.
+
+Options:
+- -m = module: Runs the specified Python module as a script; here it runs pip.
+- --version = version: Prints the pip version and installation location, then exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# node --version
+
+Explanation:
+Displays the installed Node.js version.
+
+Options:
+- --version = version: Prints the Node.js version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm --version
+
+Explanation:
+Displays the installed npm version.
+
+Options:
+- --version = version: Prints the npm version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# java -version
+
+Explanation:
+Displays the installed Java runtime version information.
+
+Options:
+- -version = version: Prints Java version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mvn --version
+
+Explanation:
+Displays the installed Maven version together with Java and environment details.
+
+Options:
+- --version = version: Prints Maven version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./gradlew --version
+
+Explanation:
+Runs the project's Gradle Wrapper and displays the Gradle version and environment information.
+
+Options:
+- --version = version: Prints Gradle version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'python3 --version'
+
+Explanation:
+Runs a login Bash shell as the gitlab-runner user and checks the Python version available to that user.
+
+Options:
+- -u gitlab-runner = --user=gitlab-runner: Runs the command as the gitlab-runner user.
+- -H = --set-home: Sets HOME to the target user's home directory.
+- -l = --login: Starts Bash as a login shell.
+- -c 'python3 --version' = command string: Tells Bash to execute the quoted command string.
+- --version = version: Prints the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'python3 -m pip --version'
+
+Explanation:
+Runs pip through Python as the gitlab-runner user and displays the pip version available to that user.
+
+Options:
+- -u gitlab-runner = --user=gitlab-runner: Runs the command as the gitlab-runner user.
+- -H = --set-home: Sets HOME to the target user's home directory.
+- -l = --login: Starts Bash as a login shell.
+- -c 'python3 -m pip --version' = command string: Tells Bash to execute the quoted command string.
+- -m = module: Runs the specified Python module as a script; here it runs pip.
+- --version = version: Prints the pip version and installation location, then exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'node --version && npm --version'
+
+Explanation:
+Checks the Node.js and npm versions available to the gitlab-runner user. The npm check runs only if the Node.js check succeeds.
+
+Options:
+- -u gitlab-runner = --user=gitlab-runner: Runs the command as the gitlab-runner user.
+- -H = --set-home: Sets HOME to the target user's home directory.
+- -l = --login: Starts Bash as a login shell.
+- -c 'node --version && npm --version' = command string: Tells Bash to execute the quoted command string.
+- --version = version: Prints the version for both node and npm when each command runs.
+- && = AND operator: Runs the second command only if the first command exits successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H bash -lc 'java -version && mvn --version'
+
+Explanation:
+Checks the Java and Maven versions available to the gitlab-runner user. The Maven check runs only if the Java check succeeds.
+
+Options:
+- -u gitlab-runner = --user=gitlab-runner: Runs the command as the gitlab-runner user.
+- -H = --set-home: Sets HOME to the target user's home directory.
+- -l = --login: Starts Bash as a login shell.
+- -c 'java -version && mvn --version' = command string: Tells Bash to execute the quoted command string.
+- -version = version: Prints Java version information and exits.
+- --version = version: Prints Maven version information and exits.
+- && = AND operator: Runs the second command only if the first command exits successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m pip cache dir
+
+Explanation:
+Runs pip through Python and prints the directory that pip uses for its cache.
+
+Options:
+- -m = module: Runs the specified Python module as a script; here it runs pip.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# du -sh .cache/pip || true
+
+Explanation:
+Shows the total size of the .cache/pip directory in a human-readable form. If du fails, true prevents the shell command from returning a failure status.
+
+Options:
+- -s = --summarize (summarize): Displays only a total for the specified path.
+- -h = --human-readable (human-readable): Prints sizes using units such as K, M, and G.
+- || = OR operator: Runs true only if the du command fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm ci
+
+Explanation:
+Installs Node.js dependencies from the lock file using npm's clean-install workflow for automated environments.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm ci --cache .npm --prefer-offline
+
+Explanation:
+Installs Node.js dependencies with npm while storing npm cache data in .npm and preferring cached data when possible.
+
+Options:
+- --cache .npm = cache directory: Uses .npm as npm's cache directory.
+- --prefer-offline = prefer offline data: Bypasses cache staleness checks where possible and uses cached data before requesting remote data.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# du -sh .npm || true
+
+Explanation:
+Shows the total size of the .npm cache directory in a human-readable form. If du fails, true prevents the shell command from returning a failure status.
+
+Options:
+- -s = --summarize (summarize): Displays only a total for the specified path.
+- -h = --human-readable (human-readable): Prints sizes using units such as K, M, and G.
+- || = OR operator: Runs true only if the du command fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the test script defined for the Node.js project through npm.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm install axios
+
+Explanation:
+Installs the axios package in the Node.js project and updates the project's dependency metadata as appropriate.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mvn -Dmaven.repo.local="$CI_PROJECT_DIR/.m2/repository" clean test
+
+Explanation:
+Runs Maven clean and test while using a project-local Maven repository for downloaded dependencies.
+
+Options:
+- -Dmaven.repo.local="$CI_PROJECT_DIR/.m2/repository" = --define maven.repo.local: Defines the Maven user property maven.repo.local and points it to $CI_PROJECT_DIR/.m2/repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# du -sh .m2/repository || true
+
+Explanation:
+Shows the total size of the project-local Maven repository in a human-readable form. If du fails, true prevents the shell command from returning a failure status.
+
+Options:
+- -s = --summarize (summarize): Displays only a total for the specified path.
+- -h = --human-readable (human-readable): Prints sizes using units such as K, M, and G.
+- || = OR operator: Runs true only if the du command fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mvn clean test
+
+Explanation:
+Runs Maven's clean lifecycle phase and then executes the project's tests.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./gradlew --no-daemon test
+
+Explanation:
+Runs the project's Gradle Wrapper, disables use of the Gradle Daemon for this build, and executes the test task.
+
+Options:
+- --no-daemon = no daemon: Runs the build without using the Gradle Daemon.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# du -sh .gradle-user-home || true
+
+Explanation:
+Shows the total size of the project-local Gradle user home directory in a human-readable form. If du fails, true prevents the shell command from returning a failure status.
+
+Options:
+- -s = --summarize (summarize): Displays only a total for the specified path.
+- -h = --human-readable (human-readable): Prints sizes using units such as K, M, and G.
+- || = OR operator: Runs true only if the du command fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./gradlew test
+
+Explanation:
+Runs the test task with the project's Gradle Wrapper.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mvn -Dmaven.repo.local="$CI_PROJECT_DIR/.m2/repository" clean package
+
+Explanation:
+Runs Maven clean and package while using a project-local Maven repository for downloaded dependencies.
+
+Options:
+- -Dmaven.repo.local="$CI_PROJECT_DIR/.m2/repository" = --define maven.repo.local: Defines the Maven user property maven.repo.local and points it to $CI_PROJECT_DIR/.m2/repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Add dependency cache"
+
+Explanation:
+Creates a Git commit from staged changes with the specified commit message.
+
+Options:
+- -m "Add dependency cache" = --message="Add dependency cache" (message): Uses the given text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "cache test" >> README.md
+
+Explanation:
+Appends the text cache test to README.md without replacing the file's existing content.
+
+Options:
+- >> = append redirection operator: Appends standard output to README.md instead of overwriting the file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Stages README.md for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "Test dependency cache"
+
+Explanation:
+Creates a Git commit from staged changes with the specified cache-test commit message.
+
+Options:
+- -m "Test dependency cache" = --message="Test dependency cache" (message): Uses the given text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo find /home/gitlab-runner/cache -type f -name cache.zip -print
+
+Explanation:
+Searches the GitLab Runner cache directory and prints paths of regular files named cache.zip.
+
+Options:
+- -type f = file type predicate: Matches regular files only.
+- -name cache.zip = name predicate: Matches entries whose basename is cache.zip.
+- -print = print action: Writes each matching pathname to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo du -sh /home/gitlab-runner/cache
+
+Explanation:
+Shows the total disk usage of the GitLab Runner cache directory in a human-readable form.
+
+Options:
+- -s = --summarize (summarize): Displays only a total for the specified path.
+- -h = --human-readable (human-readable): Prints sizes using units such as K, M, and G.
+------------------------------------------------------------
