@@ -54,3 +54,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-44-artifact-expiration/` — GitLab CI/CD artifact retention with `artifacts:expire_in`, latest-successful artifact behavior, periodic cleanup, artifact transfer with `dependencies`, and storage policy.
 - `gitlab/session-45-cache/` — GitLab CI/CD Cache, Cache Hit/Miss, cache keys and paths, pull/push policies, Shell Runner local cache, cache invalidation, dependency cache patterns, and troubleshooting.
 - `gitlab/session-46-cache-vs-artifact/` — GitLab CI/CD cache versus artifact, cache hit/miss, cache keys, artifact expiration, `needs:artifacts`, and a practical build/verify lab.
+- `gitlab/session-47-dependency-cache/` — Dependency caching for Python/pip, Node.js/npm, Maven, and Gradle with file-based cache keys, project-local cache paths, Shell Runner behavior, and cache troubleshooting.
