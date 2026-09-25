@@ -1,0 +1,82 @@
+stages:
+  - unit_test
+  - integration_test
+  - coverage
+  - quality_gate
+
+default:
+  tags:
+    - dev-shell
+
+  before_script:
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - mkdir -p reports
+
+unit_test:
+  stage: unit_test
+
+  script:
+    - pytest tests/unit -v --junitxml=reports/unit.xml
+
+  artifacts:
+    when: always
+    expire_in: 7 days
+
+    paths:
+      - reports/unit.xml
+
+    reports:
+      junit: reports/unit.xml
+
+integration_test:
+  stage: integration_test
+
+  script:
+    - pytest tests/integration -v --junitxml=reports/integration.xml
+
+  artifacts:
+    when: always
+    expire_in: 7 days
+
+    paths:
+      - reports/integration.xml
+
+    reports:
+      junit: reports/integration.xml
+
+coverage:
+  stage: coverage
+
+  script:
+    - pytest tests -v --cov=app --cov-report=term-missing --cov-report=xml:reports/coverage.xml --junitxml=reports/all-tests.xml --cov-fail-under=80
+
+  coverage: '/TOTAL.*? (100(?:\.0+)?%|[1-9]?\d(?:\.\d+)?%)$/'
+
+  artifacts:
+    when: always
+    expire_in: 7 days
+
+    paths:
+      - reports/
+
+    reports:
+      junit: reports/all-tests.xml
+
+      coverage_report:
+        coverage_format: cobertura
+        path: reports/coverage.xml
+
+quality_gate:
+  stage: quality_gate
+
+  needs:
+    - unit_test
+    - integration_test
+    - coverage
+
+  script:
+    - echo "All tests and coverage checks passed."
+    - echo "Quality Gate PASSED."
