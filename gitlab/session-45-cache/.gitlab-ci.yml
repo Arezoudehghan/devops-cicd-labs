@@ -1,0 +1,45 @@
+stages:
+  - prepare
+  - test
+
+prepare_cache:
+  stage: prepare
+
+  tags:
+    - dev-shell
+
+  cache:
+    key: "cache-demo-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .ci-cache/
+    policy: pull-push
+
+  script:
+    - mkdir -p .ci-cache/
+    - |
+      if [ -f .ci-cache/dependency.txt ]; then
+        echo "CACHE HIT"
+        echo "Existing cache content:"
+        cat .ci-cache/dependency.txt
+      else
+        echo "CACHE MISS"
+        echo "Creating cache for the first time..."
+        date > .ci-cache/dependency.txt
+      fi
+
+use_cache:
+  stage: test
+
+  tags:
+    - dev-shell
+
+  cache:
+    key: "cache-demo-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .ci-cache/
+    policy: pull
+
+  script:
+    - echo "Checking restored cache..."
+    - test -f .ci-cache/dependency.txt
+    - cat .ci-cache/dependency.txt
