@@ -1,0 +1,66 @@
+stages:
+  - prepare
+  - build
+  - verify
+
+cache_demo:
+  stage: prepare
+
+  tags:
+    - dev-shell
+
+  cache:
+    key: "demo-cache-v1"
+    paths:
+      - .cache/demo/
+    policy: pull-push
+
+  script:
+    - mkdir -p .cache/demo/
+    - |
+      if [ -f .cache/demo/dependency.txt ]; then
+        echo "CACHE HIT"
+      else
+        echo "CACHE MISS"
+        echo "Creating dependency..."
+        sleep 10
+        date > .cache/demo/dependency.txt
+      fi
+    - cat .cache/demo/dependency.txt
+
+
+build_package:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  script:
+    - mkdir -p dist/
+    - echo "Commit SHA: $CI_COMMIT_SHA" > dist/build-info.txt
+    - echo "Pipeline ID: $CI_PIPELINE_ID" >> dist/build-info.txt
+    - tar -czf "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz" dist/build-info.txt
+    - ls -lh dist/
+
+  artifacts:
+    name: "app-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - dist/
+    expire_in: 7 days
+
+
+verify_package:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  needs:
+    - job: build_package
+      artifacts: true
+
+  script:
+    - echo "Checking downloaded artifact..."
+    - ls -lh dist/
+    - test -f "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz"
+    - tar -tzf "dist/app-$CI_COMMIT_SHORT_SHA.tar.gz"
