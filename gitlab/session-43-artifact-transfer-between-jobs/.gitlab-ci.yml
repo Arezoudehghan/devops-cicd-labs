@@ -1,0 +1,58 @@
+stages:
+  - build
+  - test
+  - package
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "===== BUILD ====="
+    - mkdir -p dist
+    - echo "My Application" > dist/app.txt
+    - echo "Commit=$CI_COMMIT_SHORT_SHA" >> dist/app.txt
+    - echo "Pipeline=$CI_PIPELINE_ID" >> dist/app.txt
+    - sha256sum dist/app.txt > dist/app.sha256
+    - ls -lah dist/
+  artifacts:
+    name: "build-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - dist/
+    expire_in: 1 week
+
+test_app:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - job: build_app
+      artifacts: true
+  script:
+    - echo "===== TEST ====="
+    - ls -lah dist/
+    - test -f dist/app.txt
+    - test -f dist/app.sha256
+    - sha256sum -c dist/app.sha256
+    - grep "My Application" dist/app.txt
+    - echo "Artifact test passed."
+
+package_app:
+  stage: package
+  tags:
+    - dev-shell
+  needs:
+    - job: build_app
+      artifacts: true
+    - job: test_app
+      artifacts: false
+  script:
+    - echo "===== PACKAGE ====="
+    - test -f dist/app.txt
+    - tar -czf "release-$CI_COMMIT_SHORT_SHA.tar.gz" dist/
+    - ls -lh "release-$CI_COMMIT_SHORT_SHA.tar.gz"
+  artifacts:
+    name: "release-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - release-*.tar.gz
+    expire_in: 1 week
