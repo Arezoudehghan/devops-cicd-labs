@@ -1,0 +1,428 @@
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current directory to the gitlab-labs directory inside the current user's home directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p ~/gitlab-labs
+
+Explanation:
+Creates the gitlab-labs directory inside the current user's home directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not report an error if the directory already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir artifact-transfer-lab
+
+Explanation:
+Creates a new directory named artifact-transfer-lab in the current directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# cd artifact-transfer-lab
+
+Explanation:
+Changes the current directory to artifact-transfer-lab.
+------------------------------------------------------------
+------------------------------------------------------------
+# git init -b main
+
+Explanation:
+Initializes a new Git repository and names its initial branch main.
+
+Options:
+- -b = --initial-branch=<branch-name> (initial branch): Sets the initial branch name; here the value is main.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Artifact Transfer Lab" > README.md
+
+Explanation:
+Writes the text Artifact Transfer Lab into README.md, replacing any existing file content.
+
+Options:
+- > = output redirection operator: Sends standard output to README.md and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat README.md
+
+Explanation:
+Prints the contents of README.md to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens .gitlab-ci.yml in the Nano text editor.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== BUILD JOB ====="
+
+Explanation:
+Prints a BUILD JOB label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not report an error if dist already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Application build successfully" > dist/app.txt
+
+Explanation:
+Creates dist/app.txt and writes the application build message into it, replacing any previous content.
+
+Options:
+- > = output redirection operator: Sends standard output to dist/app.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Commit=$CI_COMMIT_SHORT_SHA" >> dist/app.txt
+
+Explanation:
+Appends the current GitLab short commit SHA to dist/app.txt. The shell expands $CI_COMMIT_SHORT_SHA before writing it.
+
+Options:
+- >> = append redirection operator: Adds standard output to the end of dist/app.txt without overwriting existing content.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Pipeline=$CI_PIPELINE_ID" >> dist/app.txt
+
+Explanation:
+Appends the current GitLab pipeline ID to dist/app.txt. The shell expands $CI_PIPELINE_ID before writing it.
+
+Options:
+- >> = append redirection operator: Adds standard output to the end of dist/app.txt without overwriting existing content.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Generated files:"
+
+Explanation:
+Prints a label before listing the generated files.
+------------------------------------------------------------
+------------------------------------------------------------
+# ls -lah dist/
+
+Explanation:
+Lists the contents of dist/ in long format, including hidden entries, with human-readable sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes entries whose names start with a dot.
+- -h = --human-readable (human-readable): Shows file sizes in readable units such as K, M, and G when used with -l.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== TEST JOB ====="
+
+Explanation:
+Prints a TEST JOB label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Checking downloaded artifact..."
+
+Explanation:
+Prints a message indicating that the downloaded artifact is about to be checked.
+------------------------------------------------------------
+------------------------------------------------------------
+# ls -lah
+
+Explanation:
+Lists the current directory in long format, including hidden entries, with human-readable sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes entries whose names start with a dot.
+- -h = --human-readable (human-readable): Shows file sizes in readable units such as K, M, and G when used with -l.
+------------------------------------------------------------
+------------------------------------------------------------
+# cat dist/app.txt
+
+Explanation:
+Prints the contents of dist/app.txt to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -f dist/app.txt
+
+Explanation:
+Checks whether dist/app.txt exists and is a regular file. The command returns exit status 0 when the check succeeds.
+
+Options:
+- -f = regular file test: Returns true when the given path exists and is a regular file.
+------------------------------------------------------------
+------------------------------------------------------------
+# grep "Application build successfully" dist/app.txt
+
+Explanation:
+Searches dist/app.txt for the text Application build successfully and returns success when a matching line is found.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Artifact verification successful."
+
+Explanation:
+Prints a message confirming that the artifact verification steps succeeded.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its subdirectories for the next Git commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "ci: add artifact transfer lab"
+
+Explanation:
+Creates a Git commit from the staged changes using the supplied commit message.
+
+Options:
+- -m = --message=<message> (message): Uses ci: add artifact transfer lab as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git remote add origin "$YOUR_GITLAB_REPOSITORY_URL"
+
+Explanation:
+Technical correction: the lesson used angle brackets around the placeholder, which Bash would interpret as input redirection. This corrected form assumes YOUR_GITLAB_REPOSITORY_URL is set to the real GitLab repository URL and adds it as the origin remote.
+------------------------------------------------------------
+------------------------------------------------------------
+# git remote -v
+
+Explanation:
+Shows the configured Git remotes and their fetch and push URLs.
+
+Options:
+- -v = --verbose (verbose): Displays the remote URLs in addition to the remote names.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push -u origin main
+
+Explanation:
+Pushes the local main branch to the origin remote and records the upstream tracking branch.
+
+Options:
+- -u = --set-upstream (set upstream): Sets origin/main as the upstream branch for the local main branch.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Application Binary" > dist/app.txt
+
+Explanation:
+Writes Application Binary into dist/app.txt, replacing any existing content.
+
+Options:
+- > = output redirection operator: Sends standard output to dist/app.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# mkdir -p docs
+
+Explanation:
+Creates the docs directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not report an error if docs already exists.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Application Documentation" > docs/manual.txt
+
+Explanation:
+Writes Application Documentation into docs/manual.txt, replacing any existing content.
+
+Options:
+- > = output redirection operator: Sends standard output to docs/manual.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== RECEIVED FILES ====="
+
+Explanation:
+Prints a label before displaying the files received by the job.
+------------------------------------------------------------
+------------------------------------------------------------
+# find . -maxdepth 2 -type f | sort
+
+Explanation:
+Finds regular files up to two directory levels below the current directory and sorts the resulting paths.
+
+Options:
+- -maxdepth 2 = maximum search depth of 2: Prevents find from descending more than two levels below the starting point.
+- -type f = regular file type: Matches only regular files.
+- | = pipe operator: Sends the output of find to sort as its input.
+------------------------------------------------------------
+------------------------------------------------------------
+# test ! -f docs/manual.txt
+
+Explanation:
+Checks that docs/manual.txt does not exist as a regular file. The command succeeds when the file test is false.
+
+Options:
+- ! = logical NOT expression for test: Reverses the result of the following test expression.
+- -f = regular file test: Returns true when the given path exists and is a regular file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Only application artifact was downloaded."
+
+Explanation:
+Prints a message confirming that only the application artifact was downloaded.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Production Application" > dist/app.txt
+
+Explanation:
+Writes Production Application into dist/app.txt, replacing any existing content.
+
+Options:
+- > = output redirection operator: Sends standard output to dist/app.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Documentation" > docs/manual.txt
+
+Explanation:
+Writes Documentation into docs/manual.txt, replacing any existing content.
+
+Options:
+- > = output redirection operator: Sends standard output to docs/manual.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== TEST APPLICATION ====="
+
+Explanation:
+Prints a TEST APPLICATION label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# grep "Production Application" dist/app.txt
+
+Explanation:
+Searches dist/app.txt for the text Production Application and returns success when a matching line is found.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Artifact received successfully."
+
+Explanation:
+Prints a message confirming that the artifact was received successfully.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "No artifacts required"
+
+Explanation:
+Prints a message indicating that the job does not require artifacts.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker load
+
+Explanation:
+Loads a Docker image or image repository from a tar archive provided through standard input.
+------------------------------------------------------------
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "$CI_PROJECT_DIR"
+
+Explanation:
+Prints the GitLab CI project directory path after the shell expands $CI_PROJECT_DIR.
+------------------------------------------------------------
+------------------------------------------------------------
+# find . -maxdepth 3 -type f
+
+Explanation:
+Finds regular files up to three directory levels below the current directory.
+
+Options:
+- -maxdepth 3 = maximum search depth of 3: Prevents find from descending more than three levels below the starting point.
+- -type f = regular file type: Matches only regular files.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== BUILD ====="
+
+Explanation:
+Prints a BUILD label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "My Application" > dist/app.txt
+
+Explanation:
+Writes My Application into dist/app.txt, replacing any existing content.
+
+Options:
+- > = output redirection operator: Sends standard output to dist/app.txt and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# sha256sum dist/app.txt > dist/app.sha256
+
+Explanation:
+Calculates the SHA-256 checksum of dist/app.txt and writes the checksum record to dist/app.sha256.
+
+Options:
+- > = output redirection operator: Sends the checksum output to dist/app.sha256 and overwrites the file.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== TEST ====="
+
+Explanation:
+Prints a TEST label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# test -f dist/app.sha256
+
+Explanation:
+Checks whether dist/app.sha256 exists and is a regular file. The command returns exit status 0 when the check succeeds.
+
+Options:
+- -f = regular file test: Returns true when the given path exists and is a regular file.
+------------------------------------------------------------
+------------------------------------------------------------
+# sha256sum -c dist/app.sha256
+
+Explanation:
+Reads the checksum stored in dist/app.sha256 and verifies the referenced file against it.
+
+Options:
+- -c = --check (check): Reads checksum records from the specified file and checks them.
+------------------------------------------------------------
+------------------------------------------------------------
+# grep "My Application" dist/app.txt
+
+Explanation:
+Searches dist/app.txt for the text My Application and returns success when a matching line is found.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Artifact test passed."
+
+Explanation:
+Prints a message confirming that the artifact test passed.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "===== PACKAGE ====="
+
+Explanation:
+Prints a PACKAGE label in the CI job log.
+------------------------------------------------------------
+------------------------------------------------------------
+# tar -czf "release-$CI_COMMIT_SHORT_SHA.tar.gz" dist/
+
+Explanation:
+Creates a gzip-compressed tar archive containing dist/. The shell expands $CI_COMMIT_SHORT_SHA inside the archive filename.
+
+Options:
+- -c = --create (create): Creates a new tar archive.
+- -z = --gzip (gzip): Filters the archive through gzip compression.
+- -f = --file=ARCHIVE (file): Uses "release-$CI_COMMIT_SHORT_SHA.tar.gz" as the archive filename.
+------------------------------------------------------------
+------------------------------------------------------------
+# ls -lh "release-$CI_COMMIT_SHORT_SHA.tar.gz"
+
+Explanation:
+Shows detailed information for the generated release archive with a human-readable file size. The shell expands $CI_COMMIT_SHORT_SHA in the filename.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -h = --human-readable (human-readable): Shows the file size in readable units such as K, M, and G when used with -l.
+------------------------------------------------------------
