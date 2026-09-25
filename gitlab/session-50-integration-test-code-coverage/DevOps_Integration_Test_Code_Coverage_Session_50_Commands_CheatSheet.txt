@@ -1,0 +1,252 @@
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Prints the installed Python 3 version and exits.
+
+Options:
+- --version = version: Displays the Python version number.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m venv --help
+
+Explanation:
+Runs the Python venv module and displays its help information. This can also confirm that the venv module is available.
+
+Options:
+- -m = run library module as a script: Runs the venv module through the Python interpreter; Python does not provide an official long form for -m.
+- --help = help: Displays help information for the venv module and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Refreshes the local APT package index using administrative privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt install -y python3 python3-venv python3-pip
+
+Explanation:
+Installs Python 3, the venv package, and pip using APT with administrative privileges.
+
+Options:
+- -y = --assume-yes (assume yes): Automatically answers yes to installation confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m venv .venv
+
+Explanation:
+Creates a Python virtual environment in the .venv directory.
+
+Options:
+- -m = run library module as a script: Runs the venv module through the Python interpreter; Python does not provide an official long form for -m.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# source .venv/bin/activate
+
+Explanation:
+Activates the .venv Python virtual environment in the current shell.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through the active Python interpreter and installs the dependencies listed in requirements.txt.
+
+Options:
+- -m = run library module as a script: Runs the pip module through the Python interpreter; Python does not provide an official long form for -m.
+- -r = --requirement (requirement file): Installs packages from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests/unit -v
+
+Explanation:
+Runs the tests in tests/unit with verbose output.
+
+Options:
+- -v = --verbose (verbose): Increases pytest output verbosity.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests/integration -v
+
+Explanation:
+Runs the tests in tests/integration with verbose output.
+
+Options:
+- -v = --verbose (verbose): Increases pytest output verbosity.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests --cov=app --cov-report=term-missing
+
+Explanation:
+Runs all tests under tests, measures coverage for the app module, and prints missing lines in the terminal coverage report.
+
+Options:
+- --cov=app = coverage source: Measures test coverage for the app module.
+- --cov-report=term-missing = coverage report type: Prints a terminal report that also lists missing line numbers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests --cov=app --cov-report=term-missing --cov-fail-under=80
+
+Explanation:
+Runs all tests, measures coverage for app, shows missing lines, and fails the test command if total coverage is below 80 percent.
+
+Options:
+- --cov=app = coverage source: Measures test coverage for the app module.
+- --cov-report=term-missing = coverage report type: Prints a terminal report that also lists missing line numbers.
+- --cov-fail-under=80 = minimum coverage threshold: Returns a failing exit status when total coverage is lower than 80 percent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests --junitxml=reports/test-report.xml
+
+Explanation:
+Runs all tests under tests and writes the test results as a JUnit XML report to reports/test-report.xml.
+
+Options:
+- --junitxml=reports/test-report.xml = JUnit XML output path: Writes the JUnit test report to reports/test-report.xml; pytest also documents --junit-xml as an alias.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python -m pip install --upgrade pip
+
+Explanation:
+Runs pip through the active Python interpreter and upgrades pip to the newest available version allowed by the package source.
+
+Options:
+- -m = run library module as a script: Runs the pip module through the Python interpreter; Python does not provide an official long form for -m.
+- --upgrade = upgrade: Upgrades the specified package instead of leaving an already installed version unchanged.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Installs the Python packages listed in requirements.txt.
+
+Options:
+- -r = --requirement (requirement file): Installs packages from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p reports
+
+Explanation:
+Creates the reports directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates required parent directories and reports no error when the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests/unit -v --junitxml=reports/unit.xml
+
+Explanation:
+Runs the unit tests with verbose output and writes their results to reports/unit.xml in JUnit XML format.
+
+Options:
+- -v = --verbose (verbose): Increases pytest output verbosity.
+- --junitxml=reports/unit.xml = JUnit XML output path: Writes the JUnit test report to reports/unit.xml; pytest also documents --junit-xml as an alias.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests/integration -v --junitxml=reports/integration.xml
+
+Explanation:
+Runs the integration tests with verbose output and writes their results to reports/integration.xml in JUnit XML format.
+
+Options:
+- -v = --verbose (verbose): Increases pytest output verbosity.
+- --junitxml=reports/integration.xml = JUnit XML output path: Writes the JUnit test report to reports/integration.xml; pytest also documents --junit-xml as an alias.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests -v --cov=app --cov-report=term-missing --cov-report=xml:reports/coverage.xml --junitxml=reports/all-tests.xml --cov-fail-under=80
+
+Explanation:
+Runs all tests with verbose output, measures coverage for app, creates terminal and XML coverage reports, creates a JUnit test report, and fails if coverage is below 80 percent.
+
+Options:
+- -v = --verbose (verbose): Increases pytest output verbosity.
+- --cov=app = coverage source: Measures test coverage for the app module.
+- --cov-report=term-missing = coverage report type: Prints a terminal coverage report that also lists missing line numbers.
+- --cov-report=xml:reports/coverage.xml = XML coverage report and output path: Generates an XML coverage report and writes it to reports/coverage.xml.
+- --junitxml=reports/all-tests.xml = JUnit XML output path: Writes the JUnit test report to reports/all-tests.xml; pytest also documents --junit-xml as an alias.
+- --cov-fail-under=80 = minimum coverage threshold: Returns a failing exit status when total coverage is lower than 80 percent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "All tests and coverage checks passed."
+
+Explanation:
+Prints the message All tests and coverage checks passed. to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Quality Gate PASSED."
+
+Explanation:
+Prints the message Quality Gate PASSED. to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest tests
+
+Explanation:
+Runs all pytest tests found under the tests directory using the default output mode.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its relevant tracked or untracked paths for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "add integration tests and coverage quality gate"
+
+Explanation:
+Creates a Git commit with the provided commit message.
+
+Options:
+- -m = --message (message): Uses "add integration tests and coverage quality gate" as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote upstream.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pip list
+
+Explanation:
+Lists the Python packages installed in the current Python environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pip show pytest-cov
+
+Explanation:
+Displays installed package information for pytest-cov.
+------------------------------------------------------------
