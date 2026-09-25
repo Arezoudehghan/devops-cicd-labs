@@ -1,0 +1,248 @@
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "application build" > dist/app.txt
+
+Explanation:
+Writes the text application build into dist/app.txt. The shell creates the file if needed and replaces any existing contents.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# mkdir -p build
+
+Explanation:
+Creates the build directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "build output" > build/app.txt
+
+Explanation:
+Writes the text build output into build/app.txt. The shell creates the file if needed and replaces any existing contents.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# echo "build"
+
+Explanation:
+Prints the text build to standard output.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the full path of the current working directory.
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists directory contents using the long listing format and includes hidden entries.
+
+Options:
+- -l = long listing format: Show detailed information for each entry.
+- -a = --all (all): Include entries whose names start with a dot.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+# git branch --show-current
+
+Explanation:
+Prints the name of the currently checked-out Git branch.
+
+Options:
+- --show-current = show current branch: Print only the current branch name.
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens .gitlab-ci.yml in the Nano text editor.
+------------------------------------------------------------
+# echo "Creating artifact..."
+
+Explanation:
+Prints the text Creating artifact... to standard output.
+------------------------------------------------------------
+# echo "Project: $CI_PROJECT_NAME" > dist/build-info.txt
+
+Explanation:
+Writes the project name from CI_PROJECT_NAME into dist/build-info.txt. The shell expands the variable before writing the line.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# echo "Branch: $CI_COMMIT_BRANCH" >> dist/build-info.txt
+
+Explanation:
+Appends the current GitLab CI branch name from CI_COMMIT_BRANCH to dist/build-info.txt.
+
+Options:
+- >> = shell append redirection: Append standard output to the file and create the file if it does not exist.
+------------------------------------------------------------
+# echo "Commit: $CI_COMMIT_SHORT_SHA" >> dist/build-info.txt
+
+Explanation:
+Appends the short commit SHA from CI_COMMIT_SHORT_SHA to dist/build-info.txt.
+
+Options:
+- >> = shell append redirection: Append standard output to the file and create the file if it does not exist.
+------------------------------------------------------------
+# echo "Pipeline: $CI_PIPELINE_ID" >> dist/build-info.txt
+
+Explanation:
+Appends the GitLab pipeline ID from CI_PIPELINE_ID to dist/build-info.txt.
+
+Options:
+- >> = shell append redirection: Append standard output to the file and create the file if it does not exist.
+------------------------------------------------------------
+# date >> dist/build-info.txt
+
+Explanation:
+Appends the current system date and time to dist/build-info.txt.
+
+Options:
+- >> = shell append redirection: Append standard output to the file and create the file if it does not exist.
+------------------------------------------------------------
+# cat dist/build-info.txt
+
+Explanation:
+Prints the contents of dist/build-info.txt to standard output.
+------------------------------------------------------------
+# ls -lah dist/
+
+Explanation:
+Lists the contents of dist/ in long format, includes hidden entries, and shows sizes in a human-readable form.
+
+Options:
+- -l = long listing format: Show detailed information for each entry.
+- -a = --all (all): Include entries whose names start with a dot.
+- -h = --human-readable (human-readable): Show file sizes using units such as K, M, and G when used with a size-reporting format such as -l.
+------------------------------------------------------------
+# echo "Checking artifact received from build_artifact..."
+
+Explanation:
+Prints a message indicating that the artifact from build_artifact is being checked.
+------------------------------------------------------------
+# test -f dist/build-info.txt
+
+Explanation:
+Checks whether dist/build-info.txt exists and is a regular file. The command returns a successful exit status when the condition is true.
+
+Options:
+- -f = regular file test: Return true when the path exists and is a regular file.
+------------------------------------------------------------
+# echo "Artifact verification successful."
+
+Explanation:
+Prints the text Artifact verification successful. to standard output.
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in the Git working tree compared with the index.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Adds .gitlab-ci.yml to the Git staging area.
+------------------------------------------------------------
+# git commit -m "lab: test artifact expiration"
+
+Explanation:
+Creates a Git commit from staged changes using the given commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+# echo "# session44 expiration test" >> README.md
+
+Explanation:
+Appends the literal text # session44 expiration test to README.md.
+
+Options:
+- >> = shell append redirection: Append standard output to the file and create the file if it does not exist.
+------------------------------------------------------------
+# git add README.md
+
+Explanation:
+Adds README.md to the Git staging area.
+------------------------------------------------------------
+# git commit -m "test: trigger artifact expiration pipeline"
+
+Explanation:
+Creates a Git commit from staged changes using the given commit message.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# mkdir -p reports
+
+Explanation:
+Creates the reports directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "tests passed" > reports/test.txt
+
+Explanation:
+Writes the text tests passed into reports/test.txt. The shell creates the file if needed and replaces any existing contents.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# mkdir -p release
+
+Explanation:
+Creates the release directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "application package" > release/app.tar.gz
+
+Explanation:
+Writes the text application package into a file named release/app.tar.gz. This command creates a text file with that name; it does not create a real tar.gz archive.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# mkdir -p production-release
+
+Explanation:
+Creates the production-release directory. If it already exists, the command does not fail.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# echo "production release" > production-release/release.txt
+
+Explanation:
+Writes the text production release into production-release/release.txt. The shell creates the file if needed and replaces any existing contents.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
+# echo "app" > dist/app.txt
+
+Explanation:
+Writes the text app into dist/app.txt. The shell creates the file if needed and replaces any existing contents.
+
+Options:
+- > = shell output redirection: Send standard output to the file, overwriting the file if it already exists.
+------------------------------------------------------------
