@@ -1,0 +1,500 @@
+------------------------------------------------------------
+# sudo grep -n "concurrent" /etc/gitlab-runner/config.toml
+
+Explanation:
+Searches the GitLab Runner configuration file for lines containing the word "concurrent" and prints their line numbers. sudo runs the command with elevated privileges.
+
+Options:
+- -n = --line-number (line number): Prefix each matching line with its line number.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the GitLab Runner configuration file in the terminal with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the Nano text editor with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service so configuration changes can take effect.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner
+
+Explanation:
+Shows the current status of the gitlab-runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether the configured GitLab Runner can connect to GitLab and whether its registration is valid.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/gitlab-labs
+
+Explanation:
+Changes the current directory to the gitlab-labs directory inside the current user's home directory. ~ expands to the user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git clone http://192.168.94.90/root/session41-dag-lab.git
+
+Explanation:
+Clones the session41-dag-lab Git repository from the GitLab server into the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd session41-dag-lab
+
+Explanation:
+Changes the current directory to the cloned session41-dag-lab repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens the .gitlab-ci.yml file in the Nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting frontend build..."
+
+Explanation:
+Prints the message Starting frontend build... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 10
+
+Explanation:
+Pauses command execution for 10 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend build completed" > frontend-build.txt
+
+Explanation:
+Writes the text Frontend build completed to frontend-build.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting backend build..."
+
+Explanation:
+Prints the message Starting backend build... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 30
+
+Explanation:
+Pauses command execution for 30 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend build completed" > backend-build.txt
+
+Explanation:
+Writes the text Backend build completed to backend-build.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting lint..."
+
+Explanation:
+Prints the message Starting lint... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 8
+
+Explanation:
+Pauses command execution for 8 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Lint passed" > lint-report.txt
+
+Explanation:
+Writes the text Lint passed to lint-report.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting security scan..."
+
+Explanation:
+Prints the message Starting security scan... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 40
+
+Explanation:
+Pauses command execution for 40 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security scan passed" > security-report.txt
+
+Explanation:
+Writes the text Security scan passed to security-report.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f frontend-build.txt
+
+Explanation:
+Checks whether frontend-build.txt exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = file is a regular file: Tests whether the given path exists and refers to a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat frontend-build.txt
+
+Explanation:
+Prints the contents of frontend-build.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting frontend tests..."
+
+Explanation:
+Prints the message Starting frontend tests... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses command execution for 5 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend tests passed" > frontend-test.txt
+
+Explanation:
+Writes the text Frontend tests passed to frontend-test.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f backend-build.txt
+
+Explanation:
+Checks whether backend-build.txt exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = file is a regular file: Tests whether the given path exists and refers to a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat backend-build.txt
+
+Explanation:
+Prints the contents of backend-build.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting backend tests..."
+
+Explanation:
+Prints the message Starting backend tests... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend tests passed" > backend-test.txt
+
+Explanation:
+Writes the text Backend tests passed to backend-test.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f frontend-test.txt
+
+Explanation:
+Checks whether frontend-test.txt exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = file is a regular file: Tests whether the given path exists and refers to a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat frontend-test.txt
+
+Explanation:
+Prints the contents of frontend-test.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying frontend..."
+
+Explanation:
+Prints the message Deploying frontend... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend deployed" > frontend-deploy.txt
+
+Explanation:
+Writes the text Frontend deployed to frontend-deploy.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f backend-test.txt
+
+Explanation:
+Checks whether backend-test.txt exists and is a regular file. The command returns success when the condition is true.
+
+Options:
+- -f = file is a regular file: Tests whether the given path exists and refers to a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat backend-test.txt
+
+Explanation:
+Prints the contents of backend-test.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying backend..."
+
+Explanation:
+Prints the message Deploying backend... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend deployed" > backend-deploy.txt
+
+Explanation:
+Writes the text Backend deployed to backend-deploy.txt.
+
+Options:
+- > = shell output redirection: Writes standard output to the target file and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Creating final release report..."
+
+Explanation:
+Prints the message Creating final release report... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat frontend-deploy.txt
+
+Explanation:
+Prints the contents of frontend-deploy.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat backend-deploy.txt
+
+Explanation:
+Prints the contents of backend-deploy.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat security-report.txt
+
+Explanation:
+Prints the contents of security-report.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat lint-report.txt
+
+Explanation:
+Prints the contents of lint-report.txt to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Release pipeline completed successfully"
+
+Explanation:
+Prints the message Release pipeline completed successfully to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat .gitlab-ci.yml
+
+Explanation:
+Prints the contents of the .gitlab-ci.yml pipeline configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows unstaged changes in the working tree compared with the index.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "ci: add DAG pipeline lab"
+
+Explanation:
+Creates a Git commit from the staged changes and uses the provided text as the commit message.
+
+Options:
+- -m = --message (message): Supplies the commit message directly on the command line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote named origin.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git log --oneline -5
+
+Explanation:
+Shows the most recent Git commits in a compact one-line format and limits the output to five commits.
+
+Options:
+- --oneline = one-line commit format: Shows each commit in a condensed single-line form.
+- -5 = maximum 5 commits: Limits the displayed history to the five most recent commits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application"
+
+Explanation:
+Prints the message Building application to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running unit tests"
+
+Explanation:
+Prints the message Running unit tests to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running integration tests"
+
+Explanation:
+Prints the message Running integration tests to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running performance tests"
+
+Explanation:
+Prints the message Running performance tests to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+Prints the message Deploying... to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Build"
+
+Explanation:
+Prints the message Build to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Unit test"
+
+Explanation:
+Prints the message Unit test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Security test"
+
+Explanation:
+Prints the message Security test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploy"
+
+Explanation:
+Prints the message Deploy to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Compile"
+
+Explanation:
+Prints the message Compile to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Unit Test"
+
+Explanation:
+Prints the message Unit Test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Integration Test"
+
+Explanation:
+Prints the message Integration Test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Package"
+
+Explanation:
+Prints the message Package to standard output.
+------------------------------------------------------------
