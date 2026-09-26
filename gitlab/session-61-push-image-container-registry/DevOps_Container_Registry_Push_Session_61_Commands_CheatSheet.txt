@@ -1,0 +1,268 @@
+------------------------------------------------------------
+# docker build -t myapp:4f21a6c .
+
+Explanation:
+Builds a Docker image from the current directory and names it myapp with the tag 4f21a6c.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push IMAGE_NAME
+
+Explanation:
+Pushes the specified Docker image to its configured registry. IMAGE_NAME is a placeholder for the full image name.
+
+------------------------------------------------------------
+# docker push registry.example.com/devops/myapp:4f21a6c
+
+Explanation:
+Pushes the myapp image with tag 4f21a6c to the devops/myapp repository on registry.example.com.
+
+------------------------------------------------------------
+# docker build -t registry.example.com/devops/myapp:1.0 .
+
+Explanation:
+Builds an image from the current directory and gives it a registry-qualified name with the tag 1.0.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push registry.example.com/devops/myapp:1.0
+
+Explanation:
+Pushes the 1.0 tag of myapp to the specified private registry repository.
+
+------------------------------------------------------------
+# docker tag myapp:1.0 registry.example.com/devops/myapp:1.0
+
+Explanation:
+Creates a new tag for the local myapp:1.0 image using the full registry and repository name.
+
+------------------------------------------------------------
+# docker login registry.example.com
+
+Explanation:
+Authenticates interactively to registry.example.com. Docker prompts for the required credentials.
+
+------------------------------------------------------------
+# docker login registry.example.com -u admin -p MyPassword123
+
+Explanation:
+Authenticates to the registry with the username and password provided directly on the command line. This syntax is valid, but putting a password in a command argument is not recommended for CI/CD.
+
+Options:
+- -u = --username (username): Specifies the registry username as admin.
+- -p = --password (password): Specifies the registry password as MyPassword123.
+------------------------------------------------------------
+# echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_URL" \
+  --username "$REGISTRY_USER" \
+  --password-stdin
+
+Explanation:
+Sends the registry password through standard input and logs in without placing the password directly in a Docker command argument. The registry URL and username come from shell variables.
+
+Options:
+- | = pipe: Sends the output of echo to the standard input of docker login.
+- --username = username: Uses the value of $REGISTRY_USER as the registry username.
+- --password-stdin = password from standard input: Reads the password from standard input.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
+
+Explanation:
+Logs in to the registry using values stored in shell variables and passes the password through standard input.
+
+Options:
+- | = pipe: Sends the output of echo to the standard input of docker login.
+- -u = --username (username): Uses the value of $REGISTRY_USER as the registry username.
+- --password-stdin = password from standard input: Reads the password from standard input.
+------------------------------------------------------------
+# docker login "$CI_REGISTRY"
+
+Explanation:
+Authenticates interactively to the registry address stored in the GitLab CI_REGISTRY variable.
+
+------------------------------------------------------------
+# docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds an image from the current directory and tags it with the GitLab registry image path plus the short commit SHA.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" \
+  -u "$CI_REGISTRY_USER" \
+  --password-stdin
+
+Explanation:
+Authenticates to the GitLab Container Registry with predefined CI variables and reads the password from standard input.
+
+Options:
+- | = pipe: Sends the output of echo to the standard input of docker login.
+- -u = --username (username): Uses the value of $CI_REGISTRY_USER as the registry username.
+- --password-stdin = password from standard input: Reads the password from standard input.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# docker build -t "$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and names it with the value stored in $IMAGE_TAG.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push "$IMAGE_TAG"
+
+Explanation:
+Pushes the image identified by $IMAGE_TAG to the registry contained in that image name.
+
+------------------------------------------------------------
+# docker logout "$CI_REGISTRY"
+
+Explanation:
+Removes the stored Docker authentication entry for the GitLab registry specified by $CI_REGISTRY.
+
+------------------------------------------------------------
+# docker login Registry-A
+
+Explanation:
+Authenticates interactively to the example registry named Registry-A.
+
+------------------------------------------------------------
+# docker login Registry-B
+
+Explanation:
+Authenticates interactively to the example registry named Registry-B.
+
+------------------------------------------------------------
+# mkdir -p "$DOCKER_CONFIG"
+
+Explanation:
+Creates the Docker configuration directory for the current job if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+# docker image inspect "$IMAGE_TAG"
+
+Explanation:
+Displays detailed metadata for the Docker image identified by $IMAGE_TAG and returns a non-zero exit status if the image cannot be inspected.
+
+------------------------------------------------------------
+# docker image inspect "$IMAGE_TAG" > /dev/null
+
+Explanation:
+Checks whether the image identified by $IMAGE_TAG can be inspected and discards the normal command output.
+
+Options:
+- > = output redirection: Redirects standard output to the specified file.
+- /dev/null = null device: Discards the redirected output.
+------------------------------------------------------------
+# docker logout "$CI_REGISTRY" || true
+
+Explanation:
+Logs out from the GitLab registry and forces the overall shell expression to succeed if the logout command fails.
+
+Options:
+- || = OR operator: Runs true only if docker logout returns a non-zero exit status.
+------------------------------------------------------------
+# rm -rf "$DOCKER_CONFIG"
+
+Explanation:
+Recursively removes the Docker configuration directory stored in $DOCKER_CONFIG.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and does not prompt for confirmation.
+------------------------------------------------------------
+# docker logout "$REGISTRY_URL" || true
+
+Explanation:
+Logs out from the registry stored in $REGISTRY_URL and prevents a logout failure from failing the shell expression.
+
+Options:
+- || = OR operator: Runs true only if docker logout returns a non-zero exit status.
+------------------------------------------------------------
+# docker build -t 192.168.94.90:8085/myapp:4f21a6c .
+
+Explanation:
+Builds an image from the current directory and tags it for the Nexus registry at 192.168.94.90:8085.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push 192.168.94.90:8085/myapp:4f21a6c
+
+Explanation:
+Pushes the myapp:4f21a6c image to the Nexus registry at 192.168.94.90:8085.
+
+------------------------------------------------------------
+# docker pull 192.168.94.90:8085/myapp:4f21a6c
+
+Explanation:
+Pulls the exact myapp:4f21a6c image from the Nexus registry at 192.168.94.90:8085.
+
+------------------------------------------------------------
+# echo "$CI_JOB_TOKEN" | docker login "$CI_REGISTRY" \
+  -u gitlab-ci-token \
+  --password-stdin
+
+Explanation:
+Authenticates to the GitLab Container Registry with CI_JOB_TOKEN and the special gitlab-ci-token username.
+
+Options:
+- | = pipe: Sends the output of echo to the standard input of docker login.
+- -u = --username (username): Sets the registry username to gitlab-ci-token.
+- --password-stdin = password from standard input: Reads the job token from standard input as the password.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# docker push "$IMAGE_TAG" || true
+
+Explanation:
+Attempts to push the image but makes the shell expression succeed even if the push fails. This can hide a failed image push in CI/CD.
+
+Options:
+- || = OR operator: Runs true only if docker push returns a non-zero exit status.
+------------------------------------------------------------
+# curl -v http://192.168.94.90:8085/v2/
+
+Explanation:
+Sends an HTTP request to the registry API endpoint and prints verbose connection and protocol details.
+
+Options:
+- -v = --verbose (verbose): Shows detailed request, response, and connection information.
+------------------------------------------------------------
+# curl -vk https://registry.example.com/v2/
+
+Explanation:
+Sends an HTTPS request to the registry API endpoint with verbose output while allowing an untrusted TLS certificate.
+
+Options:
+- -v = --verbose (verbose): Shows detailed request, response, and connection information.
+- -k = --insecure (insecure): Allows TLS connections without verifying the server certificate.
+------------------------------------------------------------
+# docker build --build-arg HTTP_PROXY="$HTTP_PROXY" --build-arg HTTPS_PROXY="$HTTPS_PROXY" --build-arg NO_PROXY="$NO_PROXY" -t "$IMAGE_TAG" .
+
+Explanation:
+Builds the Docker image while passing the proxy-related variables as Docker build arguments and tags the result with $IMAGE_TAG.
+
+Options:
+- --build-arg = build argument: Passes a build-time variable to the Docker build.
+- HTTP_PROXY="$HTTP_PROXY" = build argument value: Passes the HTTP proxy value.
+- HTTPS_PROXY="$HTTPS_PROXY" = build argument value: Passes the HTTPS proxy value.
+- NO_PROXY="$NO_PROXY" = build argument value: Passes the no-proxy value.
+- -t = --tag (tag): Sets the image name and tag.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images available on the local Docker host.
+
+------------------------------------------------------------
