@@ -1,0 +1,191 @@
+------------------------------------------------------------
+# docker pull nexus:8085/myapp:$IMAGE_TAG
+
+Explanation:
+Pulls the image tagged by $IMAGE_TAG from the registry at nexus:8085.
+------------------------------------------------------------
+# docker stop myapp || true
+
+Explanation:
+Stops the container named myapp. If the stop command fails, the shell runs true so the compound command still succeeds.
+
+Options:
+- || = shell logical OR operator: Runs the command on the right only if the command on the left fails.
+------------------------------------------------------------
+# docker rm myapp || true
+
+Explanation:
+Removes the container named myapp. If the remove command fails, the shell runs true so the compound command still succeeds.
+
+Options:
+- || = shell logical OR operator: Runs the command on the right only if the command on the left fails.
+------------------------------------------------------------
+# docker run -d --name myapp -p 8088:8080 nexus:8085/myapp:$IMAGE_TAG
+
+Explanation:
+Starts a new container named myapp in the background from the image tagged by $IMAGE_TAG. It maps host port 8088 to container port 8080.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp = name: Assigns the container name myapp.
+- -p 8088:8080 = --publish 8088:8080 (publish): Maps host port 8088 to container port 8080.
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the deploy.sh script from the current directory.
+------------------------------------------------------------
+# echo "Pipeline ID = $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID using the CI_PIPELINE_ID predefined variable.
+------------------------------------------------------------
+# echo "Starting deployment..."
+
+Explanation:
+Prints a message showing that the deployment process is starting.
+------------------------------------------------------------
+# date
+
+Explanation:
+Prints the current system date and time.
+------------------------------------------------------------
+# sleep 60
+
+Explanation:
+Pauses the shell for 60 seconds.
+------------------------------------------------------------
+# echo "Deployment finished."
+
+Explanation:
+Prints a message showing that the deployment process has finished.
+------------------------------------------------------------
+# echo "Starting production deployment..."
+
+Explanation:
+Prints a message showing that the production deployment is starting.
+------------------------------------------------------------
+# echo "change-1" >> test.txt
+
+Explanation:
+Appends the text change-1 to test.txt.
+
+Options:
+- >> = shell append redirection operator: Appends command output to the file without overwriting existing content.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory for the next Git commit.
+------------------------------------------------------------
+# git commit -m "test concurrent deployment 1"
+
+Explanation:
+Creates a Git commit with the message test concurrent deployment 1.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote branch.
+------------------------------------------------------------
+# echo "change-2" >> test.txt
+
+Explanation:
+Appends the text change-2 to test.txt.
+
+Options:
+- >> = shell append redirection operator: Appends command output to the file without overwriting existing content.
+------------------------------------------------------------
+# git commit -m "test concurrent deployment 2"
+
+Explanation:
+Creates a Git commit with the message test concurrent deployment 2.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+# ./deploy-staging.sh
+
+Explanation:
+Runs the deploy-staging.sh script from the current directory.
+------------------------------------------------------------
+# ./deploy-production.sh
+
+Explanation:
+Runs the deploy-production.sh script from the current directory.
+------------------------------------------------------------
+# echo "Deploying pipeline $CI_PIPELINE_ID"
+
+Explanation:
+Prints a deployment message containing the current GitLab pipeline ID.
+------------------------------------------------------------
+# echo "Commit $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the short commit SHA provided by GitLab in CI_COMMIT_SHORT_SHA.
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "
+        set -e
+
+        docker pull nexus:8085/myapp:$CI_COMMIT_SHORT_SHA
+
+        docker stop myapp || true
+        docker rm myapp || true
+
+        docker run -d \
+          --name myapp \
+          -p 8088:8080 \
+          nexus:8085/myapp:$CI_COMMIT_SHORT_SHA
+      "
+
+Explanation:
+Connects to 192.168.94.91 as deploy and runs the quoted deployment commands on the remote server. The remote script pulls the commit-specific image, replaces the existing myapp container, and starts the new container.
+
+Options:
+- -e = errexit behavior for set: Makes the shell exit when an unhandled command fails.
+- || = shell logical OR operator: Runs true only if the docker stop or docker rm command fails.
+- -d = --detach (detach): Runs the new container in the background.
+- --name myapp = name: Assigns the container name myapp.
+- -p 8088:8080 = --publish 8088:8080 (publish): Maps host port 8088 to container port 8080.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+# set -e
+
+Explanation:
+Enables shell errexit behavior so the script exits when an unhandled command fails.
+
+Options:
+- -e = errexit behavior: Exits when a command returns a non-zero status, subject to normal shell exceptions.
+------------------------------------------------------------
+# docker pull nexus:8085/myapp:$CI_COMMIT_SHORT_SHA
+
+Explanation:
+Pulls the application image tagged with the current GitLab short commit SHA from nexus:8085.
+------------------------------------------------------------
+# docker run -d \
+          --name myapp \
+          -p 8088:8080 \
+          nexus:8085/myapp:$CI_COMMIT_SHORT_SHA
+
+Explanation:
+Starts the commit-specific application image as a background container named myapp. It maps host port 8088 to container port 8080.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp = name: Assigns the container name myapp.
+- -p 8088:8080 = --publish 8088:8080 (publish): Maps host port 8088 to container port 8080.
+- \ = shell line continuation: Continues the same command on the next physical line.
+------------------------------------------------------------
+# echo "Pipeline $CI_PIPELINE_ID acquired production lock"
+
+Explanation:
+Prints a message showing that the current GitLab pipeline has acquired the production deployment lock.
+------------------------------------------------------------
+# echo "Pipeline $CI_PIPELINE_ID releases production lock"
+
+Explanation:
+Prints a message showing that the current GitLab pipeline is releasing the production deployment lock.
+------------------------------------------------------------
