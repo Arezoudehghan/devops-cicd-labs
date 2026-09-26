@@ -58,3 +58,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-49-quality-gate-lint-unit-test/` — GitLab CI/CD quality gates with Ruff linting, pytest unit tests, exit-code failure handling, `allow_failure`, and build blocking.
 - `gitlab/session-60-professional-image-tagging/` — Professional Docker image tagging with full/short commit SHA, branch slug tags, semantic release tags, `latest`, immutable-tag strategy, and build-once/promote-many workflow.
 - `gitlab/session-63-docker-image-lifecycle-cleanup/` — Docker image lifecycle, Snapshot/Release/Production retention, Runner image pruning, Nexus Cleanup Policy, unused Docker manifest/image cleanup, and Blob Store compaction.
+- `gitlab/session-61-push-image-container-registry/` — Build and verify a Docker image, authenticate to a container registry with CI/CD variables, push an immutable commit-SHA tag, isolate Docker credentials with `DOCKER_CONFIG`, and clean up after the job.
