@@ -1,0 +1,59 @@
+stages:
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+
+deploy_development:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Environment=$CI_ENVIRONMENT_NAME"
+    - echo "URL=$CI_ENVIRONMENT_URL"
+    - echo "Port=$DEPLOY_PORT"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-development 2>/dev/null || true
+        docker run -d \
+          --name myapp-development \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: development
+    url: http://192.168.94.91:8088
+    deployment_tier: development
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Environment=$CI_ENVIRONMENT_NAME"
+    - echo "URL=$CI_ENVIRONMENT_URL"
+    - echo "Port=$DEPLOY_PORT"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-production 2>/dev/null || true
+        docker run -d \
+          --name myapp-production \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: production
+    url: http://192.168.94.91:8089
+    deployment_tier: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  allow_failure: false
