@@ -1,0 +1,493 @@
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:5000 \
+  nexus.example.local:8085/myapp:abc123
+
+Explanation:
+Starts the application container in detached mode, names it myapp, and publishes host port 8088 to container port 5000.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name myapp = container name: Assign the name myapp to the container.
+- -p = --publish (publish): Map host port 8088 to container port 5000.
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+# curl http://localhost:5000/health
+
+Explanation:
+Sends an HTTP request to the application's health endpoint on local port 5000.
+------------------------------------------------------------
+# curl -i http://localhost:8088/health
+
+Explanation:
+Requests the health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Include protocol response headers in the output.
+------------------------------------------------------------
+# curl -f http://localhost:8088/health
+
+Explanation:
+Requests the health endpoint and returns a non-zero exit status for HTTP server errors.
+
+Options:
+- -f = --fail (fail): Fail on HTTP response codes of 400 or higher without printing the response body.
+------------------------------------------------------------
+# curl -fsS http://localhost:8088/health
+
+Explanation:
+Checks the health endpoint quietly while still showing an error message if the request fails.
+
+Options:
+- -f = --fail (fail): Return a non-zero exit status for HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide the progress meter and error messages.
+- -S = --show-error (show error): Show an error message when used together with --silent.
+------------------------------------------------------------
+# curl \
+  --connect-timeout 3 \
+  --max-time 5 \
+  -fsS \
+  http://localhost:8088/health
+
+Explanation:
+Checks the health endpoint with separate connection and total request time limits.
+
+Options:
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for the entire transfer.
+- -f = --fail (fail): Return a non-zero exit status for HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide the progress meter and error messages.
+- -S = --show-error (show error): Show an error message when used together with --silent.
+------------------------------------------------------------
+# curl http://localhost:8088/health
+
+Explanation:
+Sends an HTTP request to the deployed application's health endpoint on local host port 8088.
+------------------------------------------------------------
+# for i in $(seq 1 10); do
+  if curl -fsS http://localhost:8088/health; then
+    echo "Application is healthy"
+    exit 0
+  fi
+
+  echo "Waiting for application..."
+  sleep 3
+done
+
+echo "Application healthcheck failed"
+exit 1
+
+Explanation:
+Retries the health request up to 10 times, waiting 3 seconds between failed attempts. It exits successfully when the application becomes healthy and exits with failure after all retries are exhausted.
+
+Options:
+- $(seq 1 10) = command substitution: Runs seq and substitutes the generated numbers 1 through 10 into the loop.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+- exit 0 = success exit status: End the script successfully.
+- exit 1 = failure exit status: End the script with an error.
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN python -m pip install \
+    --no-cache-dir \
+    -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+HEALTHCHECK \
+    --interval=10s \
+    --timeout=3s \
+    --start-period=10s \
+    --retries=3 \
+    CMD curl -fsS http://localhost:5000/health || exit 1
+
+CMD ["python", "app.py"]
+
+Explanation:
+Technical correction: the earlier Dockerfile healthcheck used curl without installing it. This corrected Dockerfile installs curl, installs Python dependencies, defines the healthcheck, and starts the Flask application.
+
+Options:
+- -y = --yes / --assume-yes (assume yes): Automatically answer yes to apt-get prompts.
+- --no-install-recommends = do not install recommended packages: Install only required packages and explicit dependencies.
+- && = AND operator: Run the next shell command only if the previous command succeeds.
+- --no-cache-dir = no cache directory: Disable the pip download cache.
+- -r = --requirement (requirement file): Install packages listed in requirements.txt.
+- --interval=10s = healthcheck interval: Run the Docker healthcheck every 10 seconds.
+- --timeout=3s = healthcheck timeout: Fail a healthcheck attempt if it runs longer than 3 seconds.
+- --start-period=10s = startup grace period: Give the container 10 seconds before failed checks count toward unhealthy status.
+- --retries=3 = retry count: Mark the container unhealthy after 3 consecutive failed checks.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+- || = OR operator: Run exit 1 only when the curl command fails.
+------------------------------------------------------------
+# docker inspect myapp
+
+Explanation:
+Shows detailed Docker metadata and runtime information for the container named myapp.
+------------------------------------------------------------
+# docker inspect \
+  --format='{{.State.Health.Status}}' \
+  myapp
+
+Explanation:
+Prints only the Docker health status of the myapp container.
+
+Options:
+- --format='{{.State.Health.Status}}' = Go template format: Select only the container health status field from docker inspect output.
+------------------------------------------------------------
+# docker inspect \
+  --format='{{json .State.Health}}' \
+  myapp
+
+Explanation:
+Prints the complete Docker health information for myapp as JSON-formatted data.
+
+Options:
+- --format='{{json .State.Health}}' = Go template format: Convert the State.Health object to JSON for compact inspection.
+------------------------------------------------------------
+# services:
+
+  app:
+    image: nexus.example.local:8085/myapp:${APP_VERSION}
+
+    container_name: myapp
+
+    ports:
+      - "8088:5000"
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:5000/health
+
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+    restart: unless-stopped
+
+Explanation:
+Defines the application service, port mapping, Docker healthcheck, and restart policy in Docker Compose.
+
+Options:
+- ${APP_VERSION} = variable expansion: Insert the APP_VERSION value into the image tag.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+------------------------------------------------------------
+# curl -fsS http://localhost:8088/
+
+Explanation:
+Checks the application's main endpoint quietly and fails if the HTTP response is an error.
+
+Options:
+- -f = --fail (fail): Return a non-zero exit status for HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide the progress meter and error messages.
+- -S = --show-error (show error): Show an error message when used together with --silent.
+------------------------------------------------------------
+# #!/usr/bin/env bash
+
+set -e
+
+URL="http://localhost:8088/health"
+MAX_RETRIES=10
+SLEEP_SECONDS=3
+
+for i in $(seq 1 "$MAX_RETRIES"); do
+
+  echo "Healthcheck attempt: $i/$MAX_RETRIES"
+
+  if curl \
+      --connect-timeout 3 \
+      --max-time 5 \
+      -fsS \
+      "$URL"; then
+
+    echo
+    echo "Application is healthy"
+    exit 0
+
+  fi
+
+  sleep "$SLEEP_SECONDS"
+
+done
+
+echo "Application healthcheck failed"
+exit 1
+
+Explanation:
+Runs the reusable healthcheck script from the lesson. It retries the health URL, waits between attempts, and returns success only when the application responds successfully.
+
+Options:
+- #!/usr/bin/env bash = shebang: Run the script with Bash located through env.
+- set -e = errexit option: Exit when an unhandled command returns a non-zero status.
+- $(seq 1 "$MAX_RETRIES") = command substitution: Generate the loop attempt numbers.
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for the entire curl operation.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+- exit 0 = success exit status: End the script successfully.
+- exit 1 = failure exit status: End the script with an error.
+------------------------------------------------------------
+# chmod +x scripts/healthcheck.sh
+
+Explanation:
+Adds execute permission to the healthcheck script so it can be run directly.
+
+Options:
+- +x = add execute permission: Add the executable bit to the target file.
+------------------------------------------------------------
+# #!/usr/bin/env bash
+
+set -e
+
+BASE_URL="http://localhost:8088"
+
+echo "Testing health endpoint..."
+curl \
+  --connect-timeout 3 \
+  --max-time 5 \
+  -fsS \
+  "$BASE_URL/health"
+
+echo
+echo "Testing main endpoint..."
+curl \
+  --connect-timeout 3 \
+  --max-time 5 \
+  -fsS \
+  "$BASE_URL/"
+
+echo
+echo "Smoke test passed"
+
+Explanation:
+Runs the reusable smoke test script from the lesson. It checks both the health endpoint and the main endpoint and stops if either request fails.
+
+Options:
+- #!/usr/bin/env bash = shebang: Run the script with Bash located through env.
+- set -e = errexit option: Exit when an unhandled command returns a non-zero status.
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for the entire curl operation.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+------------------------------------------------------------
+# set -e
+
+Explanation:
+Makes a Bash script exit when an unhandled command returns a non-zero status.
+
+Options:
+- -e = errexit: Exit immediately on an unhandled command failure, subject to Bash's normal errexit rules.
+------------------------------------------------------------
+# stages:
+  - deploy
+  - verify
+
+Explanation:
+Defines the GitLab CI/CD stage order used in the lesson, with deployment before verification.
+------------------------------------------------------------
+# deploy:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  script:
+    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose pull"
+    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose up -d"
+
+Explanation:
+Defines the GitLab deploy job that connects to DEV-2, pulls the Compose image, and starts the application in detached mode.
+
+Options:
+- && = AND operator: Run the Docker Compose command only if changing to /opt/myapp succeeds.
+- -d = --detach (detach): Start Compose services in the background.
+------------------------------------------------------------
+# healthcheck:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  script:
+    - |
+      for i in $(seq 1 10); do
+        if ssh deploy@192.168.94.91 \
+          "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"; then
+          echo "Application is healthy"
+          exit 0
+        fi
+
+        echo "Waiting for application..."
+        sleep 3
+      done
+
+      echo "Application healthcheck failed"
+      exit 1
+
+Explanation:
+Defines the GitLab verification job that retries the healthcheck through SSH on DEV-2. The job succeeds on a healthy response and fails after all retries.
+
+Options:
+- | = YAML literal block scalar: Preserve the following multi-line shell script as one script item.
+- $(seq 1 10) = command substitution: Generate the retry attempt numbers.
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for the entire curl operation.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+- exit 0 = success exit status: End the job script successfully.
+- exit 1 = failure exit status: End the job script with an error.
+------------------------------------------------------------
+# smoke_test:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  needs:
+    - healthcheck
+
+  script:
+    - ssh deploy@192.168.94.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/"
+    - ssh deploy@192.168.94.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"
+
+Explanation:
+Defines a smoke test job that waits for the healthcheck job and then tests the main and health endpoints on DEV-2 through SSH.
+
+Options:
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish each connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for each curl operation.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+------------------------------------------------------------
+# curl -fsS http://192.168.94.91:8088/health
+
+Explanation:
+Runs an external health request from DEV-1 to the deployed application on DEV-2.
+
+Options:
+- -f = --fail (fail): Return a non-zero exit status for HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide the progress meter and error messages.
+- -S = --show-error (show error): Show an error message when used together with --silent.
+------------------------------------------------------------
+# smoke_test:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  needs:
+    - healthcheck
+
+  script:
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/health
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/
+
+Explanation:
+Defines the external smoke test job that checks DEV-2 directly from the GitLab Runner on DEV-1.
+
+Options:
+- --connect-timeout 3 = connection timeout: Allow up to 3 seconds to establish each connection.
+- --max-time 5 = maximum time: Allow up to 5 seconds for each curl operation.
+- -f = --fail (fail): Make curl fail on HTTP response codes of 400 or higher.
+- -s = --silent (silent): Hide curl's progress meter and error messages.
+- -S = --show-error (show error): Show curl errors even in silent mode.
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including stopped containers.
+
+Options:
+- -a = --all (all): Show running and stopped containers.
+------------------------------------------------------------
+# curl -f http://192.168.94.91:8088/health
+
+Explanation:
+Checks the deployed health endpoint on DEV-2 from another host and fails on an HTTP error response.
+
+Options:
+- -f = --fail (fail): Return a non-zero exit status for HTTP response codes of 400 or higher.
+------------------------------------------------------------
+# ports:
+  - "8089:5000"
+
+Explanation:
+Defines the Compose port mapping example where host port 8089 is published to container port 5000.
+------------------------------------------------------------
+# @app.route("/health")
+def health():
+    return "ok", 200
+
+Explanation:
+Defines a minimal Flask health endpoint that always returns the text ok with HTTP status 200.
+------------------------------------------------------------
+# docker compose pull
+
+Explanation:
+Pulls the images required by the current Docker Compose configuration.
+------------------------------------------------------------
+# docker compose up -d
+
+Explanation:
+Creates or starts the services defined by Docker Compose in detached mode.
+
+Options:
+- -d = --detach (detach): Run the Compose services in the background.
+------------------------------------------------------------
+# docker logs myapp
+
+Explanation:
+Displays the standard output and standard error logs from the myapp container.
+------------------------------------------------------------
+# curl -v http://localhost:8088/health
+
+Explanation:
+Requests the health endpoint and prints verbose connection and protocol details for troubleshooting.
+
+Options:
+- -v = --verbose (verbose): Show detailed connection, request, and response information.
+------------------------------------------------------------
+# ss -lntp
+
+Explanation:
+Shows listening TCP sockets with numeric addresses and process information.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Do not resolve service or host names.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket when permissions allow.
+------------------------------------------------------------
+# docker port myapp
+
+Explanation:
+Shows the host port mappings published for the myapp container.
+------------------------------------------------------------
