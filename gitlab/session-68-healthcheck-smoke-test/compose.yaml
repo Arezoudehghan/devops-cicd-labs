@@ -1,0 +1,23 @@
+services:
+
+  app:
+    image: nexus.example.local:8085/myapp:${APP_VERSION}
+
+    container_name: myapp
+
+    ports:
+      - "8088:5000"
+
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:5000/health
+
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+    restart: unless-stopped
