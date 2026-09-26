@@ -1,0 +1,77 @@
+stages:
+  - publish
+  - verify
+
+variables:
+  NEXUS_REGISTRY: "192.168.94.90:8085"
+  DOCKER_CONFIG: "$CI_PROJECT_DIR/.docker"
+
+publish_image:
+  stage: publish
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - mkdir -p "$DOCKER_CONFIG"
+    - test -n "$NEXUS_USERNAME"
+    - test -n "$NEXUS_PASSWORD"
+    - printf '%s' "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" --username "$NEXUS_USERNAME" --password-stdin
+
+  script:
+    - |
+      set -eu
+
+      IMAGE="${NEXUS_REGISTRY}/${CI_PROJECT_PATH_SLUG}"
+      COMMIT_IMAGE="${IMAGE}:${CI_COMMIT_SHORT_SHA}"
+      BRANCH_IMAGE="${IMAGE}:${CI_COMMIT_REF_SLUG}"
+
+      echo "Building: ${COMMIT_IMAGE}"
+
+      docker build \
+        -t "$COMMIT_IMAGE" \
+        .
+
+      docker tag \
+        "$COMMIT_IMAGE" \
+        "$BRANCH_IMAGE"
+
+      docker push "$COMMIT_IMAGE"
+      docker push "$BRANCH_IMAGE"
+
+  after_script:
+    - docker logout "$NEXUS_REGISTRY" || true
+    - rm -rf "$DOCKER_CONFIG"
+
+verify_pull:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  needs:
+    - publish_image
+
+  before_script:
+    - mkdir -p "$DOCKER_CONFIG"
+    - test -n "$NEXUS_USERNAME"
+    - test -n "$NEXUS_PASSWORD"
+    - printf '%s' "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" --username "$NEXUS_USERNAME" --password-stdin
+
+  script:
+    - |
+      set -eu
+
+      IMAGE="${NEXUS_REGISTRY}/${CI_PROJECT_PATH_SLUG}:${CI_COMMIT_SHORT_SHA}"
+
+      echo "Pulling: ${IMAGE}"
+
+      docker pull "$IMAGE"
+
+      docker image inspect \
+        "$IMAGE" \
+        --format '{{.RepoTags}}'
+
+  after_script:
+    - docker logout "$NEXUS_REGISTRY" || true
+    - rm -rf "$DOCKER_CONFIG"
