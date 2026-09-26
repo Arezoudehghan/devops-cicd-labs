@@ -1,0 +1,23 @@
+name: cicd-app
+
+services:
+  app:
+    image: "${NEXUS_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG:?IMAGE_TAG must be set}"
+
+    restart: unless-stopped
+
+    ports:
+      - "${APP_PORT:-8088}:5000"
+
+    env_file:
+      - ./app.env
+
+    environment:
+      APP_VERSION: "${IMAGE_TAG}"
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
