@@ -1,0 +1,441 @@
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including stopped containers.
+
+Options:
+- -a = --all (all): Show all containers, not only running containers.
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Shows the user ID, group ID, and group memberships for the deploy user.
+
+------------------------------------------------------------
+# getent group docker
+
+Explanation:
+Looks up the docker group from the system account databases configured through NSS.
+
+------------------------------------------------------------
+# docker login 192.168.94.90:8085
+
+Explanation:
+Authenticates Docker to the Nexus Docker registry at 192.168.94.90:8085.
+
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" | docker login 192.168.94.90:8085 --username "$NEXUS_USER" --password-stdin
+
+Explanation:
+Sends the Nexus password through standard input and logs Docker in without placing the password directly in the command arguments.
+
+Options:
+- %s = printf string format: Print the supplied password exactly as a string without adding a newline.
+- | = shell pipe operator: Send the output of printf to the standard input of docker login.
+- --username = username: Use the value of $NEXUS_USER as the registry username.
+- --password-stdin = password from standard input: Read the registry password from standard input.
+------------------------------------------------------------
+# docker login -u user -p password
+
+Explanation:
+Logs Docker in to a registry using a username and password supplied directly on the command line.
+
+Options:
+- -u = --username (username): Set the registry username to user.
+- -p = --password (password): Set the registry password to password.
+------------------------------------------------------------
+# docker pull 192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Downloads the myapp image with tag 4f21a6c3 from the Nexus Docker registry.
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images stored on the local host.
+
+------------------------------------------------------------
+# docker stop myapp
+
+Explanation:
+Gracefully stops the running container named myapp.
+
+------------------------------------------------------------
+# docker kill myapp
+
+Explanation:
+Immediately sends Docker's default kill signal to the container named myapp.
+
+------------------------------------------------------------
+# docker rm myapp
+
+Explanation:
+Removes the stopped container named myapp.
+
+------------------------------------------------------------
+# docker rm -f myapp
+
+Explanation:
+Force-removes the container named myapp, including when it is running.
+
+Options:
+- -f = --force (force): Force removal of a running container by sending it SIGKILL first.
+------------------------------------------------------------
+# docker stop myapp || true
+
+Explanation:
+Tries to stop myapp and prevents the shell command from failing if docker stop returns a nonzero exit status.
+
+Options:
+- || = shell OR operator: Run true only if docker stop myapp fails.
+------------------------------------------------------------
+# docker rm myapp || true
+
+Explanation:
+Tries to remove myapp and prevents the shell command from failing if docker rm returns a nonzero exit status.
+
+Options:
+- || = shell OR operator: Run true only if docker rm myapp fails.
+------------------------------------------------------------
+# if docker ps -a --format '{{.Names}}' | grep -qx myapp; then
+  docker stop myapp || true
+  docker rm myapp
+fi
+
+Explanation:
+Checks whether a container named exactly myapp exists, then stops and removes it when found.
+
+Options:
+- -a = --all (all): Include stopped containers in docker ps output.
+- --format = output format: Format docker ps output with the Go template {{.Names}} so only container names are printed.
+- | = shell pipe operator: Send the container-name list to grep.
+- -q = --quiet / --silent (quiet): Make grep return only an exit status without normal output.
+- -x = --line-regexp (line regexp): Match only a complete line equal to myapp.
+- || = shell OR operator: Run true only if docker stop myapp fails.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:5000 \
+  192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Creates and starts myapp in the background from image tag 4f21a6c3 and publishes host port 8088 to container port 5000.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker logs myapp
+
+Explanation:
+Displays logs produced by the container named myapp.
+
+------------------------------------------------------------
+# docker restart myapp
+
+Explanation:
+Restarts the container named myapp.
+
+------------------------------------------------------------
+# ss -lntp | grep ':8088'
+
+Explanation:
+Shows listening TCP sockets and filters the output for port 8088.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Show numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket when permissions allow it.
+- | = shell pipe operator: Send ss output to grep.
+------------------------------------------------------------
+# docker ps --format 'table {{.Names}}\t{{.Ports}}'
+
+Explanation:
+Lists running containers in a table containing only container names and published ports.
+
+Options:
+- --format = output format: Format docker ps output using the supplied Go template.
+- \t = tab escape inside the template: Insert a tab between the Names and Ports columns.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:5000 \
+  -e APP_ENV=production \
+  192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Runs myapp in the background, publishes port 8088 to 5000, and sets APP_ENV=production inside the container.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e = --env (environment): Set APP_ENV=production inside the container.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:5000 \
+  -e APP_ENV=production \
+  -e LOG_LEVEL=info \
+  -e APP_VERSION=4f21a6c3 \
+  192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Runs myapp with three environment variables and publishes host port 8088 to container port 5000.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e = --env (environment): Set an environment variable inside the container; this command sets APP_ENV, LOG_LEVEL, and APP_VERSION.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker exec myapp env
+
+Explanation:
+Runs env inside the running myapp container to display its environment variables.
+
+------------------------------------------------------------
+# docker exec myapp printenv APP_ENV
+
+Explanation:
+Runs printenv inside myapp and prints the value of APP_ENV.
+
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  --restart unless-stopped \
+  -p 8088:5000 \
+  -e APP_ENV=production \
+  192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Runs myapp in the background with a restart policy, port publishing, and the production environment setting.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- --restart = restart policy: Use unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e = --env (environment): Set APP_ENV=production inside the container.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  --restart unless-stopped \
+  -p 8088:5000 \
+  -e APP_ENV=production \
+  -e APP_VERSION=4f21a6c3 \
+  192.168.94.90:8085/myapp:4f21a6c3
+
+Explanation:
+Runs myapp with restart policy, port publishing, production environment, and a version value matching image tag 4f21a6c3.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- --restart = restart policy: Use unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e = --env (environment): Set APP_ENV=production and APP_VERSION=4f21a6c3 inside the container.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# curl -i http://127.0.0.1:8088/
+
+Explanation:
+Sends an HTTP request to the application on local port 8088 and includes response headers in the output.
+
+Options:
+- -i = --include (include): Include HTTP response headers in the output.
+------------------------------------------------------------
+# curl -fsS http://127.0.0.1:8088/health
+
+Explanation:
+Checks the local health endpoint and returns a failure exit status for HTTP errors while keeping normal output quiet.
+
+Options:
+- -f = --fail (fail): Return a nonzero exit status for HTTP response codes 400 and above without printing the response body.
+- -s = --silent (silent): Suppress the progress meter and normal error messages.
+- -S = --show-error (show error): Show an error message when -s is also used and the request fails.
+------------------------------------------------------------
+# echo $?
+
+Explanation:
+Prints the exit status of the most recently completed foreground pipeline.
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "
+        set -e
+
+        docker pull 192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+
+        docker stop $CI_PROJECT_NAME || true
+        docker rm $CI_PROJECT_NAME || true
+
+        docker run -d \
+          --name $CI_PROJECT_NAME \
+          --restart unless-stopped \
+          -p 8088:5000 \
+          -e APP_ENV=production \
+          -e APP_VERSION=$CI_COMMIT_SHORT_SHA \
+          192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+      "
+
+Explanation:
+Technical correction: the earlier CI/CD example mixed && with || true in a way that made failure handling unclear, so this corrected remote command uses set -e and separate deployment steps. It pulls the new image first, then stops and removes the old container and starts the new version on DEV-2.
+
+Options:
+- -e in set -e = errexit shell option: Exit the remote shell when an unhandled command fails.
+- || = shell OR operator: Run true when docker stop or docker rm fails so a missing old container does not abort the deployment.
+- -d = --detach (detach): Run the new container in the background.
+- --name = container name: Use $CI_PROJECT_NAME as the container name.
+- --restart = restart policy: Use unless-stopped as the restart policy.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e in docker run = --env (environment): Set APP_ENV and APP_VERSION inside the container.
+- \ = shell line continuation: Continue the docker run command on the next line.
+------------------------------------------------------------
+# set -e
+
+Explanation:
+Enables Bash errexit behavior so an unhandled command failure can stop the script.
+
+Options:
+- -e = errexit shell option: Exit when a command fails, subject to Bash's documented exceptions.
+------------------------------------------------------------
+# docker inspect myapp --format '{{.State.Status}}'
+
+Explanation:
+Reads the state of myapp and prints only its container status, such as running or exited.
+
+Options:
+- --format = output format: Format docker inspect output using the Go template {{.State.Status}}.
+------------------------------------------------------------
+# sleep 5
+
+Explanation:
+Pauses the shell for 5 seconds.
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "
+        set -e
+
+        IMAGE='192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA'
+        CONTAINER='$CI_PROJECT_NAME'
+
+        echo 'Pulling new image...'
+        docker pull \$IMAGE
+
+        echo 'Stopping old container...'
+        docker stop \$CONTAINER || true
+
+        echo 'Removing old container...'
+        docker rm \$CONTAINER || true
+
+        echo 'Starting new container...'
+        docker run -d \
+          --name \$CONTAINER \
+          --restart unless-stopped \
+          -p 8088:5000 \
+          -e APP_ENV=production \
+          -e APP_VERSION=$CI_COMMIT_SHORT_SHA \
+          \$IMAGE
+
+        echo 'Checking container...'
+        docker ps --filter name=\$CONTAINER
+      "
+
+Explanation:
+Runs the fuller deployment script on DEV-2 through SSH using remote IMAGE and CONTAINER variables. It pulls the new image, replaces the old container, starts the new container, and then displays the matching running container.
+
+Options:
+- -e in set -e = errexit shell option: Exit the remote shell when an unhandled command fails.
+- || = shell OR operator: Run true when docker stop or docker rm fails so the deployment can continue when no old container exists.
+- -d = --detach (detach): Run the new container in the background.
+- --name = container name: Use the remote $CONTAINER variable as the container name.
+- --restart = restart policy: Use unless-stopped as the restart policy.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e in docker run = --env (environment): Set APP_ENV and APP_VERSION inside the new container.
+- --filter = filter output: Show docker ps results matching name=$CONTAINER.
+- \$ = escaped dollar sign: Prevent local shell expansion so IMAGE and CONTAINER are expanded by the remote shell.
+- \ = shell line continuation: Continue the docker run command on the next line.
+------------------------------------------------------------
+# docker rm -v myapp
+
+Explanation:
+Removes the myapp container and removes anonymous volumes associated with it.
+
+Options:
+- -v = --volumes (volumes): Remove anonymous volumes associated with the container.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  --restart unless-stopped \
+  -p 8088:5000 \
+  -e APP_ENV=production \
+  192.168.94.90:8085/myapp:a31bc921
+
+Explanation:
+Runs the earlier image tag a31bc921 as myapp with the same production port mapping and restart policy.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Assign the name myapp to the container.
+- --restart = restart policy: Use unless-stopped as the restart policy.
+- -p = --publish (publish): Publish host port 8088 to container port 5000.
+- -e = --env (environment): Set APP_ENV=production inside the container.
+- \ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# curl -v http://192.168.94.90:8085/
+
+Explanation:
+Connects to the Nexus Docker registry endpoint and prints verbose request and connection details.
+
+Options:
+- -v = --verbose (verbose): Show detailed connection and protocol information.
+------------------------------------------------------------
+# nc -vz 192.168.94.90 8085
+
+Explanation:
+Tests whether a TCP connection can be made to 192.168.94.90 on port 8085 without sending application data.
+
+Options:
+- -v = verbose mode: Print more connection information.
+- -z = zero-I/O mode: Scan for a listening service without sending normal data.
+------------------------------------------------------------
+# docker inspect myapp
+
+Explanation:
+Displays detailed Docker metadata and runtime configuration for the myapp container.
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Opens an SSH session to DEV-2 as the deploy user.
+
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed file information and ownership for the Docker daemon socket.
+
+Options:
+- -l = long listing format: Display permissions, owner, group, size, and other file details.
+------------------------------------------------------------
