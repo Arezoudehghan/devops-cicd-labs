@@ -1,0 +1,195 @@
+------------------------------------------------------------
+# ./deploy.sh
+
+Explanation:
+Runs the deploy.sh script from the current directory.
+------------------------------------------------------------
+# echo "Deploying to production..."
+
+Explanation:
+Prints the text "Deploying to production..." to standard output.
+------------------------------------------------------------
+# echo "Deploying automatically to staging"
+
+Explanation:
+Prints a message indicating that the staging deployment is running automatically.
+------------------------------------------------------------
+# echo "Deploying to production"
+
+Explanation:
+Prints a message indicating that the production deployment is starting.
+------------------------------------------------------------
+# sudo -u gitlab-runner ssh deploy@192.168.94.91 hostname
+
+Explanation:
+Runs SSH as the gitlab-runner user, connects to 192.168.94.91 as deploy, and executes hostname on the remote server.
+
+Options:
+- -u = --user (user): Runs the following command as the specified user, gitlab-runner.
+------------------------------------------------------------
+# sudo -u gitlab-runner ssh deploy@192.168.94.91 docker ps
+
+Explanation:
+Runs SSH as the gitlab-runner user, connects to 192.168.94.91 as deploy, and lists running Docker containers on the remote server.
+
+Options:
+- -u = --user (user): Runs the following command as the specified user, gitlab-runner.
+------------------------------------------------------------
+# ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        deploy@"$DEPLOY_HOST" "
+          set -e
+
+          docker pull '$IMAGE_REF'
+
+          docker rm -f '${CI_PROJECT_NAME}-staging' \
+            >/dev/null 2>&1 || true
+
+          docker run -d \
+            --restart unless-stopped \
+            --name '${CI_PROJECT_NAME}-staging' \
+            -p '${STAGING_PORT}:${APP_PORT}' \
+            '$IMAGE_REF'
+        "
+
+Explanation:
+Connects to the deployment host over SSH, pulls the selected image, replaces the staging container, and starts the new staging container. The remote shell stops on unhandled command failures.
+
+Options:
+- -i "$SSH_PRIVATE_KEY" = identity file: Uses the private key file referenced by SSH_PRIVATE_KEY for authentication.
+- -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" = SSH configuration option: Uses the file referenced by SSH_KNOWN_HOSTS for known-host verification.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Requires the remote host key to match a trusted known-host entry.
+- set -e = exit on error shell option: Stops the remote shell when an unhandled command fails.
+- -f = --force (force): Forces docker rm to remove the staging container if it exists.
+- > /dev/null = stdout redirection: Discards standard output from docker rm.
+- 2>&1 = stderr redirection: Sends standard error to the same destination as standard output.
+- || = logical OR operator: Runs true if docker rm fails, so a missing old container does not stop the deployment.
+- -d = --detach (detach): Runs the new container in the background.
+- --restart unless-stopped = restart policy: Restarts the container automatically unless it was explicitly stopped.
+- --name '${CI_PROJECT_NAME}-staging' = container name: Assigns the staging container name.
+- -p '${STAGING_PORT}:${APP_PORT}' = --publish (publish): Maps the staging host port to the application port inside the container.
+------------------------------------------------------------
+# curl \
+        -f \
+        -sS \
+        --retry 5 \
+        --retry-delay 2 \
+        --connect-timeout 3 \
+        --max-time 5 \
+        "http://${DEPLOY_HOST}:${STAGING_PORT}/health"
+
+Explanation:
+Requests the staging health endpoint and fails the command if the HTTP request is unsuccessful. It retries transient failures and limits connection and total request time.
+
+Options:
+- -f = --fail (fail): Returns an error for HTTP response codes 400 or greater without printing the response body.
+- -s = --silent (silent): Hides the progress meter and normal error output.
+- -S = --show-error (show error): Shows an error message when used together with --silent.
+- --retry 5 = retry count: Retries a transient failure up to 5 times.
+- --retry-delay 2 = retry delay: Waits 2 seconds between retry attempts.
+- --connect-timeout 3 = connection timeout: Allows up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Limits each transfer attempt to 5 seconds.
+------------------------------------------------------------
+# ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        deploy@"$DEPLOY_HOST" "
+          set -e
+
+          docker pull '$IMAGE_REF'
+
+          docker rm -f '${CI_PROJECT_NAME}-production' \
+            >/dev/null 2>&1 || true
+
+          docker run -d \
+            --restart unless-stopped \
+            --name '${CI_PROJECT_NAME}-production' \
+            -p '${PRODUCTION_PORT}:${APP_PORT}' \
+            '$IMAGE_REF'
+        "
+
+Explanation:
+Connects to the deployment host over SSH, pulls the selected image, replaces the production container, and starts the new production container. The remote shell stops on unhandled command failures.
+
+Options:
+- -i "$SSH_PRIVATE_KEY" = identity file: Uses the private key file referenced by SSH_PRIVATE_KEY for authentication.
+- -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" = SSH configuration option: Uses the file referenced by SSH_KNOWN_HOSTS for known-host verification.
+- -o StrictHostKeyChecking=yes = SSH configuration option: Requires the remote host key to match a trusted known-host entry.
+- set -e = exit on error shell option: Stops the remote shell when an unhandled command fails.
+- -f = --force (force): Forces docker rm to remove the production container if it exists.
+- > /dev/null = stdout redirection: Discards standard output from docker rm.
+- 2>&1 = stderr redirection: Sends standard error to the same destination as standard output.
+- || = logical OR operator: Runs true if docker rm fails, so a missing old container does not stop the deployment.
+- -d = --detach (detach): Runs the new container in the background.
+- --restart unless-stopped = restart policy: Restarts the container automatically unless it was explicitly stopped.
+- --name '${CI_PROJECT_NAME}-production' = container name: Assigns the production container name.
+- -p '${PRODUCTION_PORT}:${APP_PORT}' = --publish (publish): Maps the production host port to the application port inside the container.
+------------------------------------------------------------
+# curl \
+        -f \
+        -sS \
+        --retry 5 \
+        --retry-delay 2 \
+        --connect-timeout 3 \
+        --max-time 5 \
+        "http://${DEPLOY_HOST}:${PRODUCTION_PORT}/health"
+
+Explanation:
+Requests the production health endpoint and fails the command if the HTTP request is unsuccessful. It retries transient failures and limits connection and total request time.
+
+Options:
+- -f = --fail (fail): Returns an error for HTTP response codes 400 or greater without printing the response body.
+- -s = --silent (silent): Hides the progress meter and normal error output.
+- -S = --show-error (show error): Shows an error message when used together with --silent.
+- --retry 5 = retry count: Retries a transient failure up to 5 times.
+- --retry-delay 2 = retry delay: Waits 2 seconds between retry attempts.
+- --connect-timeout 3 = connection timeout: Allows up to 3 seconds to establish the connection.
+- --max-time 5 = maximum time: Limits each transfer attempt to 5 seconds.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+# git commit -m "add manual production deployment"
+
+Explanation:
+Creates a Git commit with the specified commit message.
+
+Options:
+- -m = --message (message): Uses "add manual production deployment" as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote branch.
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+# curl -i http://192.168.94.91:8089/health
+
+Explanation:
+Requests the staging health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Includes protocol response headers in the output.
+------------------------------------------------------------
+# curl -i http://192.168.94.91:8088/health
+
+Explanation:
+Requests the production health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Includes protocol response headers in the output.
+------------------------------------------------------------
+# echo "$SSH_PRIVATE_KEY"
+
+Explanation:
+Prints the current value of the SSH_PRIVATE_KEY shell variable to standard output.
+------------------------------------------------------------
