@@ -1,0 +1,43 @@
+stages:
+  - deploy
+
+variables:
+  NEXUS_REGISTRY: "192.168.94.90:8085"
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_PORT: "8088"
+  APP_PORT: "5000"
+
+deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+
+  script:
+    - |
+      ssh deploy@$DEPLOY_HOST "
+        set -e
+
+        IMAGE='$NEXUS_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA'
+        CONTAINER='$CI_PROJECT_NAME'
+
+        echo 'Pulling new image...'
+        docker pull \$IMAGE
+
+        echo 'Stopping old container...'
+        docker stop \$CONTAINER || true
+
+        echo 'Removing old container...'
+        docker rm \$CONTAINER || true
+
+        echo 'Starting new container...'
+        docker run -d \
+          --name \$CONTAINER \
+          --restart unless-stopped \
+          -p $DEPLOY_PORT:$APP_PORT \
+          -e APP_ENV=production \
+          -e APP_VERSION=$CI_COMMIT_SHORT_SHA \
+          \$IMAGE
+
+        echo 'Checking container...'
+        docker ps --filter name=\$CONTAINER
+      "
