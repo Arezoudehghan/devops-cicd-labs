@@ -1,0 +1,323 @@
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Connects to 192.168.94.91 as the deploy user with SSH.
+------------------------------------------------------------
+# ssh root@192.168.94.91
+
+Explanation:
+Connects to 192.168.94.91 as the root user with SSH.
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Displays the hostname of the current system.
+------------------------------------------------------------
+# ip -br a
+
+Explanation:
+Displays network address information in a brief format.
+
+Options:
+- -br = -brief (brief): shows concise output instead of the normal detailed format.
+------------------------------------------------------------
+# sudo systemctl status ssh
+
+Explanation:
+Shows the current status of the SSH service with systemd.
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Refreshes the local APT package index from configured repositories.
+------------------------------------------------------------
+# sudo apt install openssh-server -y
+
+Explanation:
+Installs the OpenSSH server package and automatically accepts the installation prompt.
+
+Options:
+- -y = --assume-yes (assume yes): automatically answers yes to package manager prompts.
+------------------------------------------------------------
+# sudo systemctl enable --now ssh
+
+Explanation:
+Enables the SSH service to start at boot and starts it immediately.
+
+Options:
+- --now = start or stop the unit immediately as well as enabling or disabling it.
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Displays the UID, primary group, and supplementary groups of the deploy user.
+------------------------------------------------------------
+# sudo adduser deploy
+
+Explanation:
+Creates a new user named deploy using the adduser utility.
+------------------------------------------------------------
+# ssh-keygen -t ed25519 -C "gitlab-ci-deploy-dev2" -f gitlab-ci-dev2
+
+Explanation:
+Generates an Ed25519 SSH key pair, adds the specified comment, and saves it with the gitlab-ci-dev2 filename.
+
+Options:
+- -t = key type: selects ed25519 as the key algorithm.
+- -C = comment: stores "gitlab-ci-deploy-dev2" as the key comment.
+- -f = output key file: writes the private key to gitlab-ci-dev2 and the public key to gitlab-ci-dev2.pub.
+------------------------------------------------------------
+# sudo install -d -m 700 -o deploy -g deploy /home/deploy/.ssh
+
+Explanation:
+Creates /home/deploy/.ssh with mode 700 and assigns ownership to the deploy user and deploy group.
+
+Options:
+- -d = --directory (directory): creates directories instead of copying files.
+- -m = --mode (mode): sets the created directory permission mode to 700.
+- -o = --owner (owner): sets deploy as the owner.
+- -g = --group (group): sets deploy as the group.
+------------------------------------------------------------
+# sudo chmod 700 /home/deploy/.ssh
+
+Explanation:
+Sets /home/deploy/.ssh permissions so only the owner has full access.
+------------------------------------------------------------
+# sudo chmod 600 /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Sets authorized_keys permissions so only the owner can read and write the file.
+------------------------------------------------------------
+# sudo chown -R deploy:deploy /home/deploy/.ssh
+
+Explanation:
+Changes the owner and group of /home/deploy/.ssh and everything inside it to deploy.
+
+Options:
+- -R = --recursive (recursive): applies the ownership change to the directory and all nested files and directories.
+------------------------------------------------------------
+# ssh -i gitlab-ci-dev2 deploy@192.168.94.91
+
+Explanation:
+Connects to DEV-2 as deploy using gitlab-ci-dev2 as the SSH private key.
+
+Options:
+- -i = identity file: selects gitlab-ci-dev2 as the private key file for authentication.
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Displays the username of the current effective user.
+------------------------------------------------------------
+# sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Explanation:
+Displays the fingerprint of the Ed25519 SSH host public key file.
+
+Options:
+- -l = fingerprint display: shows the fingerprint of the specified public key.
+- -f = key file: reads the key from /etc/ssh/ssh_host_ed25519_key.pub.
+------------------------------------------------------------
+# ssh-keyscan 192.168.94.91
+
+Explanation:
+Retrieves the public SSH host keys advertised by 192.168.94.91.
+------------------------------------------------------------
+# ssh -o StrictHostKeyChecking=no deploy@192.168.94.91
+
+Explanation:
+Connects to 192.168.94.91 as deploy while setting StrictHostKeyChecking to no.
+
+Options:
+- -o = SSH configuration option: passes a client configuration setting on the command line.
+- StrictHostKeyChecking=no = configuration value: disables strict host key verification for this connection.
+------------------------------------------------------------
+# echo "$MY_VAR"
+
+Explanation:
+Prints the current value of the MY_VAR shell variable.
+------------------------------------------------------------
+# ssh-add "$SSH_PRIVATE_KEY"
+
+Explanation:
+Adds the private key file referenced by SSH_PRIVATE_KEY to the running SSH agent.
+------------------------------------------------------------
+# ssh -i "$SSH_PRIVATE_KEY" deploy@192.168.94.91
+
+Explanation:
+Connects to 192.168.94.91 as deploy using the private key file whose path is stored in SSH_PRIVATE_KEY.
+
+Options:
+- -i = identity file: selects the file referenced by SSH_PRIVATE_KEY as the SSH private key.
+------------------------------------------------------------
+# eval "$(ssh-agent -s)"
+
+Explanation:
+Starts ssh-agent and evaluates the shell commands it prints so the current shell receives the agent environment variables.
+
+Options:
+- -s = Bourne shell output mode: makes ssh-agent print commands suitable for Bourne-compatible shells.
+- $(...) = command substitution: runs ssh-agent -s and substitutes its output into the eval command.
+------------------------------------------------------------
+# chmod 400 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the private key file referenced by SSH_PRIVATE_KEY to owner-read-only permissions.
+------------------------------------------------------------
+# ssh-add -l
+
+Explanation:
+Lists fingerprints of identities currently loaded in the SSH agent.
+
+Options:
+- -l = list fingerprints: displays fingerprints for identities held by the agent.
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the .ssh directory in the current user's home directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): creates missing parent directories and does not fail if the target directory already exists.
+------------------------------------------------------------
+# chmod 700 ~/.ssh
+
+Explanation:
+Sets the current user's .ssh directory so only the owner has read, write, and execute permissions.
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+
+Explanation:
+Copies the file referenced by SSH_KNOWN_HOSTS to the current user's SSH known_hosts file.
+------------------------------------------------------------
+# chmod 644 ~/.ssh/known_hosts
+
+Explanation:
+Sets known_hosts so the owner can read and write it while other users can only read it.
+------------------------------------------------------------
+# ssh -o BatchMode=yes "$DEPLOY_USER@$DEPLOY_HOST" "whoami"
+
+Explanation:
+Connects to the configured deployment host without interactive authentication prompts and runs whoami remotely.
+
+Options:
+- -o = SSH configuration option: passes a client configuration setting on the command line.
+- BatchMode=yes = configuration value: disables interactive password and passphrase prompts.
+------------------------------------------------------------
+# ssh -o BatchMode=yes "$DEPLOY_USER@$DEPLOY_HOST" "hostname"
+
+Explanation:
+Connects to the configured deployment host without interactive authentication prompts and runs hostname remotely.
+
+Options:
+- -o = SSH configuration option: passes a client configuration setting on the command line.
+- BatchMode=yes = configuration value: disables interactive password and passphrase prompts.
+------------------------------------------------------------
+# ssh-agent -k || true
+
+Explanation:
+Requests termination of the SSH agent referenced by the current agent environment and keeps the shell command successful if that request fails.
+
+Options:
+- -k = kill agent mode: prints shell commands that unset the SSH agent variables and terminate the current agent.
+- || = OR operator: runs true only if ssh-agent -k returns a non-zero exit status.
+------------------------------------------------------------
+# ssh "$DEPLOY_USER@$DEPLOY_HOST" "cd /opt/myapp && ./deploy.sh"
+
+Explanation:
+Connects to the deployment host, changes to /opt/myapp, and runs deploy.sh only if the directory change succeeds.
+
+Options:
+- && = AND operator: runs ./deploy.sh only when cd /opt/myapp finishes successfully.
+------------------------------------------------------------
+# ssh "$DEPLOY_USER@$DEPLOY_HOST" "/opt/myapp/deploy.sh"
+
+Explanation:
+Connects to the deployment host and directly runs /opt/myapp/deploy.sh.
+------------------------------------------------------------
+# sudo usermod -aG docker deploy
+
+Explanation:
+Adds deploy to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): adds the user to supplementary groups without replacing the current group list.
+- -G = --groups (groups): specifies docker as the supplementary group list to modify.
+------------------------------------------------------------
+# sudo ls -ld /home/deploy/.ssh
+
+Explanation:
+Shows detailed information about the /home/deploy/.ssh directory itself.
+
+Options:
+- -l = long listing format: shows permissions, ownership, size, and other detailed information.
+- -d = --directory (directory): lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+# sudo ls -l /home/deploy/.ssh/authorized_keys
+
+Explanation:
+Shows detailed file information for /home/deploy/.ssh/authorized_keys.
+
+Options:
+- -l = long listing format: shows permissions, ownership, size, and other detailed information.
+------------------------------------------------------------
+# sudo journalctl -u ssh -f
+
+Explanation:
+Shows log entries for the SSH systemd unit and continues following new entries in real time.
+
+Options:
+- -u = --unit (unit): limits output to the ssh unit.
+- -f = --follow (follow): continuously displays new journal entries as they arrive.
+------------------------------------------------------------
+# command -v ssh-agent
+
+Explanation:
+Checks how the shell resolves ssh-agent and prints its command path or command identification.
+
+Options:
+- -v = command lookup mode: prints information showing what command would be executed for ssh-agent.
+------------------------------------------------------------
+# sudo apt install openssh-client -y
+
+Explanation:
+Installs the OpenSSH client package and automatically accepts the installation prompt.
+
+Options:
+- -y = --assume-yes (assume yes): automatically answers yes to package manager prompts.
+------------------------------------------------------------
+# echo "Testing SSH deployment connection..."
+
+Explanation:
+Prints a status message before the SSH deployment connection test.
+------------------------------------------------------------
+# ssh -o BatchMode=yes "$DEPLOY_USER@$DEPLOY_HOST" "whoami && hostname"
+
+Explanation:
+Connects to the deployment host without interactive prompts, runs whoami, and then runs hostname only if whoami succeeds.
+
+Options:
+- -o = SSH configuration option: passes a client configuration setting on the command line.
+- BatchMode=yes = configuration value: disables interactive password and passphrase prompts.
+- && = AND operator: runs hostname only if whoami exits successfully on the remote host.
+------------------------------------------------------------
+# echo "SSH deployment test completed successfully."
+
+Explanation:
+Prints a status message indicating that the SSH deployment test completed successfully.
+------------------------------------------------------------
+# sudo systemctl is-active ssh
+
+Explanation:
+Checks whether the SSH systemd service is currently active.
+------------------------------------------------------------
+# sudo test -f /home/deploy/.ssh/authorized_keys && echo OK
+
+Explanation:
+Checks whether authorized_keys exists as a regular file and prints OK only when the check succeeds.
+
+Options:
+- -f = regular file test: returns success when /home/deploy/.ssh/authorized_keys exists and is a regular file.
+- && = AND operator: runs echo OK only if the test command succeeds.
+------------------------------------------------------------
