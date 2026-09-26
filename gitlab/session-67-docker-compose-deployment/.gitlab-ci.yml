@@ -1,0 +1,95 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_NAME: "cicd-app"
+  APP_PORT: "8088"
+  DOCKER_BUILDKIT: "1"
+
+build_and_push:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  script:
+    - IMAGE="$NEXUS_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+    - printf '%s' "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" -u "$NEXUS_USER" --password-stdin
+
+    - |
+      docker build \
+        --build-arg HTTP_PROXY="$HTTP_PROXY" \
+        --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+        --build-arg NO_PROXY="$NO_PROXY" \
+        -t "$IMAGE" .
+
+    - docker push "$IMAGE"
+
+    - docker logout "$NEXUS_REGISTRY"
+
+
+deploy_dev:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  needs:
+    - build_and_push
+
+  before_script:
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+
+  script:
+    - scp -i "$SSH_PRIVATE_KEY" compose.yaml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/compose.yaml"
+
+    - scp -i "$SSH_PRIVATE_KEY" "$APP_ENV_FILE" "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/app.env"
+
+    - |
+      printf '%s' "$NEXUS_PASSWORD" |
+      ssh -i "$SSH_PRIVATE_KEY" "$DEPLOY_USER@$DEPLOY_HOST" \
+        "docker login '$NEXUS_REGISTRY' -u '$NEXUS_USER' --password-stdin"
+
+    - |
+      ssh -i "$SSH_PRIVATE_KEY" "$DEPLOY_USER@$DEPLOY_HOST" "
+        set -euo pipefail
+
+        cd '$DEPLOY_PATH'
+
+        if [ -f .env ]; then
+          cp .env .env.previous
+        fi
+
+        cat > .env <<EOF
+      NEXUS_REGISTRY=$NEXUS_REGISTRY
+      IMAGE_NAME=$IMAGE_NAME
+      IMAGE_TAG=$CI_COMMIT_SHORT_SHA
+      APP_PORT=$APP_PORT
+      EOF
+
+        docker compose config -q
+
+        docker compose pull
+
+        docker compose up \
+          -d \
+          --remove-orphans \
+          --wait \
+          --wait-timeout 60
+
+        docker compose ps
+
+        docker logout '$NEXUS_REGISTRY'
+      "
+
+  environment:
+    name: development
+    url: http://192.168.94.91:8088
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
