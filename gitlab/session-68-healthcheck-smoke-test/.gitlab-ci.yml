@@ -1,0 +1,48 @@
+stages:
+  - deploy
+  - verify
+
+deploy:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  script:
+    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose pull"
+    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose up -d"
+
+healthcheck:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  script:
+    - |
+      for i in $(seq 1 10); do
+        if ssh deploy@192.168.94.91 \
+          "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"; then
+          echo "Application is healthy"
+          exit 0
+        fi
+
+        echo "Waiting for application..."
+        sleep 3
+      done
+
+      echo "Application healthcheck failed"
+      exit 1
+
+smoke_test:
+  stage: verify
+
+  tags:
+    - dev-shell
+
+  needs:
+    - healthcheck
+
+  script:
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/health
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/
