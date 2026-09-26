@@ -1,0 +1,30 @@
+stages:
+  - deploy
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+
+ssh_deploy_test:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - eval "$(ssh-agent -s)"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+  script:
+    - echo "Testing SSH deployment connection..."
+    - ssh-add -l
+    - ssh -o BatchMode=yes "$DEPLOY_USER@$DEPLOY_HOST" "whoami && hostname"
+    - echo "SSH deployment test completed successfully."
+
+  after_script:
+    - ssh-agent -k || true
