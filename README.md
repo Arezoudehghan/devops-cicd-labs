@@ -56,3 +56,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-46-cache-vs-artifact/` — GitLab CI/CD cache versus artifact, cache hit/miss, cache keys, artifact expiration, `needs:artifacts`, and a practical build/verify lab.
 - `gitlab/session-47-dependency-cache/` — Dependency caching for Python/pip, Node.js/npm, Maven, and Gradle with file-based cache keys, project-local cache paths, Shell Runner behavior, and cache troubleshooting.
 - `gitlab/session-49-quality-gate-lint-unit-test/` — GitLab CI/CD quality gates with Ruff linting, pytest unit tests, exit-code failure handling, `allow_failure`, and build blocking.
+- `gitlab/session-60-professional-image-tagging/` — Professional Docker image tagging with full/short commit SHA, branch slug tags, semantic release tags, `latest`, immutable-tag strategy, and build-once/promote-many workflow.
