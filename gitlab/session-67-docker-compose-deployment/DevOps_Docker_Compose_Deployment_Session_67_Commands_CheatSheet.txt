@@ -1,0 +1,428 @@
+------------------------------------------------------------
+# docker pull 192.168.94.90:8085/cicd-app:a83fc21
+
+Explanation:
+Pulls the specified image and tag from the Docker registry to the local Docker host.
+------------------------------------------------------------
+# docker stop cicd-app
+
+Explanation:
+Stops the running container named cicd-app.
+------------------------------------------------------------
+# docker rm cicd-app
+
+Explanation:
+Removes the stopped container named cicd-app.
+------------------------------------------------------------
+# docker run -d \
+  --name cicd-app \
+  -p 8088:5000 \
+  --restart unless-stopped \
+  192.168.94.90:8085/cicd-app:a83fc21
+
+Explanation:
+Starts the specified image as a new container named cicd-app, publishes port 8088 to container port 5000, and configures an automatic restart policy.
+
+Options:
+- -d = --detach (detach): Run the container in the background.
+- --name = container name: Set the container name to cicd-app.
+- -p = --publish (publish): Map host port 8088 to container port 5000.
+- --restart = restart policy: Apply the unless-stopped restart policy.
+- unless-stopped = restart policy value: Restart the container automatically unless it was explicitly stopped.
+- \\ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker compose up -d
+
+Explanation:
+Creates or starts the services defined by the Compose configuration in detached mode.
+
+Options:
+- -d = --detach (detach): Run the services in the background.
+------------------------------------------------------------
+# python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+
+Explanation:
+Runs the inline Python health-check code and opens the local /health endpoint with a two-second timeout.
+
+Options:
+- -c = command string: Tell Python to execute the following string as Python code.
+- timeout=2 = function argument: Limit the URL open operation to two seconds.
+------------------------------------------------------------
+# git add app.env
+
+Explanation:
+Stages the app.env file in Git for the next commit.
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Displays the installed Docker CLI version.
+
+Options:
+- --version = version: Print version information and exit.
+------------------------------------------------------------
+# docker compose version
+
+Explanation:
+Displays the installed Docker Compose version.
+------------------------------------------------------------
+# sudo mkdir -p /opt/cicd-app
+
+Explanation:
+Creates the /opt/cicd-app directory with elevated privileges and also creates missing parent directories if needed.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not fail if the directory already exists.
+------------------------------------------------------------
+# sudo chown -R deploy:deploy /opt/cicd-app
+
+Explanation:
+Changes the owner and group of /opt/cicd-app and everything under it to deploy.
+
+Options:
+- -R = --recursive (recursive): Apply the ownership change recursively to files and subdirectories.
+------------------------------------------------------------
+# id deploy
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups for the deploy user.
+------------------------------------------------------------
+# sudo usermod -aG docker deploy
+
+Explanation:
+Adds the deploy user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append (append): Add the user to supplementary groups without removing current group memberships.
+- -G = --groups (groups): Set the supplementary group list; here the target group is docker.
+------------------------------------------------------------
+# sudo -u deploy docker ps
+
+Explanation:
+Runs docker ps as the deploy user to verify that the user can access Docker.
+
+Options:
+- -u = --user (user): Run the command as the specified user, here deploy.
+------------------------------------------------------------
+# docker compose config -q
+
+Explanation:
+Validates the resolved Compose configuration without printing the full configuration.
+
+Options:
+- -q = --quiet (quiet): Validate the configuration and suppress normal output.
+------------------------------------------------------------
+# docker compose pull
+
+Explanation:
+Pulls the images required by the services in the Compose configuration without starting the containers.
+------------------------------------------------------------
+# docker compose up -d --remove-orphans --wait --wait-timeout 60
+
+Explanation:
+Creates or updates the Compose services in the background, removes orphaned containers, and waits up to 60 seconds for services to become running or healthy.
+
+Options:
+- -d = --detach (detach): Run the services in the background.
+- --remove-orphans = remove orphan containers: Remove containers for services that are no longer defined in the Compose file.
+- --wait = wait for services: Wait until services are running or healthy.
+- --wait-timeout 60 = wait timeout: Limit the wait period to 60 seconds.
+------------------------------------------------------------
+# docker compose down
+
+Explanation:
+Stops and removes the containers and networks created by the current Compose project.
+------------------------------------------------------------
+# docker compose down -v
+
+Explanation:
+Stops and removes the Compose project and also removes its named and anonymous volumes.
+
+Options:
+- -v = --volumes (volumes): Remove named volumes declared by the Compose file and anonymous volumes attached to containers.
+------------------------------------------------------------
+# docker compose restart
+
+Explanation:
+Restarts the existing containers for the current Compose project without applying new image or configuration changes.
+------------------------------------------------------------
+# IMAGE="$NEXUS_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Assigns the full registry image reference, including the commit-based tag, to the shell variable IMAGE.
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" -u "$NEXUS_USER" --password-stdin
+
+Explanation:
+Sends the Nexus password through standard input to docker login and authenticates to the configured registry.
+
+Options:
+- %s = printf string format: Print the password exactly as a string without adding a newline.
+- | = shell pipe operator: Send the standard output of printf to the standard input of docker login.
+- -u = --username (username): Use the value of NEXUS_USER as the registry username.
+- --password-stdin = password from standard input: Read the registry password from standard input instead of the command line.
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="$HTTP_PROXY" \
+  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+  --build-arg NO_PROXY="$NO_PROXY" \
+  -t "$IMAGE" .
+
+Explanation:
+Builds a Docker image from the current directory, passes proxy values as build arguments, and tags the result with the value stored in IMAGE.
+
+Options:
+- --build-arg HTTP_PROXY="$HTTP_PROXY" = build argument: Pass the HTTP_PROXY value to the Docker build.
+- --build-arg HTTPS_PROXY="$HTTPS_PROXY" = build argument: Pass the HTTPS_PROXY value to the Docker build.
+- --build-arg NO_PROXY="$NO_PROXY" = build argument: Pass the NO_PROXY value to the Docker build.
+- -t = --tag (tag): Assign the image name and tag stored in IMAGE.
+- . = build context: Use the current directory as the Docker build context.
+- \\ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# docker push "$IMAGE"
+
+Explanation:
+Pushes the image referenced by IMAGE to its configured Docker registry.
+------------------------------------------------------------
+# docker logout "$NEXUS_REGISTRY"
+
+Explanation:
+Removes the locally stored Docker login credentials for the configured Nexus registry.
+------------------------------------------------------------
+# chmod 600 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the SSH private key file so only its owner can read and write it.
+
+Options:
+- 600 = numeric file mode: Give the owner read and write permission and give group and others no permissions.
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the current user's .ssh directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not fail if the directory already exists.
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+
+Explanation:
+Copies the GitLab SSH known-hosts file into the current user's standard SSH known_hosts path.
+------------------------------------------------------------
+# chmod 600 ~/.ssh/known_hosts
+
+Explanation:
+Sets the known_hosts file so only its owner can read and write it.
+
+Options:
+- 600 = numeric file mode: Give the owner read and write permission and give group and others no permissions.
+------------------------------------------------------------
+# scp -i "$SSH_PRIVATE_KEY" compose.yaml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/compose.yaml"
+
+Explanation:
+Copies compose.yaml to the deployment server using the specified SSH private key.
+
+Options:
+- -i = identity_file: Use SSH_PRIVATE_KEY as the private key file for authentication.
+------------------------------------------------------------
+# scp -i "$SSH_PRIVATE_KEY" "$APP_ENV_FILE" "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/app.env"
+
+Explanation:
+Copies the GitLab file variable referenced by APP_ENV_FILE to app.env on the deployment server.
+
+Options:
+- -i = identity_file: Use SSH_PRIVATE_KEY as the private key file for authentication.
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" |
+ssh -i "$SSH_PRIVATE_KEY" "$DEPLOY_USER@$DEPLOY_HOST" \
+  "docker login '$NEXUS_REGISTRY' -u '$NEXUS_USER' --password-stdin"
+
+Explanation:
+Sends the Nexus password through the SSH connection so Docker on the deployment server can authenticate to the private registry.
+
+Options:
+- %s = printf string format: Print the password exactly as a string without adding a newline.
+- | = shell pipe operator: Send printf output to the standard input of ssh.
+- -i = identity_file: Use SSH_PRIVATE_KEY as the SSH private key file.
+- -u = --username (username): Use NEXUS_USER as the Docker registry username on the remote host.
+- --password-stdin = password from standard input: Read the Docker registry password from the SSH standard input stream.
+- \\ = shell line continuation: Continue the same command on the next line.
+------------------------------------------------------------
+# ssh -i "$SSH_PRIVATE_KEY" "$DEPLOY_USER@$DEPLOY_HOST" "
+  set -euo pipefail
+
+  cd '$DEPLOY_PATH'
+
+  if [ -f .env ]; then
+    cp .env .env.previous
+  fi
+
+  cat > .env <<EOF
+NEXUS_REGISTRY=$NEXUS_REGISTRY
+IMAGE_NAME=$IMAGE_NAME
+IMAGE_TAG=$CI_COMMIT_SHORT_SHA
+APP_PORT=$APP_PORT
+EOF
+
+  docker compose config -q
+
+  docker compose pull
+
+  docker compose up \
+    -d \
+    --remove-orphans \
+    --wait \
+    --wait-timeout 60
+
+  docker compose ps
+
+  docker logout '$NEXUS_REGISTRY'
+"
+
+Explanation:
+Connects to the deployment server and runs the full remote deployment sequence: fail-fast shell settings, deployment-directory selection, previous environment backup, new environment-file creation, Compose validation, image pull, service update, status check, and registry logout.
+
+Options:
+- -i = identity_file: Use SSH_PRIVATE_KEY as the SSH private key file.
+- -e = shell errexit option: Exit when a command fails.
+- -u = shell nounset option: Treat an unset variable as an error.
+- -o pipefail = shell pipefail option: Make a pipeline fail if any command in the pipeline fails.
+- -f = file test operator: In [ -f .env ], return true when .env exists and is a regular file.
+- > = shell output redirection: Replace .env with the output written by cat.
+- <<EOF = here-document operator: Feed the following lines to cat until the terminating EOF line.
+- -q = --quiet (quiet): Validate the Compose configuration without printing it.
+- -d = --detach (detach): Run the Compose services in the background.
+- --remove-orphans = remove orphan containers: Remove containers for services no longer defined in the Compose file.
+- --wait = wait for services: Wait until the services are running or healthy.
+- --wait-timeout 60 = wait timeout: Limit the wait period to 60 seconds.
+- \\ = shell line continuation: Continue the docker compose up command on the next line.
+------------------------------------------------------------
+# docker build -t "$IMAGE" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the image reference stored in IMAGE.
+
+Options:
+- -t = --tag (tag): Assign the image name and tag stored in IMAGE.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+# cd /opt/cicd-app
+
+Explanation:
+Changes the current shell directory to /opt/cicd-app.
+------------------------------------------------------------
+# cp .env.previous .env
+
+Explanation:
+Copies the previous environment file over .env so the prior deployment version can be selected again.
+------------------------------------------------------------
+# docker compose up -d --wait --wait-timeout 60
+
+Explanation:
+Creates or updates the Compose services in the background and waits up to 60 seconds for them to become running or healthy.
+
+Options:
+- -d = --detach (detach): Run the services in the background.
+- --wait = wait for services: Wait until the services are running or healthy.
+- --wait-timeout 60 = wait timeout: Limit the wait period to 60 seconds.
+------------------------------------------------------------
+# docker compose ps
+
+Explanation:
+Shows the containers and current status for the Compose project.
+------------------------------------------------------------
+# docker compose logs
+
+Explanation:
+Displays logs from the services in the current Compose project.
+------------------------------------------------------------
+# docker compose logs --tail=100
+
+Explanation:
+Displays only the last 100 log lines for the Compose services.
+
+Options:
+- --tail=100 = tail line count: Show the last 100 lines from each selected service log.
+------------------------------------------------------------
+# docker compose logs -f
+
+Explanation:
+Displays Compose service logs and continues following new log output in real time.
+
+Options:
+- -f = --follow (follow): Keep following log output as new lines are produced.
+------------------------------------------------------------
+# curl -i http://127.0.0.1:8088/health
+
+Explanation:
+Requests the local health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Include HTTP response headers in the output.
+------------------------------------------------------------
+# docker login 192.168.94.90:8085
+
+Explanation:
+Starts an interactive Docker login to the Nexus registry at 192.168.94.90:8085.
+------------------------------------------------------------
+# docker compose config --images
+
+Explanation:
+Prints the image names that are resolved from the current Compose configuration.
+
+Options:
+- --images = images: Print the resolved image names used by the Compose services.
+------------------------------------------------------------
+# cat .env
+
+Explanation:
+Prints the contents of the .env file to standard output.
+------------------------------------------------------------
+# sudo ss -lntp | grep 8088
+
+Explanation:
+Lists listening TCP sockets numerically with process information and filters the output for entries containing 8088.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Show numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket.
+- | = shell pipe operator: Send the output of ss to grep.
+------------------------------------------------------------
+# docker ps --format "table {{.Names}}\t{{.Ports}}"
+
+Explanation:
+Lists running Docker containers and formats the output as a table containing only container names and published ports.
+
+Options:
+- --format = output format: Apply the Go-template format string to the docker ps output.
+- table = format directive: Render a table header and aligned rows.
+- {{.Names}} = template field: Print the container name.
+- \t = tab escape: Insert a tab between output fields.
+- {{.Ports}} = template field: Print the container port mappings.
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists directory contents in long format and includes hidden entries.
+
+Options:
+- -l = long listing format: Show detailed file information such as permissions, owner, size, and timestamps.
+- -a = --all (all): Include entries whose names begin with a dot.
+------------------------------------------------------------
+# docker compose config
+
+Explanation:
+Parses, resolves, and prints the final Compose configuration.
+------------------------------------------------------------
+# docker compose up -d --wait
+
+Explanation:
+Creates or updates the Compose services in the background and waits until they are running or healthy.
+
+Options:
+- -d = --detach (detach): Run the services in the background.
+- --wait = wait for services: Wait until the services are running or healthy.
+------------------------------------------------------------
