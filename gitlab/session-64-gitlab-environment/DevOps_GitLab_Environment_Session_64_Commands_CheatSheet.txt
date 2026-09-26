@@ -1,0 +1,652 @@
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker run -d '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'"
+
+Explanation:
+Technical correction: the original example ended with an ellipsis, so it was completed with the image reference used in this lesson. It connects to DEV-2 over SSH and starts the selected image in detached mode.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} = image reference argument: Uses the lesson image name and the current short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - ssh deploy@192.168.94.91 "docker pull 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA} && docker run -d 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Technical correction: the original example used the placeholder IMAGE, which is not a valid runnable image reference in this lesson. This job pulls the commit-tagged image from Nexus and starts it on DEV-2.
+
+Options:
+- && = shell AND operator: Runs docker run only if docker pull succeeds.
+- -d = --detach (detach): Runs the container in the background.
+- 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA} = image reference argument: Uses the Nexus registry path and the current short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: production
+
+Explanation:
+This GitLab CI configuration assigns the job deployment to the production environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy:
+  stage: deploy
+
+  script:
+    - echo "Deploying application..."
+
+  environment:
+    name: production
+
+Explanation:
+This simple deployment job runs a message and records the job as a deployment to the production environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: production
+  url: https://example.com
+
+Explanation:
+This configuration defines production and gives GitLab a URL to display for that environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: development
+  url: http://192.168.94.91:8088
+
+Explanation:
+This configuration defines the development environment and its application URL on DEV-2.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d -p 8088:5000 myapp
+
+Explanation:
+This starts the myapp image in the background and publishes the application from container port 5000 on host port 8088.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- -p = --publish (publish): Maps host port 8088 to container port 5000.
+- 8088:5000 = publish value: Uses host-port:container-port format.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: production
+  deployment_tier: production
+
+Explanation:
+This defines an environment named production and explicitly classifies its deployment tier as production.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: customer-live
+  deployment_tier: production
+
+Explanation:
+This keeps a custom environment name while explicitly telling GitLab that it is a production-tier deployment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# script:
+  - echo "Environment=$CI_ENVIRONMENT_NAME"
+  - echo "URL=$CI_ENVIRONMENT_URL"
+  - echo "Tier=$CI_ENVIRONMENT_TIER"
+
+Explanation:
+These CI job commands print the current environment name, environment URL, and deployment tier from GitLab predefined variables.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep -E ':8088|:8089' || true
+
+Explanation:
+This checks whether TCP ports 8088 or 8089 are currently listening. The final true keeps the command successful when grep finds no matching port.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+- | = shell pipe operator: Sends ss output to grep.
+- -E = --extended-regexp (extended regular expression): Lets grep use the alternation expression :8088|:8089.
+- || = shell OR operator: Runs true if grep returns a non-zero status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+This lists both running and stopped Docker containers.
+
+Options:
+- -a = --all (all): Shows all containers instead of only running containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+This shows disk space used by Docker images, containers, local volumes, and build cache.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+
+Explanation:
+This GitLab CI variable stores the Nexus image repository path used by the deployment jobs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# stages:
+  - deploy
+
+Explanation:
+This GitLab CI configuration defines a deploy stage for the pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+
+stages:
+  - deploy
+
+deploy_development:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Environment=$CI_ENVIRONMENT_NAME"
+    - echo "Image=${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-development 2>/dev/null || true
+        docker run -d \
+          --name myapp-development \
+          --restart unless-stopped \
+          -p 8088:5000 \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: development
+    url: http://192.168.94.91:8088
+    deployment_tier: development
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+Explanation:
+Technical correction: PDF line continuations that appeared as double backslashes were corrected to single shell continuation characters. This complete development job pulls the commit-tagged image, replaces the development container, publishes it on port 8088, and records the deployment in GitLab.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-development container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-development.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps host port 8088 to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+- ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} = image reference argument: Deploys the image tagged with the current short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter name=myapp-development
+
+Explanation:
+This lists containers whose name matches myapp-development.
+
+Options:
+- --filter = filter output: Limits docker ps results to entries matching name=myapp-development.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS http://192.168.94.91:8088/health
+
+Explanation:
+This checks the development health endpoint and stays quiet on success while still showing errors.
+
+Options:
+- -f = --fail (fail): Returns an error status for HTTP response codes 400 or higher.
+- -s = --silent (silent): Hides the progress meter and normal diagnostic output.
+- -S = --show-error (show error): Shows an error message when used with --silent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying to production"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-production 2>/dev/null || true
+        docker run -d \
+          --name myapp-production \
+          --restart unless-stopped \
+          -p 8089:5000 \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: production
+    url: http://192.168.94.91:8089
+    deployment_tier: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  allow_failure: false
+
+Explanation:
+Technical correction: the PDF version had invalid indentation for when: manual and showed doubled line-continuation backslashes. This corrected production job deploys the commit-tagged image on port 8089 and requires a manual start on the default branch.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-production container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-production.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps host port 8089 to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+- ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} = image reference argument: Deploys the image tagged with the current short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_development:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "Deploying ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - echo "Environment=${CI_ENVIRONMENT_NAME}"
+    - echo "Port=${DEPLOY_PORT}"
+
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+
+        docker rm -f myapp-development 2>/dev/null || true
+
+        docker run -d \
+          --name myapp-development \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+
+  environment:
+    name: development
+    url: "http://192.168.94.91:8088"
+    deployment_tier: development
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+Explanation:
+This development job prints the selected image, environment, and scoped port, then deploys the image to DEV-2. GitLab records the result under the development environment.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-development container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-development.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps the scoped host port in DEPLOY_PORT to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+- ${DEPLOY_PORT}:5000 = publish value: Uses the environment-scoped host port and container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_production:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  script:
+    - echo "Deploying ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - echo "Environment=${CI_ENVIRONMENT_NAME}"
+    - echo "Port=${DEPLOY_PORT}"
+
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+
+        docker rm -f myapp-production 2>/dev/null || true
+
+        docker run -d \
+          --name myapp-production \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+
+  environment:
+    name: production
+    url: "http://192.168.94.91:8089"
+    deployment_tier: production
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+
+  allow_failure: false
+
+Explanation:
+This production job uses the production-scoped port, replaces the production container, and records the deployment under production. The job is manual on the default branch.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-production container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-production.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps the scoped host port in DEPLOY_PORT to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+- ${DEPLOY_PORT}:5000 = publish value: Uses the environment-scoped host port and container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_ENVIRONMENT_NAME"
+
+Explanation:
+This prints the GitLab environment name available to the current deployment job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$CI_ENVIRONMENT_TIER"
+
+Explanation:
+This prints the GitLab deployment tier available to the current deployment job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "DEPLOY_PORT=${DEPLOY_PORT}"
+
+Explanation:
+This prints the DEPLOY_PORT value received by the current job so the environment-scoped value can be checked.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+This lists currently running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -i http://192.168.94.91:8088
+
+Explanation:
+This requests the development application and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Includes HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -i http://192.168.94.91:8089
+
+Explanation:
+This requests the production application and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Includes HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS http://192.168.94.91:8089/health
+
+Explanation:
+This checks the production health endpoint and stays quiet on success while still showing errors.
+
+Options:
+- -f = --fail (fail): Returns an error status for HTTP response codes 400 or higher.
+- -s = --silent (silent): Hides the progress meter and normal diagnostic output.
+- -S = --show-error (show error): Shows an error message when used with --silent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+This opens an SSH session to DEV-2 as the deploy user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d -p 8089:5000 '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+
+Explanation:
+Technical correction: the original example ended with an ellipsis, so it was completed with the image reference used in this lesson. It starts the selected image on production host port 8089 and container port 5000.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- -p = --publish (publish): Maps host port 8089 to container port 5000.
+- 8089:5000 = publish value: Uses host-port:container-port format.
+- ${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA} = image reference argument: Uses the lesson image name and current short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep 8088
+
+Explanation:
+This checks listening TCP sockets and shows lines containing port 8088.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+- | = shell pipe operator: Sends ss output to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8088'
+
+Explanation:
+This checks listening TCP sockets and filters the result for port 8088.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+- | = shell pipe operator: Sends ss output to grep.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --format 'table {{.Names}}\t{{.Ports}}'
+
+Explanation:
+This lists running containers as a table containing container names and published ports.
+
+Options:
+- --format = format output: Uses the supplied Go-template table format.
+- \t = tab escape in the format value: Separates the Names and Ports columns.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# environment:
+  name: prod
+
+Explanation:
+This valid GitLab CI fragment names the environment prod. In the troubleshooting example, that name intentionally does not match a variable scoped to production.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf 'CI_ENVIRONMENT_NAME=%s\n' "$CI_ENVIRONMENT_NAME"
+printf 'DEPLOY_PORT=%s\n' "$DEPLOY_PORT"
+
+Explanation:
+These commands print the actual environment name and deploy-port variable so an environment-scope mismatch can be diagnosed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter name=myapp-production
+
+Explanation:
+This lists containers whose name matches myapp-production.
+
+Options:
+- --filter = filter output: Limits docker ps results to entries matching name=myapp-production.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8089' || true
+
+Explanation:
+This checks whether TCP port 8089 is listening. It still returns success when grep finds no match.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+- | = shell pipe operator: Sends ss output to grep.
+- || = shell OR operator: Runs true if grep returns a non-zero status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -v http://127.0.0.1:8089/health
+
+Explanation:
+This checks the production health endpoint from DEV-2 itself and shows verbose connection and HTTP details.
+
+Options:
+- -v = --verbose (verbose): Shows detailed connection and protocol information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# stages:
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+
+Explanation:
+This base GitLab CI configuration defines the deploy stage and the Nexus image repository used by the final deployment jobs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_development:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Environment=$CI_ENVIRONMENT_NAME"
+    - echo "URL=$CI_ENVIRONMENT_URL"
+    - echo "Port=$DEPLOY_PORT"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-development 2>/dev/null || true
+        docker run -d \
+          --name myapp-development \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: development
+    url: http://192.168.94.91:8088
+    deployment_tier: development
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+Explanation:
+Technical correction: PDF line continuations that appeared as double backslashes were corrected to single shell continuation characters. This final development job prints environment metadata, deploys the commit-tagged image using the scoped port, and tracks it as development.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-development container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-development.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps DEPLOY_PORT on the host to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Environment=$CI_ENVIRONMENT_NAME"
+    - echo "URL=$CI_ENVIRONMENT_URL"
+    - echo "Port=$DEPLOY_PORT"
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+        docker rm -f myapp-production 2>/dev/null || true
+        docker run -d \
+          --name myapp-production \
+          --restart unless-stopped \
+          -p '${DEPLOY_PORT}:5000' \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+  environment:
+    name: production
+    url: http://192.168.94.91:8089
+    deployment_tier: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  allow_failure: false
+
+Explanation:
+Technical correction: the PDF version had invalid indentation for when: manual and showed doubled line-continuation backslashes. This final production job prints environment metadata, deploys with the production-scoped port, and requires a manual run on the default branch.
+
+Options:
+- -e = errexit shell option: Makes the remote shell stop when an unhandled command fails.
+- -f = --force (force): Forces removal of the existing myapp-production container.
+- 2>/dev/null = stderr redirection: Sends standard error from docker rm to /dev/null.
+- || = shell OR operator: Runs true if docker rm does not remove a container.
+- -d = --detach (detach): Runs the new container in the background.
+- --name = container name option: Sets the container name to myapp-production.
+- --restart = restart policy option: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps DEPLOY_PORT on the host to container port 5000.
+- \ = shell line continuation: Continues the docker run command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Ports}}'
+
+Explanation:
+This lists running containers as a table containing container names, image references, and published ports.
+
+Options:
+- --format = format output: Uses the supplied Go-template table format.
+- \t = tab escape in the format value: Separates the Names, Image, and Ports columns.
+------------------------------------------------------------
