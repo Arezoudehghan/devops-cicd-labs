@@ -1,0 +1,24 @@
+stages:
+  - build
+
+variables:
+  DOCKER_CONFIG: "$CI_PROJECT_DIR/.docker"
+
+build_and_push:
+  stage: build
+  tags:
+    - dev-shell
+
+  before_script:
+    - mkdir -p "$DOCKER_CONFIG"
+
+  script:
+    - export IMAGE_TAG="$REGISTRY_URL/session61-registry-demo:$CI_COMMIT_SHORT_SHA"
+    - docker build -t "$IMAGE_TAG" .
+    - docker image inspect "$IMAGE_TAG" > /dev/null
+    - echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_URL" -u "$REGISTRY_USER" --password-stdin
+    - docker push "$IMAGE_TAG"
+
+  after_script:
+    - docker logout "$REGISTRY_URL" || true
+    - rm -rf "$DOCKER_CONFIG"
