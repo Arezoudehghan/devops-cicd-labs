@@ -1,0 +1,342 @@
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8085'
+
+Explanation:
+Lists listening TCP sockets with numeric addresses and process information, then keeps only lines that contain port 8085.
+
+Options:
+- -l = --listening (listening): Show only listening sockets.
+- -n = --numeric (numeric): Do not resolve service names; show numeric ports and addresses.
+- -t = --tcp (TCP): Show TCP sockets.
+- -p = --processes (processes): Show the process using each socket.
+- | = pipe operator: Send the output of `ss` to `grep` as input.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -i http://192.168.94.90:8085/v2/
+
+Explanation:
+Sends an HTTP request to the Nexus Docker Registry API endpoint and includes the response headers.
+
+Options:
+- -i = --include (include): Include HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nc -vz 192.168.94.90 8085
+
+Explanation:
+Checks whether a TCP connection can be made to 192.168.94.90 on port 8085 without sending application data.
+
+Options:
+- -v = verbose mode: Show more connection details.
+- -z = zero-I/O mode: Check the port without sending data.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/docker/daemon.json 2>/dev/null || true
+
+Explanation:
+Displays the current Docker daemon configuration if the file exists. Errors are hidden, and the command sequence still returns success if `cat` fails.
+
+Options:
+- 2>/dev/null = stderr redirection: Send file descriptor 2, standard error, to `/dev/null`.
+- || = OR operator: Run the command on the right only if the command on the left fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.bak-$(date +%F-%H%M%S)
+
+Explanation:
+Copies the Docker daemon configuration to a timestamped backup file.
+
+Options:
+- $(...) = command substitution: Run `date` and insert its output into the destination filename.
+- +%F-%H%M%S = date format argument: `%F` is the full date, `%H` is the hour, `%M` is the minute, and `%S` is the second.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo dockerd --validate --config-file=/etc/docker/daemon.json
+
+Explanation:
+Validates the Docker daemon configuration file without starting the daemon.
+
+Options:
+- --validate = validate: Check the configuration and exit.
+- --config-file=/etc/docker/daemon.json = config file: Use `/etc/docker/daemon.json` as the daemon configuration file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart docker
+
+Explanation:
+Restarts the Docker systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl is-active docker
+
+Explanation:
+Checks whether the Docker systemd service is currently active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays detailed information about the Docker client, daemon, storage, networking, and registry configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info | sed -n '/Insecure Registries/,+6p'
+
+Explanation:
+Displays Docker information and prints the `Insecure Registries` line plus the next six lines.
+
+Options:
+- | = pipe operator: Send the output of `docker info` to `sed`.
+- -n = --quiet / --silent: Suppress automatic printing by `sed`.
+- '/Insecure Registries/,+6p' = sed address and print expression: Start at the matching line, include the next six lines, and print that range.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login 192.168.94.90:8085 -u ci-publisher
+
+Explanation:
+Logs in to the Nexus Docker Registry as the `ci-publisher` user and prompts for the password interactively.
+
+Options:
+- -u = --username (username): Specify the registry username.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login 192.168.94.90:8085
+
+Explanation:
+Technical correction: The original command used the Nexus web path instead of the Docker Registry connector. This corrected command logs in to the Docker Registry endpoint on port 8085.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login 192.168.94.90:8085 -u admin -p MyPassword
+
+Explanation:
+Logs in to the Nexus Docker Registry as `admin` with the password supplied directly on the command line.
+
+Options:
+- -u = --username (username): Specify the registry username.
+- -p = --password (password): Supply the registry password directly as an argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" --username "$NEXUS_USERNAME" --password-stdin
+
+Explanation:
+Prints the Nexus password as a string, then sends it to `docker login` through standard input.
+
+Options:
+- '%s' = printf format string: Print the supplied value as a string.
+- | = pipe operator: Send the output of `printf` to `docker login`.
+- --username "$NEXUS_USERNAME" = username: Use the value of `NEXUS_USERNAME` as the registry username.
+- --password-stdin = password from standard input: Read the password from standard input instead of a command-line argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p "$DOCKER_CONFIG"
+
+Explanation:
+Creates the directory stored in `DOCKER_CONFIG` and also creates any missing parent directories.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "$NEXUS_USERNAME"
+
+Explanation:
+Checks that `NEXUS_USERNAME` is not an empty string.
+
+Options:
+- -n = nonzero string length test: Return success when the string length is greater than zero.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "$NEXUS_PASSWORD"
+
+Explanation:
+Checks that `NEXUS_PASSWORD` is not an empty string.
+
+Options:
+- -n = nonzero string length test: Return success when the string length is greater than zero.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -eu
+
+Explanation:
+Enables shell behavior that stops on command errors and treats unset variables as errors.
+
+Options:
+- -e = errexit shell option: Exit when a command fails, subject to Bash control-flow rules.
+- -u = nounset shell option: Treat use of an unset variable as an error.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# IMAGE="${NEXUS_REGISTRY}/${CI_PROJECT_PATH_SLUG}"
+
+Explanation:
+Sets `IMAGE` to the Nexus registry address followed by the GitLab project path slug.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COMMIT_IMAGE="${IMAGE}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Sets `COMMIT_IMAGE` to the image name tagged with the short Git commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# BRANCH_IMAGE="${IMAGE}:${CI_COMMIT_REF_SLUG}"
+
+Explanation:
+Sets `BRANCH_IMAGE` to the image name tagged with the GitLab branch or ref slug.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building: ${COMMIT_IMAGE}"
+
+Explanation:
+Prints the image reference that is about to be built.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  -t "$COMMIT_IMAGE" \
+  .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the value stored in `COMMIT_IMAGE`.
+
+Options:
+- -t = --tag (tag): Assign the specified name and tag to the built image.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker tag \
+  "$COMMIT_IMAGE" \
+  "$BRANCH_IMAGE"
+
+Explanation:
+Adds the branch-based image reference stored in `BRANCH_IMAGE` to the same image already referenced by `COMMIT_IMAGE`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$COMMIT_IMAGE"
+
+Explanation:
+Pushes the commit-SHA-tagged image to the configured Nexus Docker Registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$BRANCH_IMAGE"
+
+Explanation:
+Pushes the branch-tagged image to the configured Nexus Docker Registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logout "$NEXUS_REGISTRY" || true
+
+Explanation:
+Logs out from the registry stored in `NEXUS_REGISTRY`. If logout fails, `true` keeps the command sequence successful.
+
+Options:
+- || = OR operator: Run `true` only if `docker logout` fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf "$DOCKER_CONFIG"
+
+Explanation:
+Removes the Docker configuration directory and all contents below it.
+
+Options:
+- -r = --recursive (recursive): Remove directories and their contents recursively.
+- -f = --force (force): Ignore missing files and do not prompt for confirmation.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# IMAGE="${NEXUS_REGISTRY}/${CI_PROJECT_PATH_SLUG}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Sets `IMAGE` to the full Nexus image reference tagged with the current short Git commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pulling: ${IMAGE}"
+
+Explanation:
+Prints the image reference that is about to be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull "$IMAGE"
+
+Explanation:
+Pulls the image reference stored in `IMAGE` from the Nexus Docker Registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect \
+  "$IMAGE" \
+  --format '{{.RepoTags}}'
+
+Explanation:
+Inspects the pulled image and prints only its repository tags.
+
+Options:
+- --format '{{.RepoTags}}' = format: Use Docker's Go-template formatting to output the `RepoTags` field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull 192.168.94.90:8085/root-myapp:4f21a6c8
+
+Explanation:
+Pulls the `root-myapp` image tagged `4f21a6c8` from the Nexus Docker Registry on port 8085.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images available on the local Docker host.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# env | grep -i proxy
+
+Explanation:
+Prints environment variables and keeps only lines containing `proxy`, without case sensitivity.
+
+Options:
+- | = pipe operator: Send the output of `env` to `grep`.
+- -i = --ignore-case (ignore case): Match `proxy` without considering uppercase or lowercase letters.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# systemctl show docker --property=Environment
+
+Explanation:
+Shows the `Environment` property of the Docker systemd service.
+
+Options:
+- --property=Environment = property filter: Display only the `Environment` property.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker tag myapp:1.0 192.168.94.90:8085/myapp:1.0
+
+Explanation:
+Adds a Nexus Registry reference to the existing local image `myapp:1.0` without rebuilding the image.
+------------------------------------------------------------
