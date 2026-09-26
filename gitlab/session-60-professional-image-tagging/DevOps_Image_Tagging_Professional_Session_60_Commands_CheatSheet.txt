@@ -1,0 +1,163 @@
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the full GitLab commit SHA stored in CI_COMMIT_SHA.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:$CI_COMMIT_SHA to the built image.
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the short GitLab commit SHA stored in CI_COMMIT_SHORT_SHA.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:$CI_COMMIT_SHORT_SHA to the built image.
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$CI_COMMIT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with IMAGE_NAME plus the full Git commit SHA.
+
+Options:
+- -t = --tag (tag): Assigns "$IMAGE_NAME:$CI_COMMIT_SHA" as the image name and tag.
+------------------------------------------------------------
+# docker tag "$IMAGE_NAME:$CI_COMMIT_SHA" "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Creates a second tag using the short commit SHA for the same image already tagged with the full commit SHA.
+------------------------------------------------------------
+# docker tag "$IMAGE_NAME:$CI_COMMIT_SHA" "$IMAGE_NAME:$CI_COMMIT_REF_SLUG"
+
+Explanation:
+Creates a branch-safe tag from CI_COMMIT_REF_SLUG for the same image already tagged with the full commit SHA.
+------------------------------------------------------------
+# git tag v1.3.0
+
+Explanation:
+Creates the local Git tag v1.3.0 on the current commit.
+------------------------------------------------------------
+# git push origin v1.3.0
+
+Explanation:
+Pushes the local Git tag v1.3.0 to the remote named origin.
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the current directory and names it myapp. Because no explicit tag is included after the image name, Docker uses latest.
+
+Options:
+- -t = --tag (tag): Assigns the image name myapp.
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Shows detailed information about the Docker installation, daemon, storage, runtime, and current configuration.
+------------------------------------------------------------
+# sudo gitlab-runner status
+
+Explanation:
+Runs the GitLab Runner status command with elevated privileges to show whether the runner service is running.
+------------------------------------------------------------
+# echo "$NEXUS_PASSWORD" | docker login "$NEXUS_REGISTRY" -u "$NEXUS_USER" --password-stdin
+
+Explanation:
+Sends the Nexus password through standard input and logs Docker in to the registry using the configured username.
+
+Options:
+- | = pipe operator: Sends the output of echo to the standard input of docker login.
+- -u = --username (username): Uses "$NEXUS_USER" as the registry username.
+- --password-stdin = read password from standard input: Reads the password from the pipe instead of placing it directly on the command line.
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="$HTTP_PROXY" \
+  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+  --build-arg NO_PROXY="$NO_PROXY" \
+  -t "$IMAGE_NAME:$CI_COMMIT_SHA" \
+  .
+
+Explanation:
+Builds the Docker image from the current directory, passes proxy-related build arguments, and tags the image with the full commit SHA.
+
+Options:
+- --build-arg HTTP_PROXY="$HTTP_PROXY" = --build-arg: Passes the HTTP_PROXY build argument and its value into the Docker build.
+- --build-arg HTTPS_PROXY="$HTTPS_PROXY" = --build-arg: Passes the HTTPS_PROXY build argument and its value into the Docker build.
+- --build-arg NO_PROXY="$NO_PROXY" = --build-arg: Passes the NO_PROXY build argument and its value into the Docker build.
+- -t = --tag (tag): Assigns "$IMAGE_NAME:$CI_COMMIT_SHA" as the image name and tag.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$CI_COMMIT_SHA"
+
+Explanation:
+Pushes the image tagged with the full commit SHA to the configured registry.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Pushes the image tagged with the short commit SHA to the configured registry.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$CI_COMMIT_REF_SLUG"
+
+Explanation:
+Pushes the image tagged with the branch-safe CI_COMMIT_REF_SLUG value to the configured registry.
+------------------------------------------------------------
+# docker pull "$IMAGE_NAME:$CI_COMMIT_SHA"
+
+Explanation:
+Pulls the exact image identified by IMAGE_NAME and the full commit SHA from the configured registry.
+------------------------------------------------------------
+# docker tag "$IMAGE_NAME:$CI_COMMIT_SHA" "$IMAGE_NAME:$CI_COMMIT_TAG"
+
+Explanation:
+Creates a release tag from CI_COMMIT_TAG for the image identified by the full commit SHA.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$CI_COMMIT_TAG"
+
+Explanation:
+Pushes the release-tagged image to the configured registry.
+------------------------------------------------------------
+# docker tag "$IMAGE_NAME:$CI_COMMIT_SHA" "$IMAGE_NAME:latest"
+
+Explanation:
+Creates the latest tag for the same image identified by the full commit SHA.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:latest"
+
+Explanation:
+Pushes the image tagged latest to the configured registry.
+------------------------------------------------------------
+# git checkout develop
+
+Explanation:
+Switches the working tree to the develop branch.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its contents for the next commit.
+------------------------------------------------------------
+# git commit -m "test professional image tagging"
+
+Explanation:
+Creates a Git commit from the staged changes and uses the provided text as the commit message.
+
+Options:
+- -m = --message (message): Uses "test professional image tagging" as the commit message.
+------------------------------------------------------------
+# git push origin develop
+
+Explanation:
+Pushes the local develop branch to the remote named origin.
+------------------------------------------------------------
+# docker pull "$IMAGE_NAME:v1.2.3"
+
+Explanation:
+Pulls version v1.2.3 of the image from the configured registry.
+------------------------------------------------------------
