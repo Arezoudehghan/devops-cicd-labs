@@ -1,0 +1,112 @@
+stages:
+  - deploy_staging
+  - verify_staging
+  - deploy_production
+  - verify_production
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  APP_PORT: "5000"
+  STAGING_PORT: "8089"
+  PRODUCTION_PORT: "8088"
+  IMAGE_REF: "$NEXUS_REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA"
+
+deploy_staging:
+  stage: deploy_staging
+  tags:
+    - dev-shell
+  script:
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        deploy@"$DEPLOY_HOST" "
+          set -e
+
+          docker pull '$IMAGE_REF'
+
+          docker rm -f '${CI_PROJECT_NAME}-staging' \
+            >/dev/null 2>&1 || true
+
+          docker run -d \
+            --restart unless-stopped \
+            --name '${CI_PROJECT_NAME}-staging' \
+            -p '${STAGING_PORT}:${APP_PORT}' \
+            '$IMAGE_REF'
+        "
+  environment:
+    name: staging
+    url: http://192.168.94.91:8089
+    deployment_tier: staging
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+smoke_test_staging:
+  stage: verify_staging
+  tags:
+    - dev-shell
+  script:
+    - |
+      curl \
+        -f \
+        -sS \
+        --retry 5 \
+        --retry-delay 2 \
+        --connect-timeout 3 \
+        --max-time 5 \
+        "http://${DEPLOY_HOST}:${STAGING_PORT}/health"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+deploy_production:
+  stage: deploy_production
+  tags:
+    - dev-shell
+  script:
+    - |
+      ssh \
+        -i "$SSH_PRIVATE_KEY" \
+        -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+        -o StrictHostKeyChecking=yes \
+        deploy@"$DEPLOY_HOST" "
+          set -e
+
+          docker pull '$IMAGE_REF'
+
+          docker rm -f '${CI_PROJECT_NAME}-production' \
+            >/dev/null 2>&1 || true
+
+          docker run -d \
+            --restart unless-stopped \
+            --name '${CI_PROJECT_NAME}-production' \
+            -p '${PRODUCTION_PORT}:${APP_PORT}' \
+            '$IMAGE_REF'
+        "
+  environment:
+    name: production
+    url: http://192.168.94.91:8088
+    deployment_tier: production
+  resource_group: production
+  manual_confirmation: "Deploy this version to production?"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+      allow_failure: false
+
+smoke_test_production:
+  stage: verify_production
+  tags:
+    - dev-shell
+  script:
+    - |
+      curl \
+        -f \
+        -sS \
+        --retry 5 \
+        --retry-delay 2 \
+        --connect-timeout 3 \
+        --max-time 5 \
+        "http://${DEPLOY_HOST}:${PRODUCTION_PORT}/health"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
