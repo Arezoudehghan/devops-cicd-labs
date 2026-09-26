@@ -1,0 +1,45 @@
+stages:
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+
+deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+
+  resource_group: production
+
+  environment:
+    name: production
+    url: http://192.168.94.91:8088
+    deployment_tier: production
+
+  script:
+    - echo "Pipeline $CI_PIPELINE_ID acquired production lock"
+    - echo "Commit $CI_COMMIT_SHORT_SHA"
+    - date
+    - sleep 60
+    - |
+      ssh deploy@192.168.94.91 "
+        set -e
+
+        docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+
+        docker stop myapp || true
+        docker rm myapp || true
+
+        docker run -d \
+          --name myapp \
+          -p 8088:8080 \
+          '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
+      "
+    - echo "Pipeline $CI_PIPELINE_ID releases production lock"
+    - date
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+
+  allow_failure: false
