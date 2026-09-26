@@ -1,0 +1,91 @@
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Shows filesystem disk-space usage in a human-readable format.
+
+Options:
+- -h = --human-readable (human-readable): Displays sizes using units such as KB, MB, and GB instead of raw block counts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows how much disk space Docker images, containers, local volumes, and build cache are using.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls
+
+Explanation:
+Lists Docker images stored on the local Docker Engine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images stored on the local Docker Engine. This is the legacy alias of `docker image ls`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls --filter dangling=true
+
+Explanation:
+Lists only dangling Docker images, which are images without a normal tag reference.
+
+Options:
+- --filter = filter: Filters the image list using the supplied condition.
+- dangling=true = filter value: Restricts the result to dangling images.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image prune
+
+Explanation:
+Removes dangling Docker images that are not currently referenced by a tagged image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image prune -f
+
+Explanation:
+Removes dangling Docker images without asking for interactive confirmation.
+
+Options:
+- -f = --force (force): Skips the confirmation prompt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image prune -a
+
+Explanation:
+Removes all unused Docker images, not only dangling images.
+
+Options:
+- -a = --all (all): Removes all images not referenced by any container instead of limiting cleanup to dangling images.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image prune -a --filter "until=168h"
+
+Explanation:
+Removes unused Docker images that match the age filter and are older than 168 hours.
+
+Options:
+- -a = --all (all): Removes all unused images, not only dangling images.
+- --filter = filter: Applies a filter to decide which images are eligible for pruning.
+- until=168h = filter value: Matches images created more than 168 hours ago.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system prune -a -f
+
+Explanation:
+Removes unused Docker system data, including unused images, without asking for confirmation.
+
+Options:
+- -a = --all (all): Removes all unused images instead of only dangling images.
+- -f = --force (force): Skips the confirmation prompt.
+------------------------------------------------------------

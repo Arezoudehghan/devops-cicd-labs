@@ -1,0 +1,25 @@
+stages:
+  - inspect
+  - cleanup
+
+inspect_storage:
+  stage: inspect
+
+  tags:
+    - dev-shell
+
+  script:
+    - df -h
+    - docker system df
+    - docker image ls
+    - docker image ls --filter dangling=true
+
+cleanup_runner:
+  stage: cleanup
+
+  tags:
+    - dev-shell
+
+  script:
+    - docker image prune -f
+    - docker system df
