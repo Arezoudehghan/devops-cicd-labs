@@ -1,0 +1,24 @@
+stages:
+  - test
+  - security
+  - build
+  - push
+  - deploy
+
+iac_scan:
+  stage: security
+
+  tags:
+    - dev-shell
+
+  script:
+    - trivy config --severity HIGH,CRITICAL --exit-code 1 .
+
+security_scan:
+  stage: security
+
+  tags:
+    - dev-shell
+
+  script:
+    - trivy fs --scanners misconfig,secret --severity HIGH,CRITICAL --exit-code 1 .
