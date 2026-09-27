@@ -1,0 +1,228 @@
+------------------------------------------------------------
+# tar -czf dist/app.tar.gz app.py requirements.txt
+
+Explanation:
+Creates a gzip-compressed tar archive named dist/app.tar.gz from app.py and requirements.txt.
+
+Options:
+- -c = --create (create): Creates a new archive.
+- -z = --gzip (gzip): Compresses the archive with gzip.
+- -f = --file (file): Uses the next argument, dist/app.tar.gz, as the archive file name.
+------------------------------------------------------------
+# tar -czf dist/myapp.tar.gz app.py requirements.txt
+
+Explanation:
+Creates a gzip-compressed tar archive named dist/myapp.tar.gz from app.py and requirements.txt.
+
+Options:
+- -c = --create (create): Creates a new archive.
+- -z = --gzip (gzip): Compresses the archive with gzip.
+- -f = --file (file): Uses the next argument, dist/myapp.tar.gz, as the archive file name.
+------------------------------------------------------------
+# ls -lh dist/
+
+Explanation:
+Lists the contents of dist/ in long format with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -h = --human-readable (human-readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# pytest --junitxml=reports/junit.xml
+
+Explanation:
+Runs the pytest test suite and writes a JUnit XML report to reports/junit.xml.
+
+Options:
+- --junitxml=reports/junit.xml = JUnit XML output file: Saves the test report at reports/junit.xml.
+------------------------------------------------------------
+# mkdir -p build-meta
+
+Explanation:
+Creates the build-meta directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and ignores an existing target directory.
+------------------------------------------------------------
+# cat > build-meta/build-info.txt <<EOF
+PROJECT=${CI_PROJECT_NAME}
+PIPELINE_ID=${CI_PIPELINE_ID}
+JOB_ID=${CI_JOB_ID}
+COMMIT_SHA=${CI_COMMIT_SHA}
+COMMIT_SHORT_SHA=${CI_COMMIT_SHORT_SHA}
+REF=${CI_COMMIT_REF_NAME}
+BUILT_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+EOF
+
+Explanation:
+Writes build metadata into build-meta/build-info.txt using a shell here-document. The BUILT_AT value is generated in UTC by the date command.
+
+Options:
+- > = output redirection: Creates or truncates build-meta/build-info.txt and writes the command output into it.
+- <<EOF = here-document operator: Sends all following lines up to EOF to cat as standard input.
+- $(...) = command substitution: Runs date -u +"%Y-%m-%dT%H:%M:%SZ" and inserts its output into BUILT_AT.
+- -u = --utc (UTC): Makes date print the time in Coordinated Universal Time.
+- +"%Y-%m-%dT%H:%M:%SZ" = date format argument: Produces a timestamp such as 2026-08-20T22:30:14Z.
+------------------------------------------------------------
+# sha256sum dist/*.tar.gz > build-meta/SHA256SUMS
+
+Explanation:
+Calculates SHA-256 checksums for all .tar.gz files in dist/ and writes them to build-meta/SHA256SUMS.
+
+Options:
+- * = shell wildcard: Matches any file-name characters before .tar.gz inside dist/.
+- > = output redirection: Creates or truncates build-meta/SHA256SUMS and writes the checksum output into it.
+------------------------------------------------------------
+# sha256sum -c build-meta/SHA256SUMS
+
+Explanation:
+Checks files against the SHA-256 values stored in build-meta/SHA256SUMS.
+
+Options:
+- -c = --check (check): Reads checksum lines from the specified file and verifies the referenced files.
+------------------------------------------------------------
+# mkdir -p reports
+
+Explanation:
+Creates the reports directory and does not fail if it already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and ignores an existing target directory.
+------------------------------------------------------------
+# python3 -m pytest --junitxml=reports/junit.xml
+
+Explanation:
+Runs pytest through Python 3 and writes a JUnit XML test report to reports/junit.xml.
+
+Options:
+- -m = module execution option: Runs the named Python module, pytest, as a script.
+- --junitxml=reports/junit.xml = JUnit XML output file: Saves the test report at reports/junit.xml.
+------------------------------------------------------------
+# rm -rf dist build-meta
+
+Explanation:
+Removes the dist and build-meta directories recursively and suppresses prompts or errors for missing files.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively.
+- -f = --force (force): Ignores nonexistent files and does not prompt before removal.
+------------------------------------------------------------
+# mkdir -p dist build-meta
+
+Explanation:
+Creates the dist and build-meta directories and does not fail if they already exist.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and ignores existing target directories.
+------------------------------------------------------------
+# tar --exclude='.git' --exclude='.venv' --exclude='dist' --exclude='reports' --exclude='build-meta' -czf "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz" .
+
+Explanation:
+Creates a gzip-compressed project archive while excluding Git data, the virtual environment, generated output, reports, and metadata directories.
+
+Options:
+- --exclude='.git' = exclude pattern: Omits .git from the archive.
+- --exclude='.venv' = exclude pattern: Omits .venv from the archive.
+- --exclude='dist' = exclude pattern: Omits dist from the archive.
+- --exclude='reports' = exclude pattern: Omits reports from the archive.
+- --exclude='build-meta' = exclude pattern: Omits build-meta from the archive.
+- -c = --create (create): Creates a new archive.
+- -z = --gzip (gzip): Compresses the archive with gzip.
+- -f = --file (file): Uses "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz" as the archive file name.
+------------------------------------------------------------
+# sha256sum "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz" > build-meta/SHA256SUMS
+
+Explanation:
+Calculates the SHA-256 checksum of the commit-specific build archive and writes it to build-meta/SHA256SUMS.
+
+Options:
+- > = output redirection: Creates or truncates build-meta/SHA256SUMS and writes the checksum output into it.
+------------------------------------------------------------
+# ls -lah dist/
+
+Explanation:
+Lists all entries in dist/ in long format with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes hidden entries.
+- -h = --human-readable (human-readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# ls -lah build-meta/
+
+Explanation:
+Lists all entries in build-meta/ in long format with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes hidden entries.
+- -h = --human-readable (human-readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# cat build-meta/build-info.txt
+
+Explanation:
+Prints the contents of build-meta/build-info.txt to standard output.
+------------------------------------------------------------
+# FILE="dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz"
+FILE_NAME=$(basename "$FILE")
+
+curl --fail-with-body --location \
+  --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+  --upload-file "$FILE" \
+  "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/${CI_COMMIT_TAG}/${FILE_NAME}"
+
+Explanation:
+Sets the release file path, extracts its base file name, and uploads the artifact to the GitLab Generic Package Registry with the CI job token.
+
+Options:
+- $(...) = command substitution: Runs basename "$FILE" and stores its output in FILE_NAME.
+- --fail-with-body = fail with response body: Makes curl return an error for HTTP response codes 400 or greater while still printing the response body.
+- --location = follow redirects: Makes curl follow HTTP redirects.
+- --header "JOB-TOKEN: ${CI_JOB_TOKEN}" = HTTP header: Sends the GitLab CI job token in the JOB-TOKEN request header.
+- --upload-file "$FILE" = upload file: Uploads the file stored in the FILE variable.
+- \ = shell line continuation: Continues the same curl command on the next line.
+------------------------------------------------------------
+# git tag v1.0.0
+
+Explanation:
+Creates a local Git tag named v1.0.0 at the current commit.
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the local v1.0.0 tag to the remote repository named origin.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+# find . -maxdepth 3 -type f
+
+Explanation:
+Searches from the current directory and lists regular files no deeper than three directory levels.
+
+Options:
+- -maxdepth 3 = maximum search depth: Limits traversal to three levels below the starting point.
+- -type f = file type test: Matches regular files only.
+------------------------------------------------------------
+# ls -lah
+
+Explanation:
+Lists all entries in the current directory in long format with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes hidden entries.
+- -h = --human-readable (human-readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# find dist build-meta -maxdepth 2 -type f -ls
+
+Explanation:
+Searches dist and build-meta for regular files up to two levels deep and prints detailed information for each match.
+
+Options:
+- -maxdepth 2 = maximum search depth: Limits traversal to two levels below each starting path.
+- -type f = file type test: Matches regular files only.
+- -ls = detailed listing action: Prints file metadata in a format similar to ls -dils.
+------------------------------------------------------------
