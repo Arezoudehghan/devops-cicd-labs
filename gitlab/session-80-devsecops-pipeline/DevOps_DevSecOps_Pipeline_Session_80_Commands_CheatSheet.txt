@@ -1,0 +1,193 @@
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes local commits from the current branch to its configured remote repository.
+------------------------------------------------------------
+# python3 -m pip install flake8
+
+Explanation:
+Runs pip through Python 3 and installs the flake8 package.
+
+Options:
+- -m = module mode: Runs the named Python module as a script.
+------------------------------------------------------------
+# flake8 .
+
+Explanation:
+Runs Flake8 against the current directory represented by ".".
+------------------------------------------------------------
+# python3 -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through Python 3 and installs packages listed in requirements.txt.
+
+Options:
+- -m = module mode: Runs the named Python module as a script.
+- -r = --requirement: Installs packages from the specified requirements file.
+------------------------------------------------------------
+# python3 -m pip install pytest
+
+Explanation:
+Runs pip through Python 3 and installs the pytest package.
+
+Options:
+- -m = module mode: Runs the named Python module as a script.
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs the pytest test suite using its default test discovery behavior.
+------------------------------------------------------------
+# gitleaks git
+
+Explanation:
+Scans the current Git repository and its commit history for secrets.
+------------------------------------------------------------
+# gitleaks git --redact --report-format json --report-path gitleaks-report.json .
+
+Explanation:
+Scans the current Git repository for secrets, redacts detected secret values, and writes a JSON report to gitleaks-report.json.
+
+Options:
+- --redact = redact secrets: Hides detected secret values from logs and standard output.
+- --report-format = report format: Uses json as the report output format.
+- --report-path = report file: Writes the report to gitleaks-report.json.
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the image name and tag stored in the CI variables.
+
+Options:
+- -t = --tag: Assigns the value "$IMAGE_NAME:$IMAGE_TAG" as the image tag.
+------------------------------------------------------------
+# docker image inspect "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Displays detailed metadata and configuration for the specified Docker image.
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL --exit-code 1 "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the specified container image and treats HIGH or CRITICAL findings as a failing result.
+
+Options:
+- --severity = severity filter: Includes only HIGH and CRITICAL findings.
+- --exit-code = exit status on findings: Returns exit code 1 when matching security issues are found.
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL --format json --output trivy-report.json "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the specified container image for HIGH and CRITICAL findings and saves the result as JSON in trivy-report.json.
+
+Options:
+- --severity = severity filter: Includes only HIGH and CRITICAL findings.
+- --format = output format: Uses json as the report format.
+- --output = output file: Writes the scan result to trivy-report.json.
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" | docker login "$REGISTRY" -u "$NEXUS_USERNAME" --password-stdin
+
+Explanation:
+Prints the Nexus password without adding extra formatting and pipes it to docker login for non-interactive registry authentication.
+
+Options:
+- %s = string format specifier: Prints "$NEXUS_PASSWORD" as a string.
+- | = pipe operator: Sends the output of printf to the standard input of docker login.
+- -u = --username: Uses "$NEXUS_USERNAME" as the registry username.
+- --password-stdin = password from standard input: Reads the registry password from standard input.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Pushes the specified tagged Docker image to its configured registry.
+------------------------------------------------------------
+# docker logout "$REGISTRY"
+
+Explanation:
+Removes the stored authentication credentials for the specified Docker registry.
+------------------------------------------------------------
+# eval "$(ssh-agent -s)"
+
+Explanation:
+Starts ssh-agent and evaluates the shell commands it prints so the SSH environment variables are set in the current shell.
+
+Options:
+- -s = Bourne-shell output mode: Makes ssh-agent print Bourne-compatible shell commands.
+- $(...) = command substitution: Runs ssh-agent -s and substitutes its output into eval.
+------------------------------------------------------------
+# chmod 600 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the private key file so only its owner can read and write it.
+
+Options:
+- 600 = permission mode: Gives read and write permission to the owner and no permissions to group or others.
+------------------------------------------------------------
+# ssh-add "$SSH_PRIVATE_KEY"
+
+Explanation:
+Adds the specified private key file to the running SSH authentication agent.
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the ~/.ssh directory and does not fail if it already exists.
+
+Options:
+- -p = --parents: Creates missing parent directories and ignores an existing target directory.
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+
+Explanation:
+Copies the known-hosts file provided by the CI variable into the standard SSH known_hosts location.
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "
+  docker pull '$IMAGE_NAME:$IMAGE_TAG' &&
+  (docker stop devsecops-app 2>/dev/null || true) &&
+  (docker rm devsecops-app 2>/dev/null || true) &&
+  docker run -d \
+    --name devsecops-app \
+    --restart unless-stopped \
+    -p 8088:5000 \
+    '$IMAGE_NAME:$IMAGE_TAG'
+"
+
+Explanation:
+Technical correction: The original command could continue after a failed docker pull because of the ungrouped && and || chain. The corrected command requires a successful image pull, ignores only missing old-container stop or remove errors, and then starts the new container.
+
+Options:
+- && = logical AND operator: Runs the next command only when the previous command succeeds.
+- || = logical OR operator: Runs true only when the preceding stop or remove command fails.
+- (...) = command grouping: Keeps each optional stop or remove operation together with its error handling.
+- 2>/dev/null = standard error redirection: Sends file descriptor 2, stderr, to /dev/null.
+- true = success command: Returns exit status 0 so an absent old container does not stop deployment.
+- -d = --detach: Runs the new container in the background.
+- --name = container name: Sets the container name to devsecops-app.
+- --restart = restart policy: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish: Maps host port 8088 to container port 5000.
+- \ = line continuation: Continues one shell command on the next physical line.
+------------------------------------------------------------
+# docker login -u admin -p actual-password
+
+Explanation:
+Logs in to the default Docker registry using admin as the username and actual-password as the password.
+
+Options:
+- -u = --username: Sets the registry username to admin.
+- -p = --password: Sets the registry password to actual-password.
+------------------------------------------------------------
+# trivy image myapp:1.0
+
+Explanation:
+Scans the container image myapp:1.0 using Trivy's default image-scan settings.
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL --exit-code 1 myapp:1.0
+
+Explanation:
+Scans myapp:1.0 and returns exit code 1 when HIGH or CRITICAL security issues are found.
+
+Options:
+- --severity = severity filter: Includes only HIGH and CRITICAL findings.
+- --exit-code = exit status on findings: Returns exit code 1 when matching security issues are found.
+------------------------------------------------------------
