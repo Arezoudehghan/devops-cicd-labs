@@ -1,0 +1,14 @@
+title = "CICD Gitleaks Lab"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "lab-secret"
+description = "Detect CICD lab secret"
+regex = '''LABSECRET-[A-Za-z0-9]{24}'''
+keywords = ["LABSECRET-"]
+
+[[rules.allowlists]]
+description = "Allow fake lab secrets inside documentation"
+paths = ['''(^|/)docs/''']
