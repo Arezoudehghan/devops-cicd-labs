@@ -1,0 +1,28 @@
+stages:
+  - build
+
+build_image:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  script:
+    - export IMAGE_NAME="${CI_PROJECT_PATH_SLUG}"
+    - export IMAGE_TAG="${CI_COMMIT_SHORT_SHA}"
+    - export IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+    - echo "Building Docker image ${IMAGE}"
+
+    - |
+      docker build \
+        --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" \
+        --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+        --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+        --build-arg NO_PROXY="${NO_PROXY}" \
+        -t "${IMAGE}" \
+        .
+
+    - docker image inspect "${IMAGE}" > /dev/null
+
+    - docker image ls "${IMAGE_NAME}"
