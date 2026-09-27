@@ -1,0 +1,6 @@
+.git
+.gitlab-ci.yml
+venv
+__pycache__
+*.pyc
+*.log
