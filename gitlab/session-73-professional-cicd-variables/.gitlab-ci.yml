@@ -1,0 +1,64 @@
+stages:
+  - inspect
+  - verify
+  - deploy
+
+variables:
+  APP_NAME: "vars-lab"
+  DEMO_PRIORITY: "yaml-global"
+
+show-predefined-variables:
+  stage: inspect
+  tags:
+    - dev-shell
+  script:
+    - echo "Project=$CI_PROJECT_NAME"
+    - echo "Branch=$CI_COMMIT_BRANCH"
+    - echo "Commit=$CI_COMMIT_SHORT_SHA"
+    - echo "Pipeline=$CI_PIPELINE_ID"
+    - echo "App=$APP_NAME"
+
+precedence-demo:
+  stage: inspect
+  variables:
+    DEMO_PRIORITY: "yaml-job"
+  tags:
+    - dev-shell
+  script:
+    - echo "DEMO_PRIORITY=$DEMO_PRIORITY"
+
+verify-file-variable:
+  stage: verify
+  tags:
+    - dev-shell
+  script:
+    - test -n "${SSH_KNOWN_HOSTS:-}"
+    - test -f "$SSH_KNOWN_HOSTS"
+    - test -s "$SSH_KNOWN_HOSTS"
+    - echo "File variable exists and is not empty"
+
+deploy-staging:
+  stage: deploy
+  tags:
+    - dev-shell
+  environment:
+    name: staging
+  script:
+    - test -n "${DEPLOY_API_TOKEN:-}"
+    - echo "Staging secret is available"
+    - echo "Deploying $APP_NAME:$CI_COMMIT_SHORT_SHA to staging"
+
+deploy-production:
+  stage: deploy
+  tags:
+    - dev-shell
+  environment:
+    name: production
+  script:
+    - test -n "${DEPLOY_API_TOKEN:-}"
+    - echo "Production secret is available"
+    - echo "Deploying $APP_NAME:$CI_COMMIT_SHORT_SHA to production"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+    - when: never
