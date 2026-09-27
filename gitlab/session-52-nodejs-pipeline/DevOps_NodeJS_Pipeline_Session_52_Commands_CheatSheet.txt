@@ -1,0 +1,178 @@
+------------------------------------------------------------
+# eslint src
+
+Explanation:
+Runs ESLint against the src directory to check the source code for linting errors.
+------------------------------------------------------------
+# jest --ci
+
+Explanation:
+Runs Jest in CI mode, which is intended for automated continuous integration environments.
+
+Options:
+- --ci = CI mode: Run Jest with behavior optimized for a continuous integration environment.
+------------------------------------------------------------
+# tsc -p tsconfig.json
+
+Explanation:
+Runs the TypeScript compiler using tsconfig.json as the project configuration file.
+
+Options:
+- -p = --project (project): Use tsconfig.json as the TypeScript project configuration file.
+------------------------------------------------------------
+# npm run lint
+
+Explanation:
+Runs the script named lint from the scripts section of package.json.
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the test script defined in package.json.
+------------------------------------------------------------
+# npm run build
+
+Explanation:
+Runs the script named build from the scripts section of package.json.
+------------------------------------------------------------
+# npm install
+
+Explanation:
+Installs the dependencies defined for the Node.js project and can update the dependency lock data when needed.
+------------------------------------------------------------
+# npm install express
+
+Explanation:
+Installs the express package and adds it as a project dependency.
+------------------------------------------------------------
+# npm install --save-dev eslint
+
+Explanation:
+Installs the eslint package as a development dependency.
+
+Options:
+- --save-dev = save as development dependency: Add eslint to devDependencies in package.json.
+------------------------------------------------------------
+# npm ci
+
+Explanation:
+Performs a clean dependency installation using the existing package-lock.json, which is suitable for CI/CD environments.
+------------------------------------------------------------
+# ls -lh package.json package-lock.json
+
+Explanation:
+Lists detailed information for package.json and package-lock.json with human-readable file sizes.
+
+Options:
+- -l = long listing format: Show detailed file information.
+- -h = --human-readable (human-readable): Display file sizes in easier-to-read units.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging area status.
+------------------------------------------------------------
+# node --version
+
+Explanation:
+Displays the installed Node.js version.
+
+Options:
+- --version = version: Print the Node.js version and exit.
+------------------------------------------------------------
+# npm --version
+
+Explanation:
+Displays the installed npm version.
+
+Options:
+- --version = version: Print the npm version and exit.
+------------------------------------------------------------
+# which node
+
+Explanation:
+Shows the path of the node executable found in the current PATH.
+------------------------------------------------------------
+# which npm
+
+Explanation:
+Shows the path of the npm executable found in the current PATH.
+------------------------------------------------------------
+# sudo -u gitlab-runner node --version
+
+Explanation:
+Runs node --version as the gitlab-runner user to verify that this user can access Node.js.
+
+Options:
+- -u = --user (user): Run the command as the specified user; the value is gitlab-runner.
+- --version = version: Print the Node.js version and exit.
+------------------------------------------------------------
+# sudo -u gitlab-runner npm --version
+
+Explanation:
+Runs npm --version as the gitlab-runner user to verify that this user can access npm.
+
+Options:
+- -u = --user (user): Run the command as the specified user; the value is gitlab-runner.
+- --version = version: Print the npm version and exit.
+------------------------------------------------------------
+# npm run
+
+Explanation:
+Lists the scripts available in the scripts section of package.json.
+------------------------------------------------------------
+# npm ci --cache .npm --prefer-offline
+
+Explanation:
+Performs a clean dependency installation while storing npm cache data in .npm and preferring cached package data when possible.
+
+Options:
+- --cache = cache directory: Use .npm as the npm cache directory.
+- --prefer-offline = prefer offline data: Use cached data when possible while still allowing required network access.
+------------------------------------------------------------
+# npm install axios
+
+Explanation:
+Installs the axios package and adds it as a project dependency.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file for the next Git commit.
+------------------------------------------------------------
+# git commit -m "add nodejs ci pipeline"
+
+Explanation:
+Creates a Git commit using the provided commit message.
+
+Options:
+- -m = --message (message): Use "add nodejs ci pipeline" as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote repository.
+------------------------------------------------------------
+# git add package.json package-lock.json
+
+Explanation:
+Stages package.json and package-lock.json for the next Git commit.
+------------------------------------------------------------
+# sudo -u gitlab-runner which npm
+
+Explanation:
+Runs which npm as the gitlab-runner user to verify the npm executable path available to that user.
+
+Options:
+- -u = --user (user): Run the command as the specified user; the value is gitlab-runner.
+------------------------------------------------------------
+# ls -lah
+
+Explanation:
+Lists all files, including hidden files, in detailed form with human-readable file sizes.
+
+Options:
+- -l = long listing format: Show detailed file information.
+- -a = --all (all): Include hidden files and entries that start with a dot.
+- -h = --human-readable (human-readable): Display file sizes in easier-to-read units.
+------------------------------------------------------------
