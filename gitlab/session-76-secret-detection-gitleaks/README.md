@@ -17,7 +17,7 @@ This lab demonstrates how to detect leaked secrets in a Git repository and block
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker

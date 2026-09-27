@@ -13,7 +13,7 @@ This lab demonstrates the difference between a standard GitLab Merge Request Pip
 
 ## Lab environment
 
-- DEV-1: `192.168.94.90`
+- DEV-1: `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Runner tag: `dev-shell`

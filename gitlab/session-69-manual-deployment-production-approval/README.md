@@ -6,19 +6,19 @@ This lab demonstrates a production-safe GitLab CI/CD flow where staging deploys 
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port `8085`
-- DEV-2 — `192.168.94.91`
+- DEV-2 — `192.168.10.91`
   - Docker deployment server
 
 Deployment targets:
 
 ```text
-staging    -> <project>-staging    -> 192.168.94.91:8089
-production -> <project>-production -> 192.168.94.91:8088
+staging    -> <project>-staging    -> 192.168.10.91:8089
+production -> <project>-production -> 192.168.10.91:8088
 ```
 
 ## Pipeline Flow
@@ -60,7 +60,7 @@ SSH_KNOWN_HOSTS
 Recommended Nexus value for this lab:
 
 ```text
-192.168.94.90:8085
+192.168.10.90:8085
 ```
 
 `SSH_PRIVATE_KEY` and `SSH_KNOWN_HOSTS` are expected to be File Type variables because the pipeline passes them directly to SSH with `-i` and `UserKnownHostsFile`.
@@ -96,7 +96,7 @@ and publishes:
 The next job checks:
 
 ```text
-http://192.168.94.91:8089/health
+http://192.168.10.91:8089/health
 ```
 
 ## Production Gate
@@ -134,7 +134,7 @@ and publishes:
 The final job checks:
 
 ```text
-http://192.168.94.91:8088/health
+http://192.168.10.91:8088/health
 ```
 
 ## Verification on DEV-2
@@ -148,13 +148,13 @@ docker ps
 Check staging:
 
 ```bash
-curl -i http://192.168.94.91:8089/health
+curl -i http://192.168.10.91:8089/health
 ```
 
 Check production:
 
 ```bash
-curl -i http://192.168.94.91:8088/health
+curl -i http://192.168.10.91:8088/health
 ```
 
 ## GitLab Edition Note

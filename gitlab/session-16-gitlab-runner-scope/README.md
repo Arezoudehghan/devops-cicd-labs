@@ -14,7 +14,7 @@ This lab demonstrates the scope differences between **Instance Runner**, **Group
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1
 - **Executor:** Shell
@@ -119,7 +119,7 @@ Register it on DEV-1:
 
 ```bash
 sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<INSTANCE_RUNNER_AUTH_TOKEN>"
 ```
 
@@ -167,7 +167,7 @@ Register it on DEV-1:
 
 ```bash
 sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<GROUP_RUNNER_AUTH_TOKEN>"
 ```
 
@@ -195,7 +195,7 @@ Register it on DEV-1:
 
 ```bash
 sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<PROJECT_RUNNER_AUTH_TOKEN>"
 ```
 

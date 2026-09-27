@@ -15,7 +15,7 @@ This lab practices protecting sensitive GitLab branches and release tags before 
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab:** hosted on DEV-1
 - **Example repository path:** `~/gitlab-labs/cicd-pipeline-lab`
 - **Protected branch:** `main`

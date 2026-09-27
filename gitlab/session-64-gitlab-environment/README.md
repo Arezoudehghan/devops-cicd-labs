@@ -6,19 +6,19 @@ This lab demonstrates how GitLab Environments track real deployments to developm
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port `8085`
-- DEV-2 — `192.168.94.91`
+- DEV-2 — `192.168.10.91`
   - Docker deployment server
 
 Deployment targets:
 
 ```text
-development -> myapp-development -> 192.168.94.91:8088
-production  -> myapp-production  -> 192.168.94.91:8089
+development -> myapp-development -> 192.168.10.91:8088
+production  -> myapp-production  -> 192.168.10.91:8089
 ```
 
 ## Pipeline Flow
@@ -79,7 +79,7 @@ Environment scope: production
 The Shell Runner must also already be able to SSH to:
 
 ```text
-deploy@192.168.94.91
+deploy@192.168.10.91
 ```
 
 Do not commit SSH private keys, passwords, or production secrets to this repository.
@@ -89,7 +89,7 @@ Do not commit SSH private keys, passwords, or production secrets to this reposit
 The lab expects the application image to already exist in Nexus:
 
 ```text
-192.168.94.90:8085/myapp:<CI_COMMIT_SHORT_SHA>
+192.168.10.90:8085/myapp:<CI_COMMIT_SHORT_SHA>
 ```
 
 The deployment stage promotes and runs the existing image; it does not rebuild it.
@@ -151,13 +151,13 @@ sudo ss -lntp | grep -E ':8088|:8089' || true
 Check development:
 
 ```bash
-curl -fsS http://192.168.94.91:8088/health
+curl -fsS http://192.168.10.91:8088/health
 ```
 
 Check production:
 
 ```bash
-curl -fsS http://192.168.94.91:8089/health
+curl -fsS http://192.168.10.91:8089/health
 ```
 
 If the application does not expose `/health`, use its real endpoint instead.

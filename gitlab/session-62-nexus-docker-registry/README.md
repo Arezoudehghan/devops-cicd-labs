@@ -20,16 +20,16 @@ Docker Pull / Verify
 
 ### DEV-1
 
-- IP: `192.168.94.90`
+- IP: `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Docker Engine
 - Nexus Repository
-- Nexus Docker Hosted connector: `192.168.94.90:8085`
+- Nexus Docker Hosted connector: `192.168.10.90:8085`
 
 ### DEV-2
 
-- IP: `192.168.94.91`
+- IP: `192.168.10.91`
 - Docker deployment host
 - Used for manual registry pull verification
 
@@ -51,7 +51,7 @@ Keep the password masked. Use protected variables only when the target branch/ta
 `NEXUS_REGISTRY` is defined in `.gitlab-ci.yml` as:
 
 ```text
-192.168.94.90:8085
+192.168.10.90:8085
 ```
 
 ## Nexus Requirements
@@ -63,7 +63,7 @@ The lab expects a Nexus repository with these characteristics:
 - Docker Bearer Token Realm enabled
 - A dedicated CI user with permissions required to read and publish images
 
-The Nexus web UI port and Docker Registry connector are different endpoints. The Docker client must use `192.168.94.90:8085` for this lab.
+The Nexus web UI port and Docker Registry connector are different endpoints. The Docker client must use `192.168.10.90:8085` for this lab.
 
 ## HTTP Registry Lab Configuration
 
@@ -111,4 +111,4 @@ The jobs in this lab target the Shell Runner tag:
 dev-shell
 ```
 
-The Runner host must have Docker access and network access to `192.168.94.90:8085`.
+The Runner host must have Docker access and network access to `192.168.10.90:8085`.

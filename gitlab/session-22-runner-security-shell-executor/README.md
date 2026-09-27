@@ -6,7 +6,7 @@ This lab demonstrates the security implications of GitLab Runner when the **Shel
 
 ## Lab Environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Docker

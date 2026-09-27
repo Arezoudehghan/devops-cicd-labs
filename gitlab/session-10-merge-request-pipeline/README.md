@@ -17,7 +17,7 @@ This lab demonstrates how to create a real GitLab Merge Request Pipeline and use
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** Shell executor
 - **Runner tag:** `dev-shell`

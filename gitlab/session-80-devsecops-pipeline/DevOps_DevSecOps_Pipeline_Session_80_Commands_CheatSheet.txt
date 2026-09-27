@@ -142,7 +142,7 @@ Options:
 Explanation:
 Copies the known-hosts file provided by the CI variable into the standard SSH known_hosts location.
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91 "
+# ssh deploy@192.168.10.91 "
   docker pull '$IMAGE_NAME:$IMAGE_TAG' &&
   (docker stop devsecops-app 2>/dev/null || true) &&
   (docker rm devsecops-app 2>/dev/null || true) &&

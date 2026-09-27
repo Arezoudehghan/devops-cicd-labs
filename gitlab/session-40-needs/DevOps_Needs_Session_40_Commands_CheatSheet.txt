@@ -121,7 +121,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git remote add origin http://192.168.94.90/root/needs-lab.git
+# git remote add origin http://192.168.10.90/root/needs-lab.git
 
 Explanation:
 Adds a Git remote named origin that points to the GitLab repository at the specified URL.

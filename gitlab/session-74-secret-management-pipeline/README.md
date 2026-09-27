@@ -19,12 +19,12 @@ This lab demonstrates secure handling of SSH private keys, registry passwords, t
 
 ## Lab Architecture
 
-- DEV-1 — 192.168.94.90
+- DEV-1 — 192.168.10.90
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port 8085
-- DEV-2 — 192.168.94.91
+- DEV-2 — 192.168.10.91
   - Docker deployment server
 
 Deployment flow:
@@ -45,9 +45,9 @@ Developer
 Non-secret values:
 
 ~~~text
-DEPLOY_HOST=192.168.94.91
+DEPLOY_HOST=192.168.10.91
 DEPLOY_USER=deploy
-NEXUS_REGISTRY=192.168.94.90:8085
+NEXUS_REGISTRY=192.168.10.90:8085
 NEXUS_PULL_USER=<pull-only-user>
 ~~~
 
@@ -112,7 +112,7 @@ The private key must never be committed or printed in the CI job log.
 Generate trusted host-key data outside the production pipeline from a trusted environment:
 
 ~~~bash
-ssh-keyscan 192.168.94.91
+ssh-keyscan 192.168.10.91
 ~~~
 
 Store the verified result in SSH_KNOWN_HOSTS as a File Type variable.

@@ -15,8 +15,8 @@ This lab introduces the core components of GitLab CI/CD and shows how they work 
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90` — GitLab CE, GitLab Runner, CI/CD tools
-- **DEV-2:** `192.168.94.91` — deployment target
+- **DEV-1:** `192.168.10.90` — GitLab CE, GitLab Runner, CI/CD tools
+- **DEV-2:** `192.168.10.91` — deployment target
 - **Runner tag:** `dev-shell`
 - **Executor:** `shell`
 - **GitLab environment:** `development`
@@ -60,5 +60,5 @@ The deploy job expects these GitLab **File** variables:
 The pipeline also uses these normal variables:
 
 - `APP_NAME=cicd-session5-components`
-- `DEPLOY_HOST=192.168.94.91`
+- `DEPLOY_HOST=192.168.10.91`
 - `DEPLOY_USER=deploy`

@@ -19,18 +19,18 @@ Prints a message indicating that the staging deployment is running automatically
 Explanation:
 Prints a message indicating that the production deployment is starting.
 ------------------------------------------------------------
-# sudo -u gitlab-runner ssh deploy@192.168.94.91 hostname
+# sudo -u gitlab-runner ssh deploy@192.168.10.91 hostname
 
 Explanation:
-Runs SSH as the gitlab-runner user, connects to 192.168.94.91 as deploy, and executes hostname on the remote server.
+Runs SSH as the gitlab-runner user, connects to 192.168.10.91 as deploy, and executes hostname on the remote server.
 
 Options:
 - -u = --user (user): Runs the following command as the specified user, gitlab-runner.
 ------------------------------------------------------------
-# sudo -u gitlab-runner ssh deploy@192.168.94.91 docker ps
+# sudo -u gitlab-runner ssh deploy@192.168.10.91 docker ps
 
 Explanation:
-Runs SSH as the gitlab-runner user, connects to 192.168.94.91 as deploy, and lists running Docker containers on the remote server.
+Runs SSH as the gitlab-runner user, connects to 192.168.10.91 as deploy, and lists running Docker containers on the remote server.
 
 Options:
 - -u = --user (user): Runs the following command as the specified user, gitlab-runner.
@@ -172,7 +172,7 @@ Pushes the current branch commits to its configured remote branch.
 Explanation:
 Lists currently running Docker containers.
 ------------------------------------------------------------
-# curl -i http://192.168.94.91:8089/health
+# curl -i http://192.168.10.91:8089/health
 
 Explanation:
 Requests the staging health endpoint and includes the HTTP response headers in the output.
@@ -180,7 +180,7 @@ Requests the staging health endpoint and includes the HTTP response headers in t
 Options:
 - -i = --include (include): Includes protocol response headers in the output.
 ------------------------------------------------------------
-# curl -i http://192.168.94.91:8088/health
+# curl -i http://192.168.10.91:8088/health
 
 Explanation:
 Requests the production health endpoint and includes the HTTP response headers in the output.

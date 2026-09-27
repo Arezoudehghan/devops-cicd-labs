@@ -34,39 +34,39 @@ Explanation:
 Starts the interactive GitLab Runner registration process with elevated privileges.
 ------------------------------------------------------------
 # sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<INSTANCE_RUNNER_AUTH_TOKEN>"
 
 Explanation:
-Registers the Instance Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+Registers the Instance Runner with the GitLab server at `http://192.168.10.90` by using its runner authentication token.
 
 Options:
 - \ = shell line continuation: Continues the same command on the next line.
-- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --url "http://192.168.10.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
 - --token "<INSTANCE_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Instance Runner.
 ------------------------------------------------------------
 # sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<GROUP_RUNNER_AUTH_TOKEN>"
 
 Explanation:
-Registers the Group Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+Registers the Group Runner with the GitLab server at `http://192.168.10.90` by using its runner authentication token.
 
 Options:
 - \ = shell line continuation: Continues the same command on the next line.
-- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --url "http://192.168.10.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
 - --token "<GROUP_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Group Runner.
 ------------------------------------------------------------
 # sudo gitlab-runner register \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "<PROJECT_RUNNER_AUTH_TOKEN>"
 
 Explanation:
-Registers the Project Runner with the GitLab server at `http://192.168.94.90` by using its runner authentication token.
+Registers the Project Runner with the GitLab server at `http://192.168.10.90` by using its runner authentication token.
 
 Options:
 - \ = shell line continuation: Continues the same command on the next line.
-- --url "http://192.168.94.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
+- --url "http://192.168.10.90" = GitLab instance URL: Specifies the GitLab server that the runner registers with.
 - --token "<PROJECT_RUNNER_AUTH_TOKEN>" = runner authentication token: Supplies the authentication token created for the Project Runner.
 ------------------------------------------------------------
 # sudo gitlab-runner verify

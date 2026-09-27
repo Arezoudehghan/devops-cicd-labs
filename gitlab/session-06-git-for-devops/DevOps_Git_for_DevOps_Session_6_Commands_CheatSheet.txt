@@ -674,11 +674,11 @@ Options:
 ------------------------------------------------------------
 # ssh-keyscan \
   -t ed25519 \
-  192.168.94.91 2>/dev/null \
+  192.168.10.91 2>/dev/null \
   | ssh-keygen -lf -
 
 Explanation:
-Retrieves the Ed25519 SSH host key from 192.168.94.91 and pipes it to ssh-keygen to display its fingerprint.
+Retrieves the Ed25519 SSH host key from 192.168.10.91 and pipes it to ssh-keygen to display its fingerprint.
 
 Options:
 - -t in ssh-keyscan = key type: Requests only the ed25519 host key.
@@ -694,11 +694,11 @@ Options:
 # ssh-keyscan \
   -H \
   -t ed25519 \
-  192.168.94.91 \
+  192.168.10.91 \
   >> ~/.ssh/known_hosts
 
 Explanation:
-Retrieves the Ed25519 host key for 192.168.94.91, hashes the hostname entry, and appends it to known_hosts.
+Retrieves the Ed25519 host key for 192.168.10.91, hashes the hostname entry, and appends it to known_hosts.
 
 Options:
 - -H = hash hostnames: Hashes hostnames and addresses in the generated output.
@@ -717,7 +717,7 @@ Sets known_hosts permissions so only the owner can read and write it.
 ------------------------------------------------------------
 # cat > ~/.ssh/config <<'EOF'
 Host dev2-git
-    HostName 192.168.94.91
+    HostName 192.168.10.91
     User deploy
     IdentityFile ~/.ssh/id_ed25519_git_session6
     IdentitiesOnly yes

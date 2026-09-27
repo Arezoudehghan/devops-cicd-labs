@@ -127,7 +127,7 @@ Prints a deployment message containing the current GitLab pipeline ID.
 Explanation:
 Prints the short commit SHA provided by GitLab in CI_COMMIT_SHORT_SHA.
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91 "
+# ssh deploy@192.168.10.91 "
         set -e
 
         docker pull nexus:8085/myapp:$CI_COMMIT_SHORT_SHA
@@ -142,7 +142,7 @@ Prints the short commit SHA provided by GitLab in CI_COMMIT_SHORT_SHA.
       "
 
 Explanation:
-Connects to 192.168.94.91 as deploy and runs the quoted deployment commands on the remote server. The remote script pulls the commit-specific image, replaces the existing myapp container, and starts the new container.
+Connects to 192.168.10.91 as deploy and runs the quoted deployment commands on the remote server. The remote script pulls the commit-specific image, replaces the existing myapp container, and starts the new container.
 
 Options:
 - -e = errexit behavior for set: Makes the shell exit when an unhandled command fails.

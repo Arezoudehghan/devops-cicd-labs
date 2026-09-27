@@ -6,7 +6,7 @@ This lab focuses on GitLab CI/CD jobs and stages: how stages define pipeline flo
 
 ## Lab Environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Runner tag: `dev-shell`
@@ -14,7 +14,7 @@ This lab focuses on GitLab CI/CD jobs and stages: how stages define pipeline flo
 
 Deployment preview target:
 
-- **DEV-2:** `192.168.94.91`
+- **DEV-2:** `192.168.10.91`
 
 ## Learning Goals
 

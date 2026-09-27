@@ -6,7 +6,7 @@ This lab focuses on GitLab CI/CD `workflow: rules`, pipeline creation control, p
 
 ## Lab Environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Runner tag: `dev-shell`

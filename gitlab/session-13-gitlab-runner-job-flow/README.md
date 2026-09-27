@@ -14,7 +14,7 @@ This lab explains what a GitLab Runner is and how a CI/CD job moves from GitLab 
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** hosted on DEV-1
 - **Runner name:** `dev-1`

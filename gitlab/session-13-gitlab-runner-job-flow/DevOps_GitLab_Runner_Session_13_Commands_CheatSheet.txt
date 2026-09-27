@@ -112,7 +112,7 @@ Changes the current shell directory to gitlab-labs under the current user's home
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git clone http://192.168.94.90/YOUR_NAMESPACE/runner-session13-lab.git
+# git clone http://192.168.10.90/YOUR_NAMESPACE/runner-session13-lab.git
 
 Explanation:
 Technical correction: The lesson used <YOUR_NAMESPACE> as a visual placeholder, but the angle brackets are shell metacharacters. Replace YOUR_NAMESPACE with the real GitLab namespace before running this command to clone the repository.

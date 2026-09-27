@@ -7,12 +7,12 @@ This lab demonstrates deploying a Docker image from Nexus to DEV-2 through GitLa
 ## Lab Architecture
 
 ```text
-DEV-1 (192.168.94.90)
+DEV-1 (192.168.10.90)
 GitLab + GitLab Runner + Nexus
         |
         | SSH
         v
-DEV-2 (192.168.94.91)
+DEV-2 (192.168.10.91)
 Docker Deployment
 ```
 
@@ -30,8 +30,8 @@ The new image is pulled before the running container is stopped. This reduces th
 
 ## Main Values Used in the Lab
 
-- Nexus Registry: `192.168.94.90:8085`
-- Deploy Host: `192.168.94.91`
+- Nexus Registry: `192.168.10.90:8085`
+- Deploy Host: `192.168.10.91`
 - Deploy User: `deploy`
 - Runner Tag: `dev-shell`
 - Host Port: `8088`

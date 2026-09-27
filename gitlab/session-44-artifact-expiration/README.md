@@ -17,7 +17,7 @@ This lab demonstrates how GitLab CI/CD controls job-artifact retention with `art
 ## Lab Environment
 
 - Main host: DEV-1
-- DEV-1 IP: `192.168.94.90`
+- DEV-1 IP: `192.168.10.90`
 - GitLab Runner executor: Shell
 - Runner tag: `dev-shell`
 

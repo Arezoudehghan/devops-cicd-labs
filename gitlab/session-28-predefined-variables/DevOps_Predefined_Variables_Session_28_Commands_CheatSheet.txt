@@ -128,7 +128,7 @@ Explanation:
 Changes to the gitlab-labs directory under the current user's home directory.
 ------------------------------------------------------------
 ------------------------------------------------------------
-# git clone http://192.168.94.90/YOUR_NAMESPACE/cicd-session28-predefined-vars.git
+# git clone http://192.168.10.90/YOUR_NAMESPACE/cicd-session28-predefined-vars.git
 
 Explanation:
 Clones the Session 28 GitLab project over HTTP.

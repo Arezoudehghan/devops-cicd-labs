@@ -16,7 +16,7 @@ This lab practices the Git and GitLab workflow used before building CI/CD pipeli
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab:** hosted on DEV-1
 - **Local lab path:** `~/labs/git-session7-lab`
 - **Main branch:** `main`

@@ -34,10 +34,10 @@ Changes the current shell directory to the labs directory inside the current use
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git clone http://192.168.94.90/devops-lab/ci-components.git
+# git clone http://192.168.10.90/devops-lab/ci-components.git
 
 Explanation:
-Clones the ci-components Git repository from the GitLab server at 192.168.94.90 into the current directory.
+Clones the ci-components Git repository from the GitLab server at 192.168.10.90 into the current directory.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -140,10 +140,10 @@ Pushes the local 1.0.0 tag to the remote repository named origin.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git clone http://192.168.94.90/devops-lab/component-consumer.git
+# git clone http://192.168.10.90/devops-lab/component-consumer.git
 
 Explanation:
-Clones the component-consumer Git repository from the GitLab server at 192.168.94.90 into the current directory.
+Clones the component-consumer Git repository from the GitLab server at 192.168.10.90 into the current directory.
 ------------------------------------------------------------
 
 ------------------------------------------------------------

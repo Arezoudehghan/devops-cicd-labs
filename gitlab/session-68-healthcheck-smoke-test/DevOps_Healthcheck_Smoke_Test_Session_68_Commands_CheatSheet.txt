@@ -318,8 +318,8 @@ Defines the GitLab CI/CD stage order used in the lesson, with deployment before 
     - dev-shell
 
   script:
-    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose pull"
-    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose up -d"
+    - ssh deploy@192.168.10.91 "cd /opt/myapp && docker compose pull"
+    - ssh deploy@192.168.10.91 "cd /opt/myapp && docker compose up -d"
 
 Explanation:
 Defines the GitLab deploy job that connects to DEV-2, pulls the Compose image, and starts the application in detached mode.
@@ -337,7 +337,7 @@ Options:
   script:
     - |
       for i in $(seq 1 10); do
-        if ssh deploy@192.168.94.91 \
+        if ssh deploy@192.168.10.91 \
           "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"; then
           echo "Application is healthy"
           exit 0
@@ -374,8 +374,8 @@ Options:
     - healthcheck
 
   script:
-    - ssh deploy@192.168.94.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/"
-    - ssh deploy@192.168.94.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"
+    - ssh deploy@192.168.10.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/"
+    - ssh deploy@192.168.10.91 "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"
 
 Explanation:
 Defines a smoke test job that waits for the healthcheck job and then tests the main and health endpoints on DEV-2 through SSH.
@@ -387,7 +387,7 @@ Options:
 - -s = --silent (silent): Hide curl's progress meter and error messages.
 - -S = --show-error (show error): Show curl errors even in silent mode.
 ------------------------------------------------------------
-# curl -fsS http://192.168.94.91:8088/health
+# curl -fsS http://192.168.10.91:8088/health
 
 Explanation:
 Runs an external health request from DEV-1 to the deployed application on DEV-2.
@@ -407,8 +407,8 @@ Options:
     - healthcheck
 
   script:
-    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/health
-    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.10.91:8088/health
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.10.91:8088/
 
 Explanation:
 Defines the external smoke test job that checks DEV-2 directly from the GitLab Runner on DEV-1.
@@ -428,7 +428,7 @@ Lists all Docker containers, including stopped containers.
 Options:
 - -a = --all (all): Show running and stopped containers.
 ------------------------------------------------------------
-# curl -f http://192.168.94.91:8088/health
+# curl -f http://192.168.10.91:8088/health
 
 Explanation:
 Checks the deployed health endpoint on DEV-2 from another host and fails on an HTTP error response.

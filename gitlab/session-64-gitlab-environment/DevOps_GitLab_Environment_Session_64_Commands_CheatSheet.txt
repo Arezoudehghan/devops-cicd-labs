@@ -1,5 +1,5 @@
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91 "docker run -d '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'"
+# ssh deploy@192.168.10.91 "docker run -d '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'"
 
 Explanation:
 Technical correction: the original example ended with an ellipsis, so it was completed with the image reference used in this lesson. It connects to DEV-2 over SSH and starts the selected image in detached mode.
@@ -15,7 +15,7 @@ Options:
   tags:
     - dev-shell
   script:
-    - ssh deploy@192.168.94.91 "docker pull 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA} && docker run -d 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA}"
+    - ssh deploy@192.168.10.91 "docker pull 192.168.10.90:8085/myapp:${CI_COMMIT_SHORT_SHA} && docker run -d 192.168.10.90:8085/myapp:${CI_COMMIT_SHORT_SHA}"
 
 Explanation:
 Technical correction: the original example used the placeholder IMAGE, which is not a valid runnable image reference in this lesson. This job pulls the commit-tagged image from Nexus and starts it on DEV-2.
@@ -23,7 +23,7 @@ Technical correction: the original example used the placeholder IMAGE, which is 
 Options:
 - && = shell AND operator: Runs docker run only if docker pull succeeds.
 - -d = --detach (detach): Runs the container in the background.
-- 192.168.94.90:8085/myapp:${CI_COMMIT_SHORT_SHA} = image reference argument: Uses the Nexus registry path and the current short commit SHA.
+- 192.168.10.90:8085/myapp:${CI_COMMIT_SHORT_SHA} = image reference argument: Uses the Nexus registry path and the current short commit SHA.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -60,7 +60,7 @@ This configuration defines production and gives GitLab a URL to display for that
 ------------------------------------------------------------
 # environment:
   name: development
-  url: http://192.168.94.91:8088
+  url: http://192.168.10.91:8088
 
 Explanation:
 This configuration defines the development environment and its application URL on DEV-2.
@@ -141,7 +141,7 @@ This shows disk space used by Docker images, containers, local volumes, and buil
 
 ------------------------------------------------------------
 # variables:
-  IMAGE_NAME: "192.168.94.90:8085/myapp"
+  IMAGE_NAME: "192.168.10.90:8085/myapp"
 
 Explanation:
 This GitLab CI variable stores the Nexus image repository path used by the deployment jobs.
@@ -157,7 +157,7 @@ This GitLab CI configuration defines a deploy stage for the pipeline.
 
 ------------------------------------------------------------
 # variables:
-  IMAGE_NAME: "192.168.94.90:8085/myapp"
+  IMAGE_NAME: "192.168.10.90:8085/myapp"
 
 stages:
   - deploy
@@ -170,7 +170,7 @@ deploy_development:
     - echo "Environment=$CI_ENVIRONMENT_NAME"
     - echo "Image=${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-development 2>/dev/null || true
@@ -182,7 +182,7 @@ deploy_development:
       "
   environment:
     name: development
-    url: http://192.168.94.91:8088
+    url: http://192.168.10.91:8088
     deployment_tier: development
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
@@ -214,7 +214,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl -fsS http://192.168.94.91:8088/health
+# curl -fsS http://192.168.10.91:8088/health
 
 Explanation:
 This checks the development health endpoint and stays quiet on success while still showing errors.
@@ -233,7 +233,7 @@ Options:
   script:
     - echo "Deploying to production"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-production 2>/dev/null || true
@@ -245,7 +245,7 @@ Options:
       "
   environment:
     name: production
-    url: http://192.168.94.91:8089
+    url: http://192.168.10.91:8089
     deployment_tier: production
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
@@ -281,7 +281,7 @@ Options:
     - echo "Port=${DEPLOY_PORT}"
 
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
 
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
@@ -297,7 +297,7 @@ Options:
 
   environment:
     name: development
-    url: "http://192.168.94.91:8088"
+    url: "http://192.168.10.91:8088"
     deployment_tier: development
 
   rules:
@@ -332,7 +332,7 @@ Options:
     - echo "Port=${DEPLOY_PORT}"
 
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
 
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
@@ -348,7 +348,7 @@ Options:
 
   environment:
     name: production
-    url: "http://192.168.94.91:8089"
+    url: "http://192.168.10.91:8089"
     deployment_tier: production
 
   rules:
@@ -402,7 +402,7 @@ This lists currently running Docker containers.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl -i http://192.168.94.91:8088
+# curl -i http://192.168.10.91:8088
 
 Explanation:
 This requests the development application and includes the HTTP response headers in the output.
@@ -412,7 +412,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl -i http://192.168.94.91:8089
+# curl -i http://192.168.10.91:8089
 
 Explanation:
 This requests the production application and includes the HTTP response headers in the output.
@@ -422,7 +422,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl -fsS http://192.168.94.91:8089/health
+# curl -fsS http://192.168.10.91:8089/health
 
 Explanation:
 This checks the production health endpoint and stays quiet on success while still showing errors.
@@ -434,7 +434,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91
+# ssh deploy@192.168.10.91
 
 Explanation:
 This opens an SSH session to DEV-2 as the deploy user.
@@ -548,7 +548,7 @@ Options:
   - deploy
 
 variables:
-  IMAGE_NAME: "192.168.94.90:8085/myapp"
+  IMAGE_NAME: "192.168.10.90:8085/myapp"
 
 Explanation:
 This base GitLab CI configuration defines the deploy stage and the Nexus image repository used by the final deployment jobs.
@@ -564,7 +564,7 @@ This base GitLab CI configuration defines the deploy stage and the Nexus image r
     - echo "URL=$CI_ENVIRONMENT_URL"
     - echo "Port=$DEPLOY_PORT"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-development 2>/dev/null || true
@@ -576,7 +576,7 @@ This base GitLab CI configuration defines the deploy stage and the Nexus image r
       "
   environment:
     name: development
-    url: http://192.168.94.91:8088
+    url: http://192.168.10.91:8088
     deployment_tier: development
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
@@ -606,7 +606,7 @@ Options:
     - echo "URL=$CI_ENVIRONMENT_URL"
     - echo "Port=$DEPLOY_PORT"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-production 2>/dev/null || true
@@ -618,7 +618,7 @@ Options:
       "
   environment:
     name: production
-    url: http://192.168.94.91:8089
+    url: http://192.168.10.91:8089
     deployment_tier: production
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

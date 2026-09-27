@@ -18,10 +18,10 @@ This lab covers Docker image lifecycle management for GitLab CI/CD, with separat
 ## Lab Environment
 
 - Main host: DEV-1
-- DEV-1 IP: `192.168.94.90`
+- DEV-1 IP: `192.168.10.90`
 - GitLab Runner executor: Shell
 - Runner tag: `dev-shell`
-- Nexus Docker Registry: `192.168.94.90:8085`
+- Nexus Docker Registry: `192.168.10.90:8085`
 
 ## Pipeline Flow
 

@@ -13,8 +13,8 @@ This lab demonstrates how to move fast, low-cost validation checks earlier in a 
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90` — GitLab CE, GitLab Runner, CI/CD tools
-- **DEV-2:** `192.168.94.91` — deployment target
+- **DEV-1:** `192.168.10.90` — GitLab CE, GitLab Runner, CI/CD tools
+- **DEV-2:** `192.168.10.91` — deployment target
 - **Runner tag:** `dev-shell`
 - **Application port:** `18044`
 

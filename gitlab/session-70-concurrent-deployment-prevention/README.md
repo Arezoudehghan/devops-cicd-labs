@@ -16,12 +16,12 @@ This lab demonstrates how to prevent two GitLab pipelines from deploying to the 
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port `8085`
-- DEV-2 — `192.168.94.91`
+- DEV-2 — `192.168.10.91`
   - Docker deployment server
 
 Production target:
@@ -99,13 +99,13 @@ Remove the artificial delay after the concurrency test if it is not needed.
 The job deploys the image tagged with the current GitLab short commit SHA:
 
 ```text
-192.168.94.90:8085/myapp:<CI_COMMIT_SHORT_SHA>
+192.168.10.90:8085/myapp:<CI_COMMIT_SHORT_SHA>
 ```
 
 The deployment target is:
 
 ```text
-deploy@192.168.94.91
+deploy@192.168.10.91
 ```
 
 The resulting container is:
@@ -121,7 +121,7 @@ container port: 8080
 The Shell Runner must already be able to SSH to:
 
 ```text
-deploy@192.168.94.91
+deploy@192.168.10.91
 ```
 
 Do not commit SSH private keys, passwords, or production secrets to this repository.

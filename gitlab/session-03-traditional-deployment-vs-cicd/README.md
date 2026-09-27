@@ -4,8 +4,8 @@ Hands-on lab comparing a fully manual deployment with an automated GitLab CI/CD 
 
 ## Lab Architecture
 
-- **DEV-1 — 192.168.94.90:** GitLab CE, GitLab Runner (Shell executor), Docker, Git
-- **DEV-2 — 192.168.94.91:** Docker deployment server
+- **DEV-1 — 192.168.10.90:** GitLab CE, GitLab Runner (Shell executor), Docker, Git
+- **DEV-2 — 192.168.10.91:** Docker deployment server
 - **Application port:** `8083`
 - **Image:** `cicd-session3-app`
 - **Container:** `cicd-session3-app`

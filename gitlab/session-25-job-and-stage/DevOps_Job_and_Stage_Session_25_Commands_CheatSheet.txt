@@ -102,7 +102,7 @@ deploy_preview:
     - dev-shell
   script:
     - echo "All previous stages passed."
-    - echo "Deployment target would be DEV-2 at 192.168.94.91."
+    - echo "Deployment target would be DEV-2 at 192.168.10.91."
     - echo "Deployment preview completed."
 EOF
 
@@ -201,7 +201,7 @@ Prints a message showing that the health test passed.
 Explanation:
 Prints a message confirming that the earlier pipeline stages completed successfully.
 ------------------------------------------------------------
-# echo "Deployment target would be DEV-2 at 192.168.94.91."
+# echo "Deployment target would be DEV-2 at 192.168.10.91."
 
 Explanation:
 Prints the deployment-preview target server and IP address.

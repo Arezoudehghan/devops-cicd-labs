@@ -13,12 +13,12 @@ The comparison focuses on downtime, risk, resource usage, rollback, VM deploymen
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port `8085`
-- DEV-2 — `192.168.94.91`
+- DEV-2 — `192.168.10.91`
   - Docker deployment server
   - Prometheus
   - Grafana

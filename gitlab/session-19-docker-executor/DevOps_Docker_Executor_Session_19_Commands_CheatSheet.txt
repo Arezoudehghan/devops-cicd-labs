@@ -95,7 +95,7 @@ Prints a blank line. In this lesson it is used after the silent token input prom
 ------------------------------------------------------------
 # sudo gitlab-runner register \
   --non-interactive \
-  --url "http://192.168.94.90/" \
+  --url "http://192.168.10.90/" \
   --token "$RUNNER_TOKEN" \
   --executor "docker" \
   --docker-image "alpine:3.21" \
@@ -103,11 +103,11 @@ Prints a blank line. In this lesson it is used after the silent token input prom
   --description "dev-1-docker"
 
 Explanation:
-Registers a new GitLab Runner on DEV-1 using the Docker executor and alpine:3.21 as its default image. The Runner connects to GitLab at http://192.168.94.90/ and uses the authentication token stored in RUNNER_TOKEN.
+Registers a new GitLab Runner on DEV-1 using the Docker executor and alpine:3.21 as its default image. The Runner connects to GitLab at http://192.168.10.90/ and uses the authentication token stored in RUNNER_TOKEN.
 
 Options:
 - --non-interactive = non-interactive: Registers the Runner without asking interactive setup questions.
-- --url = URL: Sets the GitLab instance URL to http://192.168.94.90/.
+- --url = URL: Sets the GitLab instance URL to http://192.168.10.90/.
 - --token = token: Uses the value of $RUNNER_TOKEN as the Runner authentication token.
 - --executor = executor: Selects docker as the Runner executor.
 - --docker-image = Docker image: Sets alpine:3.21 as the default Docker image for jobs that do not define their own image.

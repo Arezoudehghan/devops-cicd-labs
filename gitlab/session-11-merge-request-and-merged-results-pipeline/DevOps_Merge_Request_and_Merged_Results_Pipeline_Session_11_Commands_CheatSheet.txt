@@ -239,7 +239,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git remote add origin http://192.168.94.90/root/cicd-session11-merge-pipeline.git
+# git remote add origin http://192.168.10.90/root/cicd-session11-merge-pipeline.git
 
 Explanation:
 Adds the GitLab repository URL as a remote named `origin`.

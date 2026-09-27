@@ -15,7 +15,7 @@ This lab introduces the core GitLab CI/CD concepts used throughout the course.
 ## Lab Architecture
 
 ### DEV-1
-- IP: `192.168.94.90`
+- IP: `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Shell Executor
@@ -24,7 +24,7 @@ This lab introduces the core GitLab CI/CD concepts used throughout the course.
 - Nexus
 
 ### DEV-2
-- IP: `192.168.94.91`
+- IP: `192.168.10.91`
 - Docker deployment server
 - Monitoring services used in later sessions
 

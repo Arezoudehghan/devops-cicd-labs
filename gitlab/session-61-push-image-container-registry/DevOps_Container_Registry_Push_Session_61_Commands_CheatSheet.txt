@@ -188,25 +188,25 @@ Logs out from the registry stored in $REGISTRY_URL and prevents a logout failure
 Options:
 - || = OR operator: Runs true only if docker logout returns a non-zero exit status.
 ------------------------------------------------------------
-# docker build -t 192.168.94.90:8085/myapp:4f21a6c .
+# docker build -t 192.168.10.90:8085/myapp:4f21a6c .
 
 Explanation:
-Builds an image from the current directory and tags it for the Nexus registry at 192.168.94.90:8085.
+Builds an image from the current directory and tags it for the Nexus registry at 192.168.10.90:8085.
 
 Options:
 - -t = --tag (tag): Sets the image name and tag.
 - . = current directory: Uses the current directory as the Docker build context.
 ------------------------------------------------------------
-# docker push 192.168.94.90:8085/myapp:4f21a6c
+# docker push 192.168.10.90:8085/myapp:4f21a6c
 
 Explanation:
-Pushes the myapp:4f21a6c image to the Nexus registry at 192.168.94.90:8085.
+Pushes the myapp:4f21a6c image to the Nexus registry at 192.168.10.90:8085.
 
 ------------------------------------------------------------
-# docker pull 192.168.94.90:8085/myapp:4f21a6c
+# docker pull 192.168.10.90:8085/myapp:4f21a6c
 
 Explanation:
-Pulls the exact myapp:4f21a6c image from the Nexus registry at 192.168.94.90:8085.
+Pulls the exact myapp:4f21a6c image from the Nexus registry at 192.168.10.90:8085.
 
 ------------------------------------------------------------
 # echo "$CI_JOB_TOKEN" | docker login "$CI_REGISTRY" \
@@ -230,7 +230,7 @@ Attempts to push the image but makes the shell expression succeed even if the pu
 Options:
 - || = OR operator: Runs true only if docker push returns a non-zero exit status.
 ------------------------------------------------------------
-# curl -v http://192.168.94.90:8085/v2/
+# curl -v http://192.168.10.90:8085/v2/
 
 Explanation:
 Sends an HTTP request to the registry API endpoint and prints verbose connection and protocol details.

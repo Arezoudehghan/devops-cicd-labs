@@ -20,7 +20,7 @@ Options:
 - -p = --parents (parents): Create parent directories as needed and do not report an error if the directory already exists.
 ------------------------------------------------------------
 ------------------------------------------------------------
-# git clone http://192.168.94.90/<YOUR_NAMESPACE>/mr-pipeline-lab.git
+# git clone http://192.168.10.90/<YOUR_NAMESPACE>/mr-pipeline-lab.git
 
 Explanation:
 Clones the mr-pipeline-lab Git repository from the GitLab server into a new local directory.

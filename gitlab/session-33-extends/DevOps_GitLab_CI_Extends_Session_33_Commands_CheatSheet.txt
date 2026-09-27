@@ -163,10 +163,10 @@ Runs tests discovered by pytest using its default discovery behavior.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# ssh root@192.168.94.90
+# ssh root@192.168.10.90
 
 Explanation:
-Starts an SSH session to 192.168.94.90 using the root account.
+Starts an SSH session to 192.168.10.90 using the root account.
 ------------------------------------------------------------
 
 ------------------------------------------------------------

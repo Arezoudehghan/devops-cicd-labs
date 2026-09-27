@@ -6,13 +6,13 @@ This lab demonstrates secure SSH-based deployment preparation in GitLab CI/CD.
 
 ## Lab Architecture
 
-- DEV-1: `192.168.94.90`
+- DEV-1: `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Shell Executor
   - Runner tag: `dev-shell`
 
-- DEV-2: `192.168.94.91`
+- DEV-2: `192.168.10.91`
   - Deployment target
   - SSH server
   - Dedicated deployment user: `deploy`
@@ -51,7 +51,7 @@ GitLab Pipeline
   -> start ssh-agent
   -> load SSH_PRIVATE_KEY
   -> install verified known_hosts
-  -> SSH to deploy@192.168.94.91
+  -> SSH to deploy@192.168.10.91
   -> run remote verification commands
 ```
 

@@ -51,7 +51,7 @@ Changes the current directory to the gitlab-labs directory inside the current us
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git clone http://192.168.94.90/root/session41-dag-lab.git
+# git clone http://192.168.10.90/root/session41-dag-lab.git
 
 Explanation:
 Clones the session41-dag-lab Git repository from the GitLab server into the current directory.

@@ -6,7 +6,7 @@ This lab demonstrates how GitLab CI/CD runs `before_script`, `script`, and `afte
 
 ## Lab Environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Runner tag: `dev-shell`

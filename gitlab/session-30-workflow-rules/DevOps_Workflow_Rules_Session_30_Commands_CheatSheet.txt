@@ -29,7 +29,7 @@ Pushes the v1.0.0 ref, used as a tag in this lesson, to the remote named origin.
 Explanation:
 Changes the current shell directory to /root/gitlab-labs.
 ------------------------------------------------------------
-# git clone http://192.168.94.90/root/cicd-session30-workflow-rules.git
+# git clone http://192.168.10.90/root/cicd-session30-workflow-rules.git
 
 Explanation:
 Clones the Git repository from the specified GitLab HTTP URL into a new local directory.

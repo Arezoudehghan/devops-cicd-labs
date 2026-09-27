@@ -31,13 +31,13 @@ Explanation:
 Looks up the docker group from the system account databases configured through NSS.
 
 ------------------------------------------------------------
-# docker login 192.168.94.90:8085
+# docker login 192.168.10.90:8085
 
 Explanation:
-Authenticates Docker to the Nexus Docker registry at 192.168.94.90:8085.
+Authenticates Docker to the Nexus Docker registry at 192.168.10.90:8085.
 
 ------------------------------------------------------------
-# printf '%s' "$NEXUS_PASSWORD" | docker login 192.168.94.90:8085 --username "$NEXUS_USER" --password-stdin
+# printf '%s' "$NEXUS_PASSWORD" | docker login 192.168.10.90:8085 --username "$NEXUS_USER" --password-stdin
 
 Explanation:
 Sends the Nexus password through standard input and logs Docker in without placing the password directly in the command arguments.
@@ -57,7 +57,7 @@ Options:
 - -u = --username (username): Set the registry username to user.
 - -p = --password (password): Set the registry password to password.
 ------------------------------------------------------------
-# docker pull 192.168.94.90:8085/myapp:4f21a6c3
+# docker pull 192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Downloads the myapp image with tag 4f21a6c3 from the Nexus Docker registry.
@@ -130,7 +130,7 @@ Options:
 # docker run -d \
   --name myapp \
   -p 8088:5000 \
-  192.168.94.90:8085/myapp:4f21a6c3
+  192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Creates and starts myapp in the background from image tag 4f21a6c3 and publishes host port 8088 to container port 5000.
@@ -178,7 +178,7 @@ Options:
   --name myapp \
   -p 8088:5000 \
   -e APP_ENV=production \
-  192.168.94.90:8085/myapp:4f21a6c3
+  192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Runs myapp in the background, publishes port 8088 to 5000, and sets APP_ENV=production inside the container.
@@ -196,7 +196,7 @@ Options:
   -e APP_ENV=production \
   -e LOG_LEVEL=info \
   -e APP_VERSION=4f21a6c3 \
-  192.168.94.90:8085/myapp:4f21a6c3
+  192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Runs myapp with three environment variables and publishes host port 8088 to container port 5000.
@@ -225,7 +225,7 @@ Runs printenv inside myapp and prints the value of APP_ENV.
   --restart unless-stopped \
   -p 8088:5000 \
   -e APP_ENV=production \
-  192.168.94.90:8085/myapp:4f21a6c3
+  192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Runs myapp in the background with a restart policy, port publishing, and the production environment setting.
@@ -244,7 +244,7 @@ Options:
   -p 8088:5000 \
   -e APP_ENV=production \
   -e APP_VERSION=4f21a6c3 \
-  192.168.94.90:8085/myapp:4f21a6c3
+  192.168.10.90:8085/myapp:4f21a6c3
 
 Explanation:
 Runs myapp with restart policy, port publishing, production environment, and a version value matching image tag 4f21a6c3.
@@ -281,10 +281,10 @@ Explanation:
 Prints the exit status of the most recently completed foreground pipeline.
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91 "
+# ssh deploy@192.168.10.91 "
         set -e
 
-        docker pull 192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+        docker pull 192.168.10.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
 
         docker stop $CI_PROJECT_NAME || true
         docker rm $CI_PROJECT_NAME || true
@@ -295,7 +295,7 @@ Prints the exit status of the most recently completed foreground pipeline.
           -p 8088:5000 \
           -e APP_ENV=production \
           -e APP_VERSION=$CI_COMMIT_SHORT_SHA \
-          192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+          192.168.10.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
       "
 
 Explanation:
@@ -333,10 +333,10 @@ Explanation:
 Pauses the shell for 5 seconds.
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91 "
+# ssh deploy@192.168.10.91 "
         set -e
 
-        IMAGE='192.168.94.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA'
+        IMAGE='192.168.10.90:8085/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA'
         CONTAINER='$CI_PROJECT_NAME'
 
         echo 'Pulling new image...'
@@ -389,7 +389,7 @@ Options:
   --restart unless-stopped \
   -p 8088:5000 \
   -e APP_ENV=production \
-  192.168.94.90:8085/myapp:a31bc921
+  192.168.10.90:8085/myapp:a31bc921
 
 Explanation:
 Runs the earlier image tag a31bc921 as myapp with the same production port mapping and restart policy.
@@ -402,7 +402,7 @@ Options:
 - -e = --env (environment): Set APP_ENV=production inside the container.
 - \ = shell line continuation: Continue the same command on the next line.
 ------------------------------------------------------------
-# curl -v http://192.168.94.90:8085/
+# curl -v http://192.168.10.90:8085/
 
 Explanation:
 Connects to the Nexus Docker registry endpoint and prints verbose request and connection details.
@@ -410,10 +410,10 @@ Connects to the Nexus Docker registry endpoint and prints verbose request and co
 Options:
 - -v = --verbose (verbose): Show detailed connection and protocol information.
 ------------------------------------------------------------
-# nc -vz 192.168.94.90 8085
+# nc -vz 192.168.10.90 8085
 
 Explanation:
-Tests whether a TCP connection can be made to 192.168.94.90 on port 8085 without sending application data.
+Tests whether a TCP connection can be made to 192.168.10.90 on port 8085 without sending application data.
 
 Options:
 - -v = verbose mode: Print more connection information.
@@ -425,7 +425,7 @@ Explanation:
 Displays detailed Docker metadata and runtime configuration for the myapp container.
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91
+# ssh deploy@192.168.10.91
 
 Explanation:
 Opens an SSH session to DEV-2 as the deploy user.

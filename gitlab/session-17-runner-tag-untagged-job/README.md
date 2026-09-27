@@ -14,7 +14,7 @@ This lab demonstrates how GitLab matches CI/CD jobs to GitLab Runners by using R
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1
 - **Executor:** `shell`

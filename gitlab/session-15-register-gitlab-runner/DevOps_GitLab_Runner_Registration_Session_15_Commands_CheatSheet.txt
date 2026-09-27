@@ -26,7 +26,7 @@ Checks whether the gitlab-runner systemd service is currently active.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl --noproxy '*' -I http://192.168.94.90/users/sign_in
+# curl --noproxy '*' -I http://192.168.10.90/users/sign_in
 
 Explanation:
 Sends an HTTP request directly to the GitLab sign-in URL without using a proxy and returns only response headers.
@@ -58,7 +58,7 @@ Prints a blank line to the terminal.
 ------------------------------------------------------------
 # sudo gitlab-runner register \
   --non-interactive \
-  --url "http://192.168.94.90" \
+  --url "http://192.168.10.90" \
   --token "$RUNNER_TOKEN" \
   --executor "shell" \
   --description "dev-1-s15-shell"
@@ -68,7 +68,7 @@ Registers a GitLab Runner non-interactively with the GitLab instance using the s
 
 Options:
 - --non-interactive = non-interactive mode: Performs registration without asking interactive questions.
-- --url "http://192.168.94.90" = GitLab URL: Sets the GitLab instance URL used by the Runner.
+- --url "http://192.168.10.90" = GitLab URL: Sets the GitLab instance URL used by the Runner.
 - --token "$RUNNER_TOKEN" = authentication token: Uses the value stored in RUNNER_TOKEN to authenticate the Runner.
 - --executor "shell" = executor: Configures the Runner to execute jobs with the Shell executor.
 - --description "dev-1-s15-shell" = description: Sets the Runner configuration description to dev-1-s15-shell.
@@ -233,7 +233,7 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl --noproxy '*' -I http://192.168.94.90
+# curl --noproxy '*' -I http://192.168.10.90
 
 Explanation:
 Sends an HTTP request directly to the GitLab host without using a proxy and returns only response headers.

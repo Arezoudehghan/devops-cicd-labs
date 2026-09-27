@@ -15,13 +15,13 @@ This lab demonstrates how to register a GitLab Runner with a self-managed GitLab
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1
 - **Runner name:** `dev-1-s15-shell`
 - **Runner tag:** `s15-shell`
 - **Executor:** `shell`
-- **GitLab URL:** `http://192.168.94.90`
+- **GitLab URL:** `http://192.168.10.90`
 - **Runner config:** `/etc/gitlab-runner/config.toml`
 
 DEV-2 is not required for this session because this lab focuses on Runner registration and job execution on DEV-1.
@@ -64,7 +64,7 @@ Pipeline runs on DEV-1
 The Runner is registered against:
 
 ```text
-http://192.168.94.90
+http://192.168.10.90
 ```
 
 The authentication token is entered interactively into a shell variable and is not stored in this repository.

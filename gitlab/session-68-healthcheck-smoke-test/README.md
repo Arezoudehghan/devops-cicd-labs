@@ -16,11 +16,11 @@ This lab adds deployment verification to the GitLab CI/CD flow by checking Docke
 
 ## Lab Environment
 
-- DEV-1: `192.168.94.90`
+- DEV-1: `192.168.10.90`
 - GitLab Runner executor: Shell
 - Runner tag: `dev-shell`
-- Nexus Docker Registry: `192.168.94.90:8085`
-- DEV-2: `192.168.94.91`
+- Nexus Docker Registry: `192.168.10.90:8085`
+- DEV-2: `192.168.10.91`
 - Application published port: `8088`
 - Application container port: `5000`
 

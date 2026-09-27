@@ -15,8 +15,8 @@ This lab reviews the Git concepts and commands a DevOps engineer needs before wo
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90` — working Git repository
-- **DEV-2:** `192.168.94.91` — bare Git remote repository
+- **DEV-1:** `192.168.10.90` — working Git repository
+- **DEV-2:** `192.168.10.91` — bare Git remote repository
 - **Working repository:** `/opt/git-labs/session6`
 - **Bare remote repository:** `/srv/git/session6.git`
 - **Remote SSH user:** `deploy`

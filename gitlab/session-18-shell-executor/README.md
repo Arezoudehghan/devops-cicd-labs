@@ -15,7 +15,7 @@ This lab demonstrates how the GitLab Runner Shell executor runs CI/CD jobs direc
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1
 - **Runner tag:** `dev-shell`

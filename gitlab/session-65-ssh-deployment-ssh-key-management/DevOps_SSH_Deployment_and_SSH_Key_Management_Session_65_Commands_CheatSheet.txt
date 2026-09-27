@@ -1,13 +1,13 @@
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91
+# ssh deploy@192.168.10.91
 
 Explanation:
-Connects to 192.168.94.91 as the deploy user with SSH.
+Connects to 192.168.10.91 as the deploy user with SSH.
 ------------------------------------------------------------
-# ssh root@192.168.94.91
+# ssh root@192.168.10.91
 
 Explanation:
-Connects to 192.168.94.91 as the root user with SSH.
+Connects to 192.168.10.91 as the root user with SSH.
 ------------------------------------------------------------
 # hostname
 
@@ -97,7 +97,7 @@ Changes the owner and group of /home/deploy/.ssh and everything inside it to dep
 Options:
 - -R = --recursive (recursive): applies the ownership change to the directory and all nested files and directories.
 ------------------------------------------------------------
-# ssh -i gitlab-ci-dev2 deploy@192.168.94.91
+# ssh -i gitlab-ci-dev2 deploy@192.168.10.91
 
 Explanation:
 Connects to DEV-2 as deploy using gitlab-ci-dev2 as the SSH private key.
@@ -119,15 +119,15 @@ Options:
 - -l = fingerprint display: shows the fingerprint of the specified public key.
 - -f = key file: reads the key from /etc/ssh/ssh_host_ed25519_key.pub.
 ------------------------------------------------------------
-# ssh-keyscan 192.168.94.91
+# ssh-keyscan 192.168.10.91
 
 Explanation:
-Retrieves the public SSH host keys advertised by 192.168.94.91.
+Retrieves the public SSH host keys advertised by 192.168.10.91.
 ------------------------------------------------------------
-# ssh -o StrictHostKeyChecking=no deploy@192.168.94.91
+# ssh -o StrictHostKeyChecking=no deploy@192.168.10.91
 
 Explanation:
-Connects to 192.168.94.91 as deploy while setting StrictHostKeyChecking to no.
+Connects to 192.168.10.91 as deploy while setting StrictHostKeyChecking to no.
 
 Options:
 - -o = SSH configuration option: passes a client configuration setting on the command line.
@@ -143,10 +143,10 @@ Prints the current value of the MY_VAR shell variable.
 Explanation:
 Adds the private key file referenced by SSH_PRIVATE_KEY to the running SSH agent.
 ------------------------------------------------------------
-# ssh -i "$SSH_PRIVATE_KEY" deploy@192.168.94.91
+# ssh -i "$SSH_PRIVATE_KEY" deploy@192.168.10.91
 
 Explanation:
-Connects to 192.168.94.91 as deploy using the private key file whose path is stored in SSH_PRIVATE_KEY.
+Connects to 192.168.10.91 as deploy using the private key file whose path is stored in SSH_PRIVATE_KEY.
 
 Options:
 - -i = identity file: selects the file referenced by SSH_PRIVATE_KEY as the SSH private key.

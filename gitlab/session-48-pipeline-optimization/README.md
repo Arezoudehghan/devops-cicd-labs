@@ -20,10 +20,10 @@ This lab demonstrates practical GitLab CI/CD pipeline optimization by reducing u
 
 ## Lab Environment
 
-- DEV-1 IP: `192.168.94.90`
+- DEV-1 IP: `192.168.10.90`
 - GitLab Runner executor: Shell
 - Runner tag: `dev-shell`
-- DEV-2 IP: `192.168.94.91`
+- DEV-2 IP: `192.168.10.91`
 
 ## Lab Goal
 

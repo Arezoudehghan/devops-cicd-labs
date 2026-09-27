@@ -9,14 +9,14 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# docker pull 192.168.94.90:8085/myapp:15ab32c
+# docker pull 192.168.10.90:8085/myapp:15ab32c
 
 Explanation:
 Technical correction: the lesson later used <VERSION> as a non-executable placeholder. This concrete command, also used earlier in the lesson, pulls the specified immutable image tag from the Nexus registry.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# docker run -d --name myapp --restart unless-stopped -p 8088:5000 192.168.94.90:8085/myapp:15ab32c
+# docker run -d --name myapp --restart unless-stopped -p 8088:5000 192.168.10.90:8085/myapp:15ab32c
 
 Explanation:
 Technical correction: the lesson showed docker run ... as an incomplete placeholder. This executable form starts the previous application image with the same container, restart, and port pattern used later in the lesson.

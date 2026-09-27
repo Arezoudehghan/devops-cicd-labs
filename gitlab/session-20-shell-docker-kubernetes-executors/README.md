@@ -21,7 +21,7 @@ By the end of this lab you should be able to explain:
 
 ### DEV-1
 
-IP: `192.168.94.90`
+IP: `192.168.10.90`
 
 Services used in the course lab:
 
@@ -33,7 +33,7 @@ Services used in the course lab:
 
 ### DEV-2
 
-IP: `192.168.94.91`
+IP: `192.168.10.91`
 
 DEV-2 is the deployment/monitoring target used by the wider course. It is not required for the basic executor-comparison pipeline in this session.
 

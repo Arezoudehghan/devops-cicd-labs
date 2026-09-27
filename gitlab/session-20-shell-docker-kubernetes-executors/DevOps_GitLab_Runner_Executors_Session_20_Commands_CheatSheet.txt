@@ -96,10 +96,10 @@ Runs a Gitleaks directory scan using the command's default directory behavior.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91
+# ssh deploy@192.168.10.91
 
 Explanation:
-Starts an SSH session to 192.168.94.91 as the deploy user.
+Starts an SSH session to 192.168.10.91 as the deploy user.
 ------------------------------------------------------------
 
 ------------------------------------------------------------

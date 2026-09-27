@@ -6,11 +6,11 @@ Developer → Git → GitLab → GitLab Runner → Docker Build → Test → Dep
 
 ## Lab architecture
 
-- DEV-1: `192.168.94.90`
+- DEV-1: `192.168.10.90`
   - GitLab CE
   - GitLab Runner (Shell executor, tag: `dev-shell`)
   - Docker
-- DEV-2: `192.168.94.91`
+- DEV-2: `192.168.10.91`
   - Docker deploy server
 - Corporate proxy: `http://192.168.95.204:2081`
 - Application host port: `8088`

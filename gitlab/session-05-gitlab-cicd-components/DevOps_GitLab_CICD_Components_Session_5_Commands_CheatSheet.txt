@@ -210,7 +210,7 @@ stages:
 
 variables:
   APP_NAME: "cicd-session5-components"
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_USER: "deploy"
 
 default:
@@ -408,7 +408,7 @@ Options:
 
 ------------------------------------------------------------
 # git remote add origin \
-  http://192.168.94.90/root/cicd-session5-components.git
+  http://192.168.10.90/root/cicd-session5-components.git
 
 Explanation:
 Adds a Git remote named origin that points to the GitLab repository at the specified URL.
@@ -482,10 +482,10 @@ Options:
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# ssh deploy@192.168.94.91
+# ssh deploy@192.168.10.91
 
 Explanation:
-Starts an SSH connection to 192.168.94.91 using the remote username deploy.
+Starts an SSH connection to 192.168.10.91 using the remote username deploy.
 ------------------------------------------------------------
 
 ------------------------------------------------------------

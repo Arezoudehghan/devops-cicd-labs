@@ -17,12 +17,12 @@ This lab demonstrates manual and automatic rollback for a Docker application dep
 
 ## Lab Architecture
 
-- DEV-1 — `192.168.94.90`
+- DEV-1 — `192.168.10.90`
   - GitLab CE
   - GitLab Runner
   - Docker
   - Nexus Registry on port `8085`
-- DEV-2 — `192.168.94.91`
+- DEV-2 — `192.168.10.91`
   - Docker deployment server
 
 Production target:
@@ -87,7 +87,7 @@ previous_version = v1
 The deployment uses the full Git commit SHA:
 
 ```text
-192.168.94.90:8085/myapp:<CI_COMMIT_SHA>
+192.168.10.90:8085/myapp:<CI_COMMIT_SHA>
 ```
 
 Do not rely on `latest` as the only production rollback reference because it is mutable.
@@ -120,7 +120,7 @@ SSH_KNOWN_HOSTS
 The Shell Runner must already be able to SSH to:
 
 ```text
-deploy@192.168.94.91
+deploy@192.168.10.91
 ```
 
 Do not commit SSH private keys, passwords, or registry secrets to the repository.

@@ -38,7 +38,7 @@ Options:
 ------------------------------------------------------------
 # curl \
   -fsS \
-  http://192.168.94.91:8083/
+  http://192.168.10.91:8083/
 
 Explanation:
 Technical correction: the earlier "curl ..." example was incomplete. This complete command requests the deployed application and fails clearly when the HTTP request is unsuccessful.
@@ -280,11 +280,11 @@ Options:
 ------------------------------------------------------------
 # sudo ssh-keyscan \
   -t ed25519 \
-  192.168.94.91 \
+  192.168.10.91 \
   > /root/.ssh/cicd-session3-known-hosts
 
 Explanation:
-Retrieves the Ed25519 SSH host key from 192.168.94.91 and writes it to the Session 3 known-hosts file.
+Retrieves the Ed25519 SSH host key from 192.168.10.91 and writes it to the Session 3 known-hosts file.
 
 Options:
 - -t = key type: Request only the ed25519 host-key type.
@@ -310,7 +310,7 @@ Options:
   -o BatchMode=yes \
   -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
   -o StrictHostKeyChecking=yes \
-  deploy@192.168.94.91 \
+  deploy@192.168.10.91 \
   'id && hostname && docker version'
 
 Explanation:
@@ -480,7 +480,7 @@ Options:
   -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
   -o StrictHostKeyChecking=yes \
   /tmp/cicd-session3-v1.tar.gz \
-  deploy@192.168.94.91:/tmp/
+  deploy@192.168.10.91:/tmp/
 
 Explanation:
 Copies the manual deployment archive to DEV-2 using the dedicated SSH identity and verified host key.
@@ -498,7 +498,7 @@ Options:
   -o IdentitiesOnly=yes \
   -o UserKnownHostsFile=/root/.ssh/cicd-session3-known-hosts \
   -o StrictHostKeyChecking=yes \
-  deploy@192.168.94.91
+  deploy@192.168.10.91
 
 Explanation:
 Opens an interactive SSH session to DEV-2 using the dedicated Session 3 deployment key.
@@ -621,7 +621,7 @@ Options:
 
 ------------------------------------------------------------
 # git remote add origin \
-  git@192.168.94.90:root/cicd-session3.git
+  git@192.168.10.90:root/cicd-session3.git
 
 Explanation:
 Adds the GitLab repository as a remote named origin.
@@ -664,7 +664,7 @@ variables:
 
   IMAGE_NAME: "cicd-session3-app"
 
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
 
   DEPLOY_USER: "deploy"
 
@@ -832,7 +832,7 @@ deploy_production:
   environment:
 
     name: production
-    url: http://192.168.94.91:8083
+    url: http://192.168.10.91:8083
 GITLAB_CI
 
 Explanation:

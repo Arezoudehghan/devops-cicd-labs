@@ -19,17 +19,17 @@ This lab deploys a versioned Docker image from Nexus to the DEV-2 deployment ser
 
 ### DEV-1
 
-- IP: `192.168.94.90`
+- IP: `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Shell executor
 - Runner tag: `dev-shell`
 - Docker
-- Nexus Docker Registry: `192.168.94.90:8085`
+- Nexus Docker Registry: `192.168.10.90:8085`
 
 ### DEV-2
 
-- IP: `192.168.94.91`
+- IP: `192.168.10.91`
 - Docker deployment server
 - Deploy user: `deploy`
 - Deployment path: `/opt/cicd-app`
@@ -62,7 +62,7 @@ The image tag is based on `CI_COMMIT_SHORT_SHA` instead of `latest`.
 Example:
 
 ```text
-192.168.94.90:8085/cicd-app:83d521a
+192.168.10.90:8085/cicd-app:83d521a
 ```
 
 This keeps each deployment traceable to a Git commit and makes rollback possible by selecting the previous image tag.
@@ -78,10 +78,10 @@ This keeps each deployment traceable to a Git commit and makes rollback possible
 
 The pipeline expects these values to be configured in GitLab CI/CD variables:
 
-- `DEPLOY_HOST=192.168.94.91`
+- `DEPLOY_HOST=192.168.10.91`
 - `DEPLOY_USER=deploy`
 - `DEPLOY_PATH=/opt/cicd-app`
-- `NEXUS_REGISTRY=192.168.94.90:8085`
+- `NEXUS_REGISTRY=192.168.10.90:8085`
 - `NEXUS_USER`
 - `NEXUS_PASSWORD`
 - `APP_PORT=8088`

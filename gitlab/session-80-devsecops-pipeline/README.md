@@ -24,16 +24,16 @@ Deploy
 
 ## Lab Architecture
 
-### DEV-1 — 192.168.94.90
+### DEV-1 — 192.168.10.90
 
 - GitLab CE
 - GitLab Runner with tag `dev-shell`
 - Docker
 - Gitleaks
 - Trivy
-- Nexus Docker Registry on `192.168.94.90:8085`
+- Nexus Docker Registry on `192.168.10.90:8085`
 
-### DEV-2 — 192.168.94.91
+### DEV-2 — 192.168.10.91
 
 - Docker deployment host
 - SSH user: `deploy`
@@ -59,7 +59,7 @@ Deploy
 The pipeline tags each image with `CI_COMMIT_SHORT_SHA`:
 
 ```text
-192.168.94.90:8085/<project-name>:<short-commit-sha>
+192.168.10.90:8085/<project-name>:<short-commit-sha>
 ```
 
 ## Files

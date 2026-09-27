@@ -6,12 +6,12 @@ This lab focuses on GitLab CI/CD variables, variable scope, predefined variables
 
 ## Lab Environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - GitLab CE
 - GitLab Runner
 - Runner tag: `dev-shell`
 - Executor: `shell`
-- **DEV-2:** `192.168.94.91`
+- **DEV-2:** `192.168.10.91`
 
 ## Learning Goals
 
@@ -56,7 +56,7 @@ The pipeline defines these non-sensitive values in YAML:
 variables:
   APP_NAME: "cicd-session27-app"
   APP_ENV: "lab"
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_PORT: "8088"
 ```
 

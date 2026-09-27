@@ -146,7 +146,7 @@ Adds a remote named origin using the GitLab SSH repository URL. Replace YOUR_GIT
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# git remote add origin git@192.168.94.90:USERNAME/git-session7-lab.git
+# git remote add origin git@192.168.10.90:USERNAME/git-session7-lab.git
 
 Explanation:
 Adds a remote named origin that points to the shown GitLab SSH repository path. Replace USERNAME with the actual GitLab namespace when needed.

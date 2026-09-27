@@ -31,7 +31,7 @@ Trivy Scan
 
 ## Lab Environment
 
-### DEV-1 — 192.168.94.90
+### DEV-1 — 192.168.10.90
 
 - GitLab CE
 - GitLab Runner

@@ -16,14 +16,14 @@ This lab covers installing GitLab Runner on Linux, understanding the Runner serv
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1 for the lab
 - **Runner executor:** Shell
 - **Runner tag:** `dev-shell`
 - **Docker:** installed on DEV-1
 - **Nexus:** hosted on DEV-1
-- **DEV-2:** `192.168.94.91` for later deployment and monitoring labs
+- **DEV-2:** `192.168.10.91` for later deployment and monitoring labs
 
 > In production, GitLab Runner should preferably run on a separate host from the GitLab server. DEV-1 combines them only because this is a two-VM training lab.
 
@@ -36,7 +36,7 @@ Developer
     v
 +-----------------------------+
 | DEV-1                       |
-| 192.168.94.90               |
+| 192.168.10.90               |
 |                             |
 | GitLab CE                   |
 | GitLab Runner               |
@@ -48,7 +48,7 @@ Developer
               v
 +-----------------------------+
 | DEV-2                       |
-| 192.168.94.91               |
+| 192.168.10.91               |
 |                             |
 | Docker                      |
 | Application                 |

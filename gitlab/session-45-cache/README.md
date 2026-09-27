@@ -22,7 +22,7 @@ This lab demonstrates the GitLab CI/CD `cache` feature and shows how cached file
 ## Lab Environment
 
 - Main host: DEV-1
-- DEV-1 IP: `192.168.94.90`
+- DEV-1 IP: `192.168.10.90`
 - GitLab Runner executor: Shell
 - Runner tag: `dev-shell`
 - Default local Shell Runner cache root: `/home/gitlab-runner/cache`

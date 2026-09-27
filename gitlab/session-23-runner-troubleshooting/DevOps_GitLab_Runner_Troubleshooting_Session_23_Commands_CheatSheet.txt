@@ -175,7 +175,7 @@ Checks whether the GitLab Runner service is currently active.
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# curl -I http://192.168.94.90
+# curl -I http://192.168.10.90
 
 Explanation:
 Requests only the HTTP response headers from the GitLab server address to test basic HTTP reachability.

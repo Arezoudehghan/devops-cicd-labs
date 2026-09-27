@@ -300,7 +300,7 @@ Options:
 Explanation:
 Changes the current directory to the gitlab-labs directory inside the current user's home directory.
 ------------------------------------------------------------
-# git clone 'http://192.168.94.90/<YOUR-NAMESPACE>/cicd-session18-shell-executor.git'
+# git clone 'http://192.168.10.90/<YOUR-NAMESPACE>/cicd-session18-shell-executor.git'
 
 Explanation:
 Technical correction: The URL is quoted so the lesson placeholder <YOUR-NAMESPACE> is not parsed by the shell as redirection syntax. Replace <YOUR-NAMESPACE> with the real GitLab namespace before running the command.

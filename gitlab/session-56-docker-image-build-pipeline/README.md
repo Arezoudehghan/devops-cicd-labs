@@ -87,7 +87,7 @@ docker image ls "$IMAGE_NAME"
 ### DEV-1
 
 ```text
-192.168.94.90
+192.168.10.90
 GitLab CE
 GitLab Runner
 Docker

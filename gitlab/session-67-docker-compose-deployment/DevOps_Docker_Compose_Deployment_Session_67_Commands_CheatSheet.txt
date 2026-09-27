@@ -1,5 +1,5 @@
 ------------------------------------------------------------
-# docker pull 192.168.94.90:8085/cicd-app:a83fc21
+# docker pull 192.168.10.90:8085/cicd-app:a83fc21
 
 Explanation:
 Pulls the specified image and tag from the Docker registry to the local Docker host.
@@ -18,7 +18,7 @@ Removes the stopped container named cicd-app.
   --name cicd-app \
   -p 8088:5000 \
   --restart unless-stopped \
-  192.168.94.90:8085/cicd-app:a83fc21
+  192.168.10.90:8085/cicd-app:a83fc21
 
 Explanation:
 Starts the specified image as a new container named cicd-app, publishes port 8088 to container port 5000, and configures an automatic restart policy.
@@ -361,10 +361,10 @@ Requests the local health endpoint and includes the HTTP response headers in the
 Options:
 - -i = --include (include): Include HTTP response headers in the output.
 ------------------------------------------------------------
-# docker login 192.168.94.90:8085
+# docker login 192.168.10.90:8085
 
 Explanation:
-Starts an interactive Docker login to the Nexus registry at 192.168.94.90:8085.
+Starts an interactive Docker login to the Nexus registry at 192.168.10.90:8085.
 ------------------------------------------------------------
 # docker compose config --images
 

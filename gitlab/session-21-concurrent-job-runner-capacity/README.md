@@ -17,7 +17,7 @@ By the end of this lab you should be able to explain:
 
 ### DEV-1
 
-IP: `192.168.94.90`
+IP: `192.168.10.90`
 
 Services used in the course lab:
 

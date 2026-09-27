@@ -18,7 +18,7 @@ This lab demonstrates how to register and use a GitLab Runner with the Docker ex
 
 ## Lab environment
 
-- **DEV-1:** `192.168.94.90`
+- **DEV-1:** `192.168.10.90`
 - **GitLab CE:** hosted on DEV-1
 - **GitLab Runner:** installed on DEV-1
 - **Existing Shell Runner tag:** `dev-shell`
@@ -26,7 +26,7 @@ This lab demonstrates how to register and use a GitLab Runner with the Docker ex
 - **Docker Runner tag:** `docker-executor`
 - **Executor:** `docker`
 - **Default image:** `alpine:3.21`
-- **GitLab URL:** `http://192.168.94.90/`
+- **GitLab URL:** `http://192.168.10.90/`
 - **Runner config:** `/etc/gitlab-runner/config.toml`
 - **Privileged mode:** `false`
 
@@ -59,7 +59,7 @@ GitLab Runner Manager on DEV-1
 The Docker Runner is registered against:
 
 ```text
-http://192.168.94.90/
+http://192.168.10.90/
 ```
 
 The authentication token is read into the shell variable:
