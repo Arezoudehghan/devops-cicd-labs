@@ -1,0 +1,598 @@
+------------------------------------------------------------
+# pip install Flask
+
+Explanation:
+Installs the Flask package into the active Python environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# flask run
+
+Explanation:
+Starts the Flask development server for the current application.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m venv .venv
+
+Explanation:
+Creates a Python virtual environment in the .venv directory.
+
+Options:
+- -m = module mode: Runs the venv library module as a script.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# source .venv/bin/activate
+
+Explanation:
+Activates the .venv virtual environment in the current Bash shell.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python -m pip install -r requirements.txt
+
+Explanation:
+Runs pip through the selected Python interpreter and installs the dependencies listed in requirements.txt.
+
+Options:
+- -m = module mode: Runs the pip module as a script.
+- -r = --requirement: Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p tests
+
+Explanation:
+Creates the tests directory. It does not fail if the directory already exists.
+
+Options:
+- -p = --parents: Creates missing parent directories and ignores an already existing target directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export APP_ENV=production
+
+Explanation:
+Sets APP_ENV to production and exports it so child processes can read it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# APP_ENV=testing pytest
+
+Explanation:
+Runs pytest with APP_ENV set to testing only for this command.
+
+Options:
+- APP_ENV=testing = temporary environment variable assignment: Supplies this value to pytest without permanently changing the shell environment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 --version
+
+Explanation:
+Prints the installed Python 3 version.
+
+Options:
+- --version = version information: Displays the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m venv --help
+
+Explanation:
+Shows the help text for Python's venv module.
+
+Options:
+- -m = module mode: Runs the venv library module as a script.
+- --help = help: Displays usage information for venv.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --version
+
+Explanation:
+Prints the installed curl version and build information.
+
+Options:
+- --version = version information: Displays curl version details and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner python3 --version
+
+Explanation:
+Runs the Python version check as the gitlab-runner user.
+
+Options:
+- -u = --user: Runs the command as the specified user, here gitlab-runner.
+- --version = version information: Displays the Python version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner curl --version
+
+Explanation:
+Runs the curl version check as the gitlab-runner user.
+
+Options:
+- -u = --user: Runs the command as the specified user, here gitlab-runner.
+- --version = version information: Displays curl version details and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Refreshes the local APT package index from the configured repositories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt install -y python3-venv curl
+
+Explanation:
+Installs the python3-venv and curl packages without prompting for confirmation.
+
+Options:
+- -y = --assume-yes: Automatically answers yes to APT confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf "$VENV_DIR"
+
+Explanation:
+Removes the virtual-environment directory and all of its contents so the job starts clean.
+
+Options:
+- -r = --recursive: Removes directories and their contents recursively.
+- -f = --force: Ignores nonexistent files and suppresses confirmation prompts.
+- $VENV_DIR = shell variable: Expands to the configured virtual-environment path.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python3 -m venv "$VENV_DIR"
+
+Explanation:
+Creates a new Python virtual environment at the path stored in VENV_DIR.
+
+Options:
+- -m = module mode: Runs the venv library module as a script.
+- $VENV_DIR = shell variable: Expands to the configured virtual-environment path.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m pip --version
+
+Explanation:
+Uses the virtual environment's Python interpreter to show the pip version.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the pip module as a script.
+- --version = version information: Displays the pip version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m pip install -r requirements.txt -r requirements-dev.txt
+
+Explanation:
+Installs both runtime and development dependencies inside the job's virtual environment.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the pip module as a script.
+- -r = --requirement: Reads dependencies from each specified requirements file; this command uses it twice.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m pip check
+
+Explanation:
+Checks installed packages for missing or incompatible dependencies.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the pip module as a script.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m pip freeze > installed-packages.txt
+
+Explanation:
+Writes the exact installed Python package versions to installed-packages.txt.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the pip module as a script.
+- > = stdout redirection: Replaces installed-packages.txt with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m ruff check .
+
+Explanation:
+Runs Ruff through the virtual environment's Python interpreter and checks the current project directory.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the ruff module as a script.
+- . = current directory: Tells Ruff to check the current project tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# APP_ENV=testing $VENV_DIR/bin/pytest -q --junitxml=report.xml
+
+Explanation:
+Runs the test suite in testing mode and creates a JUnit XML report named report.xml.
+
+Options:
+- APP_ENV=testing = temporary environment variable assignment: Supplies testing mode only to this pytest process.
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -q = --quiet: Reduces pytest output verbosity.
+- --junitxml=report.xml = JUnit XML output: Writes test results to report.xml.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/python -m pip install -r requirements.txt
+
+Explanation:
+Installs only the runtime dependencies inside the virtual environment.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -m = module mode: Runs the pip module as a script.
+- -r = --requirement: Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -eu
+
+Explanation:
+Enables stricter Bash error handling for the build script.
+
+Options:
+- -e = errexit: Exits when a simple command fails unless Bash syntax explicitly handles the failure.
+- -u = nounset: Treats an unset variable expansion as an error.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rm -rf release dist
+
+Explanation:
+Removes any previous release and dist directories before creating a fresh build.
+
+Options:
+- -r = --recursive: Removes directories and their contents recursively.
+- -f = --force: Ignores nonexistent files and suppresses confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p release dist
+
+Explanation:
+Creates the release and dist directories if they do not already exist.
+
+Options:
+- -p = --parents: Creates missing parent directories and ignores existing target directories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cp app.py requirements.txt release/
+
+Explanation:
+Copies the Flask application file and runtime requirements file into the release directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export APP_VERSION="$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Exports the current GitLab short commit SHA as APP_VERSION for the application health response.
+
+Options:
+- $CI_COMMIT_SHORT_SHA = GitLab CI variable: Expands to the shortened commit identifier.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# HEALTH_PORT="$($VENV_DIR/bin/python -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
+
+Explanation:
+Finds an available local TCP port with Python and stores it in HEALTH_PORT.
+
+Options:
+- $() = command substitution: Runs the enclosed Python command and stores its stdout in the variable.
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- -c = command string: Executes the provided Python code string.
+- 127.0.0.1 = loopback address: Limits the temporary socket to the local host.
+- 0 = dynamic port request: Lets the operating system choose an available port.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/gunicorn \
+  --chdir release \
+  --bind "127.0.0.1:${HEALTH_PORT}" \
+  app:app > gunicorn.log 2>&1 &
+
+Explanation:
+Starts Gunicorn from the release directory on the dynamically selected loopback port, sends logs to gunicorn.log, and runs it in the background.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- --chdir release = change directory: Changes Gunicorn's working directory to release before loading the app.
+- --bind "127.0.0.1:${HEALTH_PORT}" = bind address: Listens only on loopback at the selected health-check port.
+- > = stdout redirection: Writes standard output to gunicorn.log.
+- 2>&1 = stderr redirection: Sends file descriptor 2, stderr, to the same destination as stdout.
+- & = background operator: Starts Gunicorn asynchronously so the script can continue.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# APP_PID=$!
+
+Explanation:
+Stores the PID of the most recently started background process in APP_PID.
+
+Options:
+- $! = special Bash parameter: Expands to the process ID of the most recent background pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
+
+Explanation:
+Registers cleanup code that tries to stop the background application whenever the shell exits.
+
+Options:
+- 2>/dev/null = stderr redirection: Discards error output from kill.
+- || = logical OR operator: Runs true only if kill returns a nonzero status.
+- true = success command: Returns exit status 0 so cleanup does not make the job fail.
+- EXIT = Bash trap condition: Runs the registered action when the shell is exiting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# HEALTH_OK=0
+
+Explanation:
+Initializes the health-check result flag to 0 before retrying the HTTP check.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# for attempt in $(seq 1 20); do
+  if curl --fail --silent \
+    "http://127.0.0.1:${HEALTH_PORT}/health" > health.json; then
+
+    HEALTH_OK=1
+    break
+  fi
+
+  sleep 1
+done
+
+Explanation:
+Retries the application health endpoint up to 20 times, saving a successful response to health.json and stopping the loop when the check passes.
+
+Options:
+- $() = command substitution: Runs seq 1 20 and inserts its output into the for loop.
+- --fail = fail on HTTP errors: Makes curl return a failure status for HTTP response codes 400 and above.
+- --silent = silent mode: Hides curl's progress meter and normal informational output.
+- > = stdout redirection: Replaces health.json with the HTTP response body on each attempt.
+- ${HEALTH_PORT} = shell variable expansion: Inserts the dynamically selected port into the URL.
+- break = loop control: Stops the loop after the first successful health check.
+- sleep 1 = delay: Waits one second before the next retry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# if [ "$HEALTH_OK" -ne 1 ]; then
+  echo "Healthcheck failed"
+  cat gunicorn.log
+  exit 1
+fi
+
+Explanation:
+Fails the build if the health-check flag is not equal to 1, printing the Gunicorn log before exiting.
+
+Options:
+- -ne = numeric not equal test operator: The condition is true when HEALTH_OK is not 1.
+- exit 1 = failure exit status: Ends the script with status 1 so the CI job fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# grep -q '"status":"ok"' health.json
+
+Explanation:
+Checks that health.json contains the expected JSON status value without printing matching text.
+
+Options:
+- -q = --quiet: Suppresses normal grep output and uses only the exit status to report a match.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# kill "$APP_PID"
+
+Explanation:
+Sends the default termination signal to the background application process stored in APP_PID.
+
+Options:
+- $APP_PID = shell variable: Expands to the PID captured from the background Gunicorn process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# wait "$APP_PID" 2>/dev/null || true
+
+Explanation:
+Waits for the stopped application process to finish, while preventing a nonzero wait status from failing the script.
+
+Options:
+- 2>/dev/null = stderr redirection: Discards error output from wait.
+- || = logical OR operator: Runs true if wait returns a nonzero status.
+- true = success command: Returns status 0 so the script continues.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trap - EXIT
+
+Explanation:
+Removes the custom EXIT trap after manual cleanup has completed.
+
+Options:
+- - = reset trap action: Restores the default action for the specified trap condition.
+- EXIT = Bash trap condition: Refers to the shell-exit trap.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# tar -czf \
+  "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz" \
+  -C release .
+
+Explanation:
+Creates a gzip-compressed release archive in dist from the contents of the release directory.
+
+Options:
+- -c = --create: Creates a new archive.
+- -z = --gzip: Compresses the archive with gzip.
+- -f = --file: Uses the following value as the archive filename.
+- -C = --directory: Changes to the release directory before adding files.
+- . = current directory: Adds all content from release after the -C directory change.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sha256sum \
+  "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz" \
+  > "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz.sha256"
+
+Explanation:
+Calculates the SHA-256 checksum of the build archive and writes the result to a .sha256 file.
+
+Options:
+- > = stdout redirection: Writes the checksum output to the named .sha256 file, replacing it if it exists.
+- ${CI_PROJECT_NAME} = GitLab CI variable: Expands to the project name.
+- ${CI_COMMIT_SHORT_SHA} = GitLab CI variable: Expands to the shortened commit identifier.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# $VENV_DIR/bin/gunicorn \
+  --chdir release \
+  --bind "127.0.0.1:${HEALTH_PORT}" \
+  app:app
+
+Explanation:
+Starts Gunicorn from the release directory and binds the Flask application to the selected loopback port in the foreground.
+
+Options:
+- $VENV_DIR = shell variable: Expands to the virtual-environment path.
+- --chdir release = change directory: Changes Gunicorn's working directory to release before loading the app.
+- --bind "127.0.0.1:${HEALTH_PORT}" = bind address: Listens only on loopback at the selected health-check port.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sha256sum \
+  "dist/${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}.tar.gz"
+
+Explanation:
+Prints the SHA-256 checksum for the generated build archive.
+
+Options:
+- ${CI_PROJECT_NAME} = GitLab CI variable: Expands to the project name.
+- ${CI_COMMIT_SHORT_SHA} = GitLab CI variable: Expands to the shortened commit identifier.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# python -m pip install -r requirements.txt -r requirements-dev.txt
+
+Explanation:
+Installs both runtime and development dependencies using pip from the selected Python interpreter.
+
+Options:
+- -m = module mode: Runs the pip module as a script.
+- -r = --requirement: Reads dependencies from each specified requirements file; this command uses it twice.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ruff check .
+
+Explanation:
+Runs Ruff against the current project directory.
+
+Options:
+- . = current directory: Tells Ruff to check the current project tree.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# APP_ENV=testing pytest -q
+
+Explanation:
+Runs pytest in testing mode with reduced output verbosity.
+
+Options:
+- APP_ENV=testing = temporary environment variable assignment: Supplies testing mode only to this pytest process.
+- -q = --quiet: Reduces pytest output verbosity.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# APP_ENV=local APP_VERSION=manual-test gunicorn --bind 127.0.0.1:5000 app:app
+
+Explanation:
+Starts the Flask application with Gunicorn on local port 5000 while setting local test environment values.
+
+Options:
+- APP_ENV=local = temporary environment variable assignment: Sets the application environment for this process.
+- APP_VERSION=manual-test = temporary environment variable assignment: Sets the application version for this process.
+- --bind 127.0.0.1:5000 = bind address: Makes Gunicorn listen only on loopback TCP port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:5000/health
+
+Explanation:
+Sends an HTTP request to the Flask health endpoint on local port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git checkout -b feature/flask-pipeline
+
+Explanation:
+Creates a new branch named feature/flask-pipeline and switches the working tree to it.
+
+Options:
+- -b = create and check out new branch: Creates the named branch before switching to it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current branch and the state of tracked, modified, staged, and untracked files.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants for the next commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "add Flask CI pipeline"
+
+Explanation:
+Creates a Git commit with the provided commit message.
+
+Options:
+- -m = --message: Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push -u origin feature/flask-pipeline
+
+Explanation:
+Pushes the feature/flask-pipeline branch to origin and records it as the branch's upstream.
+
+Options:
+- -u = --set-upstream: Sets the remote branch as the upstream tracking branch.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt install python3-venv
+
+Explanation:
+Installs the python3-venv package with APT.
+------------------------------------------------------------
