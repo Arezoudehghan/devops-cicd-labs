@@ -1,0 +1,17 @@
+stages:
+  - build
+
+variables:
+  DOCKER_BUILDKIT: "1"
+  IMAGE_NAME: "cache-demo"
+
+docker_build:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  script:
+    - docker version
+    - docker build --progress=plain -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" -t "$IMAGE_NAME:latest" .
+    - docker image inspect "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
