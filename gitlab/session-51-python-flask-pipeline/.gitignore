@@ -1,0 +1,10 @@
+.venv/
+.cache/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+dist/
+release/
+report.xml
+gunicorn.log
+health.json
