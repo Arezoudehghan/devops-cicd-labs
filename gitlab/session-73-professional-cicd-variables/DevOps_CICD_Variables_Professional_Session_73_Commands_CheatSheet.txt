@@ -1,0 +1,284 @@
+------------------------------------------------------------
+# docker login registry.example.com -u admin -p MySecretPassword
+
+Explanation:
+Logs in to the Docker registry at registry.example.com using the supplied username and password.
+
+Options:
+- -u = --username (username): Sets the registry username to admin.
+- -p = --password (password): Supplies MySecretPassword directly as the registry password.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Environment is $APP_ENV"
+
+Explanation:
+Prints the text and the current value of the APP_ENV environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$APP_NAME"
+
+Explanation:
+Prints the current value of the APP_NAME environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$NEXUS_REGISTRY"
+
+Explanation:
+Prints the current value of the NEXUS_REGISTRY environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying version $RELEASE_VERSION"
+
+Explanation:
+Prints a deployment message containing the current RELEASE_VERSION value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project = $CI_PROJECT_NAME"
+
+Explanation:
+Prints the GitLab project name using the predefined CI_PROJECT_NAME variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch = $CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current Git branch name using the predefined CI_COMMIT_BRANCH variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the shortened commit SHA using the predefined CI_COMMIT_SHORT_SHA variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline = $CI_PIPELINE_ID"
+
+Explanation:
+Prints the current GitLab pipeline ID using the predefined CI_PIPELINE_ID variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "myapp:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the current short commit SHA.
+
+Options:
+- -t = --tag (tag): Assigns the image name and tag myapp:$CI_COMMIT_SHORT_SHA.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production deployment"
+
+Explanation:
+Prints a message indicating that the job is performing a production deployment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${DEPLOY_API_TOKEN:-}"
+
+Explanation:
+Checks that DEPLOY_API_TOKEN expands to a non-empty string. The command returns success when the value is not empty.
+
+Options:
+- -n = string is non-empty: Returns true when the following string has a length greater than zero.
+- ${DEPLOY_API_TOKEN:-} = shell parameter expansion: Expands to DEPLOY_API_TOKEN when it is set and non-empty, otherwise expands to an empty string.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Staging token is available"
+
+Explanation:
+Prints a confirmation message that the staging token is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production token is available"
+
+Explanation:
+Prints a confirmation message that the production token is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "${SSH_KNOWN_HOSTS:-}"
+
+Explanation:
+Checks that SSH_KNOWN_HOSTS expands to a non-empty value before the file path is used.
+
+Options:
+- -n = string is non-empty: Returns true when the following string has a length greater than zero.
+- ${SSH_KNOWN_HOSTS:-} = shell parameter expansion: Expands to SSH_KNOWN_HOSTS when it is set and non-empty, otherwise expands to an empty string.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -f "$SSH_KNOWN_HOSTS"
+
+Explanation:
+Checks that the path stored in SSH_KNOWN_HOSTS exists and is a regular file.
+
+Options:
+- -f = regular file test: Returns true when the specified path exists and is a regular file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -s "$SSH_KNOWN_HOSTS"
+
+Explanation:
+Checks that the file referenced by SSH_KNOWN_HOSTS exists and has a size greater than zero.
+
+Options:
+- -s = file size is greater than zero: Returns true when the specified file exists and is not empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "SSH_KNOWN_HOSTS file variable is valid"
+
+Explanation:
+Prints a confirmation message after the SSH_KNOWN_HOSTS file variable passes the validation checks.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat "$SSH_KNOWN_HOSTS"
+
+Explanation:
+Reads the file whose path is stored in SSH_KNOWN_HOSTS and writes its contents to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s' "$MY_CONFIG" > config.txt
+
+Explanation:
+Writes the exact value of MY_CONFIG to config.txt without adding an automatic newline.
+
+Options:
+- %s = string format specifier: Prints the supplied MY_CONFIG value as a string.
+- > = shell output redirection: Creates or overwrites config.txt with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "DEMO_PRIORITY=$DEMO_PRIORITY"
+
+Explanation:
+Prints DEMO_PRIORITY together with its current resolved value so variable precedence can be observed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$DEMO_LAYER"
+
+Explanation:
+Prints the current resolved value of the DEMO_LAYER environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Project=$CI_PROJECT_NAME"
+
+Explanation:
+Prints the GitLab project name using CI_PROJECT_NAME without spaces around the equals sign.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Branch=$CI_COMMIT_BRANCH"
+
+Explanation:
+Prints the current Git branch name using CI_COMMIT_BRANCH without spaces around the equals sign.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Commit=$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Prints the shortened commit SHA using CI_COMMIT_SHORT_SHA without spaces around the equals sign.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pipeline=$CI_PIPELINE_ID"
+
+Explanation:
+Prints the current pipeline ID using CI_PIPELINE_ID without spaces around the equals sign.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "App=$APP_NAME"
+
+Explanation:
+Prints the current application name stored in APP_NAME.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "File variable exists and is not empty"
+
+Explanation:
+Prints a confirmation message after the file variable has been verified as present and non-empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Staging secret is available"
+
+Explanation:
+Prints a confirmation message that the staging secret is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying $APP_NAME:$CI_COMMIT_SHORT_SHA to staging"
+
+Explanation:
+Prints a staging deployment message containing the application name and short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production secret is available"
+
+Explanation:
+Prints a confirmation message that the production secret is available.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying $APP_NAME:$CI_COMMIT_SHORT_SHA to production"
+
+Explanation:
+Prints a production deployment message containing the application name and short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# env
+
+Explanation:
+Prints the current process environment variables.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printenv
+
+Explanation:
+Prints the current environment variable names and values.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set
+
+Explanation:
+Displays the current shell variables and shell state when used without arguments in Bash.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$PASSWORD"
+
+Explanation:
+Prints the current value of the PASSWORD environment variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$DEPLOY_API_TOKEN"
+
+Explanation:
+Prints the current value of the DEPLOY_API_TOKEN environment variable.
+------------------------------------------------------------
