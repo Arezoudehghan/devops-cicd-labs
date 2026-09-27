@@ -1,0 +1,676 @@
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+Uses the python:3.12-slim image as the base image for the Docker build.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for the following Dockerfile instructions and for the container runtime.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY requirements.txt .
+
+Explanation:
+Copies requirements.txt from the build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN python -m pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    -r requirements.txt
+
+Explanation:
+Runs pip through Python and installs the packages listed in requirements.txt during the image build.
+
+Options:
+- -m = run library module as a script: Runs the pip module through Python.
+- --no-cache-dir = disable the pip cache: Prevents pip from storing downloaded package cache files.
+- --disable-pip-version-check = disable the pip version check: Stops pip from checking whether a newer pip version is available.
+- --trusted-host pypi.org = trusted host: Marks pypi.org as trusted for this pip operation.
+- --trusted-host files.pythonhosted.org = trusted host: Marks files.pythonhosted.org as trusted for this pip operation.
+- -r = --requirement (requirement): Installs dependencies from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY . .
+
+Explanation:
+Copies the current Docker build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# EXPOSE 5000
+
+Explanation:
+Documents that the containerized application is expected to listen on TCP port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["python", "app.py"]
+
+Explanation:
+Defines the default container command that starts app.py with Python.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Prints the installed Docker CLI version.
+
+Options:
+- --version = version information: Displays the Docker version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user to verify that the runner account can access the Docker daemon.
+
+Options:
+- -u = --user (user): Runs the command as gitlab-runner.
+- -H = --set-home (set home): Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t my-app:1.0 .
+
+Explanation:
+Builds a Docker image named my-app with tag 1.0 from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag to my-app:1.0.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, group ID, and group memberships of the gitlab-runner account.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group.
+
+Options:
+- -a = --append (append): Appends the new group without removing existing supplementary groups.
+- -G = --groups (groups): Specifies docker as a supplementary group.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t payment-api:1.0 .
+
+Explanation:
+Builds a Docker image named payment-api with tag 1.0 from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag to payment-api:1.0.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls
+
+Explanation:
+Lists Docker images stored in the local Docker Engine.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t payment-api:latest .
+
+Explanation:
+Builds a Docker image named payment-api with the latest tag from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag to payment-api:latest.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds an image whose name comes from CI_PROJECT_NAME and whose tag comes from CI_COMMIT_SHORT_SHA.
+
+Options:
+- -t = --tag (tag): Sets the image reference from GitLab CI/CD variables.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "flask-demo:73ab214c" .
+
+Explanation:
+Builds the concrete image flask-demo:73ab214c from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag to flask-demo:73ab214c.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY app.py .
+
+Explanation:
+Copies app.py from the build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY config/ /app/config/
+
+Explanation:
+Copies the config directory from the build context into /app/config/ inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd project
+
+Explanation:
+Changes the current shell directory to project.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image from the Dockerfile using the current directory as the build context.
+
+Options:
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  -f docker/Dockerfile \
+  -t my-app:1.0 \
+  .
+
+Explanation:
+Builds my-app:1.0 using docker/Dockerfile while keeping the current directory as the build context.
+
+Options:
+- -f = --file (file): Uses docker/Dockerfile instead of the default Dockerfile path.
+- -t = --tag (tag): Sets the image name and tag to my-app:1.0.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ARG APP_VERSION
+
+Explanation:
+Declares APP_VERSION as a Docker build-time argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# LABEL org.opencontainers.image.version="${APP_VERSION}"
+
+Explanation:
+Adds the OCI image version label using the APP_VERSION build argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg APP_VERSION="1.0.0" \
+  -t my-app:1.0.0 \
+  .
+
+Explanation:
+Builds my-app:1.0.0 and passes APP_VERSION=1.0.0 to the Docker build.
+
+Options:
+- --build-arg APP_VERSION="1.0.0" = build argument: Passes APP_VERSION with value 1.0.0 to the build.
+- -t = --tag (tag): Sets the image name and tag to my-app:1.0.0.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" \
+  -t "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
+  .
+
+Explanation:
+Builds a GitLab CI image and passes the short commit SHA to Docker as APP_VERSION.
+
+Options:
+- --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" = build argument: Passes the GitLab short commit SHA as APP_VERSION.
+- -t = --tag (tag): Sets the image name and tag from GitLab CI/CD variables.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg DB_PASSWORD="SuperSecret123" \
+  .
+
+Explanation:
+Builds an image while passing DB_PASSWORD as a build argument, exactly as shown in the lesson example.
+
+Options:
+- --build-arg DB_PASSWORD="SuperSecret123" = build argument: Passes the value SuperSecret123 to the build as DB_PASSWORD.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="http://192.168.95.204:2081" \
+  --build-arg HTTPS_PROXY="http://192.168.95.204:2081" \
+  --build-arg NO_PROXY="127.0.0.1,localhost,192.168.0.0/16" \
+  .
+
+Explanation:
+Builds an image and passes HTTP, HTTPS, and no-proxy settings to the Docker build.
+
+Options:
+- --build-arg HTTP_PROXY="http://192.168.95.204:2081" = build argument: Supplies the HTTP proxy address.
+- --build-arg HTTPS_PROXY="http://192.168.95.204:2081" = build argument: Supplies the HTTPS proxy address.
+- --build-arg NO_PROXY="127.0.0.1,localhost,192.168.0.0/16" = build argument: Defines destinations that should bypass the proxy.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV HTTP_PROXY=http://192.168.95.204:2081
+
+Explanation:
+Sets HTTP_PROXY as an environment variable in the Docker image, exactly as shown in the lesson example.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV HTTPS_PROXY=http://192.168.95.204:2081
+
+Explanation:
+Sets HTTPS_PROXY as an environment variable in the Docker image, exactly as shown in the lesson example.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+  --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+  --build-arg NO_PROXY="${NO_PROXY}" \
+  -t "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" \
+  .
+
+Explanation:
+Builds a GitLab CI image and passes proxy settings from CI/CD variables.
+
+Options:
+- --build-arg HTTP_PROXY="${HTTP_PROXY}" = build argument: Passes the HTTP proxy value from the CI/CD variable.
+- --build-arg HTTPS_PROXY="${HTTPS_PROXY}" = build argument: Passes the HTTPS proxy value from the CI/CD variable.
+- --build-arg NO_PROXY="${NO_PROXY}" = build argument: Passes the no-proxy list from the CI/CD variable.
+- -t = --tag (tag): Sets the image name from CI_PROJECT_NAME and the tag from CI_COMMIT_SHORT_SHA.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export IMAGE_NAME="${CI_PROJECT_PATH_SLUG}"
+
+Explanation:
+Exports IMAGE_NAME with the GitLab project path slug value for use by later shell commands.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export IMAGE_TAG="${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Exports IMAGE_TAG with the GitLab short commit SHA value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# export IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+Explanation:
+Exports IMAGE as the combined Docker image name and tag.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building ${IMAGE}"
+
+Explanation:
+Prints the Docker image reference that is about to be built.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "${IMAGE}" .
+
+Explanation:
+Builds the Docker image referenced by the IMAGE variable from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag from the IMAGE variable.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ARG COMMIT_SHA
+
+Explanation:
+Declares COMMIT_SHA as a Docker build-time argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# LABEL org.opencontainers.image.revision="${COMMIT_SHA}"
+
+Explanation:
+Adds the OCI image revision label using the COMMIT_SHA build argument.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" \
+  --build-arg COMMIT_SHA="${CI_COMMIT_SHA}" \
+  -t "${IMAGE}" \
+  .
+
+Explanation:
+Builds the image and passes both the short and full Git commit SHA values as build arguments.
+
+Options:
+- --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" = build argument: Passes the short commit SHA as APP_VERSION.
+- --build-arg COMMIT_SHA="${CI_COMMIT_SHA}" = build argument: Passes the full commit SHA as COMMIT_SHA.
+- -t = --tag (tag): Sets the image reference from the IMAGE variable.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect "${IMAGE}"
+
+Explanation:
+Displays detailed metadata for the Docker image referenced by IMAGE and fails if that image does not exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls "${IMAGE_NAME}"
+
+Explanation:
+Lists local Docker images that match the repository name stored in IMAGE_NAME.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building Docker image ${IMAGE}"
+
+Explanation:
+Prints a message showing the Docker image reference that is being built.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" \
+  --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+  --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+  --build-arg NO_PROXY="${NO_PROXY}" \
+  -t "${IMAGE}" \
+  .
+
+Explanation:
+Builds the image with the Git commit version and proxy settings supplied through CI/CD variables.
+
+Options:
+- --build-arg APP_VERSION="${CI_COMMIT_SHORT_SHA}" = build argument: Passes the short commit SHA as APP_VERSION.
+- --build-arg HTTP_PROXY="${HTTP_PROXY}" = build argument: Passes the HTTP proxy value.
+- --build-arg HTTPS_PROXY="${HTTPS_PROXY}" = build argument: Passes the HTTPS proxy value.
+- --build-arg NO_PROXY="${NO_PROXY}" = build argument: Passes the no-proxy list.
+- -t = --tag (tag): Sets the image reference from the IMAGE variable.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect "${IMAGE}" > /dev/null
+
+Explanation:
+Checks that the image exists while discarding the command's normal output.
+
+Options:
+- > = standard output redirection: Sends stdout to /dev/null.
+- /dev/null = null device: Discards the redirected output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+  --name ci-image-check \
+  -p 18080:5000 \
+  "${IMAGE}"
+
+Explanation:
+Starts a temporary container named ci-image-check from IMAGE and maps host port 18080 to container port 5000.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name ci-image-check = container name: Assigns the name ci-image-check.
+- -p = --publish (publish): Publishes a container port on the host.
+- 18080:5000 = publish value: Maps host port 18080 to container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl --fail http://127.0.0.1:18080/health
+
+Explanation:
+Requests the application's /health endpoint and returns a non-zero exit status for HTTP server errors.
+
+Options:
+- --fail = fail on HTTP errors: Makes curl fail on HTTP response codes of 400 or higher without returning the response body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f ci-image-check
+
+Explanation:
+Removes the ci-image-check container, forcing its removal if it is still running.
+
+Options:
+- -f = --force (force): Forces removal of the running container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f ci-image-check 2>/dev/null || true
+
+Explanation:
+Attempts to remove ci-image-check and prevents the shell step from failing if the removal command returns an error.
+
+Options:
+- -f = --force (force): Forces removal of the running container.
+- 2> = standard error redirection: Sends file descriptor 2, stderr, to /dev/null.
+- /dev/null = null device: Discards the redirected error output.
+- || = OR operator: Runs true only if docker rm returns a non-zero status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 3
+
+Explanation:
+Pauses the shell for 3 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# nano .gitlab-ci.yml
+
+Explanation:
+Opens .gitlab-ci.yml in the Nano text editor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git add Dockerfile .gitlab-ci.yml
+
+Explanation:
+Stages Dockerfile and .gitlab-ci.yml for the next Git commit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git commit -m "build docker image in pipeline"
+
+Explanation:
+Creates a Git commit with the message build docker image in pipeline.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows Docker disk usage for images, containers, local volumes, and build cache.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system prune -a
+
+Explanation:
+Removes unused Docker data, including all unused images, exactly as shown in the lesson.
+
+Options:
+- -a = --all (all): Removes all unused images, not only dangling images.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker --version
+
+Explanation:
+Runs docker --version as the gitlab-runner user to verify that the Docker CLI is available to that account.
+
+Options:
+- -u = --user (user): Runs the command as gitlab-runner.
+- -H = --set-home (set home): Sets HOME to the target user's home directory.
+- --version = version information: Displays the Docker version and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed file information for the Docker daemon socket.
+
+Options:
+- -l = long listing format: Shows permissions, owner, group, size, and other file details.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists all files, including hidden files, in long listing format.
+
+Options:
+- -l = long listing format: Shows detailed file information.
+- -a = --all (all): Includes entries whose names begin with a dot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "${CI_PROJECT_DIR}"
+
+Explanation:
+Prints the GitLab CI_PROJECT_DIR variable value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "IMAGE_NAME=${IMAGE_NAME}"
+
+Explanation:
+Prints the current IMAGE_NAME value for pipeline debugging.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "IMAGE_TAG=${IMAGE_TAG}"
+
+Explanation:
+Prints the current IMAGE_TAG value for pipeline debugging.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "IMAGE=${IMAGE}"
+
+Explanation:
+Prints the complete Docker image reference stored in IMAGE.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# IMAGE_TAG="${CI_COMMIT_REF_SLUG}"
+
+Explanation:
+Assigns the GitLab ref slug value to the shell variable IMAGE_TAG.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  -t my-app:a72b319c \
+  -t my-app:main \
+  .
+
+Explanation:
+Builds one Docker image and assigns it both the a72b319c and main tags.
+
+Options:
+- -t = --tag (tag): Assigns the tag my-app:a72b319c.
+- -t = --tag (tag): Also assigns the tag my-app:main.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t payment-api:1.2 .
+
+Explanation:
+Builds a Docker image named payment-api with tag 1.2 from the current directory.
+
+Options:
+- -t = --tag (tag): Sets the image name and tag to payment-api:1.2.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="${HTTP_PROXY}" \
+  --build-arg HTTPS_PROXY="${HTTPS_PROXY}" \
+  --build-arg NO_PROXY="${NO_PROXY}" \
+  -t "${CI_PROJECT_PATH_SLUG}:${CI_COMMIT_SHORT_SHA}" \
+  .
+
+Explanation:
+Builds the final lesson image using the project path slug, short commit SHA, and proxy CI/CD variables.
+
+Options:
+- --build-arg HTTP_PROXY="${HTTP_PROXY}" = build argument: Passes the HTTP proxy value from the CI/CD variable.
+- --build-arg HTTPS_PROXY="${HTTPS_PROXY}" = build argument: Passes the HTTPS proxy value from the CI/CD variable.
+- --build-arg NO_PROXY="${NO_PROXY}" = build argument: Passes the no-proxy list from the CI/CD variable.
+- -t = --tag (tag): Sets the image name from CI_PROJECT_PATH_SLUG and the tag from CI_COMMIT_SHORT_SHA.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
