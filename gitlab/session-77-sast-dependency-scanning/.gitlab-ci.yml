@@ -1,0 +1,47 @@
+stages:
+  - test
+  - security
+  - build
+  - deploy
+
+unit-test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - pytest
+
+sast:
+  stage: security
+  tags:
+    - dev-shell
+  script:
+    - echo "Run SAST scanner"
+
+dependency-scan:
+  stage: security
+  tags:
+    - dev-shell
+  script:
+    - echo "Run dependency scanner"
+
+security-gate:
+  stage: security
+  tags:
+    - dev-shell
+  script:
+    - echo "Evaluate HIGH and CRITICAL findings"
+
+build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+deploy:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploy application"
