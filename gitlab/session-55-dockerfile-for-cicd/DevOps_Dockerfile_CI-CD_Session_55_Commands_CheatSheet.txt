@@ -1,0 +1,663 @@
+------------------------------------------------------------
+# docker build -t myapp:1.0 .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it as myapp:1.0.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:1.0 to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12
+
+Explanation:
+Uses the Python 3.12 image as the base image for the Docker build.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for the following Dockerfile instructions and for the container by default.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY . .
+
+Explanation:
+Copies the entire current build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN pip install -r requirements.txt
+
+Explanation:
+Runs pip install during the image build and installs the packages listed in requirements.txt.
+
+Options:
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["python", "app.py"]
+
+Explanation:
+Sets the default container command to run python app.py when the container starts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM ubuntu:24.04
+
+Explanation:
+Uses Ubuntu 24.04 as the base image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+Uses the slim Python 3.12 image as the base image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:latest
+
+Explanation:
+Uses the image currently referenced by the latest tag in the official Python image repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-alpine
+
+Explanation:
+Uses the Alpine-based Python 3.12 image as the base image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY requirements.txt .
+
+Explanation:
+Copies requirements.txt from the build context into the current working directory in the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN pip install --no-cache-dir -r requirements.txt
+
+Explanation:
+Installs the packages from requirements.txt during the image build without keeping pip's download cache.
+
+Options:
+- --no-cache-dir = no cache directory: Disables pip's package download cache.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY app.py .
+
+Explanation:
+Copies app.py into the current working directory in the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm ci
+
+Explanation:
+Installs Node.js dependencies from the lock file using npm's clean, reproducible installation mode.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY src/ ./src/
+
+Explanation:
+Copies the local src/ directory into ./src/ inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN cd /app
+
+Explanation:
+Changes to /app only inside this single Dockerfile RUN shell process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /build
+
+Explanation:
+Sets /build as the working directory for the following Dockerfile instructions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN groupadd --system app && \
+    useradd --system --gid app app
+
+Explanation:
+Creates a system group named app, then creates a system user named app whose primary group is app.
+
+Options:
+- groupadd --system = system group mode: Creates app as a system group.
+- useradd --system = system user mode: Creates app as a system user.
+- useradd --gid app = primary group: Sets the new user's primary group to app.
+- && = shell AND operator: Runs useradd only if groupadd succeeds.
+- \ = shell line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# USER app
+
+Explanation:
+Sets app as the user for following Dockerfile instructions and for the container process at runtime.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV DB_PASSWORD=MySecretPassword
+
+Explanation:
+Sets the image environment variable DB_PASSWORD to MySecretPassword.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ARG API_TOKEN=secret
+
+Explanation:
+Defines the build argument API_TOKEN with the default value secret.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV HTTP_PROXY=http://proxy.example.com:3128
+
+Explanation:
+Sets the image environment variable HTTP_PROXY to the specified proxy URL.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV HTTPS_PROXY=http://proxy.example.com:3128
+
+Explanation:
+Sets the image environment variable HTTPS_PROXY to the specified proxy URL.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build \
+  --build-arg HTTP_PROXY="$HTTP_PROXY" \
+  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+  --build-arg NO_PROXY="$NO_PROXY" \
+  -t myapp:1.0 .
+
+Explanation:
+Builds the Docker image while passing the current shell proxy variables into the build as build arguments, then tags the image as myapp:1.0.
+
+Options:
+- --build-arg = build argument: Passes each named value into the Docker build.
+- -t = --tag (tag): Assigns the name and tag myapp:1.0 to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get install -y curl
+
+Explanation:
+Installs the curl package during the image build and automatically answers yes to package manager prompts.
+
+Options:
+- -y = --yes / --assume-yes (yes): Automatically answers yes to package installation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get install -y git
+
+Explanation:
+Installs the git package during the image build and automatically answers yes to package manager prompts.
+
+Options:
+- -y = --yes / --assume-yes (yes): Automatically answers yes to package installation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get update
+
+Explanation:
+Refreshes the APT package index during the image build.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/*
+
+Explanation:
+Refreshes the APT package index, installs curl without recommended packages, and then removes the downloaded APT package-list files.
+
+Options:
+- -y = --yes / --assume-yes (yes): Automatically answers yes to package installation prompts.
+- --no-install-recommends = do not install recommended packages: Installs only required dependencies instead of recommended extras.
+- -r = --recursive (recursive): Used by rm to remove directories and their contents recursively.
+- -f = --force (force): Used by rm to ignore nonexistent files and avoid confirmation prompts.
+- && = shell AND operator: Runs the next command only when the previous command succeeds.
+- \ = shell line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get install -y curl git
+
+Explanation:
+Installs both curl and git during the image build and automatically answers yes to package manager prompts.
+
+Options:
+- -y = --yes / --assume-yes (yes): Automatically answers yes to package installation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV DATABASE_PASSWORD=SuperSecret123
+
+Explanation:
+Sets the image environment variable DATABASE_PASSWORD to SuperSecret123.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# EXPOSE 5000
+
+Explanation:
+Documents TCP port 5000 as a port the containerized application is expected to listen on.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/cicd-dockerfile-lab
+
+Explanation:
+Creates the cicd-dockerfile-lab directory under the current user's home directory.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cd ~/cicd-dockerfile-lab
+
+Explanation:
+Changes the current shell directory to ~/cicd-dockerfile-lab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+Explanation:
+Sets two image environment variables so Python does not write .pyc files and uses unbuffered standard output and error.
+
+Options:
+- \ = Dockerfile line continuation: Continues the same ENV instruction on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN python -m pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    -r requirements.txt
+
+Explanation:
+Runs pip through the Python interpreter and installs the packages from requirements.txt without using the pip cache or checking for a newer pip version.
+
+Options:
+- -m = Python module execution option: Tells Python to run the pip module as a program.
+- --no-cache-dir = no cache directory: Disables pip's package download cache.
+- --disable-pip-version-check = disable pip version check: Prevents pip from checking whether a newer pip version is available.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+- \ = Dockerfile line continuation: Continues the same RUN instruction on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN groupadd --system app && \
+    useradd --system --gid app app && \
+    chown -R app:app /app
+
+Explanation:
+Creates the app system group and user, then recursively changes ownership of /app to app:app.
+
+Options:
+- groupadd --system = system group mode: Creates app as a system group.
+- useradd --system = system user mode: Creates app as a system user.
+- useradd --gid app = primary group: Sets the new user's primary group to app.
+- -R = --recursive (recursive): Applies the chown ownership change to /app and all contents below it.
+- && = shell AND operator: Runs the next command only when the previous command succeeds.
+- \ = shell line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# EXPOSE 8000
+
+Explanation:
+Documents TCP port 8000 as a port the containerized application is expected to listen on.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+
+Explanation:
+Sets Gunicorn as the default container command and binds it to all interfaces on port 8000.
+
+Options:
+- --bind = bind address: Makes Gunicorn listen on 0.0.0.0:8000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t cicd-flask:1.0 .
+
+Explanation:
+Builds the Docker image from the current directory and tags it as cicd-flask:1.0.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag cicd-flask:1.0 to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image ls cicd-flask
+
+Explanation:
+Lists local Docker images whose repository name matches cicd-flask.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+  --name cicd-flask \
+  -p 8000:8000 \
+  cicd-flask:1.0
+
+Explanation:
+Starts cicd-flask:1.0 as a detached container named cicd-flask and publishes host port 8000 to container port 8000.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name = container name: Assigns the name cicd-flask to the container.
+- -p = --publish (publish): Maps host port 8000 to container port 8000.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://localhost:8000/
+
+Explanation:
+Sends an HTTP request to the application's root endpoint on local port 8000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://localhost:8000/health
+
+Explanation:
+Sends an HTTP request to the application's /health endpoint on local port 8000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker exec cicd-flask id
+
+Explanation:
+Runs the id command inside the running cicd-flask container to show the effective user and group IDs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker exec cicd-flask whoami
+
+Explanation:
+Runs whoami inside the running cicd-flask container to display the current username.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker history cicd-flask:1.0
+
+Explanation:
+Shows the image history and layer-producing instructions for cicd-flask:1.0.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t cicd-flask:1.1 .
+
+Explanation:
+Builds the Docker image from the current directory and tags it as cicd-flask:1.1.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag cicd-flask:1.1 to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t cicd-flask:1.2 .
+
+Explanation:
+Builds the Docker image from the current directory and tags it as cicd-flask:1.2.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag cicd-flask:1.2 to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-slim AS builder
+
+Explanation:
+Starts a build stage from python:3.12-slim and names that stage builder.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN python -m pip wheel \
+    --wheel-dir /wheels \
+    -r requirements.txt
+
+Explanation:
+Runs pip's wheel command through Python and builds wheel files for the packages listed in requirements.txt, storing them in /wheels.
+
+Options:
+- -m = Python module execution option: Tells Python to run the pip module as a program.
+- --wheel-dir = wheel output directory: Writes built wheel files into /wheels.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+- \ = Dockerfile line continuation: Continues the same RUN instruction on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-slim AS runtime
+
+Explanation:
+Starts a new build stage from python:3.12-slim and names that stage runtime.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN groupadd --system --gid 10001 app && \
+    useradd \
+      --system \
+      --uid 10001 \
+      --gid app \
+      --create-home \
+      app
+
+Explanation:
+Creates the system group app with GID 10001, then creates the system user app with UID 10001, primary group app, and a home directory.
+
+Options:
+- groupadd --system = system group mode: Creates app as a system group.
+- groupadd --gid 10001 = group ID: Sets the new app group's numeric GID to 10001.
+- useradd --system = system user mode: Creates app as a system user.
+- useradd --uid 10001 = user ID: Sets the new user's numeric UID to 10001.
+- useradd --gid app = primary group: Sets the new user's primary group to app.
+- useradd --create-home = create home directory: Creates a home directory for the new user.
+- && = shell AND operator: Runs useradd only if groupadd succeeds.
+- \ = shell line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY --from=builder /wheels /wheels
+
+Explanation:
+Copies /wheels from the previously named builder stage into /wheels in the current stage.
+
+Options:
+- --from=builder = source build stage: Copies files from the stage named builder instead of the normal build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN python -m pip install \
+    --no-cache-dir \
+    /wheels/* && \
+    rm -rf /wheels
+
+Explanation:
+Installs all wheel files found in /wheels without using pip's cache, then removes the temporary /wheels directory.
+
+Options:
+- -m = Python module execution option: Tells Python to run the pip module as a program.
+- --no-cache-dir = no cache directory: Disables pip's package download cache.
+- -r = --recursive (recursive): Used by rm to remove /wheels and its contents recursively.
+- -f = --force (force): Used by rm to ignore nonexistent files and avoid confirmation prompts.
+- && = shell AND operator: Runs rm only if the pip install succeeds.
+- \ = shell line continuation: Continues the same Dockerfile RUN instruction on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY --chown=app:app app.py .
+
+Explanation:
+Copies app.py into the current working directory and assigns ownership to user app and group app.
+
+Options:
+- --chown=app:app = ownership setting: Sets the copied file owner to user app and group app.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mvn package
+
+Explanation:
+Runs Maven's package phase to compile the project, run earlier lifecycle phases, and create the project's package artifact.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# npm run build
+
+Explanation:
+Runs the npm script named build as defined by the project's package configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ARG NEXUS_PASSWORD
+
+Explanation:
+Defines the build argument NEXUS_PASSWORD without a default value.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ENV NEXUS_PASSWORD=$NEXUS_PASSWORD
+
+Explanation:
+Sets the image environment variable NEXUS_PASSWORD from the current Dockerfile variable value of the same name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login
+
+Explanation:
+Starts Docker registry authentication and prompts for registry credentials when no non-interactive credential options are supplied.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM ubuntu:latest
+
+Explanation:
+Uses the image currently referenced by the latest tag in the official Ubuntu image repository.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN apt-get install -y gcc
+
+Explanation:
+Installs the gcc package during the image build and automatically answers yes to package manager prompts.
+
+Options:
+- -y = --yes / --assume-yes (yes): Automatically answers yes to package installation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN rm -rf /usr/bin/gcc
+
+Explanation:
+Removes /usr/bin/gcc during the image build.
+
+Options:
+- -r = --recursive (recursive): Removes directories and their contents recursively if encountered.
+- -f = --force (force): Ignores nonexistent files and avoids confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN npm install
+
+Explanation:
+Runs npm package installation during the image build using the project's npm manifest files available in the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image using the current directory as the build context.
+
+Options:
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -p 8000:8000 cicd-flask:1.0
+
+Explanation:
+Technical correction: The original example ended with the placeholder ...; this corrected command uses the concrete cicd-flask:1.0 image from this lesson. It runs the container and publishes host port 8000 to container port 8000.
+
+Options:
+- -p = --publish (publish): Maps host port 8000 to container port 8000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build --no-cache -t cicd-flask:test .
+
+Explanation:
+Builds cicd-flask:test from the current directory without reusing Docker build cache.
+
+Options:
+- --no-cache = disable build cache: Does not use cached build steps.
+- -t = --tag (tag): Assigns the name and tag cicd-flask:test to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build --pull --no-cache -t cicd-flask:test .
+
+Explanation:
+Builds cicd-flask:test without build cache and asks Docker to check for a newer version of the base image.
+
+Options:
+- --pull = always attempt to pull a newer base image: Checks for a newer base image before building.
+- --no-cache = disable build cache: Does not use cached build steps.
+- -t = --tag (tag): Assigns the name and tag cicd-flask:test to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f cicd-flask
+
+Explanation:
+Removes the cicd-flask container and forces removal if it is running.
+
+Options:
+- -f = --force (force): Forces removal of a running container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image rm cicd-flask:1.0
+
+Explanation:
+Removes the local Docker image tagged cicd-flask:1.0.
+------------------------------------------------------------
