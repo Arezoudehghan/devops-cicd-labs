@@ -1,0 +1,186 @@
+------------------------------------------------------------
+# docker build -t myapp:1.0 .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it as myapp:1.0.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:1.0 to the built image.
+- . = current directory: Uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory.
+
+Options:
+- . = current directory: Uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, group ID, and group memberships of the gitlab-runner user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user to verify that this user can access the Docker daemon.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, gitlab-runner.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+  -v /:/host \
+  alpine \
+  cat /host/etc/shadow
+
+Explanation:
+Starts an Alpine container, mounts the host root filesystem at /host, and runs cat on /host/etc/shadow inside the container.
+
+Options:
+- --rm = remove after exit: Automatically removes the container when it stops.
+- -v = --volume (volume): Mounts the host path / at the container path /host.
+- /:/host = volume mapping: Uses / as the source path and /host as the destination path.
+- \\ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+Uses python:3.12-slim as the base image for the Docker build stage.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for the following Dockerfile instructions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY requirements.txt .
+
+Explanation:
+Copies requirements.txt from the build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# RUN pip install -r requirements.txt
+
+Explanation:
+Runs pip during the image build and installs the packages listed in requirements.txt.
+
+Options:
+- -r = --requirement (requirement): Installs packages from the specified requirements file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# COPY . .
+
+Explanation:
+Copies the current build context into the current working directory inside the image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CMD ["python", "app.py"]
+
+Explanation:
+Sets the default container command to run app.py with Python when the container starts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker buildx build .
+
+Explanation:
+Builds a container image from the current directory by using Docker Buildx and its configured builder.
+
+Options:
+- . = current directory: Uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# buildah build -t myapp:1.0 .
+
+Explanation:
+Builds an OCI-compatible container image from the current directory and tags it as myapp:1.0.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag myapp:1.0 to the built image.
+- . = current directory: Uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# buildah build \
+  --layers \
+  --cache-from registry.example.com/myapp/cache \
+  --cache-to registry.example.com/myapp/cache \
+  -t myapp:1.0 .
+
+Explanation:
+Builds the image with reusable layers, reads cache from the specified registry location, writes cache back to that location, and tags the result as myapp:1.0.
+
+Options:
+- --layers = layer caching: Caches intermediate image layers during the build.
+- --cache-from registry.example.com/myapp/cache = cache source: Uses the specified registry repository as an external build-cache source.
+- --cache-to registry.example.com/myapp/cache = cache destination: Stores reusable build cache in the specified registry repository.
+- -t = --tag (tag): Assigns the name and tag myapp:1.0 to the built image.
+- . = current directory: Uses the current directory as the build context.
+- \\ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to display Docker client and server version information.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, gitlab-runner.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker buildx version
+
+Explanation:
+Displays the installed Docker Buildx version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker buildx ls
+
+Explanation:
+Lists the available Buildx builders and shows which builder is currently selected.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "${IMAGE_NAME}:${IMAGE_TAG}" .
+
+Explanation:
+Builds a Docker image from the current directory and creates its name and tag from GitLab CI variables.
+
+Options:
+- -t = --tag (tag): Assigns the expanded ${IMAGE_NAME}:${IMAGE_TAG} value as the image name and tag.
+- ${IMAGE_NAME} = shell variable expansion: Expands to the value stored in IMAGE_NAME.
+- ${IMAGE_TAG} = shell variable expansion: Expands to the value stored in IMAGE_TAG.
+- . = current directory: Uses the current directory as the build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker image inspect "${IMAGE_NAME}:${IMAGE_TAG}"
+
+Explanation:
+Displays detailed metadata for the Docker image identified by the GitLab CI image name and tag variables.
+
+Options:
+- ${IMAGE_NAME} = shell variable expansion: Expands to the value stored in IMAGE_NAME.
+- ${IMAGE_TAG} = shell variable expansion: Expands to the value stored in IMAGE_TAG.
+------------------------------------------------------------
