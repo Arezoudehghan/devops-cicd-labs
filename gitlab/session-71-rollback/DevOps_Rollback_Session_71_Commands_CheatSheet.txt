@@ -1,0 +1,785 @@
+------------------------------------------------------------
+# git revert HEAD
+
+Explanation:
+Technical correction: the lesson showed git revert without the required commit argument. HEAD makes the command executable by creating a new commit that reverts the latest commit.
+
+Options:
+- HEAD = Git reference for the current commit: selects the latest checked-out commit as the revert target.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull 192.168.94.90:8085/myapp:15ab32c
+
+Explanation:
+Technical correction: the lesson later used <VERSION> as a non-executable placeholder. This concrete command, also used earlier in the lesson, pulls the specified immutable image tag from the Nexus registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d --name myapp --restart unless-stopped -p 8088:5000 192.168.94.90:8085/myapp:15ab32c
+
+Explanation:
+Technical correction: the lesson showed docker run ... as an incomplete placeholder. This executable form starts the previous application image with the same container, restart, and port pattern used later in the lesson.
+
+Options:
+- -d = --detach (detach): runs the container in the background.
+- --name myapp = container name: assigns the name myapp to the container.
+- --restart unless-stopped = restart policy: restarts the container automatically unless it is explicitly stopped.
+- -p = --publish (publish): maps host port 8088 to container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo mkdir -p /opt/myapp
+
+Explanation:
+Creates the /opt/myapp directory with elevated privileges and also creates missing parent directories.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo chown -R deploy:deploy /opt/myapp
+
+Explanation:
+Changes the owner and group of /opt/myapp to deploy recursively.
+
+Options:
+- -R = --recursive (recursive): applies the ownership change to the directory and all content below it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -ld /opt/myapp
+
+Explanation:
+Shows detailed information about the /opt/myapp directory itself.
+
+Options:
+- -l = long listing format: shows permissions, ownership, size, and other details.
+- -d = --directory (directory): lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -uo pipefail
+
+Explanation:
+Enables stricter Bash behavior for undefined variables and pipeline failures.
+
+Options:
+- -u = nounset option: treats the use of an unset variable as an error.
+- -o pipefail = named shell option: makes a pipeline fail if any command in the pipeline fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p "$STATE_DIR"
+
+Explanation:
+Creates the state directory stored in STATE_DIR and any missing parent directories.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# CURRENT_VERSION="$(cat "$CURRENT_FILE")"
+
+Explanation:
+Reads the current version file and stores its content in the CURRENT_VERSION shell variable.
+
+Options:
+- $(...) = command substitution: runs cat "$CURRENT_FILE" and substitutes its output into the assignment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Current stable version: ${CURRENT_VERSION:-none}"
+
+Explanation:
+Prints the current stable version, or prints none when CURRENT_VERSION is unset or empty.
+
+Options:
+- ${CURRENT_VERSION:-none} = parameter expansion with default value: uses none when the variable is unset or empty.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "New version: $NEW_VERSION"
+
+Explanation:
+Prints the new version that the deployment script is about to deploy.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Pulling new image..."
+
+Explanation:
+Prints a status message before pulling the new container image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull "$IMAGE:$NEW_VERSION"
+
+Explanation:
+Pulls the image whose repository is stored in IMAGE and whose immutable tag is stored in NEW_VERSION.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+
+Explanation:
+Force-removes the current container and suppresses its output. If the container does not exist or removal fails, || true prevents that expected condition from stopping the script.
+
+Options:
+- -f = --force (force): force-removes a running container.
+- >/dev/null = stdout redirection: discards normal command output.
+- 2>&1 = stderr redirection: sends standard error to the same destination as standard output.
+- || = OR operator: runs the command on the right only if the command on the left fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+    --name "$CONTAINER_NAME" \
+    --restart unless-stopped \
+    -p "${APP_PORT}:5000" \
+    "$IMAGE:$NEW_VERSION"
+
+Explanation:
+Starts the new application image in the background with a stable container name, restart policy, and published application port.
+
+Options:
+- -d = --detach (detach): runs the container in the background.
+- --name "$CONTAINER_NAME" = container name: assigns the configured container name.
+- --restart unless-stopped = restart policy: restarts the container unless it is explicitly stopped.
+- -p = --publish (publish): maps host port ${APP_PORT} to container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Checking application health..."
+
+Explanation:
+Prints a status message before the deployment healthcheck loop starts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "LAB: Healthcheck failure is being simulated."
+
+Explanation:
+Prints the lab message used when healthcheck failure simulation is enabled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# seq 1 10
+
+Explanation:
+Generates the numbers from 1 through 10 for the healthcheck retry loop.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Healthcheck attempt $ATTEMPT/10"
+
+Explanation:
+Prints the current healthcheck attempt number during the retry loop.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS \
+    --max-time 2 \
+    "$HEALTH_URL" >/dev/null
+
+Explanation:
+Checks the application health URL and returns a failure status when the HTTP request fails. Successful response content is discarded.
+
+Options:
+- -f = --fail (fail): returns a failure exit status for HTTP response codes 400 or greater.
+- -s = --silent (silent): hides the progress meter and normal transfer output.
+- -S = --show-error (show error): shows an error message when -s is also used and the request fails.
+- --max-time 2 = maximum operation time: limits the entire request to 2 seconds.
+- >/dev/null = stdout redirection: discards the response body.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 3
+
+Explanation:
+Pauses the script for three seconds before the next healthcheck attempt.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s\n' "$CURRENT_VERSION" > "$PREVIOUS_FILE"
+
+Explanation:
+Writes the current stable version to the previous-version state file.
+
+Options:
+- > = output redirection: overwrites PREVIOUS_FILE with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s\n' "$NEW_VERSION" > "$CURRENT_FILE"
+
+Explanation:
+Writes the newly verified version to the current-version state file.
+
+Options:
+- > = output redirection: overwrites CURRENT_FILE with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 0
+
+Explanation:
+Stops the script with exit status 0, which indicates successful deployment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs "$CONTAINER_NAME" || true
+
+Explanation:
+Shows logs from the configured application container. || true prevents a log-read failure from replacing the main deployment error.
+
+Options:
+- || = OR operator: runs true only if docker logs fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 10
+
+Explanation:
+Stops the deployment script with custom exit status 10 when the new image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 11
+
+Explanation:
+Stops the deployment script with custom exit status 11 when the new container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 20
+
+Explanation:
+Stops the deployment script with custom exit status 20 when no previous stable version exists for rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull "$IMAGE:$CURRENT_VERSION"
+
+Explanation:
+Pulls the previously known stable image before automatic rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 21
+
+Explanation:
+Stops the deployment script with custom exit status 21 when the rollback image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+    --name "$CONTAINER_NAME" \
+    --restart unless-stopped \
+    -p "${APP_PORT}:5000" \
+    "$IMAGE:$CURRENT_VERSION"
+
+Explanation:
+Starts the previous stable image during automatic rollback.
+
+Options:
+- -d = --detach (detach): runs the container in the background.
+- --name "$CONTAINER_NAME" = container name: assigns the configured container name.
+- --restart unless-stopped = restart policy: restarts the container unless it is explicitly stopped.
+- -p = --publish (publish): maps host port ${APP_PORT} to container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 22
+
+Explanation:
+Stops the deployment script with custom exit status 22 when the rollback container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Rollback healthcheck $ATTEMPT/10"
+
+Explanation:
+Prints the current rollback healthcheck attempt during rollback verification.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s\n' "$CURRENT_VERSION" > "$CURRENT_FILE"
+
+Explanation:
+Writes the restored stable version back to the current-version state file after successful automatic rollback.
+
+Options:
+- > = output redirection: overwrites CURRENT_FILE with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Stops the script with a non-zero exit status after a successful rollback so GitLab still marks the failed release as failed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 23
+
+Explanation:
+Stops the deployment script with custom exit status 23 when the rollback healthcheck also fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# set -e
+
+Explanation:
+Enables Bash errexit, which exits the script when an unhandled command returns a non-zero status.
+
+Options:
+- -e = errexit option: exits when an unhandled command fails.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# eval "$(ssh-agent -s)"
+
+Explanation:
+Starts ssh-agent and evaluates the shell commands it prints so the current shell can use the agent.
+
+Options:
+- -s = Bourne shell output mode: makes ssh-agent print Bourne-compatible shell commands.
+- $(...) = command substitution: captures the output of ssh-agent -s and passes it to eval.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 "$SSH_PRIVATE_KEY"
+
+Explanation:
+Sets the SSH private key file so only its owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-add "$SSH_PRIVATE_KEY"
+
+Explanation:
+Adds the SSH private key to the running SSH authentication agent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the current user's .ssh directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+
+Explanation:
+Copies the GitLab file variable containing known host keys to the standard SSH known_hosts path.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/known_hosts
+
+Explanation:
+Sets the SSH known_hosts file so only its owner can read and write it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+"NEW_VERSION='$CI_COMMIT_SHA' \
+REGISTRY='$REGISTRY' \
+IMAGE_NAME='$IMAGE_NAME' \
+APP_PORT='$APP_PORT' \
+SIMULATE_HEALTH_FAILURE='${SIMULATE_HEALTH_FAILURE:-false}' \
+bash -s" \
+< scripts/deploy-with-rollback.sh
+
+Explanation:
+Connects to the deployment server, passes deployment variables to a remote Bash process, and feeds the deployment-with-rollback script through standard input.
+
+Options:
+- -s = Bash read-commands-from-standard-input mode: tells the remote bash process to read the script from stdin.
+- ${SIMULATE_HEALTH_FAILURE:-false} = parameter expansion with default value: uses false when the variable is unset or empty.
+- < = input redirection: sends scripts/deploy-with-rollback.sh to the remote Bash process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat /opt/myapp/current_version
+
+Explanation:
+Prints the version currently recorded as the stable production version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -i http://127.0.0.1:8088/health
+
+Explanation:
+Requests the production health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): includes HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# SIMULATE_HEALTH_FAILURE=true
+
+Explanation:
+Sets the lab variable to true so the deployment script deliberately simulates a failed healthcheck.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ROLLBACK_VERSION="$(cat "$PREVIOUS_FILE")"
+
+Explanation:
+Reads the saved previous version and stores it in the ROLLBACK_VERSION shell variable.
+
+Options:
+- $(...) = command substitution: runs cat "$PREVIOUS_FILE" and substitutes its output into the assignment.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull "$IMAGE:$ROLLBACK_VERSION"
+
+Explanation:
+Pulls the saved rollback image before manual rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 30
+
+Explanation:
+Stops the manual rollback script with custom exit status 30 when the current version is unknown.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 31
+
+Explanation:
+Stops the manual rollback script with custom exit status 31 when no previous version file exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 32
+
+Explanation:
+Stops the manual rollback script with custom exit status 32 when the rollback image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+    --name "$CONTAINER_NAME" \
+    --restart unless-stopped \
+    -p "${APP_PORT}:5000" \
+    "$IMAGE:$ROLLBACK_VERSION"
+
+Explanation:
+Starts the saved previous image during manual rollback.
+
+Options:
+- -d = --detach (detach): runs the container in the background.
+- --name "$CONTAINER_NAME" = container name: assigns the configured container name.
+- --restart unless-stopped = restart policy: restarts the container unless it is explicitly stopped.
+- -p = --publish (publish): maps host port ${APP_PORT} to container port 5000.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 33
+
+Explanation:
+Stops the manual rollback script with custom exit status 33 when the rollback container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 34
+
+Explanation:
+Stops the manual rollback script with custom exit status 34 when the rollback version fails its healthcheck.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s\n' "$ROLLBACK_VERSION" > "$CURRENT_FILE"
+
+Explanation:
+Writes the successfully restored rollback version to the current-version state file.
+
+Options:
+- > = output redirection: overwrites CURRENT_FILE with the command output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+"REGISTRY='$REGISTRY' \
+IMAGE_NAME='$IMAGE_NAME' \
+APP_PORT='$APP_PORT' \
+bash -s" \
+< scripts/manual-rollback.sh
+
+Explanation:
+Connects to the deployment server, passes the registry and application variables, and feeds the manual rollback script to remote Bash.
+
+Options:
+- -s = Bash read-commands-from-standard-input mode: tells the remote bash process to read the script from stdin.
+- < = input redirection: sends scripts/manual-rollback.sh to the remote Bash process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull myapp:latest
+
+Explanation:
+Pulls the image currently referenced by the mutable latest tag.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run v1
+
+Explanation:
+Starts a container from an image named or tagged v1 if that image exists locally or can be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker pull v1
+
+Explanation:
+Pulls an image named or tagged v1; the lesson used this to illustrate a rollback image that may no longer exist.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images stored on the local host.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including stopped containers.
+
+Options:
+- -a = --all (all): shows both running and stopped containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs myapp
+
+Explanation:
+Shows the logs produced by the container named myapp.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -v http://127.0.0.1:8088/health
+
+Explanation:
+Requests the health endpoint with verbose connection and protocol details for troubleshooting.
+
+Options:
+- -v = --verbose (verbose): shows detailed request, connection, and response information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ss -lntp | grep 8088
+
+Explanation:
+Shows listening TCP sockets with numeric addresses and process information, then filters the output for port 8088.
+
+Options:
+- -l = --listening (listening): shows only listening sockets.
+- -n = --numeric (numeric): does not resolve service or host names.
+- -t = --tcp (TCP): shows TCP sockets.
+- -p = --processes (processes): shows the process using each socket when permitted.
+- | = pipe operator: sends the output of ss to grep 8088.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Cannot pull new image."
+
+Explanation:
+Prints the deployment error shown when the new image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Removing current container..."
+
+Explanation:
+Prints a status message before the currently running application container is removed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting new version..."
+
+Explanation:
+Prints a status message before the new application version is started.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: New container could not start."
+
+Explanation:
+Prints the deployment error shown when the new container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "New version is healthy."
+
+Explanation:
+Prints a success message after the new version passes its healthcheck.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deployment successful."
+
+Explanation:
+Prints a message confirming that the new deployment completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Current version: $NEW_VERSION"
+
+Explanation:
+Prints the new version that has been recorded as the current stable version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: New deployment failed healthcheck."
+
+Explanation:
+Prints the error that triggers the automatic rollback path after the new deployment fails its healthcheck.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: No previous stable version exists."
+
+Explanation:
+Prints the error shown when automatic rollback cannot continue because no stable previous version is recorded.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting automatic rollback..."
+
+Explanation:
+Prints a status message when automatic rollback begins.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Rollback version: $CURRENT_VERSION"
+
+Explanation:
+Prints the stable version selected for automatic rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CRITICAL: Cannot pull rollback image."
+
+Explanation:
+Prints a critical error when the automatic rollback image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CRITICAL: Rollback container could not start."
+
+Explanation:
+Prints a critical error when the automatic rollback container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Verifying rollback..."
+
+Explanation:
+Prints a status message before the restored version is healthchecked.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Rollback successful."
+
+Explanation:
+Prints a success message after the automatic rollback passes verification.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production restored to: $CURRENT_VERSION"
+
+Explanation:
+Prints the version to which production was successfully restored.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "CRITICAL: Rollback also failed."
+
+Explanation:
+Prints a critical error when the rollback version also fails verification.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Current version is unknown."
+
+Explanation:
+Prints the manual rollback error shown when the current version state file is missing.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Previous version does not exist."
+
+Explanation:
+Prints the manual rollback error shown when no previous version state file exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Current version: $CURRENT_VERSION"
+
+Explanation:
+Prints the version currently recorded before a manual rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Rollback version: $ROLLBACK_VERSION"
+
+Explanation:
+Prints the previous version selected for manual rollback.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Cannot pull rollback image."
+
+Explanation:
+Prints the manual rollback error shown when the selected rollback image cannot be pulled.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Rollback container failed to start."
+
+Explanation:
+Prints the manual rollback error shown when the rollback container cannot start.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "ERROR: Rollback version is unhealthy."
+
+Explanation:
+Prints the manual rollback error shown when the restored version fails its healthcheck.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Manual rollback successful."
+
+Explanation:
+Prints a success message after manual rollback completes and passes verification.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Production version: $ROLLBACK_VERSION"
+
+Explanation:
+Prints the production version after a successful manual rollback.
+------------------------------------------------------------
