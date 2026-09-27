@@ -75,3 +75,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-75-token-security-ci-job-token/` — GitLab token security with `CI_JOB_TOKEN`, Project Access Token, Personal Access Token, Deploy Token, Trigger Token, token scope, expiration, and least privilege.
 - `gitlab/session-71-rollback/` — Manual and automatic rollback with immutable image tags, saved current/previous versions, deployment healthchecks, failure simulation, verified restore, and serialized production operations with `resource_group`.
 - `gitlab/session-53-java-maven-pipeline/` — Java/Maven CI pipeline with Maven lifecycle, unit tests, dependency cache, JUnit test reports, package stage, and JAR artifacts.
+- `gitlab/session-74-secret-management-pipeline/` — Secure management of SSH keys, passwords, tokens, registry credentials, API keys, secret-safe logging, rotation, least privilege, and secret-manager concepts.
