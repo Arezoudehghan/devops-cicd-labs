@@ -1,0 +1,289 @@
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+Uses the Python 3.12 slim image as the base image for the Docker build.
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for the following Dockerfile instructions and for the container.
+------------------------------------------------------------
+# COPY requirements.txt .
+
+Explanation:
+Copies requirements.txt from the build context into the current working directory in the image.
+------------------------------------------------------------
+# RUN pip install -r requirements.txt
+
+Explanation:
+Installs the Python dependencies listed in requirements.txt during the image build.
+
+Options:
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+# COPY . .
+
+Explanation:
+Copies the current build-context contents into the current working directory in the image.
+------------------------------------------------------------
+# CMD ["python", "app.py"]
+
+Explanation:
+Sets the default container command to run app.py with Python.
+------------------------------------------------------------
+# COPY package.json package-lock.json ./
+
+Explanation:
+Copies package.json and package-lock.json into the current working directory in the image.
+------------------------------------------------------------
+# RUN npm ci
+
+Explanation:
+Installs Node.js dependencies from the lock file in a clean and reproducible way during the image build.
+------------------------------------------------------------
+# COPY pom.xml .
+
+Explanation:
+Copies pom.xml into the current working directory in the image so Maven dependency-related steps can use it.
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+------------------------------------------------------------
+# docker buildx version
+
+Explanation:
+Shows the installed Docker Buildx version.
+------------------------------------------------------------
+# docker buildx ls
+
+Explanation:
+Lists available Buildx builders and shows their current status and driver information.
+------------------------------------------------------------
+# sudo -u gitlab-runner docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to verify that this user can access Docker.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, gitlab-runner.
+------------------------------------------------------------
+# sudo -u gitlab-runner docker buildx version
+
+Explanation:
+Runs docker buildx version as the gitlab-runner user to verify that Buildx is available to the runner account.
+
+Options:
+- -u = --user (user): Runs the command as the specified user, gitlab-runner.
+------------------------------------------------------------
+# mkdir -p ~/docker-cache-lab
+
+Explanation:
+Creates the docker-cache-lab directory under the current user's home directory.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and does not fail if the directory already exists.
+------------------------------------------------------------
+# cd ~/docker-cache-lab
+
+Explanation:
+Changes the current shell directory to ~/docker-cache-lab.
+------------------------------------------------------------
+# RUN python -m pip install \
+    --disable-pip-version-check \
+    -r requirements.txt
+
+Explanation:
+Runs pip through the Python interpreter and installs dependencies from requirements.txt during the Docker build.
+
+Options:
+- -m = module: Runs the specified Python module, here pip.
+- --disable-pip-version-check = disable pip version check: Prevents pip from checking whether a newer pip version is available.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+# EXPOSE 5000
+
+Explanation:
+Documents that the containerized application is expected to listen on port 5000.
+------------------------------------------------------------
+# docker build --progress=plain -t cache-lab:v1 .
+
+Explanation:
+Builds the Docker image from the current directory and tags it as cache-lab:v1 while showing plain-text BuildKit progress.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-lab:v1.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build --progress=plain -t cache-lab:v2 .
+
+Explanation:
+Builds the Docker image again from the current directory and tags it as cache-lab:v2 so cache reuse can be observed.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-lab:v2.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build --progress=plain -t cache-lab:v3 .
+
+Explanation:
+Builds the Docker image after the application source change and tags it as cache-lab:v3.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-lab:v3.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build --progress=plain -t cache-lab:v4 .
+
+Explanation:
+Builds the Docker image after the dependency change and tags it as cache-lab:v4.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-lab:v4.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements.txt
+
+Explanation:
+Uses a BuildKit cache mount for pip downloads while installing dependencies from requirements.txt.
+
+Options:
+- --mount=type=cache,target=/root/.cache/pip = BuildKit RUN mount: Creates a cache mount at /root/.cache/pip for reusable pip cache data.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+# RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install \
+    --disable-pip-version-check \
+    -r requirements.txt
+
+Explanation:
+Technical correction: The later placeholder form using "..." was incomplete, so this entry keeps the complete command already used earlier in the lesson. It mounts the pip cache and installs dependencies through Python.
+
+Options:
+- --mount=type=cache,target=/root/.cache/pip = BuildKit RUN mount: Creates a cache mount at /root/.cache/pip for reusable pip cache data.
+- -m = module: Runs the specified Python module, here pip.
+- --disable-pip-version-check = disable pip version check: Prevents pip from checking whether a newer pip version is available.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+# pip install --no-cache-dir -r requirements.txt
+
+Explanation:
+Technical correction: The lesson showed "pip install --no-cache-dir" without a package or requirements source, which is incomplete. This corrected form installs packages from requirements.txt without using pip's local package cache.
+
+Options:
+- --no-cache-dir = disable cache directory: Disables pip's local package cache.
+- -r = --requirement (requirement): Reads package requirements from requirements.txt.
+------------------------------------------------------------
+# docker builder prune
+
+Explanation:
+Removes unused Docker build cache after interactive confirmation.
+------------------------------------------------------------
+# docker build --progress=plain -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" -t "$IMAGE_NAME:latest" .
+
+Explanation:
+Builds the image from the current directory and creates both a commit-specific tag and a latest tag.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns an image tag; this command uses it once for "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" and once for "$IMAGE_NAME:latest".
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker image inspect "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Displays detailed metadata for the image tagged with the current CI commit short SHA.
+------------------------------------------------------------
+# docker build \
+        --progress=plain \
+        --build-arg HTTP_PROXY="$HTTP_PROXY" \
+        --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+        --build-arg NO_PROXY="$NO_PROXY" \
+        -t "$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA" \
+        -t "$CI_PROJECT_NAME:latest" \
+        .
+
+Explanation:
+Builds the Docker image with proxy-related build arguments and creates both commit-specific and latest tags.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- --build-arg = build argument: Passes HTTP_PROXY, HTTPS_PROXY, and NO_PROXY values into the Docker build.
+- -t = --tag (tag): Assigns the image tags "$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA" and "$CI_PROJECT_NAME:latest".
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build --progress=plain -t cache-test .
+
+Explanation:
+Builds an image named cache-test from the current directory and shows plain-text build progress for cache inspection.
+
+Options:
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-test.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows Docker disk usage for images, containers, local volumes, and build cache.
+------------------------------------------------------------
+# docker buildx du
+
+Explanation:
+Shows disk usage information for Buildx builder cache.
+------------------------------------------------------------
+# docker builder prune -af
+
+Explanation:
+Removes all unused Docker build cache without asking for confirmation.
+
+Options:
+- -a = --all (all): Removes all unused build cache, not only dangling cache.
+- -f = --force (force): Skips the interactive confirmation prompt.
+------------------------------------------------------------
+# docker build --no-cache --progress=plain -t cache-test:no-cache .
+
+Explanation:
+Builds the image from the current directory without reusing cached build steps and tags it as cache-test:no-cache.
+
+Options:
+- --no-cache = disable build cache: Prevents reuse of cached build steps.
+- --progress=plain = plain progress output: Prints build progress as plain text.
+- -t = --tag (tag): Assigns the image tag cache-test:no-cache.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build -t app .
+
+Explanation:
+Builds a Docker image named app from the current directory.
+
+Options:
+- -t = --tag (tag): Assigns the image tag app.
+- . = current directory: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+Explanation:
+Updates APT package metadata, installs gcc without recommended packages, and then removes cached APT list files in the same Docker build step.
+
+Options:
+- && = shell AND operator: Runs the next command only if the previous command succeeds.
+- -y = --assume-yes (assume yes): Automatically answers yes to APT confirmation prompts.
+- --no-install-recommends = do not install recommended packages: Prevents APT from installing packages marked only as recommended.
+- -r = --recursive (recursive): Makes rm remove directories and their contents recursively.
+- -f = --force (force): Makes rm ignore nonexistent files and suppress confirmation prompts.
+------------------------------------------------------------
+# docker image rm cache-lab:v1 cache-lab:v2 cache-lab:v3 cache-lab:v4
+
+Explanation:
+Removes the four cache-lab images with tags v1, v2, v3, and v4.
+------------------------------------------------------------
