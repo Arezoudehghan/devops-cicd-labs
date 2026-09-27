@@ -1,0 +1,19 @@
+stages:
+  - build
+
+docker-build:
+  stage: build
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - whoami
+    - id
+    - docker version
+    - docker info
+
+  script:
+    - docker build -t "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" .
+    - docker image inspect "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - docker image ls "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
