@@ -1,0 +1,251 @@
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+USER root
+
+CMD ["python", "app.py"]
+
+Explanation:
+Builds a Python 3.12 slim image, copies the application into /app, installs dependencies, and runs the application as root.
+
+Options:
+- --no-cache-dir = disable pip cache: Prevents pip from storing downloaded package files in its cache.
+- -r = --requirement (requirement file): Installs packages listed in requirements.txt.
+------------------------------------------------------------
+# cd /path/to/project
+
+Explanation:
+Changes the current shell directory to /path/to/project.
+------------------------------------------------------------
+# trivy config Dockerfile
+
+Explanation:
+Scans the Dockerfile for supported configuration and security misconfigurations.
+------------------------------------------------------------
+# trivy config .
+
+Explanation:
+Scans supported configuration and Infrastructure as Code files recursively from the current directory.
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN groupadd --system appgroup && \
+    useradd --system --gid appgroup appuser
+
+COPY --chown=appuser:appgroup . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+USER appuser
+
+CMD ["python", "app.py"]
+
+Explanation:
+Builds the application image with a dedicated non-root user and gives copied files to that user before starting the application.
+
+Options:
+- --system = system account/group mode: Creates a system group with groupadd and a system user with useradd.
+- --gid appgroup = group ID or group name for the new user: Assigns appuser to appgroup.
+- --chown=appuser:appgroup = set ownership during COPY: Copies files into the image with appuser as owner and appgroup as group.
+- --no-cache-dir = disable pip cache: Prevents pip from storing downloaded package files in its cache.
+- -r = --requirement (requirement file): Installs packages listed in requirements.txt.
+- && = shell AND operator: Runs useradd only if groupadd succeeds.
+- \ = line continuation: Continues the shell command on the next line.
+------------------------------------------------------------
+# apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: myapp
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: myapp
+
+  template:
+    metadata:
+      labels:
+        app: myapp
+
+    spec:
+      containers:
+        - name: myapp
+          image: myapp:1.0
+
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+
+Explanation:
+Defines a Kubernetes Deployment for myapp with an intentionally insecure container security context, including privileged mode, UID 0, and privilege escalation.
+------------------------------------------------------------
+# trivy config k8s/
+
+Explanation:
+Scans supported configuration files under the k8s/ directory for misconfigurations.
+------------------------------------------------------------
+# apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: myapp
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: myapp
+
+  template:
+    metadata:
+      labels:
+        app: myapp
+
+    spec:
+      containers:
+        - name: myapp
+          image: myapp:1.0
+
+          securityContext:
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+
+            capabilities:
+              drop:
+                - ALL
+
+Explanation:
+Defines a Kubernetes Deployment with a hardened security context that disables privileged mode and privilege escalation, requires a non-root user, uses a read-only root filesystem, and drops all Linux capabilities.
+------------------------------------------------------------
+# trivy config compose.yaml
+
+Explanation:
+This command is syntactically valid and asks Trivy to scan compose.yaml as configuration. In this lesson, Docker Compose is noted as not directly supported by the specialized Docker misconfiguration scanner, so the file may not produce the intended Compose-specific checks.
+------------------------------------------------------------
+# ENV API_TOKEN=my-production-token
+
+Explanation:
+Sets API_TOKEN inside the image environment to the literal value my-production-token.
+------------------------------------------------------------
+# ARG PASSWORD=my-password
+
+Explanation:
+Defines a Docker build argument named PASSWORD with the default value my-password.
+------------------------------------------------------------
+# COPY private-key.pem /app/private-key.pem
+
+Explanation:
+Copies private-key.pem from the build context into /app/private-key.pem inside the image.
+------------------------------------------------------------
+# trivy fs --scanners misconfig,secret .
+
+Explanation:
+Scans the current filesystem tree for misconfigurations and exposed secrets.
+
+Options:
+- --scanners misconfig,secret = scanner selection: Enables the misconfiguration and secret scanners.
+------------------------------------------------------------
+# trivy fs --scanners vuln,misconfig,secret .
+
+Explanation:
+Scans the current filesystem tree for vulnerabilities, misconfigurations, and exposed secrets.
+
+Options:
+- --scanners vuln,misconfig,secret = scanner selection: Enables the vulnerability, misconfiguration, and secret scanners.
+------------------------------------------------------------
+# trivy config --severity HIGH,CRITICAL .
+
+Explanation:
+Scans supported configuration files and reports findings limited to HIGH and CRITICAL severity.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits reported findings to HIGH and CRITICAL severities.
+------------------------------------------------------------
+# trivy config \
+  --severity HIGH,CRITICAL \
+  --exit-code 1 \
+  .
+
+Explanation:
+Scans configuration files and exits with status code 1 when matching HIGH or CRITICAL findings are detected.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits considered findings to HIGH and CRITICAL severities.
+- --exit-code 1 = failure exit code: Returns exit status 1 when matching findings are present.
+- \ = line continuation: Continues the command on the next line.
+------------------------------------------------------------
+# stages:
+  - test
+  - security
+  - build
+  - push
+  - deploy
+
+Explanation:
+Defines the GitLab CI/CD stage order as test, security, build, push, and deploy.
+------------------------------------------------------------
+# iac_scan:
+  stage: security
+
+  tags:
+    - dev-shell
+
+  script:
+    - trivy config --severity HIGH,CRITICAL --exit-code 1 .
+
+Explanation:
+Defines a GitLab CI job named iac_scan that runs in the security stage on the dev-shell runner and fails when HIGH or CRITICAL Trivy configuration findings are detected.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits considered findings to HIGH and CRITICAL severities.
+- --exit-code 1 = failure exit code: Returns exit status 1 when matching findings are present.
+------------------------------------------------------------
+# security_scan:
+  stage: security
+
+  tags:
+    - dev-shell
+
+  script:
+    - trivy fs --scanners misconfig,secret --severity HIGH,CRITICAL --exit-code 1 .
+
+Explanation:
+Defines a GitLab CI job named security_scan that checks the repository for misconfigurations and secrets and fails on HIGH or CRITICAL findings.
+
+Options:
+- --scanners misconfig,secret = scanner selection: Enables the misconfiguration and secret scanners.
+- --severity HIGH,CRITICAL = severity filter: Limits considered findings to HIGH and CRITICAL severities.
+- --exit-code 1 = failure exit code: Returns exit status 1 when matching findings are present.
+------------------------------------------------------------
+# trivy config \
+  --misconfig-scanners terraform,dockerfile \
+  .
+
+Explanation:
+Scans the current directory while limiting misconfiguration scanning to Terraform and Dockerfile scanners.
+
+Options:
+- --misconfig-scanners terraform,dockerfile = misconfiguration scanner selection: Enables only the Terraform and Dockerfile misconfiguration scanners.
+- \ = line continuation: Continues the command on the next line.
+------------------------------------------------------------
+# trivy image myapp:1.0
+
+Explanation:
+Scans the Docker image myapp:1.0 for supported image security findings.
+------------------------------------------------------------
