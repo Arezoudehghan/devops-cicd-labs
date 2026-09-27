@@ -1,0 +1,72 @@
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs the project's tests with pytest.
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the text "Building application..." to the job log.
+------------------------------------------------------------
+# trivy fs --scanners vuln .
+
+Explanation:
+Scans the current filesystem directory with Trivy and checks for known vulnerabilities.
+
+Options:
+- --scanners vuln = scanner selection: Enables only the vulnerability scanner.
+- . = current directory: Uses the current working directory as the filesystem scan target.
+------------------------------------------------------------
+# trivy fs \
+  --scanners vuln \
+  --severity HIGH,CRITICAL \
+  .
+
+Explanation:
+Scans the current directory for vulnerabilities and displays only findings with HIGH or CRITICAL severity.
+
+Options:
+- --scanners vuln = scanner selection: Enables only the vulnerability scanner.
+- --severity HIGH,CRITICAL = severity filter: Displays only HIGH and CRITICAL findings.
+- \ = line continuation: Continues the same shell command on the next line.
+- . = current directory: Uses the current working directory as the filesystem scan target.
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Exits the current shell or script with status code 1, which normally indicates failure.
+
+Options:
+- 1 = exit status: Returns a non-zero status code to indicate failure.
+------------------------------------------------------------
+# echo "Run SAST scanner"
+
+Explanation:
+Prints the text "Run SAST scanner" to the CI/CD job log.
+------------------------------------------------------------
+# echo "Run dependency scanner"
+
+Explanation:
+Prints the text "Run dependency scanner" to the CI/CD job log.
+------------------------------------------------------------
+# echo "Evaluate HIGH and CRITICAL findings"
+
+Explanation:
+Prints a message indicating that HIGH and CRITICAL security findings should be evaluated.
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the GitLab commit short SHA.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag.
+- myapp:$CI_COMMIT_SHORT_SHA = tag value: Uses "myapp" as the image name and expands the GitLab CI variable as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# echo "Deploy application"
+
+Explanation:
+Prints the text "Deploy application" to the CI/CD job log.
+------------------------------------------------------------
