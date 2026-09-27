@@ -30,7 +30,7 @@ deploy_production:
     - chmod 600 "$SSH_PRIVATE_KEY"
 
   script:
-    - IMAGE="\${NEXUS_REGISTRY}/myapp:\${CI_COMMIT_SHORT_SHA}"
+    - IMAGE="${NEXUS_REGISTRY}/myapp:${CI_COMMIT_SHORT_SHA}"
 
     - >
       printf '%s' "$NEXUS_PULL_PASSWORD" |
