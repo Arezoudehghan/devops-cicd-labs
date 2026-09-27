@@ -1,0 +1,63 @@
+------------------------------------------------------------
+# echo "Job token exists"
+
+Explanation:
+Prints a simple message to standard output to confirm that the CI job is running.
+------------------------------------------------------------
+# echo "$CI_JOB_TOKEN"
+
+Explanation:
+Prints the current value of the CI_JOB_TOKEN environment variable to standard output.
+------------------------------------------------------------
+# curl \
+  --header "JOB-TOKEN: $CI_JOB_TOKEN" \
+  https://gitlab.example.com/api/v4/...
+
+Explanation:
+Sends an HTTP request to the GitLab API and authenticates with CI_JOB_TOKEN by using the JOB-TOKEN header.
+
+Options:
+- --header = header: Adds the HTTP header `JOB-TOKEN: $CI_JOB_TOKEN` to the request.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+
+Explanation:
+Logs in to the container registry by sending the registry password through standard input instead of placing it directly in the command arguments.
+
+Options:
+- | = pipe operator: Sends the output of `echo` to the standard input of `docker login`.
+- -u = --username (username): Sets the registry username to `$CI_REGISTRY_USER`.
+- --password-stdin = password from standard input: Reads the registry password from standard input.
+------------------------------------------------------------
+# docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Pushes the image tagged with `$CI_COMMIT_SHORT_SHA` to the registry path stored in `$CI_REGISTRY_IMAGE`.
+------------------------------------------------------------
+# docker login "$CI_REGISTRY" \
+  -u "$CI_REGISTRY_USER" \
+  -p "$CI_REGISTRY_PASSWORD"
+
+Explanation:
+Logs in to the container registry by passing both the username and password as command arguments.
+
+Options:
+- -u = --username (username): Sets the registry username to `$CI_REGISTRY_USER`.
+- -p = --password (password): Sets the registry password to `$CI_REGISTRY_PASSWORD`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# curl --request POST \
+  --form token="$TRIGGER_TOKEN" \
+  --form ref="main" \
+  "https://gitlab.example.com/api/v4/projects/123/trigger/pipeline"
+
+Explanation:
+Sends a POST request to the GitLab pipeline trigger endpoint, using the trigger token and the `main` ref.
+
+Options:
+- --request POST = request method: Uses HTTP POST for the request.
+- --form token="$TRIGGER_TOKEN" = form data: Sends the trigger token in the form field named `token`.
+- --form ref="main" = form data: Sends `main` as the pipeline ref in the form field named `ref`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
