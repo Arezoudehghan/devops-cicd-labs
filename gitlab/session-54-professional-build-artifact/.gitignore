@@ -1,0 +1,5 @@
+dist/
+reports/
+build-meta/
+.pytest_cache/
+__pycache__/
