@@ -5,7 +5,7 @@ stages:
 
 variables:
   APP_NAME: "cicd-session5-components"
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_USER: "deploy"
 
 default:

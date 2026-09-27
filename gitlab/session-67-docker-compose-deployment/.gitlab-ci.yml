@@ -89,7 +89,7 @@ deploy_dev:
 
   environment:
     name: development
-    url: http://192.168.94.91:8088
+    url: http://192.168.10.91:8088
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'

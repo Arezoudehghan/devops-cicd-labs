@@ -9,8 +9,8 @@ deploy:
     - dev-shell
 
   script:
-    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose pull"
-    - ssh deploy@192.168.94.91 "cd /opt/myapp && docker compose up -d"
+    - ssh deploy@192.168.10.91 "cd /opt/myapp && docker compose pull"
+    - ssh deploy@192.168.10.91 "cd /opt/myapp && docker compose up -d"
 
 healthcheck:
   stage: verify
@@ -21,7 +21,7 @@ healthcheck:
   script:
     - |
       for i in $(seq 1 10); do
-        if ssh deploy@192.168.94.91 \
+        if ssh deploy@192.168.10.91 \
           "curl --connect-timeout 3 --max-time 5 -fsS http://localhost:8088/health"; then
           echo "Application is healthy"
           exit 0
@@ -44,5 +44,5 @@ smoke_test:
     - healthcheck
 
   script:
-    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/health
-    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.94.91:8088/
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.10.91:8088/health
+    - curl --connect-timeout 3 --max-time 5 -fsS http://192.168.10.91:8088/

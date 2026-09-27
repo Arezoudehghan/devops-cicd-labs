@@ -2,7 +2,7 @@ stages:
   - deploy
 
 variables:
-  IMAGE_NAME: "192.168.94.90:8085/myapp"
+  IMAGE_NAME: "192.168.10.90:8085/myapp"
 
 deploy_development:
   stage: deploy
@@ -13,7 +13,7 @@ deploy_development:
     - echo "URL=$CI_ENVIRONMENT_URL"
     - echo "Port=$DEPLOY_PORT"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-development 2>/dev/null || true
@@ -25,7 +25,7 @@ deploy_development:
       "
   environment:
     name: development
-    url: http://192.168.94.91:8088
+    url: http://192.168.10.91:8088
     deployment_tier: development
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
@@ -39,7 +39,7 @@ deploy_production:
     - echo "URL=$CI_ENVIRONMENT_URL"
     - echo "Port=$DEPLOY_PORT"
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         set -e
         docker pull '${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}'
         docker rm -f myapp-production 2>/dev/null || true
@@ -51,7 +51,7 @@ deploy_production:
       "
   environment:
     name: production
-    url: http://192.168.94.91:8089
+    url: http://192.168.10.91:8089
     deployment_tier: production
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

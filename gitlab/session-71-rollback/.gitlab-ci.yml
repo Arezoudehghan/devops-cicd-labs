@@ -2,9 +2,9 @@ stages:
   - deploy
 
 variables:
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_USER: "deploy"
-  REGISTRY: "192.168.94.90:8085"
+  REGISTRY: "192.168.10.90:8085"
   IMAGE_NAME: "myapp"
   APP_PORT: "8088"
 

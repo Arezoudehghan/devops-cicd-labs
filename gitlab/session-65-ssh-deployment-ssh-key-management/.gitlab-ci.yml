@@ -2,7 +2,7 @@ stages:
   - deploy
 
 variables:
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_USER: "deploy"
 
 ssh_deploy_test:

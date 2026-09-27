@@ -3,7 +3,7 @@ stages:
   - verify
 
 variables:
-  NEXUS_REGISTRY: "192.168.94.90:8085"
+  NEXUS_REGISTRY: "192.168.10.90:8085"
   DOCKER_CONFIG: "$CI_PROJECT_DIR/.docker"
 
 publish_image:

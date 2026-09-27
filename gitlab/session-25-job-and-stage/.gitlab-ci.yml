@@ -49,5 +49,5 @@ deploy_preview:
     - dev-shell
   script:
     - echo "All previous stages passed."
-    - echo "Deployment target would be DEV-2 at 192.168.94.91."
+    - echo "Deployment target would be DEV-2 at 192.168.10.91."
     - echo "Deployment preview completed."

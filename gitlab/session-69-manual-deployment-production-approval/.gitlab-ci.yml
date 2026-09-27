@@ -5,7 +5,7 @@ stages:
   - verify_production
 
 variables:
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   APP_PORT: "5000"
   STAGING_PORT: "8089"
   PRODUCTION_PORT: "8088"
@@ -37,7 +37,7 @@ deploy_staging:
         "
   environment:
     name: staging
-    url: http://192.168.94.91:8089
+    url: http://192.168.10.91:8089
     deployment_tier: staging
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
@@ -85,7 +85,7 @@ deploy_production:
         "
   environment:
     name: production
-    url: http://192.168.94.91:8088
+    url: http://192.168.10.91:8088
     deployment_tier: production
   resource_group: production
   manual_confirmation: "Deploy this version to production?"

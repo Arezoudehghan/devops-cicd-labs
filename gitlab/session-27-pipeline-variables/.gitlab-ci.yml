@@ -6,7 +6,7 @@ stages:
 variables:
   APP_NAME: "cicd-session27-app"
   APP_ENV: "lab"
-  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_HOST: "192.168.10.91"
   DEPLOY_PORT: "8088"
 
 inspect_variables:

@@ -8,7 +8,7 @@ stages:
   - deploy
 
 variables:
-  REGISTRY: "192.168.94.90:8085"
+  REGISTRY: "192.168.10.90:8085"
   IMAGE_NAME: "$REGISTRY/$CI_PROJECT_NAME"
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
 
@@ -82,7 +82,7 @@ deploy:
     - mkdir -p ~/.ssh
     - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
     - |
-      ssh deploy@192.168.94.91 "
+      ssh deploy@192.168.10.91 "
         docker pull '$IMAGE_NAME:$IMAGE_TAG' &&
         (docker stop devsecops-app 2>/dev/null || true) &&
         (docker rm devsecops-app 2>/dev/null || true) &&
