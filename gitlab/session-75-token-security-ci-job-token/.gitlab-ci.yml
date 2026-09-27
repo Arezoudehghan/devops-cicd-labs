@@ -1,0 +1,7 @@
+stages:
+  - test
+
+test-token:
+  stage: test
+  script:
+    - echo "Job token exists"
