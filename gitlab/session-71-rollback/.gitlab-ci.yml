@@ -1,0 +1,60 @@
+stages:
+  - deploy
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  REGISTRY: "192.168.94.90:8085"
+  IMAGE_NAME: "myapp"
+  APP_PORT: "8088"
+
+deploy_production:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - eval "$(ssh-agent -s)"
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+
+  script:
+    - |
+      ssh "$DEPLOY_USER@$DEPLOY_HOST"       "NEW_VERSION='$CI_COMMIT_SHA'       REGISTRY='$REGISTRY'       IMAGE_NAME='$IMAGE_NAME'       APP_PORT='$APP_PORT'       SIMULATE_HEALTH_FAILURE='${SIMULATE_HEALTH_FAILURE:-false}'       bash -s"       < scripts/deploy-with-rollback.sh
+
+  environment:
+    name: production
+
+  resource_group: production
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+rollback_production:
+  stage: deploy
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - eval "$(ssh-agent -s)"
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+
+  script:
+    - |
+      ssh "$DEPLOY_USER@$DEPLOY_HOST"       "REGISTRY='$REGISTRY'       IMAGE_NAME='$IMAGE_NAME'       APP_PORT='$APP_PORT'       bash -s"       < scripts/manual-rollback.sh
+
+  environment:
+    name: production
+
+  resource_group: production
+
+  when: manual
