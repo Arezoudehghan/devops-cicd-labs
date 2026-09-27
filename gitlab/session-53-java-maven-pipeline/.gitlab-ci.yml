@@ -1,0 +1,55 @@
+stages:
+  - test
+  - package
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+default:
+  tags:
+    - dev-shell
+
+  cache:
+    key:
+      files:
+        - pom.xml
+
+    paths:
+      - .m2/repository/
+
+maven_test:
+  stage: test
+
+  script:
+    - echo "Running Maven unit tests..."
+    - mvn --batch-mode clean test
+
+  artifacts:
+    when: always
+
+    paths:
+      - target/surefire-reports/
+
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+
+    expire_in: 1 week
+
+maven_package:
+  stage: package
+
+  script:
+    - echo "Building JAR artifact..."
+    - mvn --batch-mode clean package -DskipTests
+    - ls -lh target/*.jar
+
+  dependencies: []
+
+  artifacts:
+    name: "java-maven-${CI_COMMIT_SHORT_SHA}"
+
+    paths:
+      - target/*.jar
+
+    expire_in: 1 week

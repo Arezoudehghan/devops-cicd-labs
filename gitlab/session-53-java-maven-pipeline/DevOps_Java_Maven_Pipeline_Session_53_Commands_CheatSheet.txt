@@ -1,0 +1,173 @@
+------------------------------------------------------------
+# mvn test
+
+Explanation:
+Runs the Maven build lifecycle through the test phase and executes the project's tests.
+------------------------------------------------------------
+# mvn package
+
+Explanation:
+Runs the Maven lifecycle through the package phase and creates the project's package, such as a JAR. Tests are also run before packaging by default.
+------------------------------------------------------------
+# mvn package -DskipTests
+
+Explanation:
+Packages the Maven project while skipping test execution. The tests should already have passed in the earlier test job in this lesson.
+
+Options:
+- -DskipTests = --define skipTests (define a user property): Sets the Maven user property `skipTests` to true so test execution is skipped.
+------------------------------------------------------------
+# java -version
+
+Explanation:
+Displays the installed Java runtime version and exits.
+
+Options:
+- -version = version information: Prints the Java product version to the error stream and exits; Java also provides `--version` as a separate version option.
+------------------------------------------------------------
+# mvn --version
+
+Explanation:
+Technical correction: The lesson used `mvn -version`; the documented Maven version options are `-v` and `--version`. This command displays Maven version information and exits.
+
+Options:
+- --version = version: Displays the installed Maven version information.
+------------------------------------------------------------
+# sudo apt update
+
+Explanation:
+Runs the APT package index update with administrative privileges. It refreshes the local package metadata from configured repositories.
+------------------------------------------------------------
+# sudo apt install -y openjdk-17-jdk maven
+
+Explanation:
+Installs OpenJDK 17 JDK and Maven with administrative privileges. APT automatically confirms installation prompts.
+
+Options:
+- -y = --yes (yes): Automatically answers yes to package-manager confirmation prompts.
+------------------------------------------------------------
+# mvn clean test
+
+Explanation:
+Runs the Maven clean lifecycle and then executes the default lifecycle through the test phase. It removes previous build output before compiling and testing the project.
+------------------------------------------------------------
+# ls -lah target/surefire-reports/
+
+Explanation:
+Lists the Maven Surefire report directory in long format, including hidden entries, with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed information for each entry.
+- -a = --all (all): Includes entries whose names begin with a dot.
+- -h = --human-readable (human-readable): Shows file sizes using readable units such as KB and MB.
+------------------------------------------------------------
+# mvn clean package
+
+Explanation:
+Removes previous build output and then runs the Maven lifecycle through the package phase. Tests run before Maven creates the package.
+---------------------------------------------------------------
+# ls -lh target/
+
+Explanation:
+Lists the contents of the target directory in long format with human-readable file sizes.
+
+Options:
+- -l = long listing format: Shows detailed information for each entry.
+- -h = --human-readable (human-readable): Shows file sizes using readable units such as KB and MB.
+------------------------------------------------------------
+# echo "Running Maven unit tests..."
+
+Explanation:
+Prints the message `Running Maven unit tests...` to the job log.
+------------------------------------------------------------
+# mvn --batch-mode clean test
+
+Explanation:
+Runs a clean Maven test build in batch mode, which is suitable for non-interactive CI jobs.
+
+Options:
+- --batch-mode = batch mode: Runs Maven without interactive input and reduces interactive-style output.
+------------------------------------------------------------
+# echo "Building JAR artifact..."
+
+Explanation:
+Prints the message `Building JAR artifact...` to the job log.
+------------------------------------------------------------
+# mvn --batch-mode clean package -DskipTests
+
+Explanation:
+Runs a clean Maven package build in batch mode while skipping test execution. In this pipeline, the separate test job is expected to validate the tests first.
+
+Options:
+- --batch-mode = batch mode: Runs Maven without interactive input and is suitable for CI environments.
+- -DskipTests = --define skipTests (define a user property): Sets the Maven user property `skipTests` to true so test execution is skipped.
+------------------------------------------------------------
+# ls -lh target/*.jar
+
+Explanation:
+Lists JAR files inside the target directory in long format with human-readable sizes.
+
+Options:
+- -l = long listing format: Shows detailed information for each matching JAR file.
+- -h = --human-readable (human-readable): Shows file sizes using readable units such as KB and MB.
+------------------------------------------------------------
+# git status
+
+Explanation:
+Shows the current Git working tree and staging-area status.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants for the next commit. The dot represents the current directory.
+------------------------------------------------------------
+# git commit -m "Add Java Maven CI pipeline"
+
+Explanation:
+Creates a Git commit using the specified commit message.
+
+Options:
+- -m = --message (message): Uses the following quoted text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes local commits to the configured remote branch.
+------------------------------------------------------------
+# git commit -m "Break unit test for CI demo"
+
+Explanation:
+Creates a Git commit with the message used in the lesson's intentionally failing test scenario.
+
+Options:
+- -m = --message (message): Uses the following quoted text as the commit message.
+------------------------------------------------------------
+# git commit -m "Fix unit test"
+
+Explanation:
+Creates a Git commit with the message used after repairing the intentionally broken unit test.
+
+Options:
+- -m = --message (message): Uses the following quoted text as the commit message.
+------------------------------------------------------------
+# mvn clean package -DskipTests
+
+Explanation:
+Removes previous Maven build output and creates the package without running tests. This avoids executing the tests again after a successful dedicated test stage.
+
+Options:
+- -DskipTests = --define skipTests (define a user property): Sets the Maven user property `skipTests` to true so test execution is skipped.
+------------------------------------------------------------
+# mvn verify
+
+Explanation:
+Runs the Maven default lifecycle through the verify phase. It performs the all earlier lifecycle phases before completing verification.
+--------------------------------------------------------------
+# java -jar application.jar
+
+Explanation:
+Runs an executable JAR file named `application.jar`. The JAR must contain the metadata needed for Java to identify its main class.
+
+Options:
+- -jar = JAR file mode: Tells the Java launcher to run the specified JAR file as the application.
+------------------------------------------------------------
