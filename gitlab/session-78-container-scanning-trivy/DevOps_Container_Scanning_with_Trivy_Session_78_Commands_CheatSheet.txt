@@ -1,0 +1,316 @@
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+This Dockerfile instruction sets `python:3.12-slim` as the base image for the container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt-get install -y wget gnupg
+
+Explanation:
+Installs the `wget` and `gnupg` packages with administrator privileges.
+
+Options:
+- -y = --yes (assume yes): Automatically answers yes to installation confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
+| gpg --dearmor \
+| sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+
+Explanation:
+Downloads the Trivy repository public key, converts it to GPG keyring format, and writes it to `/usr/share/keyrings/trivy.gpg`.
+
+Options:
+- -q = --quiet (quiet): Suppresses normal `wget` output.
+- -O - = --output-document=- (output document): Sends the downloaded key to standard output instead of saving it as a normal file.
+- \ = shell line continuation: Continues the same command on the next line.
+- | = pipe operator: Sends the output of the command on the left to the command on the right.
+- --dearmor = dearmor: Converts ASCII-armored OpenPGP data to binary OpenPGP format.
+- > /dev/null = output redirection: Discards the normal output produced by `tee`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
+| sudo tee /etc/apt/sources.list.d/trivy.list
+
+Explanation:
+Writes the Trivy APT repository definition to `/etc/apt/sources.list.d/trivy.list`.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- | = pipe operator: Sends the repository line from `echo` to `tee`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt-get update
+
+Explanation:
+Refreshes the local APT package index with the latest package metadata from configured repositories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo apt-get install -y trivy
+
+Explanation:
+Installs Trivy with administrator privileges.
+
+Options:
+- -y = --yes (assume yes): Automatically answers yes to installation confirmation prompts.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy --version
+
+Explanation:
+Displays the installed Trivy version.
+
+Options:
+- --version = version: Prints version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images stored in the local Docker daemon.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image myapp:latest
+
+Explanation:
+Scans the Docker image `myapp:latest` for vulnerabilities.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL myapp:latest
+
+Explanation:
+Scans `myapp:latest` and reports only vulnerabilities with HIGH or CRITICAL severity.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits reported vulnerabilities to the HIGH and CRITICAL severity levels.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image \
+  --severity HIGH,CRITICAL \
+  --exit-code 1 \
+  myapp:latest
+
+Explanation:
+Scans `myapp:latest` and returns exit code `1` when a HIGH or CRITICAL vulnerability matches the policy.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --severity HIGH,CRITICAL = severity filter: Limits the scan result used by this command to HIGH and CRITICAL vulnerabilities.
+- --exit-code 1 = exit code: Returns exit status `1` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo $?
+
+Explanation:
+Prints the exit status of the previously executed shell command. A value of `0` normally means success, while a non-zero value indicates failure.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image \
+  --severity HIGH,CRITICAL \
+  --exit-code 0 \
+  myapp:latest
+
+Explanation:
+Scans `myapp:latest` for HIGH and CRITICAL vulnerabilities but keeps the command exit code at `0` when matching vulnerabilities are found.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --severity HIGH,CRITICAL = severity filter: Limits the reported vulnerabilities to HIGH and CRITICAL.
+- --exit-code 0 = exit code: Returns exit status `0` when matching vulnerabilities are found, so the scan does not fail the job because of those findings.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image \
+  --severity HIGH,CRITICAL \
+  --ignore-unfixed \
+  --exit-code 1 \
+  myapp:latest
+
+Explanation:
+Scans `myapp:latest` for HIGH and CRITICAL vulnerabilities, ignores findings without an available fix, and returns exit code `1` for matching findings.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --severity HIGH,CRITICAL = severity filter: Limits the scan result to HIGH and CRITICAL vulnerabilities.
+- --ignore-unfixed = ignore unfixed vulnerabilities: Excludes vulnerabilities that do not currently have a fixed version.
+- --exit-code 1 = exit code: Returns exit status `1` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and tags it with the values stored in `IMAGE_NAME` and `IMAGE_TAG`.
+
+Options:
+- -t = --tag (tag): Assigns a name and optional tag to the built image.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL --exit-code 1 "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the image identified by `IMAGE_NAME` and `IMAGE_TAG` and fails with exit code `1` if HIGH or CRITICAL vulnerabilities are found.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits the scan result to HIGH and CRITICAL vulnerabilities.
+- --exit-code 1 = exit code: Returns exit status `1` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker tag "$IMAGE_NAME:$IMAGE_TAG" "$NEXUS_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Creates a new tag for the local image so it can be addressed through the Nexus registry path.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker login "$NEXUS_REGISTRY" -u "$NEXUS_USERNAME" -p "$NEXUS_PASSWORD"
+
+Explanation:
+Logs in to the Nexus Docker registry using the username and password stored in CI/CD variables.
+
+Options:
+- -u = --username (username): Specifies the registry username.
+- -p = --password (password): Supplies the registry password directly on the command line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$NEXUS_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Pushes the tagged Docker image to the configured Nexus registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logout "$NEXUS_REGISTRY"
+
+Explanation:
+Removes the saved authentication credentials for the specified Nexus registry from the current Docker client session.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# printf '%s' "$NEXUS_PASSWORD" \
+| docker login "$NEXUS_REGISTRY" \
+  -u "$NEXUS_USERNAME" \
+  --password-stdin
+
+Explanation:
+Sends the Nexus password through standard input and logs in to the registry without placing the password directly in the `docker login` argument list.
+
+Options:
+- %s = printf string format: Prints the supplied password exactly as a string.
+- \ = shell line continuation: Continues the same command on the next line.
+- | = pipe operator: Sends the password printed by `printf` to `docker login`.
+- -u = --username (username): Specifies the registry username.
+- --password-stdin = password from standard input: Reads the registry password from standard input.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image \
+  --format json \
+  --output trivy-report.json \
+  --exit-code 0 \
+  "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the selected image, writes the report in JSON format to `trivy-report.json`, and does not fail the job because of vulnerability findings.
+
+Options:
+- \ = shell line continuation: Continues the same command on the next line.
+- --format json = output format: Produces the report in JSON format.
+- --output trivy-report.json = output file: Writes the report to `trivy-report.json`.
+- --exit-code 0 = exit code: Returns exit status `0` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image --cache-dir "$TRIVY_CACHE_DIR" --format json --output trivy-report.json --exit-code 0 "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the selected image, uses the configured Trivy cache directory, and saves a JSON report without failing the job because of vulnerability findings.
+
+Options:
+- --cache-dir "$TRIVY_CACHE_DIR" = cache directory: Uses the directory stored in `TRIVY_CACHE_DIR` for Trivy cache data.
+- --format json = output format: Produces the report in JSON format.
+- --output trivy-report.json = output file: Writes the report to `trivy-report.json`.
+- --exit-code 0 = exit code: Returns exit status `0` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image --cache-dir "$TRIVY_CACHE_DIR" --severity HIGH,CRITICAL --exit-code 1 "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the selected image using the configured Trivy cache and fails with exit code `1` when HIGH or CRITICAL vulnerabilities are found.
+
+Options:
+- --cache-dir "$TRIVY_CACHE_DIR" = cache directory: Uses the directory stored in `TRIVY_CACHE_DIR` for Trivy cache data.
+- --severity HIGH,CRITICAL = severity filter: Limits the scan result to HIGH and CRITICAL vulnerabilities.
+- --exit-code 1 = exit code: Returns exit status `1` when matching vulnerabilities are found.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner trivy --version
+
+Explanation:
+Runs `trivy --version` as the `gitlab-runner` user to verify that the runner account can access Trivy.
+
+Options:
+- -u = --user (user): Runs the following command as the specified user, here `gitlab-runner`.
+- --version = version: Prints Trivy version information and exits.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner docker images
+
+Explanation:
+Lists Docker images while running the Docker command as the `gitlab-runner` user.
+
+Options:
+- -u = --user (user): Runs the following command as the specified user, here `gitlab-runner`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# env | grep -i proxy
+
+Explanation:
+Lists environment variables and filters the output for entries containing the word `proxy`, ignoring letter case.
+
+Options:
+- | = pipe operator: Sends the output of `env` to `grep`.
+- -i = --ignore-case (ignore case): Matches `proxy` without considering uppercase or lowercase letters.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner env | grep -i proxy
+
+Explanation:
+Checks proxy-related environment variables as seen by the `gitlab-runner` user.
+
+Options:
+- -u = --user (user): Runs `env` as the specified user, here `gitlab-runner`.
+- | = pipe operator: Sends the environment output to `grep`.
+- -i = --ignore-case (ignore case): Matches `proxy` without considering uppercase or lowercase letters.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trivy image --severity HIGH,CRITICAL "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Scans the selected image and reports HIGH and CRITICAL vulnerabilities without setting a custom failure exit code for vulnerability findings.
+
+Options:
+- --severity HIGH,CRITICAL = severity filter: Limits the reported vulnerabilities to HIGH and CRITICAL severity levels.
+------------------------------------------------------------
