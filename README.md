@@ -68,3 +68,5 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-68-healthcheck-smoke-test/` — Docker HEALTHCHECK, application health endpoint, curl status validation, retry and timeout handling, internal health verification, and external post-deployment smoke testing.
 - `gitlab/session-67-docker-compose-deployment/` — Docker Compose deployment on DEV-2 with commit-SHA image tags, environment files, Nexus pull, SSH orchestration, health-aware `up`, rollback, and troubleshooting.
 - `gitlab/session-69-manual-deployment-production-approval/` — Automatic staging deployment, staging smoke testing, blocking manual production deployment, manual confirmation, serialized production releases with `resource_group`, GitLab Environments, and production approval concepts.
+
+- `gitlab/session-54-professional-build-artifact/` — Professional GitLab CI/CD build artifacts with versioned naming, paths, expiration, JUnit reports, build metadata, SHA-256 verification, `needs:artifacts`, and tagged release publishing.
