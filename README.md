@@ -77,3 +77,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-53-java-maven-pipeline/` — Java/Maven CI pipeline with Maven lifecycle, unit tests, dependency cache, JUnit test reports, package stage, and JAR artifacts.
 - `gitlab/session-74-secret-management-pipeline/` — Secure management of SSH keys, passwords, tokens, registry credentials, API keys, secret-safe logging, rotation, least privilege, and secret-manager concepts.
 - `gitlab/session-77-sast-dependency-scanning/` — SAST, vulnerable dependencies, CVE/CWE, CVSS severity, Dependency Scanning, security reports, Security Quality Gates, Trivy, Semgrep, and Shift Left Security.
+- `gitlab/session-72-deployment-strategy/` — Recreate, Rolling, Blue-Green, and Canary deployment strategies; downtime, risk, resource usage, rollback, VM deployment, Kubernetes rollout behavior, Nginx traffic switching, and readiness checks.
