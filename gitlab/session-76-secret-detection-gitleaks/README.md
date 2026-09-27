@@ -62,13 +62,13 @@ The lab pins:
 ghcr.io/gitleaks/gitleaks:v8.30.1
 ```
 
-Pinning the version makes the CI behavior more predictable and reproducible.
+Pinning the version makes CI behavior more predictable and reproducible.
 
 ## Gitleaks Configuration
 
 The repository contains `.gitleaks.toml`.
 
-It keeps the default Gitleaks rules and adds one safe lab-only rule:
+It keeps the default Gitleaks rules and adds one safe lab-only pattern:
 
 ```text
 LABSECRET-<24 alphanumeric characters>
@@ -78,15 +78,11 @@ Do not replace the lab value with a real password, API token, private key, cloud
 
 ## False Positive and Allowlist
 
-The file:
+The configuration includes a rule-specific allowlist for the `docs/` path.
 
-```text
-docs/example.env
-```
+To test the false-positive scenario, create `docs/example.env` locally with a fake value that matches the lab-only pattern. The training sample itself is intentionally not committed to this public repository.
 
-contains a fake documentation token that matches the lab rule.
-
-The rule-specific allowlist permits that fake value only under the documentation path. This demonstrates how to handle a known false positive without disabling secret detection globally.
+This demonstrates how to handle a known false positive without disabling secret detection globally.
 
 ## Pipeline
 
@@ -126,13 +122,9 @@ To reproduce a failure locally, create a temporary file outside the allowlisted 
 mkdir -p config
 ```
 
-Example content for `config/app.env`:
+Create `config/app.env` locally with a fake value matching the lab-only `LABSECRET-` pattern.
 
-```text
-API_TOKEN=LABSECRET-4f92c7a1d8e3b6a5c9f0e2d1
-```
-
-Commit it only in a disposable training branch or lab repository if you want to demonstrate Git-history detection.
+Commit it only in a disposable training branch or disposable lab repository if you want to demonstrate Git-history detection.
 
 Never use a real secret for this test.
 
@@ -156,13 +148,7 @@ For CI/CD secret leakage detection, Git history scanning is important because a 
 
 The Gitleaks job is intentionally blocking.
 
-Do not use patterns such as:
-
-```bash
-gitleaks git . || true
-```
-
-and do not set the security job to `allow_failure: true` when secret detection must block delivery.
+Do not hide a Gitleaks failure with shell logic, and do not set the security job to `allow_failure: true` when secret detection must block delivery.
 
 ## Incident Response
 
@@ -179,5 +165,4 @@ A leaked credential should be treated as compromised.
 
 - `.gitlab-ci.yml` — GitLab security/test/build pipeline
 - `.gitleaks.toml` — Gitleaks rules and documentation allowlist
-- `docs/example.env` — safe false-positive training sample
 - `DevOps_Gitleaks_Secret_Detection_Session_76_Commands_CheatSheet.txt` — session command cheat sheet
