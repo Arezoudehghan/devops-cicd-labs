@@ -1,0 +1,68 @@
+stages:
+  - verify
+  - deploy
+
+verify_secrets:
+  stage: verify
+  tags:
+    - dev-shell
+  environment:
+    name: production
+  script:
+    - test -n "$NEXUS_PULL_PASSWORD"
+    - test -f "$SSH_PRIVATE_KEY"
+    - test -f "$SSH_KNOWN_HOSTS"
+    - echo "Required secrets are available."
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+deploy_production:
+  stage: deploy
+  tags:
+    - dev-shell
+  environment:
+    name: production
+
+  before_script:
+    - install -d -m 700 ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - chmod 600 "$SSH_PRIVATE_KEY"
+
+  script:
+    - IMAGE="\${NEXUS_REGISTRY}/myapp:\${CI_COMMIT_SHORT_SHA}"
+
+    - >
+      printf '%s' "$NEXUS_PULL_PASSWORD" |
+      ssh -i "$SSH_PRIVATE_KEY"
+      "$DEPLOY_USER@$DEPLOY_HOST"
+      "docker login '$NEXUS_REGISTRY'
+      -u '$NEXUS_PULL_USER'
+      --password-stdin"
+
+    - >
+      ssh -i "$SSH_PRIVATE_KEY"
+      "$DEPLOY_USER@$DEPLOY_HOST"
+      "docker pull '$IMAGE'"
+
+    - >
+      ssh -i "$SSH_PRIVATE_KEY"
+      "$DEPLOY_USER@$DEPLOY_HOST"
+      "docker rm -f myapp || true"
+
+    - >
+      ssh -i "$SSH_PRIVATE_KEY"
+      "$DEPLOY_USER@$DEPLOY_HOST"
+      "docker run -d
+      --name myapp
+      -p 8088:8080
+      '$IMAGE'"
+
+    - >
+      ssh -i "$SSH_PRIVATE_KEY"
+      "$DEPLOY_USER@$DEPLOY_HOST"
+      "docker logout '$NEXUS_REGISTRY'"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
