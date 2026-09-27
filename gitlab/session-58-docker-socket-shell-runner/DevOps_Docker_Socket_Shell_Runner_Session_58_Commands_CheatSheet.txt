@@ -1,0 +1,216 @@
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists the currently running Docker containers.
+------------------------------------------------------------
+# docker build -t myapp:1.0 .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it as myapp:1.0.
+
+Options:
+- -t = --tag: Assigns the name and tag myapp:1.0 to the built image.
+- . = current directory build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed file information for the Docker Unix socket.
+
+Options:
+- -l = long listing format: Displays permissions, owner, group, size, date, and file name.
+------------------------------------------------------------
+# stat -c '%A %a %U %G %n' /var/run/docker.sock
+
+Explanation:
+Displays selected permission and ownership information for the Docker socket.
+
+Options:
+- -c = --format=FORMAT: Uses the supplied format string instead of the default stat output.
+- '%A %a %U %G %n' = format value: %A shows symbolic permissions, %a shows octal permissions, %U shows the owner name, %G shows the group name, and %n shows the file name.
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the effective user name of the process running the command.
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups of the gitlab-runner user.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker info
+
+Explanation:
+Runs docker info as the gitlab-runner user to verify that the runner can communicate with the Docker daemon.
+
+Options:
+- -u = --user: Runs the command as the specified user, gitlab-runner.
+- -H = --set-home: Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# getent group docker
+
+Explanation:
+Queries the system group database and displays the entry for the docker group.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group without removing its existing supplementary groups.
+
+Options:
+- -a = --append: Appends the user to the supplementary groups specified with -G.
+- -G = --groups: Specifies the supplementary group list; here the group is docker.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the GitLab Runner service so the running process receives the updated group membership.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Displays the current status of the GitLab Runner service without opening the output in a pager.
+
+Options:
+- --no-pager = disable pager: Prints the status directly to the terminal.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker ps
+
+Explanation:
+Runs docker ps as the gitlab-runner user to verify access to the Docker daemon and list running containers.
+
+Options:
+- -u = --user: Runs the command as the specified user, gitlab-runner.
+- -H = --set-home: Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# sudo systemctl is-active docker
+
+Explanation:
+Checks whether the Docker service is currently active.
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Displays Docker client and server version information and also tests communication with the Docker daemon.
+------------------------------------------------------------
+# sudo systemctl is-active gitlab-runner
+
+Explanation:
+Checks whether the GitLab Runner service is currently active.
+------------------------------------------------------------
+# sudo -u gitlab-runner -H docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to verify Docker client access and daemon communication.
+
+Options:
+- -u = --user: Runs the command as the specified user, gitlab-runner.
+- -H = --set-home: Sets the HOME environment variable to the target user's home directory.
+------------------------------------------------------------
+# docker build -t "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" .
+
+Explanation:
+Builds a Docker image from the current directory and creates a tag from the GitLab project name and short commit SHA.
+
+Options:
+- -t = --tag: Assigns a name and tag to the built image.
+- "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}" = image tag value: Uses the GitLab CI variables CI_PROJECT_NAME and CI_COMMIT_SHORT_SHA to create the image name and tag.
+- . = current directory build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+# docker image inspect "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Displays detailed metadata for the Docker image built with the current GitLab project name and short commit SHA.
+------------------------------------------------------------
+# docker image ls "${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Lists the Docker image that matches the specified GitLab-generated repository and tag.
+------------------------------------------------------------
+# id
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups of the current job user.
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays Docker daemon and client environment information and verifies that the client can reach the daemon.
+------------------------------------------------------------
+# docker image ls
+
+Explanation:
+Lists Docker images stored by the Docker daemon on the host.
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including running and stopped containers.
+
+Options:
+- -a = --all: Shows all containers instead of only running containers.
+------------------------------------------------------------
+# docker run --rm -v /:/host:ro alpine cat /host/etc/os-release
+
+Explanation:
+Starts a temporary Alpine container, mounts the host root filesystem read-only at /host, and prints the host operating-system release file.
+
+Options:
+- --rm = automatically remove the container: Deletes the container when its process exits.
+- -v = --volume: Creates the bind mount specified by /:/host:ro.
+- /:/host:ro = volume value: Mounts host / at container /host and uses ro for read-only access.
+- alpine = image argument: Uses the Alpine Linux image for the container.
+- cat /host/etc/os-release = container command: Prints the mounted host /etc/os-release file.
+------------------------------------------------------------
+# sudo chmod 666 /var/run/docker.sock
+
+Explanation:
+Changes the Docker socket permissions so the owner, group, and all other users have read and write access.
+
+Options:
+- 666 = permission mode: Gives read and write permissions to owner, group, and others.
+------------------------------------------------------------
+# sudo chmod 777 /var/run/docker.sock
+
+Explanation:
+Changes the Docker socket permissions so the owner, group, and all other users have read, write, and execute permission bits.
+
+Options:
+- 777 = permission mode: Gives read, write, and execute permission bits to owner, group, and others.
+------------------------------------------------------------
+# sudo systemctl status docker --no-pager
+
+Explanation:
+Displays the current Docker service status without opening the output in a pager.
+
+Options:
+- --no-pager = disable pager: Prints the status directly to the terminal.
+------------------------------------------------------------
+# sudo systemctl start docker
+
+Explanation:
+Starts the Docker service.
+------------------------------------------------------------
+# which docker
+
+Explanation:
+Shows the executable path that the shell resolves for the docker command.
+------------------------------------------------------------
+# docker --version
+
+Explanation:
+Prints the installed Docker command-line version.
+
+Options:
+- --version = version information: Displays the Docker version and exits.
+------------------------------------------------------------
+# sudo gpasswd -d gitlab-runner docker
+
+Explanation:
+Removes the gitlab-runner user from the docker group.
+
+Options:
+- -d = --delete: Deletes the specified user, gitlab-runner, from the specified group, docker.
+------------------------------------------------------------
