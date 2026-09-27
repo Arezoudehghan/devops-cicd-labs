@@ -1,0 +1,121 @@
+------------------------------------------------------------
+# docker stop myapp
+
+Explanation:
+Stops the running container named `myapp` gracefully.
+
+------------------------------------------------------------
+# docker rm myapp
+
+Explanation:
+Removes the stopped container named `myapp`.
+
+------------------------------------------------------------
+# docker pull nexus.example.local:8085/myapp:v2.0.0
+
+Explanation:
+Downloads the `v2.0.0` image for `myapp` from the specified Nexus Docker registry.
+
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:8080 \
+  nexus.example.local:8085/myapp:v2.0.0
+
+Explanation:
+Starts the `v2.0.0` application container in the background and publishes it on host port `8088`.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp = container name: Assigns the name `myapp` to the container.
+- -p = --publish (publish): Publishes container port `8080` on host port `8088`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp \
+  -p 8088:8080 \
+  nexus.example.local:8085/myapp:v1.0.0
+
+Explanation:
+Starts the previous `v1.0.0` application container in the background, which can be used for rollback.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp = container name: Assigns the name `myapp` to the container.
+- -p = --publish (publish): Publishes container port `8080` on host port `8088`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# kubectl rollout history deployment/myapp
+
+Explanation:
+Shows the rollout revision history for the Kubernetes Deployment named `myapp`.
+
+------------------------------------------------------------
+# kubectl rollout undo deployment/myapp
+
+Explanation:
+Rolls the Kubernetes Deployment named `myapp` back to its previous rollout revision.
+
+------------------------------------------------------------
+# kubectl rollout status deployment/myapp
+
+Explanation:
+Shows and watches the rollout status of the Kubernetes Deployment named `myapp`.
+
+------------------------------------------------------------
+# docker run -d \
+  --name myapp-blue \
+  -p 8081:8080 \
+  nexus.example.local:8085/myapp:v1.0.0
+
+Explanation:
+Starts the Blue environment container with application version `v1.0.0` and exposes it on host port `8081`.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp-blue = container name: Assigns the name `myapp-blue` to the container.
+- -p = --publish (publish): Publishes container port `8080` on host port `8081`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# docker run -d \
+  --name myapp-green \
+  -p 8082:8080 \
+  nexus.example.local:8085/myapp:v2.0.0
+
+Explanation:
+Starts the Green environment container with application version `v2.0.0` and exposes it on host port `8082`.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name myapp-green = container name: Assigns the name `myapp-green` to the container.
+- -p = --publish (publish): Publishes container port `8080` on host port `8082`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# curl -f http://127.0.0.1:8082/health
+
+Explanation:
+Checks the Green application's health endpoint and returns an error status if the HTTP request fails.
+
+Options:
+- -f = --fail (fail): Makes curl return an error for HTTP response codes of 400 or higher and suppresses the response body for those server errors.
+------------------------------------------------------------
+# nginx -t
+
+Explanation:
+Tests the Nginx configuration syntax and checks whether the configuration files can be loaded successfully.
+
+Options:
+- -t = test configuration: Tests the Nginx configuration without starting or reloading the server.
+------------------------------------------------------------
+# sudo systemctl reload nginx
+
+Explanation:
+Reloads the Nginx service configuration without performing a full service restart.
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists the currently running Docker containers.
+
+------------------------------------------------------------
