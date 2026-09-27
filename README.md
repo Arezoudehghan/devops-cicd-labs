@@ -71,3 +71,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-69-manual-deployment-production-approval/` — Automatic staging deployment, staging smoke testing, blocking manual production deployment, manual confirmation, serialized production releases with `resource_group`, GitLab Environments, and production approval concepts.
 
 - `gitlab/session-54-professional-build-artifact/` — Professional GitLab CI/CD build artifacts with versioned naming, paths, expiration, JUnit reports, build metadata, SHA-256 verification, `needs:artifacts`, and tagged release publishing.
+- `gitlab/session-51-python-flask-pipeline/` — Complete Python/Flask CI pipeline with pip dependencies, virtual environments, Ruff linting, pytest + JUnit reports, Gunicorn runtime health checking, build artifacts, and SHA-256 checksums.
