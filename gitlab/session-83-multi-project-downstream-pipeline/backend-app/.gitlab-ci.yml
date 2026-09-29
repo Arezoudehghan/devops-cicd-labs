@@ -1,0 +1,37 @@
+stages:
+  - test
+  - build
+  - downstream
+
+backend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running backend tests..."
+    - echo "Frontend tag received = $FRONTEND_IMAGE_TAG"
+
+backend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building backend..."
+    - echo "Backend image tag = $CI_COMMIT_SHORT_SHA"
+
+trigger_deployment:
+  stage: downstream
+
+  variables:
+    FRONTEND_IMAGE_TAG: "$FRONTEND_IMAGE_TAG"
+    BACKEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+    BACKEND_PROJECT: "$CI_PROJECT_PATH"
+    BACKEND_COMMIT: "$CI_COMMIT_SHA"
+
+  trigger:
+    project: cicd-lab/deployment-pipeline
+    branch: main
+    strategy: mirror
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
