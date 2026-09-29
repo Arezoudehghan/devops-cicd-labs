@@ -1,0 +1,210 @@
+------------------------------------------------------------
+# mkdir -p monorepo-demo/services/{frontend,backend,worker}
+
+Explanation:
+Creates the monorepo-demo directory structure and the frontend, backend, and worker service directories in one command.
+
+Options:
+- -p = --parents (parents): Create parent directories as needed and do not report an error if they already exist.
+- {frontend,backend,worker} = Bash brace expansion: Expands into three directory names: frontend, backend, and worker.
+------------------------------------------------------------
+# cd monorepo-demo
+
+Explanation:
+Changes the current working directory to monorepo-demo.
+------------------------------------------------------------
+# echo "frontend v1" > services/frontend/app.txt
+
+Explanation:
+Writes the text frontend v1 to the frontend app.txt file.
+
+Options:
+- > = output redirection: Create the target file if needed and overwrite its existing contents.
+------------------------------------------------------------
+# echo "backend v1" > services/backend/app.txt
+
+Explanation:
+Writes the text backend v1 to the backend app.txt file.
+
+Options:
+- > = output redirection: Create the target file if needed and overwrite its existing contents.
+------------------------------------------------------------
+# echo "worker v1" > services/worker/app.txt
+
+Explanation:
+Writes the text worker v1 to the worker app.txt file.
+
+Options:
+- > = output redirection: Create the target file if needed and overwrite its existing contents.
+------------------------------------------------------------
+# find . -maxdepth 3 -type f
+
+Explanation:
+Searches from the current directory and lists regular files up to three directory levels deep.
+
+Options:
+- -maxdepth 3 = maximum search depth: Descend at most three directory levels below the starting point.
+- -type f = file type filter: Match regular files only.
+------------------------------------------------------------
+# echo "Building Frontend"
+
+Explanation:
+Prints the text Building Frontend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Building Backend"
+
+Explanation:
+Prints the text Building Backend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Building Worker"
+
+Explanation:
+Prints the text Building Worker to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants for the next Git commit.
+------------------------------------------------------------
+# git commit -m "add monorepo pipeline"
+
+Explanation:
+Creates a Git commit with the message add monorepo pipeline.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes local commits from the current branch to its configured remote branch.
+------------------------------------------------------------
+# echo "backend v2" >> services/backend/app.txt
+
+Explanation:
+Appends the text backend v2 to the backend app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# git add services/backend/app.txt
+
+Explanation:
+Stages services/backend/app.txt for the next Git commit.
+------------------------------------------------------------
+# git commit -m "update backend"
+
+Explanation:
+Creates a Git commit with the message update backend.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# echo "frontend v2" >> services/frontend/app.txt
+
+Explanation:
+Appends the text frontend v2 to the frontend app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# echo "worker v2" >> services/worker/app.txt
+
+Explanation:
+Appends the text worker v2 to the worker app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# git commit -m "update frontend and worker"
+
+Explanation:
+Creates a Git commit with the message update frontend and worker.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# echo "Linting Backend"
+
+Explanation:
+Prints the text Linting Backend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Testing Backend"
+
+Explanation:
+Prints the text Testing Backend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Linting Frontend"
+
+Explanation:
+Prints the text Linting Frontend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Testing Frontend"
+
+Explanation:
+Prints the text Testing Frontend to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Linting Worker"
+
+Explanation:
+Prints the text Linting Worker to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Testing Worker"
+
+Explanation:
+Prints the text Testing Worker to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# echo "Running backend tests"
+
+Explanation:
+Prints the text Running backend tests to standard output, typically as a CI job log message.
+------------------------------------------------------------
+# docker build -t backend:$CI_COMMIT_SHORT_SHA services/backend
+
+Explanation:
+Builds a Docker image from services/backend and tags it as backend using the current GitLab short commit SHA.
+
+Options:
+- -t = --tag (tag): Apply a name and optional tag to the built image.
+- backend:$CI_COMMIT_SHORT_SHA = tag value: Use backend as the image name and the GitLab CI/CD variable CI_COMMIT_SHORT_SHA as the image tag.
+------------------------------------------------------------
+# echo "backend change" >> services/backend/app.txt
+
+Explanation:
+Appends the text backend change to the backend app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# git commit -m "test backend path pipeline"
+
+Explanation:
+Creates a Git commit with the message test backend path pipeline.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
+# echo "frontend change" >> services/frontend/app.txt
+
+Explanation:
+Appends the text frontend change to the frontend app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# echo "backend change 2" >> services/backend/app.txt
+
+Explanation:
+Appends the text backend change 2 to the backend app.txt file.
+
+Options:
+- >> = append output redirection: Append output to the target file without overwriting its existing contents.
+------------------------------------------------------------
+# git commit -m "change frontend and backend"
+
+Explanation:
+Creates a Git commit with the message change frontend and backend.
+
+Options:
+- -m = --message (message): Use the following text as the commit message.
+------------------------------------------------------------
