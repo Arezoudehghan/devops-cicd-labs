@@ -1,0 +1,47 @@
+stages:
+  - prepare
+  - lint
+  - unit
+  - integration
+  - build
+  - security
+
+default:
+  tags:
+    - dev-shell
+
+prepare_job:
+  stage: prepare
+  script:
+    - echo "Preparing project..."
+    - sleep 60
+
+lint_job:
+  stage: lint
+  script:
+    - echo "Running lint..."
+    - sleep 120
+
+unit_test_job:
+  stage: unit
+  script:
+    - echo "Running unit tests..."
+    - sleep 180
+
+integration_test_job:
+  stage: integration
+  script:
+    - echo "Running integration tests..."
+    - sleep 240
+
+docker_build_job:
+  stage: build
+  script:
+    - echo "Building Docker image..."
+    - sleep 180
+
+security_scan_job:
+  stage: security
+  script:
+    - echo "Running security scan..."
+    - sleep 120
