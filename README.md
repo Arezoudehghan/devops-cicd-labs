@@ -82,3 +82,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-80-devsecops-pipeline/` — Complete DevSecOps pipeline with lint, unit tests, Gitleaks secret scanning, Docker build, Trivy container scanning, Nexus registry push, and SSH deployment to DEV-2.
 - `gitlab/session-81-parent-child-pipeline/` — Parent-Child Pipeline architecture with trigger jobs, modular CI/CD files, quality/security/delivery child pipelines, and downstream pipeline orchestration.
 - `gitlab/session-82-dynamic-child-pipeline/` — Dynamic Child Pipeline with runtime-generated YAML, artifact-based child configuration, dynamic jobs, monorepo change detection, and `strategy: mirror`.
+- `gitlab/session-88-reusable-pipeline-template/` — Reusable GitLab CI/CD pipeline templates with `include`, hidden jobs, `extends`, DRY configuration, version-pinned templates, and CI/CD Components with `spec:inputs`.
