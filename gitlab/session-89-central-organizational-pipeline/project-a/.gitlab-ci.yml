@@ -1,0 +1,9 @@
+include:
+  - project: 'platform/ci-templates'
+    ref: 'v1.0.0'
+    file: '/templates/python.yml'
+
+integration-test:
+  stage: test
+  script:
+    - pytest tests/integration/

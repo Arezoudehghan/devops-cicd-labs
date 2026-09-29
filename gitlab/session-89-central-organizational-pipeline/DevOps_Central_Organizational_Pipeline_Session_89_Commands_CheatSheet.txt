@@ -1,0 +1,81 @@
+------------------------------------------------------------
+# python --version
+
+Explanation:
+Shows the installed Python version.
+
+Options:
+- --version = version: Displays the Python version and exits.
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Installs the Python packages listed in requirements.txt.
+
+Options:
+- -r = --requirement (requirement): Installs packages from the specified requirements file.
+- requirements.txt = option value: The requirements file that pip reads.
+------------------------------------------------------------
+# python -m compileall .
+
+Explanation:
+Compiles Python source files under the current directory to bytecode to catch syntax problems.
+
+Options:
+- -m = module: Runs the specified Python library module as a script.
+- compileall = module value: The Python module used to recursively compile Python files.
+- . = special path argument: Refers to the current directory.
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs tests discovered by pytest using its default discovery rules.
+------------------------------------------------------------
+# echo "Running organization security baseline"
+
+Explanation:
+Prints the text Running organization security baseline to standard output.
+------------------------------------------------------------
+# python -m build
+
+Explanation:
+Runs the Python build module to build the project distribution packages.
+
+Options:
+- -m = module: Runs the specified Python library module as a script.
+- build = module value: Selects the Python build module.
+------------------------------------------------------------
+# pytest tests/integration/
+
+Explanation:
+Runs pytest against the tests/integration/ directory.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory for the next Git commit.
+------------------------------------------------------------
+# git commit -m "feat: add security baseline"
+
+Explanation:
+Creates a Git commit with the message feat: add security baseline.
+
+Options:
+- -m = --message (message): Uses the following text as the commit message.
+- "feat: add security baseline" = option value: The commit message stored in Git history.
+------------------------------------------------------------
+# git tag v1.1.0
+
+Explanation:
+Creates a lightweight Git tag named v1.1.0 at the current commit.
+------------------------------------------------------------
+# git push origin main
+
+Explanation:
+Pushes the local main branch to the remote repository named origin.
+------------------------------------------------------------
+# git push origin v1.1.0
+
+Explanation:
+Pushes the local v1.1.0 tag to the remote repository named origin.
+------------------------------------------------------------
