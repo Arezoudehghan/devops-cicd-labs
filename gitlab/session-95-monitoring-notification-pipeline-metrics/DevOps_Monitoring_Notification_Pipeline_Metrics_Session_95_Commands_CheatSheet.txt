@@ -1,0 +1,161 @@
+------------------------------------------------------------
+# echo "Running lint..."
+
+Explanation:
+Prints the message `Running lint...` to the CI job log.
+------------------------------------------------------------
+# sleep 10
+
+Explanation:
+Pauses the current shell job for 10 seconds.
+
+Options:
+- 10 = duration in seconds: Tells `sleep` how long to pause.
+------------------------------------------------------------
+# echo "Running unit tests..."
+
+Explanation:
+Prints the message `Running unit tests...` to the CI job log.
+------------------------------------------------------------
+# sleep 20
+
+Explanation:
+Pauses the current shell job for 20 seconds.
+
+Options:
+- 20 = duration in seconds: Tells `sleep` how long to pause.
+------------------------------------------------------------
+# if [ "$FORCE_FAIL" = "true" ]; then
+  echo "Unit test failed!"
+  exit 1
+fi
+
+Explanation:
+Checks whether `FORCE_FAIL` is exactly `true`; if it is, the script prints a failure message and exits with a non-zero status so the CI job fails.
+
+Options:
+- = = string comparison operator: Compares the value of `FORCE_FAIL` with the string `true`.
+- 1 = non-zero exit status: Causes the shell script and CI job to report failure.
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the message `Building application...` to the CI job log.
+------------------------------------------------------------
+# sleep 40
+
+Explanation:
+Pauses the current shell job for 40 seconds.
+
+Options:
+- 40 = duration in seconds: Tells `sleep` how long to pause.
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints the message `Deploying application...` to the CI job log.
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the Nano editor with administrative privileges.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the `gitlab-runner` systemd service so configuration changes take effect.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner
+
+Explanation:
+Shows the current status and recent service information for `gitlab-runner`.
+------------------------------------------------------------
+# sudo ss -lntp | grep 9252
+
+Explanation:
+Lists listening TCP sockets numerically with process information, then filters the output for port `9252`.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permissions allow.
+- | = pipe operator: Sends the output of `ss` to `grep 9252`.
+------------------------------------------------------------
+# curl -s http://127.0.0.1:9252/metrics | head
+
+Explanation:
+Fetches the local GitLab Runner metrics endpoint silently and shows the first lines of the response.
+
+Options:
+- -s = --silent (silent): Suppresses the progress meter and normal curl error output.
+- | = pipe operator: Sends the HTTP response from `curl` to `head`.
+------------------------------------------------------------
+# curl -s http://127.0.0.1:9252/metrics | grep gitlab_runner
+
+Explanation:
+Fetches the local Runner metrics endpoint silently and displays only lines containing `gitlab_runner`.
+
+Options:
+- -s = --silent (silent): Suppresses the progress meter and normal curl error output.
+- | = pipe operator: Sends the HTTP response from `curl` to `grep gitlab_runner`.
+------------------------------------------------------------
+# gitlab_runner_jobs / gitlab_runner_limit
+
+Explanation:
+PromQL expression that divides the number of current Runner jobs by the configured Runner limit to estimate utilization as a ratio.
+
+Options:
+- / = division operator: Divides `gitlab_runner_jobs` by `gitlab_runner_limit`.
+------------------------------------------------------------
+# 100 * (gitlab_runner_jobs / gitlab_runner_limit)
+
+Explanation:
+PromQL expression that converts the Runner utilization ratio into a percentage.
+
+Options:
+- * = multiplication operator: Multiplies the utilization ratio by `100`.
+- / = division operator: Divides `gitlab_runner_jobs` by `gitlab_runner_limit`.
+------------------------------------------------------------
+# docker exec prometheus promtool check config /etc/prometheus/prometheus.yml
+
+Explanation:
+Runs `promtool check config` inside the running `prometheus` container to validate the Prometheus configuration file.
+------------------------------------------------------------
+# docker restart prometheus
+
+Explanation:
+Restarts the Docker container named `prometheus` so it reloads its configuration.
+------------------------------------------------------------
+# curl http://192.168.94.90:9252/metrics
+
+Explanation:
+Requests the GitLab Runner Prometheus metrics endpoint on DEV-1 from another host to verify network access and metric availability.
+------------------------------------------------------------
+# nc -vz 192.168.94.90 9252
+
+Explanation:
+Tests whether a TCP connection can be made to `192.168.94.90` on port `9252` without sending application data.
+
+Options:
+- -v = verbose mode: Prints more connection details.
+- -z = zero-I/O mode: Checks for an open listening port without sending normal data.
+------------------------------------------------------------
+# gitlab_runner_jobs
+
+Explanation:
+PromQL query that returns the current GitLab Runner job metric series.
+------------------------------------------------------------
+# gitlab_runner_limit
+
+Explanation:
+PromQL query that returns the configured job limit metric for GitLab Runner.
+------------------------------------------------------------
+# rate(gitlab_runner_errors_total[5m])
+
+Explanation:
+PromQL query that calculates the per-second average increase rate of Runner errors over the last five minutes.
+
+Options:
+- [5m] = 5-minute range vector selector: Uses the previous five minutes of samples as input to `rate()`.
+------------------------------------------------------------

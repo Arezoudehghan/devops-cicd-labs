@@ -1,0 +1,42 @@
+stages:
+  - test
+  - build
+  - deploy
+
+default:
+  tags:
+    - dev-shell
+
+lint:
+  stage: test
+  script:
+    - echo "Running lint..."
+    - sleep 10
+
+unit_test:
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    - sleep 20
+    - |
+      if [ "$FORCE_FAIL" = "true" ]; then
+        echo "Unit test failed!"
+        exit 1
+      fi
+
+build:
+  stage: build
+  script:
+    - echo "Building application..."
+    - sleep 40
+
+deploy_production:
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - sleep 10
+  environment:
+    name: production
+    deployment_tier: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

@@ -1,0 +1,10 @@
+scrape_configs:
+  - job_name: "gitlab-runner"
+    metrics_path: /metrics
+    scrape_interval: 15s
+
+    static_configs:
+      - targets:
+          - "192.168.94.90:9252"
+        labels:
+          runner_name: "dev1-shell-runner"
