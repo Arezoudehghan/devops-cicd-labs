@@ -1,0 +1,372 @@
+------------------------------------------------------------
+# echo "Testing application"
+
+Explanation:
+Prints the text Testing application to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner status
+
+Explanation:
+Runs the GitLab Runner status command with elevated privileges to check the local Runner service state.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner list
+
+Explanation:
+Lists GitLab Runners registered in the local GitLab Runner configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl stop gitlab-runner
+
+Explanation:
+Stops the gitlab-runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl start gitlab-runner
+
+Explanation:
+Starts the gitlab-runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl enable gitlab-runner
+
+Explanation:
+Enables the gitlab-runner service to start automatically at system boot.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running test"
+
+Explanation:
+Prints the text Running test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner
+
+Explanation:
+Shows journal log messages for the gitlab-runner systemd unit.
+
+Options:
+- -u = --unit: Show messages for the specified systemd unit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -n 100
+
+Explanation:
+Shows the latest 100 journal log entries for the gitlab-runner systemd unit.
+
+Options:
+- -u = --unit: Show messages for the specified systemd unit.
+- -n = --lines: Show the specified number of recent journal entries; here the value is 100.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo journalctl -u gitlab-runner -f
+
+Explanation:
+Follows new journal log messages for the gitlab-runner systemd unit in real time.
+
+Options:
+- -u = --unit: Show messages for the specified systemd unit.
+- -f = --follow: Continuously display new journal entries as they are added.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether locally configured GitLab Runner registrations can be verified with GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# systemctl status gitlab-runner
+
+Explanation:
+Shows the current systemd status of the gitlab-runner service.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner verify
+
+Explanation:
+Checks whether the configured GitLab Runner registrations can be verified with GitLab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# gitlab-runner status
+
+Explanation:
+Checks the local GitLab Runner service status using the gitlab-runner command.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the current directory and names the image myapp.
+
+Options:
+- -t = --tag: Apply the specified name and optional tag to the built image.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the effective user name of the current process.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups for the gitlab-runner user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner docker ps
+
+Explanation:
+Runs docker ps as the gitlab-runner user to test whether that user can access the Docker daemon.
+
+Options:
+- -u = --user: Run the following command as the specified user; here the user is gitlab-runner.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 300
+
+Explanation:
+Pauses execution for 300 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ./integration-test.sh
+
+Explanation:
+Runs the integration-test.sh script from the current directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker push "$IMAGE_NAME"
+
+Explanation:
+Pushes the Docker image referenced by the IMAGE_NAME shell variable to its configured registry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# free -h
+
+Explanation:
+Shows system memory and swap usage in human-readable units.
+
+Options:
+- -h = --human: Scale displayed memory values automatically to human-readable units.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# uptime
+
+Explanation:
+Shows how long the system has been running and displays the current load averages.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# top
+
+Explanation:
+Displays a continuously updated view of running processes and system resource usage.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# htop
+
+Explanation:
+Opens the interactive htop process and resource monitor.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Shows filesystem disk space usage in human-readable units.
+
+Options:
+- -h = --human-readable: Print filesystem sizes in powers of 1024 with readable suffixes.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# df -i
+
+Explanation:
+Shows filesystem inode usage instead of block space usage.
+
+Options:
+- -i = --inodes: List inode information instead of block usage.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows disk space used by Docker images, containers, local volumes, and build cache.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system df -v
+
+Explanation:
+Shows detailed Docker disk usage information.
+
+Options:
+- -v = --verbose: Show detailed space usage information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker system prune -a
+
+Explanation:
+Removes unused Docker objects and also removes all unused images, not only dangling images.
+
+Options:
+- -a = --all: Remove all unused images in addition to the other unused Docker objects selected by prune.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Prints the GitLab Runner configuration file to standard output with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker build -t troubleshooting-app .
+
+Explanation:
+Builds a Docker image from the current directory and names the image troubleshooting-app.
+
+Options:
+- -t = --tag: Apply the specified name and optional tag to the built image.
+- . = build context: Use the current directory as the Docker build context.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sleep 120
+
+Explanation:
+Pauses execution for 120 seconds.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Test completed"
+
+Explanation:
+Prints the text Test completed to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# hostname
+
+Explanation:
+Prints the system host name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the current working directory.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Runner is alive"
+
+Explanation:
+Prints the text Runner is alive to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== HOST ==="
+
+Explanation:
+Prints the HOST section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== USER ==="
+
+Explanation:
+Prints the USER section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id
+
+Explanation:
+Shows the current user's user ID, group ID, and group memberships.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== WORKING DIRECTORY ==="
+
+Explanation:
+Prints the WORKING DIRECTORY section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== MEMORY ==="
+
+Explanation:
+Prints the MEMORY section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== DISK ==="
+
+Explanation:
+Prints the DISK section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "=== DOCKER ==="
+
+Explanation:
+Prints the DOCKER section label to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+------------------------------------------------------------
