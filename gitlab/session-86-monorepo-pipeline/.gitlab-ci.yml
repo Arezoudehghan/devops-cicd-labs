@@ -1,0 +1,32 @@
+stages:
+  - triggers
+
+frontend_pipeline:
+  stage: triggers
+  trigger:
+    include:
+      - local: services/frontend/.gitlab-ci.yml
+  rules:
+    - changes:
+        - services/frontend/**/*
+        - shared/**/*
+
+backend_pipeline:
+  stage: triggers
+  trigger:
+    include:
+      - local: services/backend/.gitlab-ci.yml
+  rules:
+    - changes:
+        - services/backend/**/*
+        - shared/**/*
+
+worker_pipeline:
+  stage: triggers
+  trigger:
+    include:
+      - local: services/worker/.gitlab-ci.yml
+  rules:
+    - changes:
+        - services/worker/**/*
+        - shared/**/*
