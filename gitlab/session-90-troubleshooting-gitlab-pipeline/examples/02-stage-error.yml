@@ -1,0 +1,11 @@
+stages:
+  - build
+  - test
+  - deploy
+
+security_scan:
+  stage: security
+  tags:
+    - dev-shell
+  script:
+    - echo "Security scanning..."
