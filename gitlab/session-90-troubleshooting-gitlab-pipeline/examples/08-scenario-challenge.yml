@@ -1,0 +1,30 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  script:
+    - echo "Building application..."
+
+unit_test:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - build_app
+  script:
+    - echo "Running tests..."
+    - exit 2
+
+deploy_app:
+  stage: production
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploy to $DEPLOY_HOST"
