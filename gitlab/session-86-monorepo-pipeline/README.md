@@ -26,6 +26,8 @@ This lab demonstrates a GitLab CI/CD pipeline for a monorepo.
     └── worker
         ├── .gitlab-ci.yml
         └── app.txt
+└── shared
+    └── common.txt
 ```
 
 The parent pipeline uses `rules:changes` to trigger only the child pipeline for a changed service. Changes under `shared/**/*` are configured to trigger all three service pipelines.
