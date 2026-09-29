@@ -1,0 +1,30 @@
+stages:
+  - diagnose
+  - build
+  - test
+
+diagnose:
+  stage: diagnose
+  tags:
+    - wrong-runner
+  script:
+    - hostname
+    - whoami
+    - free -h
+    - df -h
+
+build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - docker build -t troubleshooting-app .
+
+test:
+  stage: test
+  tags:
+    - dev-shell
+  timeout: 1m
+  script:
+    - sleep 120
+    - echo "Test completed"
