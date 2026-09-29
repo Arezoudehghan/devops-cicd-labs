@@ -1,0 +1,10 @@
+stages:
+  - deploy
+
+deploy_app:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploy server is $DEPLOY_HOST"
+    - ssh deploy@$DEPLOY_HOST "hostname"
