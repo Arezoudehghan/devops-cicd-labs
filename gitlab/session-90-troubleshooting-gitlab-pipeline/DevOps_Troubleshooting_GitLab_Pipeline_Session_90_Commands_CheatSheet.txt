@@ -1,0 +1,226 @@
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints the text "Building application..." to the job log.
+
+------------------------------------------------------------
+# echo "Running tests..."
+
+Explanation:
+Prints the text "Running tests..." to the job log.
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+Prints the text "Deploying application..." to the job log.
+
+------------------------------------------------------------
+# echo "Build started"
+
+Explanation:
+Prints the text "Build started" to the job log.
+
+------------------------------------------------------------
+# echo "Build finished"
+
+Explanation:
+Prints the text "Build finished" to the job log.
+
+------------------------------------------------------------
+# echo "Security scanning..."
+
+Explanation:
+Prints the text "Security scanning..." to the job log.
+
+------------------------------------------------------------
+# echo "Testing application..."
+
+Explanation:
+Prints the text "Testing application..." to the job log.
+
+------------------------------------------------------------
+# echo "Deploy server is $DEPLOY_HOST"
+
+Explanation:
+Prints the deployment server value stored in the DEPLOY_HOST environment variable.
+
+------------------------------------------------------------
+# ssh deploy@$DEPLOY_HOST "hostname"
+
+Explanation:
+Connects to the host stored in DEPLOY_HOST as the deploy user and runs the hostname command remotely.
+
+------------------------------------------------------------
+# test -n "$DEPLOY_HOST"
+
+Explanation:
+Checks that the DEPLOY_HOST variable contains a non-empty string. The command returns a non-zero exit status if the value is empty.
+
+Options:
+- -n = string length is nonzero: Succeeds when the supplied string has at least one character.
+------------------------------------------------------------
+# echo "DEPLOY_HOST exists"
+
+Explanation:
+Prints a confirmation message that DEPLOY_HOST exists.
+
+------------------------------------------------------------
+# : "${DEPLOY_HOST:?DEPLOY_HOST is required}"
+
+Explanation:
+Uses the shell no-op command to validate DEPLOY_HOST before continuing. The shell stops the command with the supplied message if the variable is unset or empty.
+
+Options:
+- ${DEPLOY_HOST:?DEPLOY_HOST is required} = shell parameter expansion with error check: Requires DEPLOY_HOST to be set and non-empty, otherwise prints "DEPLOY_HOST is required" and returns an error.
+------------------------------------------------------------
+# echo "Starting deployment..."
+
+Explanation:
+Prints the text "Starting deployment..." to the job log.
+
+------------------------------------------------------------
+# echo "$SSH_PRIVATE_KEY"
+
+Explanation:
+Prints the current value of the SSH_PRIVATE_KEY variable.
+
+------------------------------------------------------------
+# test -n "$SSH_PRIVATE_KEY"
+
+Explanation:
+Checks that SSH_PRIVATE_KEY contains a non-empty string. The command returns a non-zero exit status if the value is empty.
+
+Options:
+- -n = string length is nonzero: Succeeds when the supplied string has at least one character.
+------------------------------------------------------------
+# whoami
+
+Explanation:
+Prints the username of the account running the current shell command.
+
+------------------------------------------------------------
+# touch /root/pipeline-test.txt
+
+Explanation:
+Creates the file /root/pipeline-test.txt if permission allows, or updates its timestamps if it already exists.
+
+------------------------------------------------------------
+# id
+
+Explanation:
+Displays the current user's user ID, primary group ID, and supplementary group memberships.
+
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+
+------------------------------------------------------------
+# ls -ld /path/to/directory
+
+Explanation:
+Shows detailed information about /path/to/directory itself instead of listing its contents.
+
+Options:
+- -l = long listing format: Displays detailed file information such as permissions, owner, group, size, and timestamps.
+- -d = --directory (directory): Lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists currently running Docker containers.
+
+------------------------------------------------------------
+# chmod -R 777 /something
+
+Explanation:
+Recursively changes permissions under /something so the owner, group, and others all receive read, write, and execute permissions.
+
+Options:
+- -R = --recursive (recursive): Applies the permission change to the directory and all files and subdirectories under it.
+------------------------------------------------------------
+# echo "Starting test"
+
+Explanation:
+Prints the text "Starting test" to the job log.
+
+------------------------------------------------------------
+# false
+
+Explanation:
+Runs the shell false command, which always returns a non-zero exit status.
+
+------------------------------------------------------------
+# echo "Test finished"
+
+Explanation:
+Prints the text "Test finished" to the job log.
+
+------------------------------------------------------------
+# echo $?
+
+Explanation:
+Prints the exit status of the most recently executed command.
+
+------------------------------------------------------------
+# true
+
+Explanation:
+Runs the shell true command, which always returns exit status 0.
+
+------------------------------------------------------------
+# curl --fail http://192.168.94.91:8088/health
+
+Explanation:
+Requests the health endpoint at 192.168.94.91:8088 and returns an error status when the HTTP response indicates failure.
+
+Options:
+- --fail = fail on HTTP errors: Makes curl return a non-zero exit status for HTTP response codes 400 and above without outputting the response body.
+------------------------------------------------------------
+# curl http://server/health || true
+
+Explanation:
+Requests http://server/health and forces the overall shell command to succeed if curl fails.
+
+Options:
+- || = OR operator: Runs the command on the right only when the command on the left returns a non-zero exit status.
+------------------------------------------------------------
+# exit 2
+
+Explanation:
+Stops the current shell or script and returns exit status 2 to the caller.
+
+------------------------------------------------------------
+# echo "Deploy to $DEPLOY_HOST"
+
+Explanation:
+Prints the text "Deploy to" followed by the current DEPLOY_HOST variable value.
+
+------------------------------------------------------------
+# docker build .
+
+Explanation:
+Builds a Docker image using the current directory as the build context.
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Starts an SSH connection to 192.168.94.91 using the deploy account.
+
+------------------------------------------------------------
+# curl http://server/health
+
+Explanation:
+Sends an HTTP request to the /health endpoint on the host named server.
+
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs tests discovered by the pytest test framework in the current project.
+
+------------------------------------------------------------
