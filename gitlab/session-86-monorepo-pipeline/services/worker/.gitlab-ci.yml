@@ -1,0 +1,25 @@
+stages:
+  - lint
+  - test
+  - build
+
+worker_lint:
+  stage: lint
+  tags:
+    - dev-shell
+  script:
+    - echo "Linting Worker"
+
+worker_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Testing Worker"
+
+worker_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building Worker"
