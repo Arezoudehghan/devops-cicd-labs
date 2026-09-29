@@ -81,3 +81,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-79-dockerfile-iac-scanning/` — Dockerfile and IaC misconfiguration scanning with Trivy Config, repository secret/misconfiguration scanning, non-root containers, Kubernetes security-context hardening, and pre-build security gates.
 - `gitlab/session-80-devsecops-pipeline/` — Complete DevSecOps pipeline with lint, unit tests, Gitleaks secret scanning, Docker build, Trivy container scanning, Nexus registry push, and SSH deployment to DEV-2.
 - `gitlab/session-81-parent-child-pipeline/` — Parent-Child Pipeline architecture with trigger jobs, modular CI/CD files, quality/security/delivery child pipelines, and downstream pipeline orchestration.
+- `gitlab/session-82-dynamic-child-pipeline/` — Dynamic Child Pipeline with runtime-generated YAML, artifact-based child configuration, dynamic jobs, monorepo change detection, and `strategy: mirror`.
