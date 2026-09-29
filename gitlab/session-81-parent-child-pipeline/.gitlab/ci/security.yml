@@ -1,0 +1,17 @@
+stages:
+  - secret
+  - config
+
+secret_scan:
+  stage: secret
+  tags:
+    - dev-shell
+  script:
+    - echo "Running Gitleaks..."
+
+config_scan:
+  stage: config
+  tags:
+    - dev-shell
+  script:
+    - echo "Running Trivy Config Scan..."
