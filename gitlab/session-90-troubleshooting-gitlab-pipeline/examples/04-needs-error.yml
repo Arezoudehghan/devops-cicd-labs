@@ -1,0 +1,21 @@
+stages:
+  - build
+  - test
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  rules:
+    - if: '$RUN_BUILD == "true"'
+  script:
+    - echo "Building application..."
+
+test_app:
+  stage: test
+  tags:
+    - dev-shell
+  needs:
+    - build_app
+  script:
+    - echo "Testing application..."
