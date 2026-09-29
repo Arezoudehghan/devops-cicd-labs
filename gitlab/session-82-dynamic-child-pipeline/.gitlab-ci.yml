@@ -1,0 +1,23 @@
+stages:
+  - generate
+  - trigger
+
+generate_child_pipeline:
+  stage: generate
+  tags:
+    - dev-shell
+  script:
+    - chmod +x scripts/generate-pipeline.sh
+    - ./scripts/generate-pipeline.sh
+  artifacts:
+    paths:
+      - generated-child.yml
+    expire_in: 1 hour
+
+trigger_child_pipeline:
+  stage: trigger
+  trigger:
+    include:
+      - artifact: generated-child.yml
+        job: generate_child_pipeline
+    strategy: mirror
