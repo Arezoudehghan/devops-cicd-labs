@@ -1,0 +1,40 @@
+stages:
+  - test
+  - build
+  - security
+  - deploy
+
+default:
+  tags:
+    - dev-shell
+
+unit_test:
+  stage: test
+  script:
+    - python3 -m pytest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+nightly_build:
+  stage: build
+  script:
+    - echo "Building nightly image"
+    - docker build -t myapp:nightly-$CI_COMMIT_SHORT_SHA .
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "nightly"'
+
+scheduled_security_scan:
+  stage: security
+  script:
+    - gitleaks detect --source . --redact
+    - trivy fs --severity HIGH,CRITICAL --exit-code 1 .
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "security"'
+
+external_deploy:
+  stage: deploy
+  script:
+    - echo "External deployment requested"
+    - echo "Environment: $DEPLOY_ENV"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'

@@ -35,7 +35,7 @@ Builds a Docker image from the Dockerfile in the current directory and tags it w
 Options:
 - -t = --tag (tag): Assigns the image name and tag `myapp:nightly-$CI_COMMIT_SHORT_SHA`.
 - . = build context: Uses the current directory as the Docker build context.
-------------------------------------------------------------
+---------------------------------------------------------------
 # gitleaks detect --source . --redact
 
 Explanation:
@@ -73,7 +73,7 @@ Options:
 - --request POST = request method: Explicitly uses the HTTP POST method.
 - --form "token=$GITLAB_TRIGGER_TOKEN" = form field: Sends the GitLab trigger token as multipart form data.
 - --form "ref=main" = form field: Requests a pipeline for the `main` branch.
-- \ = shell line continuation: Continues the same command on the next line.
+- \\ = shell line continuation: Continues the same command on the next line.
 ------------------------------------------------------------
 # curl --request POST \
   --form "token=$GITLAB_TRIGGER_TOKEN" \
@@ -91,8 +91,8 @@ Options:
 - --form "ref=main" = form field: Requests a pipeline for the `main` branch.
 - --form "variables[DEPLOY_ENV]=staging" = form field: Sets the pipeline variable `DEPLOY_ENV` to `staging`.
 - --form "variables[APP_VERSION]=1.4.2" = form field: Sets the pipeline variable `APP_VERSION` to `1.4.2`.
-- \ = shell line continuation: Continues the same command on the next line.
-------------------------------------------------------------
+- \\ = shell line continuation: Continues the same command on the next line.
+---------------------------------------------------------------
 # echo "Deploy environment: $DEPLOY_ENV"
 
 Explanation:
@@ -125,7 +125,7 @@ Options:
 - --request POST = request method: Explicitly uses the HTTP POST method.
 - --form "token=glpt-xxxxxxxxxxxxx" = form field: Sends the example trigger token as multipart form data.
 - --form "ref=main" = form field: Requests a pipeline for the `main` branch.
-- \ = shell line continuation: Continues the same command on the next line.
+- \\ = shell line continuation: Continues the same command on the next line.
 ------------------------------------------------------------
 # curl --request POST \
   --form "token=$GITLAB_TRIGGER_TOKEN" \
@@ -141,5 +141,5 @@ Options:
 - --form "token=$GITLAB_TRIGGER_TOKEN" = form field: Sends the GitLab trigger token as multipart form data.
 - --form "ref=main" = form field: Requests a pipeline for the `main` branch.
 - --form "variables[DEPLOY_ENV]=staging" = form field: Sets the pipeline variable `DEPLOY_ENV` to `staging`.
-- \ = shell line continuation: Continues the same command on the next line.
+- \\ = shell line continuation: Continues the same command on the next line.
 ------------------------------------------------------------

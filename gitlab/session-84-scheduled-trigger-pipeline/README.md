@@ -1,50 +1,48 @@
 # Session 84 — Scheduled Pipeline and Trigger Pipeline
 
-Practical GitLab CI/CD lab for scheduled pipelines, Cron-based nightly jobs, scheduled security scans, trigger tokens, and API-triggered pipelines.
+Hands-on GitLab CI/CD lab for scheduled pipelines, cron schedules, trigger tokens, API triggers, nightly jobs, and scheduled security scans.
 
-## Pipeline behavior
+## Main lab
 
-- Push pipeline: runs `unit_test`.
-- Scheduled pipeline with `SCHEDULE_TYPE=nightly`: runs `nightly_build`.
-- Scheduled pipeline with `SCHEDULE_TYPE=security`: runs `scheduled_security_scan`.
-- Trigger-token pipeline: runs `external_deploy`.
+The root .gitlab-ci.yml demonstrates three pipeline sources:
 
-## GitLab schedules
+- push -> push_job
+- schedule + SCHEDULE_TYPE=nightly -> nightly_job
+- schedule + SCHEDULE_TYPE=security -> scheduled_security_scan
+- trigger -> external_trigger_job
 
-Create two schedules in **Build > Pipeline schedules**:
+The workflow rules allow push, schedule, and trigger pipelines and reject other sources.
 
-Nightly build:
+## Pipeline schedules
 
-```text
-Cron: 0 2 * * *
-Target: main
-Variable: SCHEDULE_TYPE=nightly
-```
+Create the schedules in GitLab under Build > Pipeline schedules.
 
-Scheduled security scan:
+Nightly schedule:
 
-```text
-Cron: 0 3 * * *
-Target: main
-Variable: SCHEDULE_TYPE=security
-```
+    Cron: 0 2 * * *
+    Target: main
+    Variable: SCHEDULE_TYPE=nightly
 
-## Trigger API
+Security schedule:
 
-Create a Pipeline Trigger Token in:
+    Cron: 0 3 * * *
+    Target: main
+    Variable: SCHEDULE_TYPE=security
 
-```text
-Settings > CI/CD > Pipeline triggers
-```
+## Trigger pipeline
 
-Store the token securely as `GITLAB_TRIGGER_TOKEN` on the external system.
+Create a Pipeline Trigger Token under Settings > CI/CD > Pipeline triggers.
 
-Example:
+Store the token outside the repository as GITLAB_TRIGGER_TOKEN, then update the GitLab URL and PROJECT_ID in trigger-pipeline.sh before running it.
 
-```bash
-curl --request POST \
-  --form "token=$GITLAB_TRIGGER_TOKEN" \
-  --form "ref=main" \
-  --form "variables[DEPLOY_ENV]=staging" \
-  "https://gitlab.example.com/api/v4/projects/PROJECT_ID/trigger/pipeline"
-```
+## Advanced example
+
+examples/advanced.gitlab-ci.yml contains the lesson examples for:
+
+- pytest on push pipelines
+- Docker nightly build
+- Gitleaks scheduled secret scan
+- Trivy scheduled filesystem scan
+- external deployment job
+
+The advanced example requires the related tools and project files to exist on the runner/project.

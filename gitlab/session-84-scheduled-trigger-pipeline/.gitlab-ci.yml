@@ -15,33 +15,37 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
     - when: never
 
-unit_test:
+push_job:
   stage: test
   script:
-    - python3 -m pytest
+    - echo "Pipeline source: $CI_PIPELINE_SOURCE"
+    - echo "Push pipeline job is running"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-nightly_build:
+nightly_job:
   stage: build
   script:
-    - echo "Building nightly image"
-    - docker build -t myapp:nightly-$CI_COMMIT_SHORT_SHA .
+    - echo "Pipeline source: $CI_PIPELINE_SOURCE"
+    - echo "Schedule type: $SCHEDULE_TYPE"
+    - echo "Running nightly job"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "nightly"'
 
 scheduled_security_scan:
   stage: security
   script:
-    - gitleaks detect --source . --redact
-    - trivy fs --severity HIGH,CRITICAL --exit-code 1 .
+    - echo "Pipeline source: $CI_PIPELINE_SOURCE"
+    - echo "Schedule type: $SCHEDULE_TYPE"
+    - echo "Running scheduled security scan"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "security"'
 
-external_deploy:
+external_trigger_job:
   stage: deploy
   script:
-    - echo "External deployment requested"
-    - echo "Environment: $DEPLOY_ENV"
+    - echo "Pipeline started by external trigger"
+    - echo "Deploy environment: $DEPLOY_ENV"
+    - echo "Application version: $APP_VERSION"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
