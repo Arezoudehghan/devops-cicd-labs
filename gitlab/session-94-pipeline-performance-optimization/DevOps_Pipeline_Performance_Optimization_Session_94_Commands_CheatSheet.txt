@@ -1,0 +1,318 @@
+------------------------------------------------------------
+# echo "Preparing project..."
+
+Explanation:
+Prints the text "Preparing project..." to standard output in the CI job log.
+------------------------------------------------------------
+# sleep 60
+
+Explanation:
+Pauses the shell for 60 seconds. In this lesson, it simulates a one-minute job duration.
+------------------------------------------------------------
+# echo "Running lint..."
+
+Explanation:
+Prints the text "Running lint..." to standard output in the CI job log.
+------------------------------------------------------------
+# sleep 120
+
+Explanation:
+Pauses the shell for 120 seconds. In this lesson, it simulates a two-minute job duration.
+------------------------------------------------------------
+# echo "Running unit tests..."
+
+Explanation:
+Prints the text "Running unit tests..." to standard output in the CI job log.
+------------------------------------------------------------
+# sleep 180
+
+Explanation:
+Pauses the shell for 180 seconds. In this lesson, it simulates a three-minute job duration.
+------------------------------------------------------------
+# echo "Running integration tests..."
+
+Explanation:
+Prints the text "Running integration tests..." to standard output in the CI job log.
+------------------------------------------------------------
+# sleep 240
+
+Explanation:
+Pauses the shell for 240 seconds. In this lesson, it simulates a four-minute job duration.
+------------------------------------------------------------
+# echo "Building Docker image..."
+
+Explanation:
+Prints the text "Building Docker image..." to standard output in the CI job log.
+------------------------------------------------------------
+# echo "Running security scan..."
+
+Explanation:
+Prints the text "Running security scan..." to standard output in the CI job log.
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the .gitlab-ci.yml file so its changes can be included in the next Git commit.
+------------------------------------------------------------
+# git commit -m "lab: add slow pipeline for session 94"
+
+Explanation:
+Creates a Git commit from the staged changes and uses the supplied text as the commit message.
+
+Options:
+- -m = --message (message): Uses the following string as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Uploads the current branch commits to its configured remote tracking branch.
+------------------------------------------------------------
+# sudo grep -nE 'concurrent|limit|executor|name' /etc/gitlab-runner/config.toml
+
+Explanation:
+Runs grep with elevated privileges and searches the GitLab Runner configuration for the listed settings. It prints matching lines together with their line numbers.
+
+Options:
+- -n = --line-number (line number): Prints the input line number before each matching line.
+- -E = --extended-regexp (extended regular expression): Interprets the search pattern as an extended regular expression.
+- | inside the quoted pattern = regular-expression alternation: Matches concurrent, limit, executor, or name; it is not a shell pipe because it is inside quotes.
+------------------------------------------------------------
+# sudo cp /etc/gitlab-runner/config.toml /etc/gitlab-runner/config.toml.bak-session94
+
+Explanation:
+Copies the GitLab Runner configuration file to a backup file named config.toml.bak-session94 with elevated privileges.
+------------------------------------------------------------
+# sudo nano /etc/gitlab-runner/config.toml
+
+Explanation:
+Opens the GitLab Runner configuration file in the nano text editor with elevated privileges.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service with elevated privileges so configuration changes can take effect.
+------------------------------------------------------------
+# sudo systemctl status gitlab-runner --no-pager
+
+Explanation:
+Shows the current status of the gitlab-runner service without opening the output in an interactive pager.
+
+Options:
+- --no-pager = no pager: Prints the output directly instead of passing it to a pager such as less.
+------------------------------------------------------------
+# du -sh .cache
+
+Explanation:
+Shows the total size of the .cache directory in a human-readable form.
+
+Options:
+- -s = --summarize (summarize): Displays only the total size for the specified path.
+- -h = --human-readable (human readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# mkdir -p dist
+
+Explanation:
+Creates the dist directory. It does not report an error if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories as needed and accepts an existing target directory.
+------------------------------------------------------------
+# echo "application build" > dist/app.txt
+
+Explanation:
+Writes the text "application build" into dist/app.txt. The file is created if it does not exist and overwritten if it already exists.
+
+Options:
+- > = shell output redirection: Redirects standard output to dist/app.txt and replaces the file contents.
+------------------------------------------------------------
+# echo "package" > dist/app.txt
+
+Explanation:
+Writes the text "package" into dist/app.txt. The file is created if it does not exist and overwritten if it already exists.
+
+Options:
+- > = shell output redirection: Redirects standard output to dist/app.txt and replaces the file contents.
+------------------------------------------------------------
+# cat dist/app.txt
+
+Explanation:
+Reads dist/app.txt and prints its contents to standard output.
+------------------------------------------------------------
+# FROM python:3.12-slim
+
+Explanation:
+Defines python:3.12-slim as the base image for the Docker build stage.
+------------------------------------------------------------
+# WORKDIR /app
+
+Explanation:
+Sets /app as the working directory for following Dockerfile instructions and for the container process by default.
+------------------------------------------------------------
+# COPY . .
+
+Explanation:
+Copies the entire Docker build context into the current working directory inside the image.
+------------------------------------------------------------
+# RUN pip install --no-cache-dir -r requirements.txt
+
+Explanation:
+Installs the Python dependencies listed in requirements.txt during the Docker image build and disables pip's download cache.
+
+Options:
+- --no-cache-dir = no cache directory: Disables pip's cache for downloaded packages.
+- -r = --requirement (requirement): Installs packages from the specified requirements file.
+------------------------------------------------------------
+# CMD ["python", "app.py"]
+
+Explanation:
+Sets the default container command to run app.py with the Python interpreter using Docker's JSON exec form.
+------------------------------------------------------------
+# COPY requirements.txt .
+
+Explanation:
+Copies requirements.txt from the Docker build context into the current working directory in the image.
+------------------------------------------------------------
+# RUN python -m pip install \
+    --no-cache-dir \
+    --disable-pip-version-check \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    -r requirements.txt
+
+Explanation:
+Runs pip through the selected Python interpreter and installs dependencies from requirements.txt during the Docker build. It disables pip caching and version checks and marks the two specified package hosts as trusted.
+
+Options:
+- -m = module-name option: Runs the named Python module, here pip; Python does not provide an official long form for this option.
+- --no-cache-dir = no cache directory: Disables pip's cache for downloaded packages.
+- --disable-pip-version-check = disable pip version check: Prevents pip from checking whether a newer pip version is available.
+- --trusted-host pypi.org = trusted host: Treats pypi.org as trusted even when normal TLS trust checks would otherwise block access.
+- --trusted-host files.pythonhosted.org = trusted host: Treats files.pythonhosted.org as trusted even when normal TLS trust checks would otherwise block access.
+- -r = --requirement (requirement): Installs packages from requirements.txt.
+- \\ = shell line continuation: Continues the same RUN command on the next Dockerfile line.
+------------------------------------------------------------
+# DOCKER_BUILDKIT=1 docker build -t myapp:test .
+
+Explanation:
+Builds a Docker image from the current directory, tags it as myapp:test, and enables BuildKit for this command.
+
+Options:
+- DOCKER_BUILDKIT=1 = environment variable assignment: Enables Docker BuildKit for this command invocation.
+- -t = --tag (tag): Applies the name and tag myapp:test to the built image.
+- . = current-directory build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+# docker build --no-cache -t myapp:test .
+
+Explanation:
+Builds the Docker image from the current directory without reusing cached build layers and tags it as myapp:test.
+
+Options:
+- --no-cache = no cache: Prevents Docker from using build cache for image layers.
+- -t = --tag (tag): Applies the name and tag myapp:test to the built image.
+- . = current-directory build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows Docker disk usage for images, containers, local volumes, and build cache.
+------------------------------------------------------------
+# docker system df -v
+
+Explanation:
+Shows detailed Docker disk usage information for images, containers, local volumes, and build cache.
+
+Options:
+- -v = --verbose (verbose): Displays more detailed disk-usage information.
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Shows filesystem disk space usage in human-readable units.
+
+Options:
+- -h = --human-readable (human readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# sudo du -sh /var/lib/docker
+
+Explanation:
+Shows the total size of /var/lib/docker in a human-readable form with elevated privileges.
+
+Options:
+- -s = --summarize (summarize): Displays only the total size for the specified path.
+- -h = --human-readable (human readable): Displays sizes using units such as K, M, and G.
+------------------------------------------------------------
+# nproc
+
+Explanation:
+Prints the number of processing units available to the current process.
+------------------------------------------------------------
+# uptime
+
+Explanation:
+Shows how long the system has been running together with the current load averages.
+------------------------------------------------------------
+# top
+
+Explanation:
+Starts an interactive real-time view of running processes and system CPU and memory activity.
+------------------------------------------------------------
+# free -h
+
+Explanation:
+Shows system memory and swap usage in human-readable units.
+
+Options:
+- -h = --human (human readable): Displays memory values using automatically scaled units.
+------------------------------------------------------------
+# vmstat 1
+
+Explanation:
+Displays repeated virtual-memory, process, CPU, and I/O statistics. The value 1 tells vmstat to refresh every one second.
+------------------------------------------------------------
+# time docker pull python:3.12-slim
+
+Explanation:
+Pulls the python:3.12-slim image and measures how long the docker pull command takes to complete.
+------------------------------------------------------------
+# ip -s link
+
+Explanation:
+Shows network interfaces together with extended link statistics such as packet counts, errors, and dropped packets.
+
+Options:
+- -s = -stats / -statistics (statistics): Displays more interface statistics.
+------------------------------------------------------------
+# sudo grep -n 'concurrent' /etc/gitlab-runner/config.toml
+
+Explanation:
+Runs grep with elevated privileges and finds lines containing concurrent in the GitLab Runner configuration file.
+
+Options:
+- -n = --line-number (line number): Prints the input line number before each matching line.
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Technical correction: the earlier standalone "pip install" example was incomplete because it did not specify anything to install. This corrected command installs all dependencies listed in requirements.txt.
+
+Options:
+- -r = --requirement (requirement): Installs packages from the specified requirements file.
+------------------------------------------------------------
+# RUN pip install -r requirements.txt
+
+Explanation:
+Installs all Python dependencies listed in requirements.txt during the Docker image build.
+
+Options:
+- -r = --requirement (requirement): Installs packages from the specified requirements file.
+------------------------------------------------------------
+# sudo cp /etc/gitlab-runner/config.toml.bak-session94 /etc/gitlab-runner/config.toml
+
+Explanation:
+Restores the saved GitLab Runner configuration backup to the active config.toml path with elevated privileges.
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether configured GitLab Runner registrations can connect to GitLab and are still valid.
+------------------------------------------------------------
