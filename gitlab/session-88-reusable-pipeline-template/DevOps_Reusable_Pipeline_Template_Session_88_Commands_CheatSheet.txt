@@ -1,0 +1,207 @@
+------------------------------------------------------------
+# python3 -m pytest
+
+Explanation:
+Runs the pytest module by using the Python interpreter.
+
+Options:
+- -m = run library module as a script: Runs the module named `pytest` instead of a Python file.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as `myapp` with the current GitLab short commit SHA.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag in `name:tag` format.
+- $CI_COMMIT_SHORT_SHA = GitLab CI/CD variable: Supplies the shortened commit SHA as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the test script defined in the project's npm package configuration.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t frontend:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as `frontend` with the current GitLab short commit SHA.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag in `name:tag` format.
+- $CI_COMMIT_SHORT_SHA = GitLab CI/CD variable: Supplies the shortened commit SHA as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs the pytest test runner using its default test discovery behavior.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t app:$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as `app` with the current GitLab short commit SHA.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag in `name:tag` format.
+- $CI_COMMIT_SHORT_SHA = GitLab CI/CD variable: Supplies the shortened commit SHA as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory and uses CI/CD variables to create the image name and tag.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag in `name:tag` format.
+- $IMAGE_NAME = shell variable: Supplies the image repository or image name.
+- $CI_COMMIT_SHORT_SHA = GitLab CI/CD variable: Supplies the shortened commit SHA as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Reusable pipeline template v1.0.0"
+
+Explanation:
+Creates an annotated Git tag named `v1.0.0` with the specified release message.
+
+Options:
+- -a = --annotate (annotate): Creates an unsigned annotated tag object.
+- -m = --message=<msg> (message): Uses `"Reusable pipeline template v1.0.0"` as the tag message without opening an editor.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin v1.0.0
+
+Explanation:
+Pushes the local `v1.0.0` tag to the remote repository named `origin`.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker build -t "$[[ inputs.registry-image ]]:$CI_COMMIT_SHORT_SHA" .
+
+Explanation:
+Builds a Docker image from the current directory, using a GitLab CI/CD component input for the image name and the short commit SHA for the tag.
+
+Options:
+- -t = --tag (tag): Sets the image name and optional tag in `name:tag` format.
+- $[[ inputs.registry-image ]] = GitLab CI/CD input interpolation: Inserts the value of the component input named `registry-image`.
+- $CI_COMMIT_SHORT_SHA = GitLab CI/CD variable: Supplies the shortened commit SHA as the image tag.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add .gitlab-ci.yml
+
+Explanation:
+Stages the current contents of `.gitlab-ci.yml` in the Git index for the next commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "rollback ci template to v1.1.0"
+
+Explanation:
+Creates a commit from staged changes with the specified rollback message.
+
+Options:
+- -m = --message=<msg> (message): Uses `"rollback ci template to v1.1.0"` as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes commits or refs according to the repository's configured remote, upstream branch, and Git push settings.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Checking Docker..."
+
+Explanation:
+Prints the text `Checking Docker...` to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Building $IMAGE_NAME"
+
+Explanation:
+Prints the word `Building` followed by the current value of the `IMAGE_NAME` shell variable.
+------------------------------------------------------------
+------------------------------------------------------------
+# git add templates/docker.yml
+
+Explanation:
+Stages the current contents of `templates/docker.yml` in the Git index for the next commit.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "add reusable docker build template"
+
+Explanation:
+Creates a commit from staged changes with the specified message.
+
+Options:
+- -m = --message=<msg> (message): Uses `"add reusable docker build template"` as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag -a v1.0.0 -m "Docker build template v1.0.0"
+
+Explanation:
+Creates an annotated Git tag named `v1.0.0` with the specified Docker template release message.
+
+Options:
+- -a = --annotate (annotate): Creates an unsigned annotated tag object.
+- -m = --message=<msg> (message): Uses `"Docker build template v1.0.0"` as the tag message without opening an editor.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "Docker template v1.1"
+
+Explanation:
+Prints the text `Docker template v1.1` to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# docker image inspect "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Displays detailed information about the Docker image identified by the image name and short commit SHA.
+------------------------------------------------------------
+------------------------------------------------------------
+# git commit -m "add docker image validation"
+
+Explanation:
+Creates a commit from staged changes with the specified message.
+
+Options:
+- -m = --message=<msg> (message): Uses `"add docker image validation"` as the commit message.
+------------------------------------------------------------
+------------------------------------------------------------
+# git tag -a v1.1.0 -m "Docker template v1.1.0"
+
+Explanation:
+Creates an annotated Git tag named `v1.1.0` with the specified Docker template release message.
+
+Options:
+- -a = --annotate (annotate): Creates an unsigned annotated tag object.
+- -m = --message=<msg> (message): Uses `"Docker template v1.1.0"` as the tag message without opening an editor.
+------------------------------------------------------------
+------------------------------------------------------------
+# git push origin v1.1.0
+
+Explanation:
+Pushes the local `v1.1.0` tag to the remote repository named `origin`.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "parent"
+
+Explanation:
+Prints the text `parent` to standard output.
+------------------------------------------------------------
+------------------------------------------------------------
+# echo "child"
+
+Explanation:
+Prints the text `child` to standard output.
+------------------------------------------------------------
