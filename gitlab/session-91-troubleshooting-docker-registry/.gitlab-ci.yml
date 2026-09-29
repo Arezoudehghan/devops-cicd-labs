@@ -1,0 +1,26 @@
+stages:
+  - build
+  - push
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/myapp"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+docker-build:
+  stage: build
+  tags:
+    - dev-shell
+
+  script:
+    - docker version
+    - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+docker-push:
+  stage: push
+  tags:
+    - dev-shell
+
+  script:
+    - echo "$REGISTRY_PASSWORD" | docker login 192.168.94.90:8085 -u "$REGISTRY_USER" --password-stdin
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+    - docker logout 192.168.94.90:8085
