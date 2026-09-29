@@ -1,0 +1,24 @@
+stages:
+  - validate
+  - deploy
+
+validate_versions:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Frontend version = $FRONTEND_IMAGE_TAG"
+    - echo "Backend version  = $BACKEND_IMAGE_TAG"
+
+deploy_dev:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying application..."
+    - echo "Frontend = $FRONTEND_IMAGE_TAG"
+    - echo "Backend  = $BACKEND_IMAGE_TAG"
+    - echo "Target    = DEV-2"
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
