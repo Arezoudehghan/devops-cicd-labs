@@ -1,0 +1,377 @@
+------------------------------------------------------------
+# docker version
+
+Explanation:
+Shows Docker client and server version information so you can confirm that the CLI can communicate with the Docker daemon.
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the current directory and assigns the image name and tag from CI/CD variables.
+
+Options:
+- -t = --tag: Assigns the image name and tag using "$IMAGE_NAME:$IMAGE_TAG".
+- . = current directory build context: Sends the current directory as the Docker build context.
+------------------------------------------------------------
+# echo "$REGISTRY_PASSWORD" | docker login 192.168.94.90:8085 -u "$REGISTRY_USER" --password-stdin
+
+Explanation:
+Passes the registry password through standard input and logs in to the private Docker registry with the specified user.
+
+Options:
+- | = pipe operator: Sends the output of echo to the standard input of docker login.
+- -u = --username: Uses "$REGISTRY_USER" as the registry username.
+- --password-stdin = password from standard input: Reads the registry password from standard input instead of the command line.
+- 192.168.94.90:8085 = registry address: Connects to the Docker registry on host 192.168.94.90 and port 8085.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Pushes the image identified by "$IMAGE_NAME:$IMAGE_TAG" to the registry encoded in the image name.
+------------------------------------------------------------
+# docker logout 192.168.94.90:8085
+
+Explanation:
+Removes the stored Docker login credentials for the registry at 192.168.94.90:8085.
+------------------------------------------------------------
+# pwd
+
+Explanation:
+Prints the absolute path of the current working directory.
+------------------------------------------------------------
+# ls -la
+
+Explanation:
+Lists directory contents in long format and includes hidden entries.
+
+Options:
+- -l = --format=long: Uses the long listing format with details such as permissions, owner, size, and time.
+- -a = --all: Includes entries whose names begin with a dot.
+------------------------------------------------------------
+# find . -maxdepth 2 -name Dockerfile
+
+Explanation:
+Searches from the current directory for files named Dockerfile, descending at most two directory levels.
+
+Options:
+- . = current directory search path: Starts the search from the current directory.
+- -maxdepth 2 = maximum search depth: Limits traversal to at most two levels below the starting point.
+- -name Dockerfile = name test: Matches entries whose base name is exactly Dockerfile.
+------------------------------------------------------------
+# docker build -t myapp .
+
+Explanation:
+Builds a Docker image from the current directory and tags it as myapp.
+
+Options:
+- -t = --tag: Assigns the image name myapp.
+- . = current directory build context: Uses the current directory as the build context.
+------------------------------------------------------------
+# docker build -f app/Dockerfile -t myapp .
+
+Explanation:
+Builds the image using app/Dockerfile while keeping the current directory as the build context, then tags the result as myapp.
+
+Options:
+- -f = --file: Uses app/Dockerfile instead of the default ./Dockerfile.
+- -t = --tag: Assigns the image name myapp.
+- . = current directory build context: Uses the current directory as the build context.
+------------------------------------------------------------
+# /bin/sh -c pip install -r requirements.txt
+
+Explanation:
+Runs a command string through /bin/sh; the command installs the Python packages listed in requirements.txt.
+
+Options:
+- -c = command string: Tells /bin/sh to read and execute the following command string.
+- -r = --requirement: Tells pip to install packages from requirements.txt.
+------------------------------------------------------------
+# pip install -r requirements.txt
+
+Explanation:
+Installs the Python packages listed in requirements.txt.
+
+Options:
+- -r = --requirement: Installs packages from the requirements file requirements.txt.
+------------------------------------------------------------
+# RUN pip install -r requirements.txt
+
+Explanation:
+Technical correction: An incomplete placeholder in the lesson is represented here by the complete form already present in the same lesson. This Dockerfile RUN instruction installs the Python packages listed in requirements.txt.
+
+Options:
+- -r = --requirement: Tells pip to install packages from requirements.txt.
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Shows detailed ownership and permission information for the Docker daemon Unix socket.
+
+Options:
+- -l = --format=long: Uses long listing format to display permissions, owner, group, and other file details.
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Shows the user ID, primary group, and supplementary groups for the gitlab-runner account.
+------------------------------------------------------------
+# sudo usermod -aG docker gitlab-runner
+
+Explanation:
+Adds the gitlab-runner user to the docker supplementary group while preserving its existing supplementary groups.
+
+Options:
+- -a = --append: Appends the user to the supplementary group list instead of replacing existing supplementary groups.
+- -G = --groups: Sets the supplementary group list; here the group value is docker.
+------------------------------------------------------------
+# sudo systemctl restart gitlab-runner
+
+Explanation:
+Restarts the gitlab-runner systemd service with administrative privileges.
+------------------------------------------------------------
+# sudo -u gitlab-runner docker ps
+
+Explanation:
+Runs docker ps as the gitlab-runner user to verify that this account can access the Docker daemon.
+
+Options:
+- -u = --user: Runs the following command as the user gitlab-runner.
+------------------------------------------------------------
+# sudo chmod 777 /var/run/docker.sock
+
+Explanation:
+Changes the Docker socket mode to 777, giving read, write, and execute permission to the owner, group, and others.
+------------------------------------------------------------
+# sudo systemctl status docker
+
+Explanation:
+Shows the current systemd status of the Docker service with administrative privileges.
+------------------------------------------------------------
+# sudo journalctl -u docker --since "15 minutes ago"
+
+Explanation:
+Displays Docker service journal entries from the last 15 minutes with administrative privileges.
+
+Options:
+- -u = --unit: Filters journal entries to the docker systemd unit.
+- --since "15 minutes ago" = start-time filter: Shows entries starting from 15 minutes before the command runs.
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Shows detailed Docker engine information, including daemon status, storage, runtime, and configuration details.
+------------------------------------------------------------
+# sudo systemctl restart docker
+
+Explanation:
+Restarts the Docker systemd service with administrative privileges.
+------------------------------------------------------------
+# docker login
+
+Explanation:
+Starts an interactive Docker login to the default registry when no registry address is supplied.
+------------------------------------------------------------
+# curl -v https://registry.example.local
+
+Explanation:
+Sends an HTTPS request to registry.example.local and prints verbose connection and TLS details.
+
+Options:
+- -v = --verbose: Shows detailed request, response, connection, and TLS information.
+------------------------------------------------------------
+# openssl s_client -connect registry.example.local:443 -showcerts
+
+Explanation:
+Connects to registry.example.local on port 443 as a TLS client and displays the certificates sent by the server.
+
+Options:
+- -connect registry.example.local:443 = connection target: Connects to the specified host and port.
+- -showcerts = show server certificate list: Displays all certificates sent by the server.
+------------------------------------------------------------
+# docker login 192.168.94.90:8085
+
+Explanation:
+Starts an interactive login to the private Docker registry at 192.168.94.90:8085.
+------------------------------------------------------------
+# test -n "$REGISTRY_USER"
+
+Explanation:
+Returns success when the REGISTRY_USER variable expands to a non-empty string.
+
+Options:
+- -n = non-zero string length test: Evaluates true when "$REGISTRY_USER" is not empty.
+------------------------------------------------------------
+# test -n "$REGISTRY_PASSWORD"
+
+Explanation:
+Returns success when the REGISTRY_PASSWORD variable expands to a non-empty string.
+
+Options:
+- -n = non-zero string length test: Evaluates true when "$REGISTRY_PASSWORD" is not empty.
+------------------------------------------------------------
+# echo "$REGISTRY_PASSWORD"
+
+Explanation:
+Prints the current value of the REGISTRY_PASSWORD shell variable to standard output.
+------------------------------------------------------------
+# curl -v http://192.168.94.90:8085/v2/
+
+Explanation:
+Requests the Docker Registry HTTP API v2 endpoint and prints verbose connection and response details.
+
+Options:
+- -v = --verbose: Shows detailed request, response, and connection information.
+------------------------------------------------------------
+# curl -u "$REGISTRY_USER:$REGISTRY_PASSWORD" http://192.168.94.90:8085/v2/
+
+Explanation:
+Requests the Docker Registry v2 endpoint using the username and password stored in the registry variables.
+
+Options:
+- -u = --user: Supplies the authentication value as "$REGISTRY_USER:$REGISTRY_PASSWORD".
+------------------------------------------------------------
+# docker tag myapp:1.0 192.168.94.90:8085/myapp:1.0
+
+Explanation:
+Creates a new tag for the local myapp:1.0 image that points to the private registry namespace.
+------------------------------------------------------------
+# docker push 192.168.94.90:8085/myapp:1.0
+
+Explanation:
+Pushes the myapp:1.0 image to the private registry at 192.168.94.90:8085.
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists locally stored Docker images.
+------------------------------------------------------------
+# docker tag myapp:abc123 192.168.94.90:8085/myapp:abc123
+
+Explanation:
+Creates a private-registry tag for the local image myapp:abc123.
+------------------------------------------------------------
+# docker push 192.168.94.90:8085/myapp:abc123
+
+Explanation:
+Pushes the abc123-tagged myapp image to the private registry.
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Shows filesystem disk-space usage in human-readable units.
+
+Options:
+- -h = --human-readable: Displays sizes using readable units such as KiB, MiB, and GiB.
+------------------------------------------------------------
+# docker system df
+
+Explanation:
+Shows Docker disk usage for images, containers, local volumes, and build cache.
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including stopped containers.
+
+Options:
+- -a = --all: Shows all containers instead of only running containers.
+------------------------------------------------------------
+# docker volume ls
+
+Explanation:
+Lists Docker volumes known to the local Docker daemon.
+------------------------------------------------------------
+# docker builder prune
+
+Explanation:
+Removes unused Docker build cache data.
+------------------------------------------------------------
+# docker image prune
+
+Explanation:
+Removes unused Docker image data according to Docker's prune rules.
+------------------------------------------------------------
+# docker system prune
+
+Explanation:
+Removes unused Docker system data such as stopped containers, unused networks, dangling images, and unused build cache.
+------------------------------------------------------------
+# docker system prune -a
+
+Explanation:
+Removes unused Docker system data and also removes unused images beyond only dangling images.
+
+Options:
+- -a = --all: Removes all unused images, not only dangling images.
+------------------------------------------------------------
+# df -i
+
+Explanation:
+Shows filesystem inode usage instead of block-space usage.
+
+Options:
+- -i = --inodes: Displays inode information for each filesystem.
+------------------------------------------------------------
+# docker build -t myapp:$CI_COMMIT_REF_NAME .
+
+Explanation:
+Builds an image from the current directory and uses the CI_COMMIT_REF_NAME value as its tag.
+
+Options:
+- -t = --tag: Assigns the image reference myapp:$CI_COMMIT_REF_NAME.
+- . = current directory build context: Uses the current directory as the build context.
+------------------------------------------------------------
+# docker build -t "myapp:$CI_COMMIT_REF_SLUG" .
+
+Explanation:
+Builds an image from the current directory and uses the GitLab-safe CI_COMMIT_REF_SLUG value as its tag.
+
+Options:
+- -t = --tag: Assigns the image reference "myapp:$CI_COMMIT_REF_SLUG".
+- . = current directory build context: Uses the current directory as the build context.
+------------------------------------------------------------
+# docker push myapp:$CI_COMMIT_SHORT_SHA
+
+Explanation:
+Pushes the image tagged with the current GitLab commit short SHA using the image name myapp.
+------------------------------------------------------------
+# docker push "192.168.94.90:8085/myapp:$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+Pushes the commit-tagged myapp image to the private registry at 192.168.94.90:8085.
+------------------------------------------------------------
+# sudo -u gitlab-runner docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to test Docker client-to-daemon access for that account.
+
+Options:
+- -u = --user: Runs the following command as the user gitlab-runner.
+------------------------------------------------------------
+# systemctl status docker
+
+Explanation:
+Shows the current systemd status of the Docker service.
+------------------------------------------------------------
+# journalctl -u docker
+
+Explanation:
+Shows journal entries for the Docker systemd service.
+
+Options:
+- -u = --unit: Filters journal entries to the docker unit.
+------------------------------------------------------------
+# docker login 192.168.94.90:8085 -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+
+Explanation:
+Logs in to the private registry using the username and password stored in the registry variables.
+
+Options:
+- -u = --username: Uses "$REGISTRY_USER" as the registry username.
+- -p = --password: Uses "$REGISTRY_PASSWORD" as the registry password value.
+------------------------------------------------------------
+# docker push 192.168.94.90:8085/myapp:4fa21bc
+
+Explanation:
+Pushes the myapp image tagged 4fa21bc to the private registry at 192.168.94.90:8085.
+------------------------------------------------------------
