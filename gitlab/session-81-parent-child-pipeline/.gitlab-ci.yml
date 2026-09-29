@@ -1,0 +1,25 @@
+stages:
+  - quality
+  - security
+  - delivery
+
+quality_pipeline:
+  stage: quality
+  trigger:
+    include:
+      - local: '.gitlab/ci/quality.yml'
+    strategy: mirror
+
+security_pipeline:
+  stage: security
+  trigger:
+    include:
+      - local: '.gitlab/ci/security.yml'
+    strategy: mirror
+
+delivery_pipeline:
+  stage: delivery
+  trigger:
+    include:
+      - local: '.gitlab/ci/delivery.yml'
+    strategy: mirror
