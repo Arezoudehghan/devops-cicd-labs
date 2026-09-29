@@ -1,0 +1,11 @@
+include:
+  - local: '/templates/docker.yml'
+
+stages:
+  - build
+
+variables:
+  IMAGE_NAME: "session-88-demo"
+
+docker_build:
+  extends: .docker_build_template
