@@ -1,0 +1,17 @@
+stages:
+  - lint
+  - test
+
+lint:
+  stage: lint
+  tags:
+    - dev-shell
+  script:
+    - echo "Running Lint..."
+
+unit_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running Unit Tests..."
