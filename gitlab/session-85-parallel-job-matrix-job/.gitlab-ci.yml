@@ -1,0 +1,34 @@
+stages:
+  - test
+  - build
+
+python_matrix_test:
+  stage: test
+  tags:
+    - dev-shell
+  parallel:
+    matrix:
+      - PYTHON_VERSION:
+          - "3.11"
+          - "3.12"
+          - "3.13"
+  script:
+    - echo "========================================"
+    - echo "Testing Python $PYTHON_VERSION"
+    - echo "Job $CI_JOB_NAME"
+    - echo "========================================"
+    - docker run --rm python:${PYTHON_VERSION}-slim python --version
+    - |
+      docker run --rm \
+        -v "$CI_PROJECT_DIR:/app" \
+        -w /app \
+        python:${PYTHON_VERSION}-slim \
+        sh -c "pip install -r requirements.txt && pytest"
+
+build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "All Python compatibility tests passed."
+    - echo "Starting build..."
