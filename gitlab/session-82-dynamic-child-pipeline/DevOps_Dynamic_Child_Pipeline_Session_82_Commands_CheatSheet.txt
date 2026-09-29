@@ -1,0 +1,289 @@
+------------------------------------------------------------
+# chmod +x scripts/generate-pipeline.sh
+
+Explanation:
+Adds execute permission to the generator script so it can be run directly.
+
+Options:
+- +x = add execute permission: Adds the executable permission bit to the file.
+------------------------------------------------------------
+# ./scripts/generate-pipeline.sh
+
+Explanation:
+Runs the pipeline generator script from the current repository directory.
+------------------------------------------------------------
+# echo "stages:" > "$OUTPUT"
+
+Explanation:
+Prints stages: and writes it to the file whose path is stored in OUTPUT.
+
+Options:
+- > = output redirection: Writes standard output to the target file and replaces its existing contents.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as one shell word.
+------------------------------------------------------------
+# echo "  - test" >> "$OUTPUT"
+
+Explanation:
+Appends the test stage entry to the generated YAML file.
+
+Options:
+- >> = append redirection: Adds standard output to the end of the target file without replacing existing contents.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as one shell word.
+------------------------------------------------------------
+# echo "  - build" >> "$OUTPUT"
+
+Explanation:
+Appends the build stage entry to the generated YAML file.
+
+Options:
+- >> = append redirection: Adds standard output to the end of the target file without replacing existing contents.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as one shell word.
+------------------------------------------------------------
+# CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA" || true)
+
+Explanation:
+Stores the names of files changed between the previous and current GitLab commits in CHANGED_FILES. If git diff fails, true makes the command substitution succeed.
+
+Options:
+- $() = command substitution: Runs the enclosed command and substitutes its output into CHANGED_FILES.
+- --name-only = show only names of changed files: Suppresses the normal patch and prints changed paths.
+- "$CI_COMMIT_BEFORE_SHA" = first revision argument: Uses the previous commit SHA supplied by GitLab CI.
+- "$CI_COMMIT_SHA" = second revision argument: Uses the current commit SHA supplied by GitLab CI.
+- || = OR operator: Runs the command on the right only if the command on the left fails.
+------------------------------------------------------------
+# echo "Changed files:"
+
+Explanation:
+Prints a label before the list of changed files.
+------------------------------------------------------------
+# echo "$CHANGED_FILES"
+
+Explanation:
+Prints the changed-file list stored in the CHANGED_FILES variable.
+------------------------------------------------------------
+# echo "$CHANGED_FILES" | grep -q "^backend/"
+
+Explanation:
+Checks whether the changed-file list contains at least one path that starts with backend/.
+
+Options:
+- | = pipe operator: Sends the output of echo to grep as input.
+- -q = --quiet (quiet): Suppresses normal output and uses only the exit status to indicate a match.
+- "^backend/" = regular-expression argument: ^ requires the match to start at the beginning of a line.
+------------------------------------------------------------
+# echo "$CHANGED_FILES" | grep -q "^frontend/"
+
+Explanation:
+Checks whether the changed-file list contains at least one path that starts with frontend/.
+
+Options:
+- | = pipe operator: Sends the output of echo to grep as input.
+- -q = --quiet (quiet): Suppresses normal output and uses only the exit status to indicate a match.
+- "^frontend/" = regular-expression argument: ^ requires the match to start at the beginning of a line.
+------------------------------------------------------------
+# set -e
+
+Explanation:
+Makes the Bash script exit when an unhandled command returns a non-zero status.
+
+Options:
+- -e = exit on error behavior: Tells Bash to stop after an unhandled failing command.
+------------------------------------------------------------
+# echo "Generating dynamic child pipeline..."
+
+Explanation:
+Prints a status message before generating the child pipeline YAML.
+------------------------------------------------------------
+# cat > "$OUTPUT" <<'EOF'
+stages:
+  - test
+  - build
+EOF
+
+Explanation:
+Writes the initial stages section into the generated child pipeline file.
+
+Options:
+- > = output redirection: Replaces the target file with the command output.
+- <<'EOF' = quoted here-document: Feeds the following lines to cat until EOF and prevents shell expansion inside the here-document.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as the destination path.
+------------------------------------------------------------
+# CHANGED_FILES=$(git ls-files)
+
+Explanation:
+Lists tracked Git files and stores the result in CHANGED_FILES.
+
+Options:
+- $() = command substitution: Runs git ls-files and substitutes its output into CHANGED_FILES.
+------------------------------------------------------------
+# CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA")
+
+Explanation:
+Stores the names of files changed between the previous and current GitLab commits in CHANGED_FILES.
+
+Options:
+- $() = command substitution: Runs the enclosed git diff command and substitutes its output into CHANGED_FILES.
+- --name-only = show only names of changed files: Suppresses the normal patch and prints changed paths.
+- "$CI_COMMIT_BEFORE_SHA" = first revision argument: Uses the previous commit SHA supplied by GitLab CI.
+- "$CI_COMMIT_SHA" = second revision argument: Uses the current commit SHA supplied by GitLab CI.
+------------------------------------------------------------
+# cat >> "$OUTPUT" <<'EOF'
+
+backend_test:
+  stage: test
+  script:
+    - echo "Running backend tests"
+
+backend_build:
+  stage: build
+  script:
+    - echo "Building backend"
+EOF
+
+Explanation:
+Appends the backend test and build jobs to the generated child pipeline YAML.
+
+Options:
+- >> = append redirection: Adds the command output to the end of the target file.
+- <<'EOF' = quoted here-document: Feeds the following lines to cat until EOF and prevents shell expansion inside the here-document.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as the destination path.
+------------------------------------------------------------
+# cat >> "$OUTPUT" <<'EOF'
+
+frontend_test:
+  stage: test
+  script:
+    - echo "Running frontend tests"
+
+frontend_build:
+  stage: build
+  script:
+    - echo "Building frontend"
+EOF
+
+Explanation:
+Appends the frontend test and build jobs to the generated child pipeline YAML.
+
+Options:
+- >> = append redirection: Adds the command output to the end of the target file.
+- <<'EOF' = quoted here-document: Feeds the following lines to cat until EOF and prevents shell expansion inside the here-document.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as the destination path.
+------------------------------------------------------------
+# cat >> "$OUTPUT" <<'EOF'
+
+nothing_to_build:
+  stage: test
+  script:
+    - echo "No application component changed"
+EOF
+
+Explanation:
+Appends a fallback job that runs when no application component was detected as changed.
+
+Options:
+- >> = append redirection: Adds the command output to the end of the target file.
+- <<'EOF' = quoted here-document: Feeds the following lines to cat until EOF and prevents shell expansion inside the here-document.
+- "$OUTPUT" = quoted variable expansion: Uses the value of OUTPUT as the destination path.
+------------------------------------------------------------
+# echo "Generated pipeline:"
+
+Explanation:
+Prints a label before displaying the generated pipeline file.
+------------------------------------------------------------
+# cat "$OUTPUT"
+
+Explanation:
+Displays the contents of the generated pipeline file stored in OUTPUT.
+------------------------------------------------------------
+# echo "# change" >> backend/app.py
+
+Explanation:
+Appends the text # change to backend/app.py to create a backend change for the lab.
+
+Options:
+- >> = append redirection: Adds the command output to the end of the target file.
+------------------------------------------------------------
+# git add .
+
+Explanation:
+Stages changes from the current directory and its descendants for the next commit.
+------------------------------------------------------------
+# git commit -m "change backend"
+
+Explanation:
+Creates a Git commit with the message change backend.
+
+Options:
+- -m = --message (message): Supplies the commit message directly on the command line.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote branch.
+------------------------------------------------------------
+# echo "// change" >> frontend/app.js
+
+Explanation:
+Appends the text // change to frontend/app.js to create a frontend change for the lab.
+
+Options:
+- >> = append redirection: Adds the command output to the end of the target file.
+------------------------------------------------------------
+# git commit -m "change frontend"
+
+Explanation:
+Creates a Git commit with the message change frontend.
+
+Options:
+- -m = --message (message): Supplies the commit message directly on the command line.
+------------------------------------------------------------
+# ls -lah generated-child.yml
+
+Explanation:
+Shows detailed information about generated-child.yml with all entries and human-readable sizes.
+
+Options:
+- -l = long listing format: Displays detailed file information.
+- -a = --all (all): Includes entries whose names start with a dot.
+- -h = --human-readable (human-readable): Displays sizes using readable units such as K, M, or G.
+------------------------------------------------------------
+# cat generated-child.yml
+
+Explanation:
+Displays the contents of generated-child.yml.
+------------------------------------------------------------
+# echo "Running backend tests"
+
+Explanation:
+Prints the backend test status message used by the generated child pipeline.
+------------------------------------------------------------
+# echo "Building backend"
+
+Explanation:
+Prints the backend build status message used by the generated child pipeline.
+------------------------------------------------------------
+# echo "Running frontend tests"
+
+Explanation:
+Prints the frontend test status message used by the generated child pipeline.
+------------------------------------------------------------
+# echo "Building frontend"
+
+Explanation:
+Prints the frontend build status message used by the generated child pipeline.
+------------------------------------------------------------
+# echo "No application component changed"
+
+Explanation:
+Prints the fallback message when neither the backend nor the frontend was detected as changed.
+------------------------------------------------------------
+# npm test
+
+Explanation:
+Runs the test script defined for the Node.js project through npm.
+------------------------------------------------------------
+# git diff
+
+Explanation:
+Shows Git differences and is used in this lesson as the basic change-detection command.
+------------------------------------------------------------
