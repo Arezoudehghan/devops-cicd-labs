@@ -1,0 +1,11 @@
+stages:
+  - test
+
+test_app:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Starting test"
+    - false
+    - echo "Test finished"
