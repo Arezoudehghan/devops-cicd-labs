@@ -1,0 +1,377 @@
+------------------------------------------------------------
+# stages:
+  - test
+  - build
+  - downstream
+
+frontend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running frontend tests..."
+    - echo "Frontend tests passed."
+
+frontend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building frontend..."
+    - echo "Frontend image tag = $CI_COMMIT_SHORT_SHA"
+
+trigger_backend:
+  stage: downstream
+
+  variables:
+    FRONTEND_PROJECT: "$CI_PROJECT_PATH"
+    FRONTEND_COMMIT: "$CI_COMMIT_SHA"
+    FRONTEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+  trigger:
+    project: cicd-lab/backend-app
+    branch: main
+    strategy: mirror
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+Explanation:
+This GitLab CI configuration tests and builds the frontend, then triggers the backend project on the main branch. `strategy: mirror` makes the trigger job reflect the downstream pipeline status.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger:
+  project: cicd-lab/backend-app
+  branch: main
+
+Explanation:
+This GitLab CI trigger starts the `cicd-lab/backend-app` pipeline on the `main` branch. It is a multi-project downstream pipeline trigger.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger_backend:
+  stage: downstream
+
+  trigger:
+    project: cicd-lab/backend-app
+
+Explanation:
+This trigger job starts the backend project as a downstream pipeline. It has no `script` because GitLab handles the trigger directly.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# stages:
+  - test
+  - build
+  - downstream
+
+backend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running backend tests..."
+    - echo "Frontend tag received = $FRONTEND_IMAGE_TAG"
+
+backend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building backend..."
+    - echo "Backend image tag = $CI_COMMIT_SHORT_SHA"
+
+trigger_deployment:
+  stage: downstream
+
+  variables:
+    FRONTEND_IMAGE_TAG: "$FRONTEND_IMAGE_TAG"
+    BACKEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+    BACKEND_PROJECT: "$CI_PROJECT_PATH"
+    BACKEND_COMMIT: "$CI_COMMIT_SHA"
+
+  trigger:
+    project: cicd-lab/deployment-pipeline
+    branch: main
+    strategy: mirror
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
+
+Explanation:
+This GitLab CI configuration tests and builds the backend, then triggers the deployment project. It forwards frontend and backend version information to the downstream deployment pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# rules:
+  - if: '$CI_PIPELINE_SOURCE == "pipeline"'
+
+Explanation:
+This GitLab CI rule allows the job only when the pipeline source is another pipeline. It is used to limit execution to multi-project downstream pipeline runs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# stages:
+  - validate
+  - deploy
+
+validate_versions:
+  stage: validate
+  tags:
+    - dev-shell
+  script:
+    - echo "Frontend version = $FRONTEND_IMAGE_TAG"
+    - echo "Backend version  = $BACKEND_IMAGE_TAG"
+
+deploy_dev:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying application..."
+    - echo "Frontend = $FRONTEND_IMAGE_TAG"
+    - echo "Backend  = $BACKEND_IMAGE_TAG"
+    - echo "Target    = DEV-2"
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
+
+Explanation:
+This deployment pipeline validates the received version variables and runs the deployment stage. The deploy job runs only when the pipeline was triggered by another pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# variables:
+  FRONTEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+This job-level variable passes the frontend short commit SHA as the frontend image tag. The downstream pipeline can use this value to identify the frontend version.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# variables:
+  FRONTEND_IMAGE_TAG: "$FRONTEND_IMAGE_TAG"
+  BACKEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+Explanation:
+This variable block forwards the frontend image tag and adds the backend short commit SHA. The deployment pipeline can use both values to identify the exact application versions.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger_backend:
+  trigger:
+    project: cicd-lab/backend-app
+
+Explanation:
+This basic trigger job starts the backend project without waiting for the final downstream result. The trigger job succeeds after GitLab successfully creates the downstream pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger:
+  project: cicd-lab/backend-app
+  strategy: mirror
+
+Explanation:
+This trigger starts the backend project and mirrors the downstream pipeline status. The upstream trigger job waits for and reflects the downstream result.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger:
+  project: cicd-lab/backend-app
+  strategy: depend
+
+Explanation:
+This trigger uses the older `depend` strategy so the trigger job waits for the downstream pipeline result. The lesson notes that newer GitLab versions prefer `strategy: mirror`.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# backend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running backend tests..."
+    - exit 1
+
+Explanation:
+This backend test job intentionally exits with status code `1` to simulate a failed pipeline. It is used to verify failure propagation through the multi-project pipeline chain.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# deploy_dev:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying..."
+    - exit 1
+
+Explanation:
+This deployment job intentionally exits with status code `1` to simulate deployment failure. It is used to verify that failure propagates back through upstream pipelines.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# trigger:
+  project: cicd-lab/backend-app
+
+Explanation:
+This GitLab CI trigger starts the `cicd-lab/backend-app` project. It is the direct multi-project trigger syntax used in this lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# build:
+  stage: build
+  script:
+    - echo build
+
+test:
+  stage: test
+  needs:
+    - build
+  script:
+    - echo test
+
+Explanation:
+This GitLab CI example makes the `test` job depend directly on the `build` job with `needs`. It demonstrates job-level dependency inside one pipeline.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose pull
+
+Explanation:
+This command pulls the images required by the Docker Compose application. It updates locally available images from their configured registries.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker compose up
+
+Explanation:
+This command creates and starts the services defined in the Docker Compose configuration. Without extra flags, it runs attached to the terminal.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running frontend tests..."
+
+Explanation:
+This command prints a message indicating that frontend tests are starting. It is used as a simple CI job step in the lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend tests passed."
+
+Explanation:
+This command prints a message indicating that the frontend tests passed. It is used as a simple success message in the CI job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building frontend..."
+
+Explanation:
+This command prints a message indicating that the frontend build step is starting. It is used as a simple CI build step in the lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend image tag = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+This command prints the frontend image tag using GitLab's `CI_COMMIT_SHORT_SHA` predefined variable. The shell expands the variable before `echo` prints the line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Running backend tests..."
+
+Explanation:
+This command prints a message indicating that backend tests are starting. It appears in the backend test job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend tag received = $FRONTEND_IMAGE_TAG"
+
+Explanation:
+This command prints the frontend image tag received from the upstream pipeline. The shell expands `FRONTEND_IMAGE_TAG` before displaying it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building backend..."
+
+Explanation:
+This command prints a message indicating that the backend build step is starting. It is used in the backend build job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend image tag = $CI_COMMIT_SHORT_SHA"
+
+Explanation:
+This command prints the backend image tag using GitLab's short commit SHA. The shell expands `CI_COMMIT_SHORT_SHA` before displaying it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend version = $FRONTEND_IMAGE_TAG"
+
+Explanation:
+This command prints the frontend version received by the deployment pipeline. The shell expands `FRONTEND_IMAGE_TAG` before displaying it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend version  = $BACKEND_IMAGE_TAG"
+
+Explanation:
+This command prints the backend version received by the deployment pipeline. The two spaces before `=` are preserved exactly from the lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying application..."
+
+Explanation:
+This command prints a message indicating that application deployment is starting. It is used in the deployment job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Frontend = $FRONTEND_IMAGE_TAG"
+
+Explanation:
+This command prints the frontend image tag selected for deployment. The shell expands `FRONTEND_IMAGE_TAG` before displaying it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Backend  = $BACKEND_IMAGE_TAG"
+
+Explanation:
+This command prints the backend image tag selected for deployment. The two spaces before `=` are preserved exactly from the lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Target    = DEV-2"
+
+Explanation:
+This command prints `DEV-2` as the deployment target. The spaces before `=` are preserved exactly from the lesson.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+This command terminates the current shell step with exit status `1`. In GitLab CI, that non-zero status causes the job to fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Deploying..."
+
+Explanation:
+This command prints a short deployment message. It is used immediately before the intentional failure test in the deployment job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo build
+
+Explanation:
+This command prints the word `build`. It is used in the simple `needs` dependency example.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo test
+
+Explanation:
+This command prints the word `test`. It is used in the simple `needs` dependency example.
+------------------------------------------------------------
