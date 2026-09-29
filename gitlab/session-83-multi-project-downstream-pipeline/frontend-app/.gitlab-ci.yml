@@ -1,0 +1,36 @@
+stages:
+  - test
+  - build
+  - downstream
+
+frontend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running frontend tests..."
+    - echo "Frontend tests passed."
+
+frontend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building frontend..."
+    - echo "Frontend image tag = $CI_COMMIT_SHORT_SHA"
+
+trigger_backend:
+  stage: downstream
+
+  variables:
+    FRONTEND_PROJECT: "$CI_PROJECT_PATH"
+    FRONTEND_COMMIT: "$CI_COMMIT_SHA"
+    FRONTEND_IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+  trigger:
+    project: cicd-lab/backend-app
+    branch: main
+    strategy: mirror
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
