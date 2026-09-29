@@ -1,0 +1,9 @@
+stages:
+  - build
+
+include:
+  - component: $CI_SERVER_FQDN/root/ci-components/docker-build@1.0.0
+    inputs:
+      stage: build
+      job-name: build-backend
+      registry-image: nexus.example.local/backend
