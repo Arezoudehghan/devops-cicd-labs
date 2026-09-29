@@ -1,0 +1,10 @@
+stages:
+  - test
+
+permission_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - whoami
+    - touch /root/pipeline-test.txt
