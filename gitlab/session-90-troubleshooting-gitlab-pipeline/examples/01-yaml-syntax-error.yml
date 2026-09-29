@@ -1,0 +1,11 @@
+stages:
+  - build
+  - test
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Build started"
+   - echo "Build finished"
