@@ -1,0 +1,808 @@
+------------------------------------------------------------
+# ssh deploy@192.168.94.91
+
+Explanation:
+Connects to DEV-2 as the deploy user over SSH.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "hostname"
+
+Explanation:
+Connects to DEV-2 and runs hostname remotely to show the server name.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker version"
+
+Explanation:
+Connects to DEV-2 and runs docker version remotely to display Docker client and server version information.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker ps"
+
+Explanation:
+Connects to DEV-2 and lists running Docker containers on the remote server.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo usermod -aG docker deploy
+
+Explanation:
+Adds the deploy user to the docker supplementary group so the user can access Docker without sudo after a new login session.
+
+Options:
+- -a = --append (append): Adds the user to the supplementary groups without removing existing group memberships.
+- -G = --groups (groups): Sets the supplementary group list; here the group is docker.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p ~/.ssh
+
+Explanation:
+Creates the .ssh directory in the current user's home directory if it does not already exist.
+
+Options:
+- -p = --parents (parents): Creates missing parent directories and does not fail if the directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 700 ~/.ssh
+
+Explanation:
+Sets the .ssh directory permissions so only the owner has read, write, and execute access.
+
+Options:
+- 700 = permission mode: Gives rwx to the owner and no permissions to group or others.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cp "$SSH_PRIVATE_KEY" ~/.ssh/id_ed25519
+
+Explanation:
+Copies the file referenced by SSH_PRIVATE_KEY to the standard id_ed25519 private-key path.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/id_ed25519
+
+Explanation:
+Sets the private key so only the owner can read and write it.
+
+Options:
+- 600 = permission mode: Gives read and write access to the owner and no permissions to group or others.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+
+Explanation:
+Copies the file referenced by SSH_KNOWN_HOSTS into the SSH known_hosts file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/known_hosts
+
+Explanation:
+Sets known_hosts so only the owner can read and write it.
+
+Options:
+- 600 = permission mode: Gives read and write access to the owner and no permissions to group or others.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# IMAGE_REF="${NEXUS_REGISTRY}/cicd-demo:${CI_COMMIT_SHORT_SHA}"
+
+Explanation:
+Creates the IMAGE_REF shell variable from the Nexus registry address, image name, and GitLab short commit SHA.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "
+  set -e
+
+  mkdir -p /opt/cicd-app
+
+  docker inspect \
+    -f '{{.Config.Image}}' \
+    ${APP_NAME} \
+    > /opt/cicd-app/.previous_image \
+    2>/dev/null || true
+
+  docker pull '${IMAGE_REF}'
+
+  docker rm -f ${APP_NAME} 2>/dev/null || true
+
+  docker run -d \
+    --name ${APP_NAME} \
+    --restart unless-stopped \
+    -p ${APP_PORT}:${CONTAINER_PORT} \
+    -e APP_ENV=production \
+    '${IMAGE_REF}'
+"
+
+Explanation:
+Runs the deployment workflow on the remote host: saves the previous image, pulls the new image, removes the old container, and starts the new container.
+
+Options:
+- set -e = errexit shell option: Stops the remote shell when an unhandled command returns a non-zero status.
+- mkdir -p: -p = --parents (parents), which creates missing parent directories and ignores an already existing directory.
+- docker inspect -f: -f = --format (format), which prints only the selected Go-template value.
+- > = stdout redirection: Writes standard output to /opt/cicd-app/.previous_image and replaces existing content.
+- 2>/dev/null = stderr redirection: Sends file descriptor 2, standard error, to /dev/null.
+- || = OR operator: Runs true only if the command before it fails.
+- docker rm -f: -f = --force (force), which force-removes the container.
+- docker run -d: -d = --detach (detach), which runs the container in the background.
+- --name = container name: Assigns ${APP_NAME} as the container name.
+- --restart = restart policy: Uses unless-stopped so Docker restarts the container unless it was explicitly stopped.
+- -p = --publish (publish): Maps ${APP_PORT} on the host to ${CONTAINER_PORT} in the container.
+- -e = --env (environment): Sets APP_ENV=production inside the container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+  for i in $(seq 1 10); do
+    CODE=$(curl -s -o /tmp/health.out \
+      -w "%{http_code}" \
+      http://127.0.0.1:8088/health || true)
+
+    if [ "$CODE" = "200" ]; then
+      exit 0
+    fi
+
+    sleep 3
+  done
+
+  docker logs --tail 100 cicd-app
+  exit 1
+'
+
+Explanation:
+Runs a remote healthcheck loop up to ten times, accepts HTTP 200 as success, and prints recent container logs before failing.
+
+Options:
+- $(...) = command substitution: Runs the command inside and inserts its output into the surrounding command.
+- curl -s = --silent (silent): Hides the progress meter and normal error messages.
+- curl -o = --output (output): Writes the response body to /tmp/health.out.
+- curl -w = --write-out (write out): Prints the selected information after the transfer; here it prints the HTTP status code.
+- || = OR operator: Runs true when curl fails so the loop can continue and inspect the result.
+- exit 0 = success status: Ends the remote shell successfully.
+- sleep 3 = delay value: Waits three seconds between attempts.
+- docker logs --tail 100: --tail selects the last 100 log lines.
+- exit 1 = failure status: Ends the remote shell with a non-zero status after all attempts fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+  curl -fsS http://127.0.0.1:8088/
+'
+
+Explanation:
+Runs a smoke test on the remote server and fails if the application root endpoint does not return a successful HTTP response.
+
+Options:
+- -f = --fail (fail): Returns a non-zero status for HTTP 400 or higher without printing the response body.
+- -s = --silent (silent): Hides the progress meter and normal error messages.
+- -S = --show-error (show error): Shows an error message when used together with --silent.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+  PREVIOUS_IMAGE=$(cat /opt/cicd-app/.previous_image 2>/dev/null || true)
+
+  if [ -z "$PREVIOUS_IMAGE" ]; then
+    echo "No previous image available"
+    exit 1
+  fi
+
+  docker rm -f cicd-app 2>/dev/null || true
+
+  docker run -d \
+    --name cicd-app \
+    --restart unless-stopped \
+    -p 8088:5000 \
+    -e APP_ENV=production \
+    "$PREVIOUS_IMAGE"
+'
+
+Explanation:
+Runs the rollback workflow remotely by reading the previously deployed image, removing the current container, and starting the previous image.
+
+Options:
+- $(...) = command substitution: Runs cat and stores its output in PREVIOUS_IMAGE.
+- 2>/dev/null = stderr redirection: Sends standard error to /dev/null.
+- || = OR operator: Runs true when the command before it fails.
+- -z = zero-length string test: Returns true when PREVIOUS_IMAGE is empty.
+- exit 1 = failure status: Stops the rollback when there is no previous image.
+- docker rm -f: -f = --force (force), which force-removes cicd-app.
+- docker run -d: -d = --detach (detach), which runs the container in the background.
+- --name = container name: Sets the container name to cicd-app.
+- --restart = restart policy: Uses unless-stopped.
+- -p = --publish (publish): Maps host port 8088 to container port 5000.
+- -e = --env (environment): Sets APP_ENV=production inside the container.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 777 ~/.ssh
+
+Explanation:
+Sets read, write, and execute permission for owner, group, and others on the .ssh directory.
+
+Options:
+- 777 = permission mode: Gives rwx permission to owner, group, and others.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -ld ~/.ssh
+
+Explanation:
+Shows detailed information about the .ssh directory itself.
+
+Options:
+- -l = long listing format: Shows permissions, owner, group, size, and other details.
+- -d = --directory (directory): Lists the directory entry itself instead of its contents.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l ~/.ssh/authorized_keys
+
+Explanation:
+Shows detailed information about the authorized_keys file.
+
+Options:
+- -l = long listing format: Shows permissions, owner, group, size, and other details.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -ld ~/.ssh ~/.ssh/authorized_keys
+
+Explanation:
+Shows detailed information for both the .ssh directory and the authorized_keys path.
+
+Options:
+- -l = long listing format: Shows permissions, owner, group, size, and other details.
+- -d = --directory (directory): Lists directory entries themselves instead of listing directory contents.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chmod 600 ~/.ssh/authorized_keys
+
+Explanation:
+Sets authorized_keys so only the owner can read and write it.
+
+Options:
+- 600 = permission mode: Gives read and write permission to the owner and no permissions to group or others.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# chown -R deploy:deploy ~/.ssh
+
+Explanation:
+Changes the owner and group of .ssh and everything inside it to deploy.
+
+Options:
+- -R = --recursive (recursive): Applies the ownership change to all files and subdirectories.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Explanation:
+Displays the fingerprint of the server ED25519 SSH host public key.
+
+Options:
+- -l = fingerprint: Shows the fingerprint of the specified public key.
+- -f = filename: Reads the key from /etc/ssh/ssh_host_ed25519_key.pub.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat ~/.ssh/known_hosts
+
+Explanation:
+Prints the contents of the current user's SSH known_hosts file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -F 192.168.94.91
+
+Explanation:
+Searches known_hosts entries for the host 192.168.94.91.
+
+Options:
+- -F = hostname search: Finds keys for the specified hostname or IP address in a known_hosts file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -R 192.168.94.91
+
+Explanation:
+Removes all known_hosts entries that match 192.168.94.91.
+
+Options:
+- -R = hostname removal: Removes keys for the specified hostname or IP address from a known_hosts file.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh -o StrictHostKeyChecking=no
+
+Explanation:
+Starts SSH with StrictHostKeyChecking set to no, so host-key confirmation is not required for this connection.
+
+Options:
+- -o = option: Passes an SSH configuration option on the command line.
+- StrictHostKeyChecking=no = SSH configuration value: Disables strict host-key confirmation.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh-keygen -y -f ~/.ssh/id_ed25519
+
+Explanation:
+Reads the private key and prints its matching public key.
+
+Options:
+- -y = public-key output mode: Reads a private OpenSSH key and prints the public key.
+- -f = filename: Reads the private key from ~/.ssh/id_ed25519.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# cat ~/.ssh/authorized_keys
+
+Explanation:
+Prints the authorized public keys for the current user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh -vvv deploy@192.168.94.91
+
+Explanation:
+Connects to DEV-2 with increased SSH debug verbosity for troubleshooting authentication and connection details.
+
+Options:
+- -v = verbose mode: Prints SSH debugging information; using it three times increases the verbosity level.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp
+
+Explanation:
+Shows listening TCP sockets with numeric addresses and process information.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports instead of resolving names.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows the process using each socket when permitted.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo ss -lntp | grep ':8088'
+
+Explanation:
+Shows listening TCP sockets and keeps only lines that contain port 8088.
+
+Options:
+- -l = --listening (listening): Shows only listening sockets.
+- -n = --numeric (numeric): Shows numeric addresses and ports.
+- -t = --tcp (TCP): Shows TCP sockets.
+- -p = --processes (processes): Shows process information when permitted.
+- | = pipeline operator: Sends the output of ss to grep.
+- :8088 = grep search pattern: Matches lines containing port 8088.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps
+
+Explanation:
+Lists running Docker containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --filter publish=8088
+
+Explanation:
+Lists running containers whose published ports match 8088.
+
+Options:
+- --filter = filter: Limits the result using the filter expression publish=8088.
+- publish=8088 = filter value: Matches containers publishing port 8088.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps --format "table {{.Names}}\t{{.Ports}}"
+
+Explanation:
+Lists running containers using a custom table that shows container names and published ports.
+
+Options:
+- --format = format: Formats the output with the provided Go template.
+- table {{.Names}}\t{{.Ports}} = format value: Creates a table with the Names and Ports fields separated by a tab.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f old-app
+
+Explanation:
+Force-removes the container named old-app.
+
+Options:
+- -f = --force (force): Stops the container if needed and removes it.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker ps -a
+
+Explanation:
+Lists all Docker containers, including stopped containers.
+
+Options:
+- -a = --all (all): Shows all containers instead of only running containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs cicd-app
+
+Explanation:
+Technical correction: the lab later showed docker logs without the required container argument; this corrected form targets cicd-app. It prints the container's standard output and standard error logs.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker logs --tail 100 cicd-app
+
+Explanation:
+Prints the last 100 log lines from cicd-app.
+
+Options:
+- --tail 100 = tail count: Shows only the most recent 100 log lines.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect cicd-app
+
+Explanation:
+Technical correction: the lab later showed docker inspect without the required object argument; this corrected form targets cicd-app. It prints detailed low-level Docker metadata in JSON.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  -f '{{.State.ExitCode}}' \
+  cicd-app
+
+Explanation:
+Prints only the container exit code from Docker inspect data.
+
+Options:
+- -f = --format (format): Formats inspect output using the provided Go template.
+- {{.State.ExitCode}} = format value: Selects the container State.ExitCode field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  -f '{{.State.Error}}' \
+  cicd-app
+
+Explanation:
+Prints only the Docker State.Error value for cicd-app.
+
+Options:
+- -f = --format (format): Formats inspect output using the provided Go template.
+- {{.State.Error}} = format value: Selects the container State.Error field.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  -f '{{range .Config.Env}}{{println .}}{{end}}' \
+  cicd-app
+
+Explanation:
+Prints every environment variable configured for cicd-app, one item per line.
+
+Options:
+- -f = --format (format): Formats inspect output using the provided Go template.
+- {{range .Config.Env}}{{println .}}{{end}} = format value: Iterates through the container environment list and prints each entry.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker exec cicd-app env
+
+Explanation:
+Runs env inside the running cicd-app container to display its environment variables.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker exec cicd-app printenv APP_ENV
+
+Explanation:
+Runs printenv inside cicd-app and prints only the value of APP_ENV.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "$MY_VARIABLE"
+
+Explanation:
+Checks whether MY_VARIABLE contains a non-empty string and returns success when it does.
+
+Options:
+- -n = non-empty string test: Returns true when the following string has a length greater than zero.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# test -n "$APP_ENV"
+
+Explanation:
+Checks whether APP_ENV contains a non-empty string and returns success when it does.
+
+Options:
+- -n = non-empty string test: Returns true when the following string has a length greater than zero.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$PASSWORD"
+
+Explanation:
+Prints the current value of the PASSWORD shell variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -i http://127.0.0.1:8088/health
+
+Explanation:
+Requests the health endpoint and includes the HTTP response headers in the output.
+
+Options:
+- -i = --include (include): Includes response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker port cicd-app
+
+Explanation:
+Shows the host port mappings configured for cicd-app.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl http://127.0.0.1:8088/health
+
+Explanation:
+Sends a basic HTTP request to the local health endpoint.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# for i in $(seq 1 10); do
+  if curl -fsS http://127.0.0.1:8088/health; then
+    exit 0
+  fi
+
+  sleep 3
+done
+
+exit 1
+
+Explanation:
+Retries the health endpoint ten times, exits successfully on the first good response, and fails after all attempts are exhausted.
+
+Options:
+- $(...) = command substitution: Runs seq 1 10 and inserts its output into the loop.
+- -f = --fail (fail): Makes curl return a non-zero status for HTTP 400 or higher.
+- -s = --silent (silent): Hides the progress meter and normal error messages.
+- -S = --show-error (show error): Shows an error message when curl fails while silent mode is active.
+- exit 0 = success status: Ends the shell successfully when the healthcheck passes.
+- sleep 3 = delay value: Waits three seconds before the next retry.
+- exit 1 = failure status: Ends the shell with a non-zero status after all retries fail.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS http://127.0.0.1:8088/health
+
+Explanation:
+Requests the health endpoint and returns a non-zero status for HTTP errors while keeping normal output quiet.
+
+Options:
+- -f = --fail (fail): Returns a non-zero status for HTTP 400 or higher.
+- -s = --silent (silent): Hides the progress meter and normal error messages.
+- -S = --show-error (show error): Shows an error message when curl fails while silent mode is active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS http://127.0.0.1:8088/
+
+Explanation:
+Requests the application root endpoint and fails on HTTP error responses.
+
+Options:
+- -f = --fail (fail): Returns a non-zero status for HTTP 400 or higher.
+- -s = --silent (silent): Hides the progress meter and normal error messages.
+- -S = --show-error (show error): Shows an error message when curl fails while silent mode is active.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# curl -fsS http://127.0.0.1:8088/ | grep -q "CI/CD Demo"
+
+Explanation:
+Requests the application root endpoint and checks silently whether the response contains CI/CD Demo.
+
+Options:
+- curl -f = --fail (fail): Returns a non-zero status for HTTP 400 or higher.
+- curl -s = --silent (silent): Hides the progress meter and normal error messages.
+- curl -S = --show-error (show error): Shows an error when curl fails while silent mode is active.
+- | = pipeline operator: Sends curl output to grep.
+- grep -q = --quiet (quiet): Suppresses normal grep output and uses only the exit status to show whether the text matched.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+  for i in $(seq 1 10); do
+    HTTP_CODE=$(curl -s \
+      -o /tmp/health-response \
+      -w "%{http_code}" \
+      http://127.0.0.1:8088/health || true)
+
+    echo "Attempt: $i"
+    echo "HTTP status: $HTTP_CODE"
+
+    if [ "$HTTP_CODE" = "200" ]; then
+      echo "Healthcheck passed"
+      exit 0
+    fi
+
+    sleep 3
+  done
+
+  echo "===== docker ps ====="
+  docker ps -a
+
+  echo "===== docker logs ====="
+  docker logs --tail 100 cicd-app || true
+
+  echo "===== port ====="
+  ss -lntp | grep 8088 || true
+
+  echo "===== health response ====="
+  cat /tmp/health-response || true
+
+  exit 1
+'
+
+Explanation:
+Runs a remote healthcheck with diagnostics, then prints container, log, port, and response evidence before failing if the service never returns HTTP 200.
+
+Options:
+- $(...) = command substitution: Runs commands and inserts their output into shell variables or loop input.
+- curl -s = --silent (silent): Hides the progress meter and normal error messages.
+- curl -o = --output (output): Writes the response body to /tmp/health-response.
+- curl -w = --write-out (write out): Prints the HTTP status code after the request.
+- || = OR operator: Runs true when the command before it fails, allowing diagnostics to continue.
+- docker ps -a: -a = --all (all), which shows running and stopped containers.
+- docker logs --tail 100: --tail selects the last 100 log lines.
+- ss -lntp: -l = --listening, -n = --numeric, -t = --tcp, and -p = --processes.
+- | = pipeline operator: Sends ss output to grep.
+- exit 0 = success status: Ends the remote shell when HTTP 200 is received.
+- sleep 3 = delay value: Waits three seconds between attempts.
+- exit 1 = failure status: Ends the remote shell with a non-zero status after diagnostics are printed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker inspect \
+  -f '{{.Config.Image}}' \
+  cicd-app
+
+Explanation:
+Prints only the image reference used by cicd-app.
+
+Options:
+- -f = --format (format): Formats inspect output using the provided Go template.
+- {{.Config.Image}} = format value: Selects the configured image name from the container metadata.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ping -c 3 192.168.94.91
+
+Explanation:
+Sends three ICMP echo requests to DEV-2 to test basic network reachability.
+
+Options:
+- -c 3 = count: Stops after sending three echo requests.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker info"
+
+Explanation:
+Connects to DEV-2 and displays Docker engine information remotely.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker ps -a"
+
+Explanation:
+Connects to DEV-2 and lists all remote Docker containers, including stopped ones.
+
+Options:
+- -a = --all (all): Shows all containers instead of only running containers.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "docker logs --tail 100 cicd-app"
+
+Explanation:
+Connects to DEV-2 and prints the last 100 log lines from cicd-app.
+
+Options:
+- --tail 100 = tail count: Shows only the most recent 100 log lines.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "curl -i http://127.0.0.1:8088/health"
+
+Explanation:
+Connects to DEV-2 and requests the health endpoint while including HTTP response headers.
+
+Options:
+- -i = --include (include): Includes HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "curl -i http://127.0.0.1:8088/"
+
+Explanation:
+Connects to DEV-2 and requests the application root endpoint while including HTTP response headers.
+
+Options:
+- -i = --include (include): Includes HTTP response headers in the output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner verify
+
+Explanation:
+Checks whether registered GitLab Runner configurations can connect to their GitLab instances.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker info
+
+Explanation:
+Displays detailed information about the Docker client, server, storage, runtime, and configuration.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# df -h
+
+Explanation:
+Shows filesystem disk-space usage in human-readable units.
+
+Options:
+- -h = --human-readable (human readable): Displays sizes using units such as KiB, MiB, and GiB.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker images
+
+Explanation:
+Lists Docker images stored on the local Docker host.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run -d \
+  --name port-test \
+  -p 8088:80 \
+  nginx
+
+Explanation:
+Starts an nginx container in the background and publishes host port 8088 to container port 80.
+
+Options:
+- -d = --detach (detach): Runs the container in the background.
+- --name = container name: Sets the container name to port-test.
+- -p = --publish (publish): Maps host port 8088 to container port 80.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker rm -f port-test
+
+Explanation:
+Force-removes the port-test container.
+
+Options:
+- -f = --force (force): Stops the container if needed and removes it.
+------------------------------------------------------------
