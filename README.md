@@ -84,3 +84,4 @@ Hands-on CI/CD labs focused on GitLab pipelines, runners, testing, artifacts, se
 - `gitlab/session-82-dynamic-child-pipeline/` — Dynamic Child Pipeline with runtime-generated YAML, artifact-based child configuration, dynamic jobs, monorepo change detection, and `strategy: mirror`.
 - `gitlab/session-88-reusable-pipeline-template/` — Reusable GitLab CI/CD pipeline templates with `include`, hidden jobs, `extends`, DRY configuration, version-pinned templates, and CI/CD Components with `spec:inputs`.
 - `gitlab/session-86-monorepo-pipeline/` — Monorepo path-based pipelines with `rules:changes`, affected-service detection, shared dependency mapping, and Parent/Child Pipeline orchestration.
+- `gitlab/session-91-troubleshooting-docker-registry/` — Troubleshooting Docker and private registry failures: Docker build errors, daemon permissions, TLS/certificate issues, authentication and authorization, 401 errors, push/tag failures, disk full, and inode exhaustion.
