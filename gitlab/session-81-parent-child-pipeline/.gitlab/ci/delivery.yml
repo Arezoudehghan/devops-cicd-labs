@@ -1,0 +1,33 @@
+stages:
+  - build
+  - scan
+  - push
+  - deploy
+
+docker_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building Docker Image..."
+
+container_scan:
+  stage: scan
+  tags:
+    - dev-shell
+  script:
+    - echo "Scanning Docker Image..."
+
+push_registry:
+  stage: push
+  tags:
+    - dev-shell
+  script:
+    - echo "Pushing Image to Registry..."
+
+deploy:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying Application..."
