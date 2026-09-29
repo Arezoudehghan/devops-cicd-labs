@@ -36,13 +36,22 @@ deploy:
 
         mkdir -p /opt/cicd-app
 
-        docker inspect           -f '{{.Config.Image}}'           ${APP_NAME}           > /opt/cicd-app/.previous_image           2>/dev/null || true
+        docker inspect \
+          -f '{{.Config.Image}}' \
+          ${APP_NAME} \
+          > /opt/cicd-app/.previous_image \
+          2>/dev/null || true
 
         docker pull '${IMAGE_REF}'
 
         docker rm -f ${APP_NAME} 2>/dev/null || true
 
-        docker run -d           --name ${APP_NAME}           --restart unless-stopped           -p ${APP_PORT}:${CONTAINER_PORT}           -e APP_ENV=production           '${IMAGE_REF}'
+        docker run -d \
+          --name ${APP_NAME} \
+          --restart unless-stopped \
+          -p ${APP_PORT}:${CONTAINER_PORT} \
+          -e APP_ENV=production \
+          '${IMAGE_REF}'
       "
 
 healthcheck:
@@ -55,7 +64,10 @@ healthcheck:
     - |
       ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
         for i in $(seq 1 10); do
-          HTTP_CODE=$(curl -s             -o /tmp/health-response             -w "%{http_code}"             http://127.0.0.1:8088/health || true)
+          HTTP_CODE=$(curl -s \
+            -o /tmp/health-response \
+            -w "%{http_code}" \
+            http://127.0.0.1:8088/health || true)
 
           echo "Attempt: $i"
           echo "HTTP status: $HTTP_CODE"
@@ -114,7 +126,12 @@ rollback:
 
         docker rm -f cicd-app 2>/dev/null || true
 
-        docker run -d           --name cicd-app           --restart unless-stopped           -p 8088:5000           -e APP_ENV=production           "$PREVIOUS_IMAGE"
+        docker run -d \
+          --name cicd-app \
+          --restart unless-stopped \
+          -p 8088:5000 \
+          -e APP_ENV=production \
+          "$PREVIOUS_IMAGE"
 
         for i in $(seq 1 10); do
           if curl -fsS http://127.0.0.1:8088/health; then
