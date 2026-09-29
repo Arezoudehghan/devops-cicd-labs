@@ -1,0 +1,145 @@
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes local commits from the current branch to its configured remote upstream branch.
+------------------------------------------------------------
+# echo "Running nightly job"
+
+Explanation:
+Prints a short message indicating that the nightly job is running.
+------------------------------------------------------------
+# echo "Running nightly tests"
+
+Explanation:
+Prints a message indicating that the scheduled nightly tests are starting.
+------------------------------------------------------------
+# python3 -m pytest
+
+Explanation:
+Runs the pytest test framework by executing its Python module with Python 3.
+
+Options:
+- -m = run library module as a script: Tells Python to locate and execute the `pytest` module instead of a script file.
+------------------------------------------------------------
+# echo "Building nightly image"
+
+Explanation:
+Prints a message indicating that the nightly Docker image build is starting.
+------------------------------------------------------------
+# docker build -t myapp:nightly-$CI_COMMIT_SHORT_SHA .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it with the current GitLab commit short SHA.
+
+Options:
+- -t = --tag (tag): Assigns the image name and tag `myapp:nightly-$CI_COMMIT_SHORT_SHA`.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# gitleaks detect --source . --redact
+
+Explanation:
+Scans the current directory for secrets with Gitleaks and redacts detected secret values from the output.
+
+Options:
+- --source . = source path: Scans the current directory.
+- --redact = redact secrets: Hides sensitive secret values in findings.
+------------------------------------------------------------
+# trivy fs --severity HIGH,CRITICAL --exit-code 1 .
+
+Explanation:
+Scans the current filesystem directory with Trivy and returns exit code 1 when matching vulnerabilities are found.
+
+Options:
+- fs = filesystem scan subcommand: Scans files and dependencies from the specified filesystem path.
+- --severity HIGH,CRITICAL = severity filter: Reports findings with HIGH or CRITICAL severity.
+- --exit-code 1 = exit code on findings: Makes Trivy return status code 1 when matching findings are detected.
+- . = scan target: Scans the current directory.
+------------------------------------------------------------
+# echo "Pipeline started by external trigger"
+
+Explanation:
+Prints a message indicating that the pipeline was started by an external trigger.
+------------------------------------------------------------
+# curl --request POST \
+  --form "token=$GITLAB_TRIGGER_TOKEN" \
+  --form "ref=main" \
+  "https://gitlab.example.com/api/v4/projects/PROJECT_ID/trigger/pipeline"
+
+Explanation:
+Sends an HTTP POST request to the GitLab pipeline trigger API for the `main` branch using the trigger token stored in `$GITLAB_TRIGGER_TOKEN`.
+
+Options:
+- --request POST = request method: Explicitly uses the HTTP POST method.
+- --form "token=$GITLAB_TRIGGER_TOKEN" = form field: Sends the GitLab trigger token as multipart form data.
+- --form "ref=main" = form field: Requests a pipeline for the `main` branch.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# curl --request POST \
+  --form "token=$GITLAB_TRIGGER_TOKEN" \
+  --form "ref=main" \
+  --form "variables[DEPLOY_ENV]=staging" \
+  --form "variables[APP_VERSION]=1.4.2" \
+  "https://gitlab.example.com/api/v4/projects/PROJECT_ID/trigger/pipeline"
+
+Explanation:
+Triggers the GitLab pipeline for `main` and passes deployment environment and application version variables to the new pipeline.
+
+Options:
+- --request POST = request method: Explicitly uses the HTTP POST method.
+- --form "token=$GITLAB_TRIGGER_TOKEN" = form field: Sends the GitLab trigger token as multipart form data.
+- --form "ref=main" = form field: Requests a pipeline for the `main` branch.
+- --form "variables[DEPLOY_ENV]=staging" = form field: Sets the pipeline variable `DEPLOY_ENV` to `staging`.
+- --form "variables[APP_VERSION]=1.4.2" = form field: Sets the pipeline variable `APP_VERSION` to `1.4.2`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# echo "Deploy environment: $DEPLOY_ENV"
+
+Explanation:
+Prints the value of the `DEPLOY_ENV` environment variable used by the triggered pipeline.
+------------------------------------------------------------
+# echo "Application version: $APP_VERSION"
+
+Explanation:
+Prints the value of the `APP_VERSION` environment variable used by the triggered pipeline.
+------------------------------------------------------------
+# echo "External deployment requested"
+
+Explanation:
+Prints a message indicating that an external deployment request was received.
+------------------------------------------------------------
+# echo "Environment: $DEPLOY_ENV"
+
+Explanation:
+Prints the deployment environment selected for the externally triggered deployment job.
+------------------------------------------------------------
+# curl --request POST \
+  --form "token=glpt-xxxxxxxxxxxxx" \
+  --form "ref=main" \
+  "https://gitlab.example.com/api/v4/projects/PROJECT_ID/trigger/pipeline"
+
+Explanation:
+Technical correction: The original lesson example ended with `...`, so the required POST method, `ref` form field, and GitLab trigger API endpoint were added to make the command complete. This preserves the lesson's hardcoded example token while making the command syntactically executable.
+
+Options:
+- --request POST = request method: Explicitly uses the HTTP POST method.
+- --form "token=glpt-xxxxxxxxxxxxx" = form field: Sends the example trigger token as multipart form data.
+- --form "ref=main" = form field: Requests a pipeline for the `main` branch.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
+# curl --request POST \
+  --form "token=$GITLAB_TRIGGER_TOKEN" \
+  --form "ref=main" \
+  --form "variables[DEPLOY_ENV]=staging" \
+  "https://gitlab.example.com/api/v4/projects/PROJECT_ID/trigger/pipeline"
+
+Explanation:
+Triggers the GitLab pipeline for `main` and passes `DEPLOY_ENV=staging` to the pipeline.
+
+Options:
+- --request POST = request method: Explicitly uses the HTTP POST method.
+- --form "token=$GITLAB_TRIGGER_TOKEN" = form field: Sends the GitLab trigger token as multipart form data.
+- --form "ref=main" = form field: Requests a pipeline for the `main` branch.
+- --form "variables[DEPLOY_ENV]=staging" = form field: Sets the pipeline variable `DEPLOY_ENV` to `staging`.
+- \ = shell line continuation: Continues the same command on the next line.
+------------------------------------------------------------
