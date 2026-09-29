@@ -1,0 +1,25 @@
+stages:
+  - lint
+  - test
+  - build
+
+frontend_lint:
+  stage: lint
+  tags:
+    - dev-shell
+  script:
+    - echo "Linting Frontend"
+
+frontend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Testing Frontend"
+
+frontend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building Frontend"
