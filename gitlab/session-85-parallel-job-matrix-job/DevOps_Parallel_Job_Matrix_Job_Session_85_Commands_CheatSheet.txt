@@ -1,0 +1,284 @@
+------------------------------------------------------------
+# echo "Testing Python 3.11"
+
+Explanation:
+Prints the text Testing Python 3.11 to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing Python 3.12"
+
+Explanation:
+Prints the text Testing Python 3.12 to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing Python 3.13"
+
+Explanation:
+Prints the text Testing Python 3.13 to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Parallel test"
+
+Explanation:
+Prints the text Parallel test to standard output.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# pytest
+
+Explanation:
+Runs the project's tests with pytest using its default discovery and execution behavior.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Node Index = $CI_NODE_INDEX"
+
+Explanation:
+Prints the current parallel job index stored in the CI_NODE_INDEX variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Node Total = $CI_NODE_TOTAL"
+
+Explanation:
+Prints the total number of parallel job instances stored in the CI_NODE_TOTAL variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$PYTHON_VERSION"
+
+Explanation:
+Prints the current value of the PYTHON_VERSION variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run python:${PYTHON_VERSION}-slim python --version
+
+Explanation:
+Starts a container from the Python slim image selected by PYTHON_VERSION and runs python --version inside it. The container is not automatically removed after it exits.
+
+Options:
+- --version = version information: Tells Python to print its version and exit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing with Python $PYTHON_VERSION"
+
+Explanation:
+Prints which Python version is being tested by expanding the PYTHON_VERSION variable.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm python:${PYTHON_VERSION}-slim python --version
+
+Explanation:
+Starts a temporary container from the Python slim image selected by PYTHON_VERSION and prints the Python version inside the container.
+
+Options:
+- --rm = automatically remove the container when it exits: Deletes the stopped container after the command finishes.
+- --version = version information: Tells Python to print its version and exit.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing application with Python $PYTHON_VERSION"
+
+Explanation:
+Prints which Python version is being used to test the application.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+        -v "$CI_PROJECT_DIR:/app" \
+        -w /app \
+        python:${PYTHON_VERSION}-slim \
+        sh -c "pip install -r requirements.txt && pytest"
+
+Explanation:
+Runs the project tests inside a temporary Python container. It mounts the GitLab project at /app, installs dependencies from requirements.txt, and runs pytest only if installation succeeds.
+
+Options:
+- --rm = automatically remove the container when it exits: Deletes the stopped container after the command finishes.
+- -v = --volume (volume): Mounts CI_PROJECT_DIR from the host at /app inside the container.
+- -w = --workdir (working directory): Sets /app as the working directory inside the container.
+- -c = command string: Tells sh to execute the following quoted command string.
+- -r = --requirement (requirement file): Tells pip install to read dependencies from requirements.txt.
+- && = AND operator: Runs pytest only if pip install completes successfully.
+- \ = line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "All supported Python versions passed"
+
+Explanation:
+Prints a message indicating that all supported Python version tests passed.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Building application..."
+
+Explanation:
+Prints a message indicating that the application build step is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Python=$PYTHON_VERSION Environment=$APP_ENV"
+
+Explanation:
+Prints the current Python version and application environment values from the matrix variables.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "================================"
+
+Explanation:
+Prints a separator line to make the CI job log easier to read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Python Version = $PYTHON_VERSION"
+
+Explanation:
+Prints the current Python version selected by the matrix job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Environment    = $APP_ENV"
+
+Explanation:
+Prints the current application environment selected by the matrix job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# docker run --rm \
+        -e APP_ENV="$APP_ENV" \
+        -v "$CI_PROJECT_DIR:/app" \
+        -w /app \
+        python:${PYTHON_VERSION}-slim \
+        sh -c "pip install -r requirements.txt && pytest"
+
+Explanation:
+Runs the project tests inside a temporary Python container while passing APP_ENV into the container. It mounts the project at /app, installs dependencies, and runs pytest only if installation succeeds.
+
+Options:
+- --rm = automatically remove the container when it exits: Deletes the stopped container after the command finishes.
+- -e = --env (environment): Sets APP_ENV inside the container to the current APP_ENV value.
+- -v = --volume (volume): Mounts CI_PROJECT_DIR from the host at /app inside the container.
+- -w = --workdir (working directory): Sets /app as the working directory inside the container.
+- -c = command string: Tells sh to execute the following quoted command string.
+- -r = --requirement (requirement file): Tells pip install to read dependencies from requirements.txt.
+- && = AND operator: Runs pytest only if pip install completes successfully.
+- \ = line continuation: Continues the same shell command on the next line.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing $OS with version $VERSION"
+
+Explanation:
+Prints the current OS and version values selected by the matrix job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# mkdir -p reports
+
+Explanation:
+Creates the reports directory and does not fail if the directory already exists.
+
+Options:
+- -p = --parents (parents): Creates parent directories as needed and avoids an error when the target directory already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "$PYTHON_VERSION" > reports/version.txt
+
+Explanation:
+Writes the current PYTHON_VERSION value to reports/version.txt.
+
+Options:
+- > = output redirection: Sends standard output to reports/version.txt and overwrites the file if it already exists.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo cat /etc/gitlab-runner/config.toml
+
+Explanation:
+Displays the GitLab Runner configuration file with elevated privileges.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner restart
+
+Explanation:
+Restarts the GitLab Runner service through the GitLab Runner command-line interface.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo gitlab-runner status
+
+Explanation:
+Shows the current service status of GitLab Runner.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "========================================"
+
+Explanation:
+Prints a longer separator line to make the CI job log easier to read.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Testing Python $PYTHON_VERSION"
+
+Explanation:
+Prints which Python version is being tested in the current matrix job.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Job $CI_JOB_NAME"
+
+Explanation:
+Prints the current GitLab CI job name stored in CI_JOB_NAME.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "All Python compatibility tests passed."
+
+Explanation:
+Prints a message indicating that all Python compatibility tests completed successfully.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# echo "Starting build..."
+
+Explanation:
+Prints a message indicating that the build step is starting.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# sudo -u gitlab-runner docker version
+
+Explanation:
+Runs docker version as the gitlab-runner user to verify that this user can execute Docker commands.
+
+Options:
+- -u = --user (user): Runs the following command as the specified user, gitlab-runner.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# id gitlab-runner
+
+Explanation:
+Displays the user ID, group ID, and group memberships of the gitlab-runner user.
+------------------------------------------------------------
+
+------------------------------------------------------------
+# ls -l /var/run/docker.sock
+
+Explanation:
+Displays detailed file information for the Docker daemon socket.
+
+Options:
+- -l = long listing format: Shows detailed information such as permissions, owner, group, size, and path.
+------------------------------------------------------------
