@@ -1,0 +1,25 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_app:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building application..."
+
+test_app:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running tests..."
+
+deploy_app:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying application..."
