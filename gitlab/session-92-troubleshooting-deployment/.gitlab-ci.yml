@@ -1,0 +1,129 @@
+stages:
+  - deploy
+  - healthcheck
+  - smoke
+  - rollback
+
+variables:
+  DEPLOY_HOST: "192.168.94.91"
+  DEPLOY_USER: "deploy"
+  APP_NAME: "cicd-app"
+  APP_PORT: "8088"
+  CONTAINER_PORT: "5000"
+  NEXUS_REGISTRY: "192.168.94.90:8085"
+
+.ssh_setup:
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp "$SSH_PRIVATE_KEY" ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+
+deploy:
+  stage: deploy
+  tags:
+    - dev-shell
+  extends:
+    - .ssh_setup
+  script:
+    - |
+      IMAGE_REF="${NEXUS_REGISTRY}/cicd-demo:${CI_COMMIT_SHORT_SHA}"
+
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "
+        set -e
+
+        mkdir -p /opt/cicd-app
+
+        docker inspect           -f '{{.Config.Image}}'           ${APP_NAME}           > /opt/cicd-app/.previous_image           2>/dev/null || true
+
+        docker pull '${IMAGE_REF}'
+
+        docker rm -f ${APP_NAME} 2>/dev/null || true
+
+        docker run -d           --name ${APP_NAME}           --restart unless-stopped           -p ${APP_PORT}:${CONTAINER_PORT}           -e APP_ENV=production           '${IMAGE_REF}'
+      "
+
+healthcheck:
+  stage: healthcheck
+  tags:
+    - dev-shell
+  extends:
+    - .ssh_setup
+  script:
+    - |
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+        for i in $(seq 1 10); do
+          HTTP_CODE=$(curl -s             -o /tmp/health-response             -w "%{http_code}"             http://127.0.0.1:8088/health || true)
+
+          echo "Attempt: $i"
+          echo "HTTP status: $HTTP_CODE"
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "Healthcheck passed"
+            exit 0
+          fi
+
+          sleep 3
+        done
+
+        echo "===== docker ps ====="
+        docker ps -a
+
+        echo "===== docker logs ====="
+        docker logs --tail 100 cicd-app || true
+
+        echo "===== port ====="
+        ss -lntp | grep 8088 || true
+
+        echo "===== health response ====="
+        cat /tmp/health-response || true
+
+        exit 1
+      '
+
+smoke_test:
+  stage: smoke
+  tags:
+    - dev-shell
+  extends:
+    - .ssh_setup
+  script:
+    - |
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+        curl -fsS http://127.0.0.1:8088/
+      '
+
+rollback:
+  stage: rollback
+  tags:
+    - dev-shell
+  extends:
+    - .ssh_setup
+  when: on_failure
+  script:
+    - |
+      ssh "${DEPLOY_USER}@${DEPLOY_HOST}" '
+        PREVIOUS_IMAGE=$(cat /opt/cicd-app/.previous_image 2>/dev/null || true)
+
+        if [ -z "$PREVIOUS_IMAGE" ]; then
+          echo "No previous image available"
+          exit 1
+        fi
+
+        docker rm -f cicd-app 2>/dev/null || true
+
+        docker run -d           --name cicd-app           --restart unless-stopped           -p 8088:5000           -e APP_ENV=production           "$PREVIOUS_IMAGE"
+
+        for i in $(seq 1 10); do
+          if curl -fsS http://127.0.0.1:8088/health; then
+            echo "Rollback healthcheck passed"
+            exit 0
+          fi
+          sleep 3
+        done
+
+        docker logs --tail 100 cicd-app || true
+        exit 1
+      '
