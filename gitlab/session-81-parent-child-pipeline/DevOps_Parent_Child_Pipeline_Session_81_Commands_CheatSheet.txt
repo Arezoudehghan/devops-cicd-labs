@@ -1,0 +1,97 @@
+------------------------------------------------------------
+# mkdir -p .gitlab/ci
+
+Explanation:
+Creates the .gitlab/ci directory structure. The parent directories are created automatically if they do not already exist.
+
+Options:
+- -p = --parents: Create parent directories as needed and do not report an error if the directory already exists.
+------------------------------------------------------------
+# touch .gitlab/ci/quality.yml
+
+Explanation:
+Creates the quality.yml file if it does not exist. If it already exists, its modification timestamp is updated.
+------------------------------------------------------------
+# touch .gitlab/ci/security.yml
+
+Explanation:
+Creates the security.yml file if it does not exist. If it already exists, its modification timestamp is updated.
+------------------------------------------------------------
+# touch .gitlab/ci/delivery.yml
+
+Explanation:
+Creates the delivery.yml file if it does not exist. If it already exists, its modification timestamp is updated.
+------------------------------------------------------------
+# echo "Running Lint..."
+
+Explanation:
+Prints the text Running Lint... to standard output.
+------------------------------------------------------------
+# echo "Running Unit Tests..."
+
+Explanation:
+Prints the text Running Unit Tests... to standard output.
+------------------------------------------------------------
+# echo "Running Gitleaks..."
+
+Explanation:
+Prints the text Running Gitleaks... to standard output.
+------------------------------------------------------------
+# echo "Running Trivy Config Scan..."
+
+Explanation:
+Prints the text Running Trivy Config Scan... to standard output.
+------------------------------------------------------------
+# echo "Building Docker Image..."
+
+Explanation:
+Prints the text Building Docker Image... to standard output.
+------------------------------------------------------------
+# echo "Scanning Docker Image..."
+
+Explanation:
+Prints the text Scanning Docker Image... to standard output.
+------------------------------------------------------------
+# echo "Pushing Image to Registry..."
+
+Explanation:
+Prints the text Pushing Image to Registry... to standard output.
+------------------------------------------------------------
+# echo "Deploying Application..."
+
+Explanation:
+Prints the text Deploying Application... to standard output.
+------------------------------------------------------------
+# git add .gitlab-ci.yml .gitlab/ci/
+
+Explanation:
+Stages the .gitlab-ci.yml file and the contents of the .gitlab/ci/ directory for the next Git commit.
+------------------------------------------------------------
+# git commit -m "refactor ci into parent-child pipelines"
+
+Explanation:
+Creates a Git commit from the staged changes with the specified commit message.
+
+Options:
+- -m = --message: Use the following text as the commit message.
+------------------------------------------------------------
+# git push
+
+Explanation:
+Uploads local commits from the current branch to its configured remote upstream branch.
+------------------------------------------------------------
+# echo "Running Unit Test"
+
+Explanation:
+Prints the text Running Unit Test to standard output.
+------------------------------------------------------------
+# exit 1
+
+Explanation:
+Terminates the current shell or CI job with exit status 1, which normally indicates failure.
+------------------------------------------------------------
+# echo "Deploying to $TARGET_ENV"
+
+Explanation:
+Prints the deployment message after the shell expands $TARGET_ENV to the current value of that environment variable.
+------------------------------------------------------------
