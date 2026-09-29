@@ -1,0 +1,13 @@
+include:
+  - project: 'root/ci-templates'
+    ref: 'v1.0.0'
+    file: '/templates/docker.yml'
+
+stages:
+  - build
+
+variables:
+  IMAGE_NAME: "template-demo"
+
+docker_build:
+  extends: .docker_build_template
