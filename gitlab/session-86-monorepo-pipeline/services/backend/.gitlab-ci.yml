@@ -1,0 +1,25 @@
+stages:
+  - lint
+  - test
+  - build
+
+backend_lint:
+  stage: lint
+  tags:
+    - dev-shell
+  script:
+    - echo "Linting Backend"
+
+backend_test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Testing Backend"
+
+backend_build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - echo "Building Backend"
