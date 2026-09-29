@@ -1,0 +1,38 @@
+stages:
+  - lint
+  - test
+  - security
+  - build
+
+.python-base:
+  image: python:3.12-slim
+  before_script:
+    - python --version
+    - pip install -r requirements.txt
+
+lint:
+  extends: .python-base
+  stage: lint
+  script:
+    - python -m compileall .
+
+unit-test:
+  extends: .python-base
+  stage: test
+  script:
+    - pytest
+
+security-check:
+  stage: security
+  script:
+    - echo "Running organization security baseline"
+
+build:
+  extends: .python-base
+  stage: build
+  script:
+    - python -m build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
