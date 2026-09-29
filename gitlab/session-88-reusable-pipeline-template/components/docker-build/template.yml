@@ -1,0 +1,26 @@
+spec:
+  inputs:
+    stage:
+      default: build
+      description: "Pipeline stage"
+
+    job-name:
+      default: docker-build
+      description: "Docker build job name"
+
+    registry-image:
+      description: "Full Docker image name"
+
+---
+
+"$[[ inputs.job-name ]]":
+  stage: $[[ inputs.stage ]]
+
+  tags:
+    - dev-shell
+
+  before_script:
+    - docker version
+
+  script:
+    - docker build -t "$[[ inputs.registry-image ]]:$CI_COMMIT_SHORT_SHA" .
