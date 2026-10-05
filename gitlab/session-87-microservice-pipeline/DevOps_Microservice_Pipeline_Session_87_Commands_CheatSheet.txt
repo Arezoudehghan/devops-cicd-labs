@@ -1,0 +1,92 @@
+------------------------------------------------------------
+# git push
+
+Explanation:
+Pushes the current branch commits to its configured remote repository.
+
+------------------------------------------------------------
+# echo "Running order-service tests"
+
+Explanation:
+Prints a simple status message indicating that the order-service test step is running.
+
+------------------------------------------------------------
+# docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+Explanation:
+Builds a Docker image from the Dockerfile in the current directory and tags it with the image name and version stored in the CI variables.
+
+Options:
+- -t = --tag (tag): Assigns the name and tag "$IMAGE_NAME:$IMAGE_TAG" to the built image.
+- . = build context: Uses the current directory as the Docker build context.
+------------------------------------------------------------
+# docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+Explanation:
+Pushes the tagged Docker image to the configured container registry.
+
+------------------------------------------------------------
+# echo "Deploying order-service:$IMAGE_TAG"
+
+Explanation:
+Prints a deployment status message containing the current order-service image tag.
+
+------------------------------------------------------------
+# docker compose pull order
+
+Explanation:
+Pulls the image defined for the order service in the Compose configuration.
+
+------------------------------------------------------------
+# docker compose up -d --no-deps order
+
+Explanation:
+Creates or updates only the order service and runs it in the background without starting or recreating its dependent services.
+
+Options:
+- -d = --detach (detached): Runs the service in the background.
+- --no-deps = no dependencies: Prevents Compose from starting linked or dependent services.
+------------------------------------------------------------
+# docker compose up -d
+
+Explanation:
+Creates or updates the services defined in the Compose configuration and runs them in the background.
+
+Options:
+- -d = --detach (detached): Runs the services in the background.
+------------------------------------------------------------
+# cd /opt/ecommerce
+
+Explanation:
+Changes the current working directory to /opt/ecommerce.
+
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "cd /opt/ecommerce && docker compose pull order"
+
+Explanation:
+Connects to DEV-2 as the deploy user, changes to /opt/ecommerce, and pulls the image for the order service.
+
+Options:
+- deploy@192.168.94.91 = SSH destination: Connects as user deploy to host 192.168.94.91.
+- && = AND operator: Runs docker compose pull order only if cd /opt/ecommerce succeeds.
+------------------------------------------------------------
+# ssh deploy@192.168.94.91 "cd /opt/ecommerce && docker compose up -d --no-deps order"
+
+Explanation:
+Connects to DEV-2 as the deploy user, changes to /opt/ecommerce, and updates only the order service in detached mode without starting its dependencies.
+
+Options:
+- deploy@192.168.94.91 = SSH destination: Connects as user deploy to host 192.168.94.91.
+- && = AND operator: Runs docker compose up only if cd /opt/ecommerce succeeds.
+- -d = --detach (detached): Runs the service in the background.
+- --no-deps = no dependencies: Prevents Compose from starting linked or dependent services.
+------------------------------------------------------------
+# sed -i "s/^ORDER_VERSION=.*/ORDER_VERSION=$CI_COMMIT_SHORT_SHA/" .env
+
+Explanation:
+Updates the ORDER_VERSION line in the .env file so it uses the current GitLab short commit SHA.
+
+Options:
+- -i = --in-place (in-place): Edits the .env file directly.
+- s/^ORDER_VERSION=.*/ORDER_VERSION=$CI_COMMIT_SHORT_SHA/ = sed substitution expression: Replaces the complete ORDER_VERSION line with the current $CI_COMMIT_SHORT_SHA value.
+------------------------------------------------------------

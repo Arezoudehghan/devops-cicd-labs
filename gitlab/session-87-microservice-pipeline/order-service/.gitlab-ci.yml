@@ -1,0 +1,39 @@
+stages:
+  - test
+  - build
+  - push
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/order-service"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+unit-test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running order-service tests"
+
+docker-build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+docker-push:
+  stage: push
+  tags:
+    - dev-shell
+  script:
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+deploy-order:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying order-service:$IMAGE_TAG"
+    - ssh deploy@192.168.94.91 "cd /opt/ecommerce && docker compose pull order"
+    - ssh deploy@192.168.94.91 "cd /opt/ecommerce && docker compose up -d --no-deps order"

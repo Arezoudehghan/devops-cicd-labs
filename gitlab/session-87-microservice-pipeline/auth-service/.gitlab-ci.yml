@@ -1,0 +1,37 @@
+stages:
+  - test
+  - build
+  - push
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/auth-service"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+unit-test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running auth-service tests"
+
+docker-build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+docker-push:
+  stage: push
+  tags:
+    - dev-shell
+  script:
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+deploy-auth:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying auth-service:$IMAGE_TAG"

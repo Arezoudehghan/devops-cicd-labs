@@ -1,0 +1,37 @@
+stages:
+  - test
+  - build
+  - push
+  - deploy
+
+variables:
+  IMAGE_NAME: "192.168.94.90:8085/notification-service"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+
+unit-test:
+  stage: test
+  tags:
+    - dev-shell
+  script:
+    - echo "Running notification-service tests"
+
+docker-build:
+  stage: build
+  tags:
+    - dev-shell
+  script:
+    - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+
+docker-push:
+  stage: push
+  tags:
+    - dev-shell
+  script:
+    - docker push "$IMAGE_NAME:$IMAGE_TAG"
+
+deploy-notification:
+  stage: deploy
+  tags:
+    - dev-shell
+  script:
+    - echo "Deploying notification-service:$IMAGE_TAG"
